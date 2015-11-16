@@ -5,7 +5,10 @@ This document covers how to create [Babel](https://babeljs.io)
 
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
-Special thanks to @sebmck, @jdalton, @abraithwaite, @robey, and others for their
+Special thanks to [@sebmck](https://github.com/sebmck/),
+[@jdalton](https://github.com/jdalton),
+[@abraithwaite](https://github.com/abraithwaite),
+[@robey](https://github.com/robey), and others for their
 amazing help on this handbook.
 
 # Node Packaged Manuscript
