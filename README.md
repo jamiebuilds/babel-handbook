@@ -98,6 +98,8 @@ Each of these steps involve creating or working with an
 [Abstract Syntax Tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree) or
 AST.
 
+> Babel uses an AST modified from [ESTree](https://github.com/babel/babel/blob/master/doc/ast/spec.md), with the core spec located [here](https://github.com/babel/babel/blob/master/doc/ast/spec.md).
+
 ```js
 function square(n) {
   return n * n;
