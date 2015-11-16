@@ -1,0 +1,23 @@
+{
+  "name": "babel-plugin-handbook",
+  "version": "1.0.0",
+  "description": "How to create Babel plugins",
+  "repository": "thejameskyle/babel-plugin-handbook.git",
+  "homepage": "https://github.com/thejameskyle/babel-plugin-handbook",
+  "keywords": [
+    "documentation",
+    "guide",
+    "handbook",
+    "babel",
+    "plugin"
+  ],
+  "author": "James Kyle <me@thejameskyle.com>",
+  "license": "cc-by-4.0",
+  "dependencies": {
+    "default-pager": "^1.0.1",
+    "marked-man": "^0.1.5"
+  },
+  "bin": {
+    "babel-plugin-handbook": "bin.js"
+  }
+}
