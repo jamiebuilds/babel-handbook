@@ -299,7 +299,7 @@ easier to work with.
 ### Transform
 
 The [transform](https://en.wikipedia.org/wiki/Program_transformation) stage
-takes an AST a traverses through it, adding, updating, and removing nodes as it
+takes an AST and traverses through it, adding, updating, and removing nodes as it
 goes along. This is by far the most complex part of Babel or any compiler. This
 is where plugins operate and so it will be the subject of most of this handbook.
 So we won't dive too deep right now.
