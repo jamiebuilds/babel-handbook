@@ -824,16 +824,17 @@ We can also pass options to `parse()` like so:
 
 ```js
 babylon.parse(code, {
-  sourceType: "module",
-  plugins: [
-    "jsx"
-  ]
+  sourceType: "module", // default: "script"
+  plugins: ["jsx"] // default: []
 });
 ```
 
 `sourceType` can either be `"module"` or `"script"` which is the mode that
 Babylon should parse in. `"module"` will parse in strict mode and allow module
 declarations, `"script"` will not.
+
+> **Note:** `sourceType` defaults to `"script"` and will error when it finds
+> `import` or `export`. Pass `sourceType: "module"` to get rid of these errors.
 
 Since Babylon is built with a plugin-based architecture, there is also a
 `plugins` option which will enable the internal plugins. Note that Babylon has
