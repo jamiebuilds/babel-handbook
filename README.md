@@ -396,7 +396,7 @@ const MyVisitor = {
 > `Identifier: { enter() { ... } }`.
 
 This is a basic visitor that when used during a traversal will call the
-`Identifer()` method for every `Identifier` in the tree.
+`Identifier()` method for every `Identifier` in the tree.
 
 So with this code the `Identifier()` method will be called three times with each
 `Identifier`.
@@ -435,7 +435,7 @@ we **enter** each node, then going back up we **exit** each node.
 Let's _walk_ through what this process looks like for the above tree.
 
 - Enter `FunctionDeclaration`
-  - Enter `Identfier (id)`
+  - Enter `Identifier (id)`
     - Hit dead end
   - Exit `Identifier (id)`
   - Enter `Identifier (params[0])`
