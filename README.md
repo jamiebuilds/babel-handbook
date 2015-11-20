@@ -1528,7 +1528,7 @@ order to do everything in a single traversal.
 
 ### Merge visitors whenever possible
 
-When writing visitors, is may be tempting to call `path.traverse` in multiple
+When writing visitors, it may be tempting to call `path.traverse` in multiple
 places where they are logically necessary.
 
 ```js
@@ -1610,7 +1610,7 @@ const MyVisitor = {
 ```
 
 However, this creates a new visitor object everytime `FunctionDeclaration()` is
-called above. Which Babel then needs to explode and validate every single time.
+called above, which Babel then needs to explode and validate every single time.
 This can be costly, so it is better to hoist the visitor up.
 
 ```js
