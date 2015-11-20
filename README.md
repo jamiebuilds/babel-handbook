@@ -1578,7 +1578,7 @@ const MyVisitor = {
 };
 ```
 
-However, if you are looking for something specific and shallow. There's a good
+However, if you are looking for something specific and shallow, there is a good
 chance you can manually lookup the nodes you need without performing a costly
 traversal.
 
