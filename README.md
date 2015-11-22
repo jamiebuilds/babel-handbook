@@ -310,7 +310,7 @@ The [code generation](https://en.wikipedia.org/wiki/Code_generation_(compiler))
 stage takes the final AST and turns in back into a string of code, also creating
 [source maps](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/).
 
-Code generation is pretty simple, you traverse through the AST depth-first,
+Code generation is pretty simple: you traverse through the AST depth-first,
 building a string that represents the transformed code.
 
 ## Traversal
@@ -318,7 +318,7 @@ building a string that represents the transformed code.
 When you want to transform an AST you have to
 [traverse the tree](https://en.wikipedia.org/wiki/Tree_traversal) recursively.
 
-Say we have the type `FunctionDeclaration`, it has a few properties: `id`,
+Say we have the type `FunctionDeclaration`. It has a few properties: `id`,
 `params`, and `body`. Each of them have nested nodes.
 
 ```js
