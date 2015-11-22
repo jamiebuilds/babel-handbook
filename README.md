@@ -615,7 +615,7 @@ Nolan film and put a visitor inside of a visitor.
 
 ```js
 const updateParamNameVisitor = {
-  Identfier(path) {
+  Identifier(path) {
     if (path.node.name === this.paramName) {
       path.node.name = "x";
     }
