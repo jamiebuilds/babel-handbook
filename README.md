@@ -251,7 +251,7 @@ parsing in Babel:
 Lexical Analysis will take a string of code and turn it into a stream of
 **tokens**.
 
-You can think of tokens as a flat array of pieces of language syntax.
+You can think of tokens as a flat array of language syntax pieces.
 
 ```js
 n * n;
