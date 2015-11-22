@@ -1116,7 +1116,7 @@ export default function({ types: t }) {
 }
 ```
 
-Then you return an object with a property visitor which is the primary visitor
+Then you return an object with a property `visitor` which is the primary visitor
 for the plugin.
 
 ```js
