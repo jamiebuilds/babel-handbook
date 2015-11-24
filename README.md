@@ -894,7 +894,7 @@ Then start using it:
 
 ```js
 import traverse from "babel-traverse";
-import t from "babel-types";
+import * as t from "babel-types";
 
 traverse(ast, {
   enter(path) {
