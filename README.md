@@ -802,7 +802,7 @@ $ npm install --save babylon
 Let's start by simply parsing a string of code:
 
 ```js
-import babylon from "babylon";
+import * as babylon from "babylon";
 
 const code = `function square(n) {
   return n * n;
@@ -857,7 +857,7 @@ $ npm install --save babel-traverse
 We can use it alongside Babylon to traverse and update nodes:
 
 ```js
-import babylon from "babylon";
+import * as babylon from "babylon";
 import traverse from "babel-traverse";
 
 const code = `function square(n) {
@@ -1035,7 +1035,7 @@ $ npm install --save babel-generator
 Then use it
 
 ```js
-import babylon from "babylon";
+import * as babylon from "babylon";
 import generate from "babel-generator";
 
 const code = `function square(n) {
