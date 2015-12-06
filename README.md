@@ -440,7 +440,7 @@ we **enter** each node, then going back up we **exit** each node.
 Let's _walk_ through what this process looks like for the above tree.
 
 - Enter `FunctionDeclaration`
-  - Enter `Identfier (id)`
+  - Enter `Identifier (id)`
     - Hit dead end
   - Exit `Identifier (id)`
   - Enter `Identifier (params[0])`
@@ -620,7 +620,7 @@ Nolan film and put a visitor inside of a visitor.
 
 ```js
 const updateParamNameVisitor = {
-  Identfier(path) {
+  Identifier(path) {
     if (path.node.name === this.paramName) {
       path.node.name = "x";
     }
@@ -1533,7 +1533,7 @@ places where they are logically necessary.
 
 ```js
 path.traverse({
-  Identfier(path) {
+  Identifier(path) {
     // ...
   }
 });
@@ -1550,7 +1550,7 @@ once. Otherwise you are traversing the same tree multiple times for no reason.
 
 ```js
 path.traverse({
-  Identfier(path) {
+  Identifier(path) {
     // ...
   },
   BinaryExpression(path) {
@@ -1566,7 +1566,7 @@ node type.
 
 ```js
 const visitorOne = {
-  Identfier(path) {
+  Identifier(path) {
     // ...
   }
 };
@@ -1601,7 +1601,7 @@ code.
 const MyVisitor = {
   FunctionDeclaration(path) {
     path.traverse({
-      Identfier(path) {
+      Identifier(path) {
         // ...
       }
     });
@@ -1615,7 +1615,7 @@ This can be costly, so it is better to hoist the visitor up.
 
 ```js
 const visitorOne = {
-  Identfier(path) {
+  Identifier(path) {
     // ...
   }
 };
@@ -1635,7 +1635,7 @@ const MyVisitor = {
     var exampleState = path.node.params[0].name;
 
     path.traverse({
-      Identfier(path) {
+      Identifier(path) {
         if (path.node.name === exampleState) {
           // ...
         }
@@ -1650,7 +1650,7 @@ You can pass it in as state to the `traverse()` method and have access to it on
 
 ```js
 const visitorOne = {
-  Identfier(path) {
+  Identifier(path) {
     if (path.node.name === this.exampleState) {
       // ...
     }
