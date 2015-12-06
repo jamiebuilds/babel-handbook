@@ -415,6 +415,7 @@ function square(n) {
 Called!
 Called!
 Called!
+Called!
 ```
 
 These calls are all on node **enter**. However there is also the possibility of
