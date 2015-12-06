@@ -403,8 +403,8 @@ const MyVisitor = {
 This is a basic visitor that when used during a traversal will call the
 `Identifier()` method for every `Identifier` in the tree.
 
-So with this code the `Identifier()` method will be called three times with each
-`Identifier`.
+So with this code the `Identifier()` method will be called four times with each
+`Identifier` (including `square`).
 
 ```js
 function square(n) {
