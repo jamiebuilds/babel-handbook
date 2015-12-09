@@ -111,6 +111,8 @@ function square(n) {
 }
 ```
 
+> Check out [AST Explorer](http://astexplorer.net/) to get a better sense of the AST nodes. [Here](http://astexplorer.net/#/Z1exs6BWMq) is a link to it with the example code above pasted in.
+
 This same program can be represented as a list like this:
 
 ```md
