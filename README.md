@@ -1470,7 +1470,7 @@ Sometimes you may want to push a `VariableDeclaration` so you can assign to it.
 FunctionDeclaration(path) {
   const id = path.scope.generateUidIdentifierBasedOnNode(path.node.id);
   path.remove();
-  scope.parent.push({ id, init: path.node });
+  path.scope.parent.push({ id, init: path.node });
 }
 ```
 
