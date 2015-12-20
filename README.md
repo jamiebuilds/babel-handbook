@@ -24,6 +24,19 @@ Now you will have a `babel-plugin-handbook` command that will open this readme
 file in your `$PAGER`. Otherwise, you may continue reading this document as you
 are presently doing.
 
+# Translations
+
+- [中文](/translations/cn)
+- [Deutsche](/translations/de)
+- [Español](/translations/es)
+- [Français](/translations/fr)
+- [Italiano](/translations/it)
+- [日本語](/translations/ja)
+- [한국어](/translations/ko)
+- [Nederlands](/translations/nl)
+- [Português](/translations/pl)
+- [Pусский](/translations/ru)
+
 # Table of Contents
 
 - [Introduction](#introduction)
