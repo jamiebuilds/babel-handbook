@@ -26,16 +26,16 @@ are presently doing.
 
 # Translations
 
-- [中文](/translations/cn)
-- [Deutsche](/translations/de)
-- [Español](/translations/es)
-- [Français](/translations/fr)
-- [Italiano](/translations/it)
-- [日本語](/translations/ja)
-- [한국어](/translations/ko)
-- [Nederlands](/translations/nl)
-- [Português](/translations/pl)
-- [Pусский](/translations/ru)
+- [中文](/translations/cn.md)
+- [Deutsche](/translations/de.md)
+- [Español](/translations/es.md)
+- [Français](/translations/fr.md)
+- [Italiano](/translations/it.md)
+- [日本語](/translations/ja.md)
+- [한국어](/translations/ko.md)
+- [Nederlands](/translations/nl.md)
+- [Português](/translations/pl.md)
+- [Pусский](/translations/ru.md)
 
 # Table of Contents
 
