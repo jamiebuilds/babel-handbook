@@ -74,7 +74,7 @@ are presently doing.
     - [Replacing a node](#replacing-a-node)
     - [Replacing a node with multiple nodes](#replacing-a-node-with-multiple-nodes)
     - [Replacing a node with a source string](#replacing-a-node-with-a-source-string)
-    - [Inserting a sibling node](#insert-a-sibling-node)
+    - [Inserting a sibling node](#inserting-a-sibling-node)
     - [Removing a node](#removing-a-node)
     - [Replacing a parent](#replacing-a-parent)
     - [Removing a parent](#removing-a-parent)
