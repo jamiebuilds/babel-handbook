@@ -1563,6 +1563,9 @@ export default function({ types: t }) {
 }
 ```
 
+These options are plugin-specific and you cannot access options from other
+plugins.
+
 ----
 
 # Building Nodes
