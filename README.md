@@ -83,6 +83,7 @@ are presently doing.
     - [Generating a UID](#generating-a-uid)
     - [Pushing a variable declaration to a parent scope](#pushing-a-variable-declaration-to-a-parent-scope)
     - [Rename a binding and its references](#rename-a-binding-and-its-references)
+- [Plugin Options](#plugin-options)
 - [Building Nodes](#building-nodes)
 - [Best Practices](#best-practices)
   - [Avoid traversing the AST as much as possible](#avoid-traversing-the-ast-as-much-as-possible)
@@ -1527,6 +1528,39 @@ FunctionDeclaration(path) {
 + function square(_n) {
 +   return _n * _n;
   }
+```
+
+----
+
+# Plugin Options
+
+If you would like to let your users customize the behavior of your Babel plugin
+you can accept plugin specific options which users can specify like this:
+
+```js
+{
+  plugins: [
+    ["my-plugin", {
+      "option1": true,
+      "option2": false
+    }]
+  ]
+}
+```
+
+These options then get passed into plugin visitors through the `state` object:
+
+```js
+export default function({ types: t }) {
+  return {
+    visitor: {
+      FunctionDeclaration(path, state) {
+        console.log(state.opts);
+        // { option1: true, option2: false }
+      }
+    }
+  }
+}
 ```
 
 ----
