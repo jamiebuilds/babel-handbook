@@ -1,21 +1,12 @@
 # babel-plugin-handbook
 
-This document covers how to create [Babel](https://babeljs.io)
-[plugins](https://babeljs.io/docs/advanced/plugins/).
+This document covers how to create [Babel](https://babeljs.io) [plugins](https://babeljs.io/docs/advanced/plugins/).
 
-If you are reading a non-english translation of this handbook you may still find
-english sections that have not yet been translated. If you would like to
-contribute to one of the translations you must do so through Crowdin. Please
-read the [contributing guidelines](/CONTRIBUTING.md) for more information.
+If you are reading a non-english translation of this handbook you may still find english sections that have not yet been translated. If you would like to contribute to one of the translations you must do so through Crowdin. Please read the [contributing guidelines](/CONTRIBUTING.md) for more information.
 
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
-Special thanks to [@sebmck](https://github.com/sebmck/),
-[@hzoo](https://github.com/hzoo),
-[@jdalton](https://github.com/jdalton),
-[@abraithwaite](https://github.com/abraithwaite),
-[@robey](https://github.com/robey), and others for their
-amazing help on this handbook.
+Special thanks to [@sebmck](https://github.com/sebmck/), [@hzoo](https://github.com/hzoo), [@jdalton](https://github.com/jdalton), [@abraithwaite](https://github.com/abraithwaite), [@robey](https://github.com/robey), and others for their amazing help on this handbook.
 
 # Node Packaged Manuscript
 
@@ -25,111 +16,94 @@ You can install this handbook with npm. Just do:
 $ npm install -g babel-plugin-handbook
 ```
 
-Now you will have a `babel-plugin-handbook` command that will open this readme
-file in your `$PAGER`. Otherwise, you may continue reading this document as you
-are presently doing.
+Now you will have a `babel-plugin-handbook` command that will open this readme file in your `$PAGER`. Otherwise, you may continue reading this document as you are presently doing.
 
 # Translations
 
-- [English](/README.md)
-- [Deutsche](/translations/de/README.md)
-- [Español](/translations/es-ES/README.md)
-- [Français](/translations/fr/README.md)
-- [Italiano](/translations/it/README.md)
-- [日本語](/translations/ja/README.md)
-- [한국어](/translations/ko/README.md)
-- [Nederlands](/translations/nl/README.md)
-- [Português](/translations/pl/README.md)
-- [Pусский](/translations/ru/README.md)
-- [中文](/translations/zh-CN/README.md)
+  * [English](/README.md)
+  * [Deutsche](/translations/de/README.md)
+  * [Español](/translations/es-ES/README.md)
+  * [Français](/translations/fr/README.md)
+  * [Italiano](/translations/it/README.md)
+  * [日本語](/translations/ja/README.md)
+  * [한국어](/translations/ko/README.md)
+  * [Nederlands](/translations/nl/README.md)
+  * [Português](/translations/pl/README.md)
+  * [Pусский](/translations/ru/README.md)
+  * [中文](/translations/zh-CN/README.md)
 
-If you are reading a non-english translation of this document you will find a
-number of english words that are programming concepts. If these were translated
-to other languages there would be a lack of consistency and fluency when reading
-about them. In many cases you will find the literal translation followed by the
-english term in parenthesis `()`. For example: Abstract Syntax Trees (ASTs).
+If you are reading a non-english translation of this document you will find a number of english words that are programming concepts. If these were translated to other languages there would be a lack of consistency and fluency when reading about them. In many cases you will find the literal translation followed by the english term in parenthesis `()`. For example: Abstract Syntax Trees (ASTs).
 
 # Table of Contents
 
-- [Introduction](#introduction)
-- [Basics](#basics)
-  - [ASTs](#asts)
-  - [Stages of Babel](#stages-of-babel)
-    - [Parse](#parse)
-      - [Lexical Analysis](#lexical-analysis)
-      - [Syntactic Analysis](#syntactic-analysis)
-    - [Transform](#transform)
-    - [Generate](#generate)
-  - [Traversal](#traversal)
-    - [Visitors](#visitors)
-    - [Paths](#paths)
-      - [Paths in Visitors](#paths-in-visitors)
-    - [State](#state)
-    - [Scopes](#scopes)
-      - [Bindings](#bindings)
-- [API](#api)
-  - [babylon](#babylon)
-  - [babel-traverse](#babel-traverse)
-  - [babel-types](#babel-types)
-    - [Definitions](#definitions)
-    - [Builders](#builders)
-    - [Validators](#validators)
-    - [Converters](#converters)
-  - [babel-generator](#babel-generator)
-  - [babel-template](#babel-template)
-- [Writing your first Babel Plugin](#writing-your-first-babel-plugin)
-- [Transformation Operations](#transformation-operations)
-  - [Visiting](#visiting)
-    - [Check if a node is a certain type](#check-if-a-node-is-a-certain-type)
-    - [Check if an identifier is referenced](#check-if-an-identifier-is-referenced)
-  - [Manipulation](#manipulation)
-    - [Replacing a node](#replacing-a-node)
-    - [Replacing a node with multiple nodes](#replacing-a-node-with-multiple-nodes)
-    - [Replacing a node with a source string](#replacing-a-node-with-a-source-string)
-    - [Inserting a sibling node](#inserting-a-sibling-node)
-    - [Removing a node](#removing-a-node)
-    - [Replacing a parent](#replacing-a-parent)
-    - [Removing a parent](#removing-a-parent)
-  - [Scope](#scope)
-    - [Checking if a local variable is bound](#checking-if-a-local-variable-is-bound)
-    - [Generating a UID](#generating-a-uid)
-    - [Pushing a variable declaration to a parent scope](#pushing-a-variable-declaration-to-a-parent-scope)
-    - [Rename a binding and its references](#rename-a-binding-and-its-references)
-- [Plugin Options](#plugin-options)
-- [Building Nodes](#building-nodes)
-- [Best Practices](#best-practices)
-  - [Avoid traversing the AST as much as possible](#avoid-traversing-the-ast-as-much-as-possible)
-    - [Merge visitors whenever possible](#merge-visitors-whenever-possible)
-    - [Do not traverse when manual lookup will do](#do-not-traverse-when-manual-lookup-will-do)
-  - [Optimizing nested visitors](#optimizing-nested-visitors)
-  - [Being aware of nested structures](#being-aware-of-nested-structures)
+  * [Introduction](#introduction)
+  * [Basics](#basics) 
+      * [ASTs](#asts)
+      * [Stages of Babel](#stages-of-babel)
+      * [Parse](#parse) 
+          * [Lexical Analysis](#lexical-analysis)
+          * [Syntactic Analysis](#syntactic-analysis)
+      * [Transform](#transform)
+      * [Generate](#generate)
+      * [Traversal](#traversal)
+      * [Visitors](#visitors)
+      * [Paths](#paths) 
+          * [Paths in Visitors](#paths-in-visitors)
+      * [State](#state)
+      * [Scopes](#scopes) 
+          * [Bindings](#bindings)
+  * [API](#api) 
+      * [babylon](#babylon)
+      * [babel-traverse](#babel-traverse)
+      * [babel-types](#babel-types)
+      * [Definitions](#definitions)
+      * [Builders](#builders)
+      * [Validators](#validators)
+      * [Converters](#converters)
+      * [babel-generator](#babel-generator)
+      * [babel-template](#babel-template)
+  * [Writing your first Babel Plugin](#writing-your-first-babel-plugin)
+  * [Transformation Operations](#transformation-operations) 
+      * [Visiting](#visiting)
+      * [Check if a node is a certain type](#check-if-a-node-is-a-certain-type)
+      * [Check if an identifier is referenced](#check-if-an-identifier-is-referenced)
+      * [Manipulation](#manipulation)
+      * [Replacing a node](#replacing-a-node)
+      * [Replacing a node with multiple nodes](#replacing-a-node-with-multiple-nodes)
+      * [Replacing a node with a source string](#replacing-a-node-with-a-source-string)
+      * [Inserting a sibling node](#inserting-a-sibling-node)
+      * [Removing a node](#removing-a-node)
+      * [Replacing a parent](#replacing-a-parent)
+      * [Removing a parent](#removing-a-parent)
+      * [Scope](#scope)
+      * [Checking if a local variable is bound](#checking-if-a-local-variable-is-bound)
+      * [Generating a UID](#generating-a-uid)
+      * [Pushing a variable declaration to a parent scope](#pushing-a-variable-declaration-to-a-parent-scope)
+      * [Rename a binding and its references](#rename-a-binding-and-its-references)
+  * [Plugin Options](#plugin-options)
+  * [Building Nodes](#building-nodes)
+  * [Best Practices](#best-practices) 
+      * [Avoid traversing the AST as much as possible](#avoid-traversing-the-ast-as-much-as-possible)
+      * [Merge visitors whenever possible](#merge-visitors-whenever-possible)
+      * [Do not traverse when manual lookup will do](#do-not-traverse-when-manual-lookup-will-do)
+      * [Optimizing nested visitors](#optimizing-nested-visitors)
+      * [Being aware of nested structures](#being-aware-of-nested-structures)
 
 # Introduction
 
-Babel is a generic multi-purpose compiler for JavaScript. More than that it is a
-collection of modules that can be used for many different forms of static
-analysis.
+Babel is a generic multi-purpose compiler for JavaScript. More than that it is a collection of modules that can be used for many different forms of static analysis.
 
-> Static analysis is the process of analyzing code without executing it.
-> (Analysis of code while executing it is known as dynamic analysis). The
-> purpose of static analysis varies greatly. It can be used for linting,
-> compiling, code highlighting, code transformation, optimization, minification,
-> and much more.
+> Static analysis is the process of analyzing code without executing it. (Analysis of code while executing it is known as dynamic analysis). The purpose of static analysis varies greatly. It can be used for linting, compiling, code highlighting, code transformation, optimization, minification, and much more.
 
-You can use Babel to build many different types of tools that can help you be
-more productive and write better programs.
+You can use Babel to build many different types of tools that can help you be more productive and write better programs.
 
 # Basics
 
-Babel is a JavaScript compiler, specifically a source-to-source compiler,
-often called a "transpiler". This means that you give Babel some JavaScript
-code, Babel modifies the code, and generates the new code back out.
+Babel is a JavaScript compiler, specifically a source-to-source compiler, often called a "transpiler". This means that you give Babel some JavaScript code, Babel modifies the code, and generates the new code back out.
 
 ## ASTs
 
-Each of these steps involve creating or working with an
-[Abstract Syntax Tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree) or
-AST.
+Each of these steps involve creating or working with an [Abstract Syntax Tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree) or AST.
 
 > Babel uses an AST modified from [ESTree](https://github.com/estree/estree), with the core spec located [here](https://github.com/babel/babel/blob/master/doc/ast/spec.md).
 
@@ -229,9 +203,7 @@ You'll notice that each level of the AST has a similar structure:
 
 > Note: Some properties have been removed for simplicity.
 
-Each of these are known as a **Node**. An AST can be made up of a single Node,
-or hundreds if not thousands of Nodes. Together they are able to describe the
-syntax of a program that can be used for static analysis.
+Each of these are known as a **Node**. An AST can be made up of a single Node, or hundreds if not thousands of Nodes. Together they are able to describe the syntax of a program that can be used for static analysis.
 
 Every Node has this interface:
 
@@ -241,13 +213,9 @@ interface Node {
 }
 ```
 
-The `type` field is a string representing the type of Node the object is (ie.
-`"FunctionDeclaration"`, `"Identifier"`, or `"BinaryExpression"`). Each type of
-Node defines an additional set of properties that describe that particular node
-type.
+The `type` field is a string representing the type of Node the object is (ie. `"FunctionDeclaration"`, `"Identifier"`, or `"BinaryExpression"`). Each type of Node defines an additional set of properties that describe that particular node type.
 
-There are additional properties on every Node that Babel generates which
-describe the position of the Node in the original source code.
+There are additional properties on every Node that Babel generates which describe the position of the Node in the original source code.
 
 ```js
 {
@@ -276,15 +244,11 @@ The three primary stages of Babel are **parse**, **transform**, **generate**.
 
 ### Parse
 
-The **parse** stage, takes code and outputs an AST. There are two phases of
-parsing in Babel:
-[**Lexical Analysis**](https://en.wikipedia.org/wiki/Lexical_analysis) and
-[**Syntactic Analysis**](https://en.wikipedia.org/wiki/Parsing).
+The **parse** stage, takes code and outputs an AST. There are two phases of parsing in Babel: [**Lexical Analysis**](https://en.wikipedia.org/wiki/Lexical_analysis) and [**Syntactic Analysis**](https://en.wikipedia.org/wiki/Parsing).
 
 #### Lexical Analysis
 
-Lexical Analysis will take a string of code and turn it into a stream of
-**tokens**.
+Lexical Analysis will take a string of code and turn it into a stream of **tokens**.
 
 You can think of tokens as a flat array of language syntax pieces.
 
@@ -326,35 +290,23 @@ Like AST nodes they also have a `start`, `end`, and `loc`.
 
 #### Syntactic Analysis
 
-Syntactic Analysis will take a stream of tokens and turn it into an AST
-representation. Using the information in the tokens, this phase will reformat
-them as an AST which represents the structure of the code in a way that makes it
-easier to work with.
+Syntactic Analysis will take a stream of tokens and turn it into an AST representation. Using the information in the tokens, this phase will reformat them as an AST which represents the structure of the code in a way that makes it easier to work with.
 
 ### Transform
 
-The [transform](https://en.wikipedia.org/wiki/Program_transformation) stage
-takes an AST and traverses through it, adding, updating, and removing nodes as it
-goes along. This is by far the most complex part of Babel or any compiler. This
-is where plugins operate and so it will be the subject of most of this handbook.
-So we won't dive too deep right now.
+The [transform](https://en.wikipedia.org/wiki/Program_transformation) stage takes an AST and traverses through it, adding, updating, and removing nodes as it goes along. This is by far the most complex part of Babel or any compiler. This is where plugins operate and so it will be the subject of most of this handbook. So we won't dive too deep right now.
 
 ### Generate
 
-The [code generation](https://en.wikipedia.org/wiki/Code_generation_(compiler))
-stage takes the final AST and turns in back into a string of code, also creating
-[source maps](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/).
+The [code generation](https://en.wikipedia.org/wiki/Code_generation_(compiler)) stage takes the final AST and turns in back into a string of code, also creating [source maps](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/).
 
-Code generation is pretty simple: you traverse through the AST depth-first,
-building a string that represents the transformed code.
+Code generation is pretty simple: you traverse through the AST depth-first, building a string that represents the transformed code.
 
 ## Traversal
 
-When you want to transform an AST you have to
-[traverse the tree](https://en.wikipedia.org/wiki/Tree_traversal) recursively.
+When you want to transform an AST you have to [traverse the tree](https://en.wikipedia.org/wiki/Tree_traversal) recursively.
 
-Say we have the type `FunctionDeclaration`. It has a few properties: `id`,
-`params`, and `body`. Each of them have nested nodes.
+Say we have the type `FunctionDeclaration`. It has a few properties: `id`, `params`, and `body`. Each of them have nested nodes.
 
 ```js
 {
@@ -388,36 +340,25 @@ Say we have the type `FunctionDeclaration`. It has a few properties: `id`,
 }
 ```
 
-So we start at the `FunctionDeclaration` and we know its internal properties so
-we visit each of them and their children in order.
+So we start at the `FunctionDeclaration` and we know its internal properties so we visit each of them and their children in order.
 
-Next we go to `id` which is an `Identifier`. `Identifier`s don't have any child
-node properties so we move on.
+Next we go to `id` which is an `Identifier`. `Identifier`s don't have any child node properties so we move on.
 
-After that is `params` which is an array of nodes so we visit each of them. In
-this case it's a single node which is also an `Identifier` so we move on.
+After that is `params` which is an array of nodes so we visit each of them. In this case it's a single node which is also an `Identifier` so we move on.
 
-Then we hit `body` which is a `BlockStatement` with a property `body` that is an
-array of Nodes so we go to each of them.
+Then we hit `body` which is a `BlockStatement` with a property `body` that is an array of Nodes so we go to each of them.
 
-The only item here is a `ReturnStatement` node which has an `argument`, we go to
-the `argument` and find a `BinaryExpression`.
+The only item here is a `ReturnStatement` node which has an `argument`, we go to the `argument` and find a `BinaryExpression`.
 
-The `BinaryExpression` has an `operator`, a `left`, and a `right`. The operator
-isn't a node, just a value, so we don't go to it, and instead just visit `left`
-and `right`.
+The `BinaryExpression` has an `operator`, a `left`, and a `right`. The operator isn't a node, just a value, so we don't go to it, and instead just visit `left` and `right`.
 
 This traversal process happens throughout the Babel transform stage.
 
 ### Visitors
 
-When we talk about "going" to a node, we actually mean we are **visiting** them.
-The reason we use that term is because there is this concept of a
-[**visitor**](https://en.wikipedia.org/wiki/Visitor_pattern).
+When we talk about "going" to a node, we actually mean we are **visiting** them. The reason we use that term is because there is this concept of a [**visitor**](https://en.wikipedia.org/wiki/Visitor_pattern).
 
-Visitors are a pattern used in AST traversal across languages. Simply put they
-are an object with methods defined for accepting particular node types in a
-tree. That's a bit abstract so let's look at an example.
+Visitors are a pattern used in AST traversal across languages. Simply put they are an object with methods defined for accepting particular node types in a tree. That's a bit abstract so let's look at an example.
 
 ```js
 const MyVisitor = {
@@ -427,20 +368,18 @@ const MyVisitor = {
 };
 ```
 
-> **Note:** `Identifier() { ... }` is shorthand for
-> `Identifier: { enter() { ... } }`.
+> **Note:** `Identifier() { ... }` is shorthand for `Identifier: { enter() { ... } }`.
 
-This is a basic visitor that when used during a traversal will call the
-`Identifier()` method for every `Identifier` in the tree.
+This is a basic visitor that when used during a traversal will call the `Identifier()` method for every `Identifier` in the tree.
 
-So with this code the `Identifier()` method will be called four times with each
-`Identifier` (including `square`).
+So with this code the `Identifier()` method will be called four times with each `Identifier` (including `square`).
 
 ```js
 function square(n) {
   return n * n;
 }
 ```
+
 ```js
 Called!
 Called!
@@ -448,8 +387,7 @@ Called!
 Called!
 ```
 
-These calls are all on node **enter**. However there is also the possibility of
-calling a visitor method when on **exit**.
+These calls are all on node **enter**. However there is also the possibility of calling a visitor method when on **exit**.
 
 Imagine we have this tree structure:
 
@@ -464,32 +402,30 @@ Imagine we have this tree structure:
         - Identifier (right)
 ```
 
-As we traverse down each branch of the tree we eventually hit dead ends where we
-need to traverse back up the tree to get to the next node. Going down the tree
-we **enter** each node, then going back up we **exit** each node.
+As we traverse down each branch of the tree we eventually hit dead ends where we need to traverse back up the tree to get to the next node. Going down the tree we **enter** each node, then going back up we **exit** each node.
 
-Let's _walk_ through what this process looks like for the above tree.
+Let's *walk* through what this process looks like for the above tree.
 
-- Enter `FunctionDeclaration`
-  - Enter `Identifier (id)`
-    - Hit dead end
-  - Exit `Identifier (id)`
-  - Enter `Identifier (params[0])`
-    - Hit dead end
-  - Exit `Identifier (params[0])`
-  - Enter `BlockStatement (body)`
-    - Enter `ReturnStatement (body)`
-      - Enter `BinaryExpression (argument)`
-        - Enter `Identifier (left)`
-          - Hit dead end
-        - Exit `Identifier (left)`
-        - Enter `Identifier (right)`
-          - Hit dead end
-        - Exit `Identifier (right)`
-      - Exit `BinaryExpression (argument)`
-    - Exit `ReturnStatement (body)`
-  - Exit `BlockStatement (body)`
-- Exit `FunctionDeclaration`
+  * Enter `FunctionDeclaration` 
+      * Enter `Identifier (id)`
+      * Hit dead end
+      * Exit `Identifier (id)`
+      * Enter `Identifier (params[0])`
+      * Hit dead end
+      * Exit `Identifier (params[0])`
+      * Enter `BlockStatement (body)`
+      * Enter `ReturnStatement (body)` 
+          * Enter `BinaryExpression (argument)`
+          * Enter `Identifier (left)` 
+              * Hit dead end
+          * Exit `Identifier (left)`
+          * Enter `Identifier (right)` 
+              * Hit dead end
+          * Exit `Identifier (right)`
+          * Exit `BinaryExpression (argument)`
+      * Exit `ReturnStatement (body)`
+      * Exit `BlockStatement (body)`
+  * Exit `FunctionDeclaration`
 
 So when creating a visitor you have two opportunities to visit a node.
 
@@ -508,9 +444,7 @@ const MyVisitor = {
 
 ### Paths
 
-An AST generally has many Nodes, but how do Nodes relate to one another? We
-could have one giant mutable object that you manipulate and have full access to,
-or we can simplify this with **Paths**.
+An AST generally has many Nodes, but how do Nodes relate to one another? We could have one giant mutable object that you manipulate and have full access to, or we can simplify this with **Paths**.
 
 A **Path** is an object representation of the link between two nodes.
 
@@ -571,19 +505,13 @@ It also has additional metadata about the path:
 }
 ```
 
-As well as tons and tons of methods related to adding, updating, moving, and
-removing nodes, but we'll get into those later.
+As well as tons and tons of methods related to adding, updating, moving, and removing nodes, but we'll get into those later.
 
-In a sense, paths are a **reactive** representation of a node's position in the
-tree and all sorts of information about the node. Whenever you call a method
-that modifies the tree, this information is updated. Babel manages all of this
-for you to make working with nodes easy and as stateless as possible.
+In a sense, paths are a **reactive** representation of a node's position in the tree and all sorts of information about the node. Whenever you call a method that modifies the tree, this information is updated. Babel manages all of this for you to make working with nodes easy and as stateless as possible.
 
 #### Paths in Visitors
 
-When you have a visitor that has a `Identifier()` method, you're actually
-visiting the path instead of the node. This way you are mostly working with the
-reactive representation of a node instead of the node itself.
+When you have a visitor that has a `Identifier()` method, you're actually visiting the path instead of the node. This way you are mostly working with the reactive representation of a node instead of the node itself.
 
 ```js
 const MyVisitor = {
@@ -605,9 +533,7 @@ Visiting: c
 
 ### State
 
-State is the enemy of AST transformation. State will bite you over and over
-again and your assumptions about state will almost always be proven wrong by
-some syntax that you didn't consider.
+State is the enemy of AST transformation. State will bite you over and over again and your assumptions about state will almost always be proven wrong by some syntax that you didn't consider.
 
 Take the following code:
 
@@ -646,8 +572,7 @@ function square(n) {
 n;
 ```
 
-The better way to deal with this is recursion. So let's make like a Christopher
-Nolan film and put a visitor inside of a visitor.
+The better way to deal with this is recursion. So let's make like a Christopher Nolan film and put a visitor inside of a visitor.
 
 ```js
 const updateParamNameVisitor = {
@@ -669,15 +594,11 @@ const MyVisitor = {
 };
 ```
 
-Of course, this is a contrived example but it demonstrates how to eliminate
-global state from your visitors.
+Of course, this is a contrived example but it demonstrates how to eliminate global state from your visitors.
 
 ### Scopes
 
-Next let's introduce the concept of a
-[**scope**](https://en.wikipedia.org/wiki/Scope_(computer_science)). JavaScript
-has [lexical scoping](https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scoping_vs._dynamic_scoping),
-which is a tree structure where blocks create new scope.
+Next let's introduce the concept of a [**scope**](https://en.wikipedia.org/wiki/Scope_(computer_science)). JavaScript has [lexical scoping](https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scoping_vs._dynamic_scoping), which is a tree structure where blocks create new scope.
 
 ```js
 // global scope
@@ -691,8 +612,7 @@ function scopeOne() {
 }
 ```
 
-Whenever you create a reference in JavaScript, whether that be by a variable,
-function, class, param, import, label, etc., it belongs to the current scope.
+Whenever you create a reference in JavaScript, whether that be by a variable, function, class, param, import, label, etc., it belongs to the current scope.
 
 ```js
 var global = "I am in the global scope";
@@ -718,8 +638,7 @@ function scopeOne() {
 }
 ```
 
-A lower scope might also create a reference of the same name without modifying
-it.
+A lower scope might also create a reference of the same name without modifying it.
 
 ```js
 function scopeOne() {
@@ -731,12 +650,9 @@ function scopeOne() {
 }
 ```
 
-When writing a transform, we want to be wary of scope. We need to make sure we
-don't break existing code while modifying different parts of it.
+When writing a transform, we want to be wary of scope. We need to make sure we don't break existing code while modifying different parts of it.
 
-We may want to add new references and make sure they don't collide with existing
-ones. Or maybe we just want to find where a variable is referenced. We want to
-be able to track these references within a given scope.
+We may want to add new references and make sure they don't collide with existing ones. Or maybe we just want to find where a variable is referenced. We want to be able to track these references within a given scope.
 
 A scope can be represented as:
 
@@ -750,17 +666,13 @@ A scope can be represented as:
 }
 ```
 
-When you create a new scope you do so by giving it a path and a parent scope.
-Then during the traversal process it collects all the references ("bindings")
-within that scope.
+When you create a new scope you do so by giving it a path and a parent scope. Then during the traversal process it collects all the references ("bindings") within that scope.
 
-Once that's done, there's all sorts of methods you can use on scopes. We'll get
-into those later though.
+Once that's done, there's all sorts of methods you can use on scopes. We'll get into those later though.
 
 #### Bindings
 
-References all belong to a particular scope; this relationship is known as a
-**binding**.
+References all belong to a particular scope; this relationship is known as a **binding**.
 
 ```js
 function scopeOnce() {
@@ -792,13 +704,9 @@ A single binding looks like this:
 }
 ```
 
-With this information you can find all the references to a binding, see what
-type of binding it is (parameter, declaration, etc.), lookup what scope it
-belongs to, or get a copy of its identifier. You can even tell if it's
-constant and if not, see what paths are causing it to be non-constant.
+With this information you can find all the references to a binding, see what type of binding it is (parameter, declaration, etc.), lookup what scope it belongs to, or get a copy of its identifier. You can even tell if it's constant and if not, see what paths are causing it to be non-constant.
 
-Being able to tell if a binding is constant is useful for many purposes, the
-largest of which is minification.
+Being able to tell if a binding is constant is useful for many purposes, the largest of which is minification.
 
 ```js
 function scopeOne() {
@@ -813,21 +721,17 @@ function scopeOne() {
 }
 ```
 
-----
+* * *
 
 # API
 
-Babel is actually a collection of modules. In this section we'll walk through
-the major ones, explaining what they do and how to use them.
+Babel is actually a collection of modules. In this section we'll walk through the major ones, explaining what they do and how to use them.
 
-> Note: This is not a replacement for detailed API documentation which will be
-available elsewhere shortly.
+> Note: This is not a replacement for detailed API documentation which will be available elsewhere shortly.
 
 ## [`babylon`](https://github.com/babel/babel/tree/master/packages/babylon)
 
-Babylon is Babel's parser. Started as a fork of Acorn, it's fast, simple to use,
-has plugin-based architecture for non-standard features (as well as future
-standards).
+Babylon is Babel's parser. Started as a fork of Acorn, it's fast, simple to use, has plugin-based architecture for non-standard features (as well as future standards).
 
 First, let's install it.
 
@@ -865,24 +769,17 @@ babylon.parse(code, {
 });
 ```
 
-`sourceType` can either be `"module"` or `"script"` which is the mode that
-Babylon should parse in. `"module"` will parse in strict mode and allow module
-declarations, `"script"` will not.
+`sourceType` can either be `"module"` or `"script"` which is the mode that Babylon should parse in. `"module"` will parse in strict mode and allow module declarations, `"script"` will not.
 
-> **Note:** `sourceType` defaults to `"script"` and will error when it finds
-> `import` or `export`. Pass `sourceType: "module"` to get rid of these errors.
+> **Note:** `sourceType` defaults to `"script"` and will error when it finds `import` or `export`. Pass `sourceType: "module"` to get rid of these errors.
 
-Since Babylon is built with a plugin-based architecture, there is also a
-`plugins` option which will enable the internal plugins. Note that Babylon has
-not yet opened this API to external plugins, although may do so in the future.
+Since Babylon is built with a plugin-based architecture, there is also a `plugins` option which will enable the internal plugins. Note that Babylon has not yet opened this API to external plugins, although may do so in the future.
 
-To see a full list of plugins, see the
-[Babylon README](https://github.com/babel/babel/blob/master/packages/babylon/README.md#plugins).
+To see a full list of plugins, see the [Babylon README](https://github.com/babel/babel/blob/master/packages/babylon/README.md#plugins).
 
 ## [`babel-traverse`](https://github.com/babel/babel/tree/master/packages/babel-traverse)
 
-The Babel Traverse module maintains the overall tree state, and is responsible
-for replacing, removing, and adding nodes.
+The Babel Traverse module maintains the overall tree state, and is responsible for replacing, removing, and adding nodes.
 
 Install it by running:
 
@@ -916,9 +813,7 @@ traverse(ast, {
 
 ## [`babel-types`](https://github.com/babel/babel/tree/master/packages/babel-types)
 
-Babel Types is a Lodash-esque utility library for AST nodes. It contains
-methods for building, validating, and converting AST nodes. It's useful for
-cleaning up AST logic with well thought out utility methods.
+Babel Types is a Lodash-esque utility library for AST nodes. It contains methods for building, validating, and converting AST nodes. It's useful for cleaning up AST logic with well thought out utility methods.
 
 You can install it by running:
 
@@ -943,9 +838,7 @@ traverse(ast, {
 
 ### Definitions
 
-Babel Types has definitions for every single type of node, with information on
-what properties belong where, what values are valid, how to build that node, how
-the node should be traversed, and aliases of the Node.
+Babel Types has definitions for every single type of node, with information on what properties belong where, what values are valid, how to build that node, how the node should be traversed, and aliases of the Node.
 
 A single node type definition looks like this:
 
@@ -970,15 +863,13 @@ defineType("BinaryExpression", {
 
 ### Builders
 
-You'll notice the above definition for `BinaryExpression` has a field for a
-`builder`.
+You'll notice the above definition for `BinaryExpression` has a field for a `builder`.
 
 ```js
 builder: ["operator", "left", "right"]
 ```
 
-This is because each node type gets a builder method, which when used looks like
-this:
+This is because each node type gets a builder method, which when used looks like this:
 
 ```js
 t.binaryExpression("*", t.identifier("a"), t.identifier("b"));
@@ -1007,13 +898,11 @@ Which when printed looks like this:
 a * b
 ```
 
-Builders will also validate the nodes they are creating and throw descriptive
-errors if used improperly. Which leads into the next type of method.
+Builders will also validate the nodes they are creating and throw descriptive errors if used improperly. Which leads into the next type of method.
 
 ### Validators
 
-The definition for `BinaryExpression` also includes information on the `fields`
-of a node and how to validate them.
+The definition for `BinaryExpression` also includes information on the `fields` of a node and how to validate them.
 
 ```js
 fields: {
@@ -1029,23 +918,19 @@ fields: {
 }
 ```
 
-This is used to create two types of validating methods. The first of which is
-`isX`.
+This is used to create two types of validating methods. The first of which is `isX`.
 
 ```js
 t.isBinaryExpression(maybeBinaryExpressionNode);
 ```
 
-This tests to make sure that the node is a binary expression, but you can also
-pass a second parameter to ensure that the node contains certain properties and
-values.
+This tests to make sure that the node is a binary expression, but you can also pass a second parameter to ensure that the node contains certain properties and values.
 
 ```js
 t.isBinaryExpression(maybeBinaryExpressionNode, { operator: "*" });
 ```
 
-There is also the more, _ehem_, assertive version of these methods, which will
-throw errors instead of returning `true` or `false`.
+There is also the more, *ehem*, assertive version of these methods, which will throw errors instead of returning `true` or `false`.
 
 ```js
 t.assertBinaryExpression(maybeBinaryExpressionNode);
@@ -1059,8 +944,7 @@ t.assertBinaryExpression(maybeBinaryExpressionNode, { operator: "*" });
 
 ## [`babel-generator`](https://github.com/babel/babel/tree/master/packages/babel-generator)
 
-Babel Generator is the code generator for Babel. It takes an AST and turns it
-into code with sourcemaps.
+Babel Generator is the code generator for Babel. It takes an AST and turns it into code with sourcemaps.
 
 Run the following to install it:
 
@@ -1101,9 +985,7 @@ generate(ast, {
 
 ## [`babel-template`](https://github.com/babel/babel/tree/master/packages/babel-template)
 
-Babel Template is another tiny but incredibly useful module. It allows you to
-write strings of code with placeholders that you can use instead of manually
-building up a massive AST.
+Babel Template is another tiny but incredibly useful module. It allows you to write strings of code with placeholders that you can use instead of manually building up a massive AST.
 
 ```sh
 $ npm install --save babel-template
@@ -1132,8 +1014,7 @@ var myModule = require("my-module");
 
 # Writing your first Babel Plugin
 
-Now that you're familiar with all the basics of Babel, let's tie it together
-with the plugin API.
+Now that you're familiar with all the basics of Babel, let's tie it together with the plugin API.
 
 Start off with a `function` that gets passed the current `babel` object.
 
@@ -1143,8 +1024,7 @@ export default function(babel) {
 }
 ```
 
-Since you'll be using it so often, you'll likely want to grab just `babel.types`
-like so:
+Since you'll be using it so often, you'll likely want to grab just `babel.types` like so:
 
 ```js
 export default function({ types: t }) {
@@ -1152,8 +1032,7 @@ export default function({ types: t }) {
 }
 ```
 
-Then you return an object with a property `visitor` which is the primary visitor
-for the plugin.
+Then you return an object with a property `visitor` which is the primary visitor for the plugin.
 
 ```js
 export default function({ types: t }) {
@@ -1202,8 +1081,7 @@ export default function({ types: t }) {
 }
 ```
 
-Then let's narrow it down to just `BinaryExpression`s that are using the `===`
-operator.
+Then let's narrow it down to just `BinaryExpression`s that are using the `===` operator.
 
 ```js
 visitor: {
@@ -1257,7 +1135,7 @@ sebmck === dork;
 
 Awesome! Our very first Babel plugin.
 
-----
+* * *
 
 # Transformation Operations
 
@@ -1359,10 +1237,7 @@ ReturnStatement(path) {
   }
 ```
 
-> **Note:** When replacing an expression with multiple nodes, they must be
-> statements. This is because Babel uses heuristics extensively when replacing
-> nodes which means that you can do some pretty crazy transformations that would
-> be extremely verbose otherwise.
+> **Note:** When replacing an expression with multiple nodes, they must be statements. This is because Babel uses heuristics extensively when replacing nodes which means that you can do some pretty crazy transformations that would be extremely verbose otherwise.
 
 ### Replacing a node with a source string
 
@@ -1382,9 +1257,7 @@ FunctionDeclaration(path) {
   }
 ```
 
-> **Note:** It's not recommended to use this API unless you're dealing with
-> dynamic source strings, otherwise it's more efficient to parse the code
-> outside of the visitor.
+> **Note:** It's not recommended to use this API unless you're dealing with dynamic source strings, otherwise it's more efficient to parse the code outside of the visitor.
 
 ### Inserting a sibling node
 
@@ -1403,9 +1276,7 @@ FunctionDeclaration(path) {
 + "A little high, little low.";
 ```
 
-> **Note:** This should always be a statement or an array of statements. This
-> uses the same heuristics mentioned in
-> [Replacing a node with multiple nodes](#replacing-a-node-with-multiple-nodes).
+> **Note:** This should always be a statement or an array of statements. This uses the same heuristics mentioned in [Replacing a node with multiple nodes](#replacing-a-node-with-multiple-nodes).
 
 ### Removing a node
 
@@ -1478,8 +1349,7 @@ FunctionDeclaration(path) {
 
 ### Generating a UID
 
-This will generate an identifier that doesn't collide with any locally defined
-variables.
+This will generate an identifier that doesn't collide with any locally defined variables.
 
 ```js
 FunctionDeclaration(path) {
@@ -1542,12 +1412,11 @@ FunctionDeclaration(path) {
   }
 ```
 
-----
+* * *
 
 # Plugin Options
 
-If you would like to let your users customize the behavior of your Babel plugin
-you can accept plugin specific options which users can specify like this:
+If you would like to let your users customize the behavior of your Babel plugin you can accept plugin specific options which users can specify like this:
 
 ```js
 {
@@ -1575,25 +1444,17 @@ export default function({ types: t }) {
 }
 ```
 
-These options are plugin-specific and you cannot access options from other
-plugins.
+These options are plugin-specific and you cannot access options from other plugins.
 
-----
+* * *
 
 # Building Nodes
 
-When writing transformations you'll often want to build up some nodes to insert
-into the AST. As mentioned previously, you can do this using the
-[builder](#builder) methods in the [`babel-types`](#babel-types) package.
+When writing transformations you'll often want to build up some nodes to insert into the AST. As mentioned previously, you can do this using the [builder](#builder) methods in the [`babel-types`](#babel-types) package.
 
-The method name for a builder is simply the name of the node type you want to
-build except with the first letter lowercased. For example if you wanted to
-build a `MemberExpression` you would use `t.memberExpression(...)`.
+The method name for a builder is simply the name of the node type you want to build except with the first letter lowercased. For example if you wanted to build a `MemberExpression` you would use `t.memberExpression(...)`.
 
-The arguments of these builders are decided by the node definition. There's some
-work that's being done to generate easy-to-read documentation on the
-definitions, but for now they can all be found
-[here](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions).
+The arguments of these builders are decided by the node definition. There's some work that's being done to generate easy-to-read documentation on the definitions, but for now they can all be found [here](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions).
 
 A node definition looks like the following:
 
@@ -1619,21 +1480,15 @@ defineType("MemberExpression", {
 });
 ```
 
-Here you can see all the information about this particular node type, including
-how to build it, traverse it, and validate it.
+Here you can see all the information about this particular node type, including how to build it, traverse it, and validate it.
 
-By looking at the `builder` property, you can see the 3 arguments that will be
-needed to call the builder method (`t.memberExpression`).
+By looking at the `builder` property, you can see the 3 arguments that will be needed to call the builder method (`t.memberExpression`).
 
 ```js
 builder: ["object", "property", "computed"],
 ```
 
-> Note that sometimes there are more properties that you can customize on the
-> node than the `builder` array contains. This is to keep the builder from
-> having too many arguments. In these cases you need to set the properties
-> manually. An example of this is
-> [`ClassMethod`](https://github.com/babel/babel/blob/bbd14f88c4eea88fa584dd877759dd6b900bf35e/packages/babel-types/src/definitions/es2015.js#L238-L276).
+> Note that sometimes there are more properties that you can customize on the node than the `builder` array contains. This is to keep the builder from having too many arguments. In these cases you need to set the properties manually. An example of this is [`ClassMethod`](https://github.com/babel/babel/blob/bbd14f88c4eea88fa584dd877759dd6b900bf35e/packages/babel-types/src/definitions/es2015.js#L238-L276).
 
 You can see the validation for the builder arguments with the `fields` object.
 
@@ -1654,10 +1509,7 @@ fields: {
 }
 ```
 
-You can see that `object` needs to be an `Expression`, `property` either needs
-to be an `Expression` or an `Identifier` depending on if the member expression
-is `computed` or not and `computed` is simply a boolean that defaults to
-`false`.
+You can see that `object` needs to be an `Expression`, `property` either needs to be an `Expression` or an `Identifier` depending on if the member expression is `computed` or not and `computed` is simply a boolean that defaults to `false`.
 
 So we can construct a `MemberExpression` by doing the following:
 
@@ -1675,18 +1527,15 @@ Which will result in:
 object.property
 ```
 
-However, we said that `object` needed to be an `Expression` so why is
-`Identifier` valid?
+However, we said that `object` needed to be an `Expression` so why is `Identifier` valid?
 
-Well if we look at the definition of `Identifier` we can see that it has an
-`aliases` property which states that it is also an expression.
+Well if we look at the definition of `Identifier` we can see that it has an `aliases` property which states that it is also an expression.
 
 ```js
 aliases: ["Expression", "LVal"],
 ```
 
-So since `MemberExpression` is a type of `Expression`, we could set it as the
-`object` of another `MemberExpression`:
+So since `MemberExpression` is a type of `Expression`, we could set it as the `object` of another `MemberExpression`:
 
 ```js
 t.memberExpression(
@@ -1704,16 +1553,11 @@ Which will result in:
 member.expression.property
 ```
 
-It's very unlikely that you will ever memorize the builder method signatures for
-every node type. So you should take some time and understand how they are
-generated from the node definitions.
+It's very unlikely that you will ever memorize the builder method signatures for every node type. So you should take some time and understand how they are generated from the node definitions.
 
-You can find all of the actual
-[definitions here](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions)
-and you can see them
-[documented here](https://github.com/babel/babel/blob/master/doc/ast/spec.md)
+You can find all of the actual [definitions here](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions) and you can see them [documented here](https://github.com/babel/babel/blob/master/doc/ast/spec.md)
 
-----
+* * *
 
 # Best Practices
 
@@ -1721,17 +1565,13 @@ and you can see them
 
 ## Avoid traversing the AST as much as possible
 
-Traversing the AST is expensive, and it's easy to accidentally traverse the AST
-more than necessary. This could be thousands if not tens of thousands of
-extra operations.
+Traversing the AST is expensive, and it's easy to accidentally traverse the AST more than necessary. This could be thousands if not tens of thousands of extra operations.
 
-Babel optimizes this as much as possible, merging visitors together if it can in
-order to do everything in a single traversal.
+Babel optimizes this as much as possible, merging visitors together if it can in order to do everything in a single traversal.
 
 ### Merge visitors whenever possible
 
-When writing visitors, it may be tempting to call `path.traverse` in multiple
-places where they are logically necessary.
+When writing visitors, it may be tempting to call `path.traverse` in multiple places where they are logically necessary.
 
 ```js
 path.traverse({
@@ -1747,8 +1587,7 @@ path.traverse({
 });
 ```
 
-However, it is far better to write these as a single visitor that only gets run
-once. Otherwise you are traversing the same tree multiple times for no reason.
+However, it is far better to write these as a single visitor that only gets run once. Otherwise you are traversing the same tree multiple times for no reason.
 
 ```js
 path.traverse({
@@ -1763,8 +1602,7 @@ path.traverse({
 
 ### Do not traverse when manual lookup will do
 
-It may also be tempting to call `path.traverse` when looking for a particular
-node type.
+It may also be tempting to call `path.traverse` when looking for a particular node type.
 
 ```js
 const visitorOne = {
@@ -1780,9 +1618,7 @@ const MyVisitor = {
 };
 ```
 
-However, if you are looking for something specific and shallow, there is a good
-chance you can manually lookup the nodes you need without performing a costly
-traversal.
+However, if you are looking for something specific and shallow, there is a good chance you can manually lookup the nodes you need without performing a costly traversal.
 
 ```js
 const MyVisitor = {
@@ -1796,8 +1632,7 @@ const MyVisitor = {
 
 ## Optimizing nested visitors
 
-When you are nesting visitors, it might make sense to write them nested in your
-code.
+When you are nesting visitors, it might make sense to write them nested in your code.
 
 ```js
 const MyVisitor = {
@@ -1811,9 +1646,7 @@ const MyVisitor = {
 };
 ```
 
-However, this creates a new visitor object everytime `FunctionDeclaration()` is
-called above, which Babel then needs to explode and validate every single time.
-This can be costly, so it is better to hoist the visitor up.
+However, this creates a new visitor object everytime `FunctionDeclaration()` is called above, which Babel then needs to explode and validate every single time. This can be costly, so it is better to hoist the visitor up.
 
 ```js
 const visitorOne = {
@@ -1847,8 +1680,7 @@ const MyVisitor = {
 };
 ```
 
-You can pass it in as state to the `traverse()` method and have access to it on
-`this` in the visitor.
+You can pass it in as state to the `traverse()` method and have access to it on `this` in the visitor.
 
 ```js
 const visitorOne = {
@@ -1869,11 +1701,9 @@ const MyVisitor = {
 
 ## Being aware of nested structures
 
-Sometimes when thinking about a given transform, you might forget that the given
-structure can be nested.
+Sometimes when thinking about a given transform, you might forget that the given structure can be nested.
 
-For example, imagine we want to lookup the `constructor` `ClassMethod` from the
-`Foo` `ClassDeclaration`.
+For example, imagine we want to lookup the `constructor` `ClassMethod` from the `Foo` `ClassDeclaration`.
 
 ```js
 class Foo {
@@ -1901,8 +1731,7 @@ const MyVisitor = {
 }
 ```
 
-We are ignoring the fact that classes can be nested and using the traversal
-above we will hit a nested `constructor` as well:
+We are ignoring the fact that classes can be nested and using the traversal above we will hit a nested `constructor` as well:
 
 ```js
 class Foo {

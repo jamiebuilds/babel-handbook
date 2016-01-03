@@ -1,0 +1,3 @@
+language: ruby
+install: gem install crowdin-cli
+script: crowdin-cli upload sources
