@@ -41,7 +41,7 @@ $ npm install -g babel-plugin-handbook
   * [Português](/translations/pl/README.md)
   * [Português (Brasil)](/translations/pt-BR/README.md)
   * [Portugisisk](/translations/pt-PT/README.md)
-  * [Romeno](/translations/ro/README.md)
+  * [Română](/translations/ro/README.md)
   * [Pусский](/translations/ru/README.md)
   * [Српски језик (Ћирилица)](/translations/sr/README.md)
   * [Svenska](/translations/sv-SE/README.md)

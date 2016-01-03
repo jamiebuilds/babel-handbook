@@ -2,7 +2,7 @@
 
 Dieses Dokument beschreibt das Erstellen von [Babel](https://babeljs.io) [Plugins](https://babeljs.io/docs/advanced/plugins/).
 
-If you are reading a non-english translation of this handbook you may still find english sections that have not yet been translated. If you would like to contribute to one of the translations you must do so through Crowdin. Please read the [contributing guidelines](/CONTRIBUTING.md) for more information.
+Beim Lesen einer Übersetzung dieses Dokumentes, kann es sein, dass einige Kapitel noch nicht aus dem Englischen übersetzt worden sind. Um bei der Übersetzung mitzuhelfen kann dies mittels Crowdin durchgeführt werden. Please read the [contributing guidelines](/CONTRIBUTING.md) for more information.
 
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
@@ -41,7 +41,7 @@ Now you will have a `babel-plugin-handbook` command that will open this readme f
   * [Português](/translations/pl/README.md)
   * [Português (Brasil)](/translations/pt-BR/README.md)
   * [Portugisisk](/translations/pt-PT/README.md)
-  * [Romeno](/translations/ro/README.md)
+  * [Română](/translations/ro/README.md)
   * [Pусский](/translations/ru/README.md)
   * [Српски језик (Ћирилица)](/translations/sr/README.md)
   * [Svenska](/translations/sv-SE/README.md)

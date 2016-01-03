@@ -6,7 +6,7 @@ In cazul in care cititi intr-o limba diferita de engleza, este posibil ca unele 
 
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
-Multumim in mod special urmatorilor: [@sebmck](https://github.com/sebmck/), [@hzoo](https://github.com/hzoo), [@jdalton](https://github.com/jdalton), [@abraithwaite](https://github.com/abraithwaite), [@robey](https://github.com/robey), si altora pentru ajutorul extraordinar adus acestui document.
+Multumim in mod special urmatorilor: [@sebmck](https://github.com/sebmck/), [@hzoo](https://github.com/hzoo), [@jdalton](https://github.com/jdalton), [@abraithwaite](https://github.com/abraithwaite), [@robey](https://github.com/robey), si altora, pentru ajutorul extraordinar adus acestui document.
 
 # Pachet Node
 
@@ -41,7 +41,7 @@ Acum ve-ti avea comanda `babel-plugin-handbook` care va deschide acest document 
   * [Português](/translations/pl/README.md)
   * [Português (Brasil)](/translations/pt-BR/README.md)
   * [Portugisisk](/translations/pt-PT/README.md)
-  * [Romeno](/translations/ro/README.md)
+  * [Română](/translations/ro/README.md)
   * [Pусский](/translations/ru/README.md)
   * [Српски језик (Ћирилица)](/translations/sr/README.md)
   * [Svenska](/translations/sv-SE/README.md)
@@ -51,7 +51,7 @@ Acum ve-ti avea comanda `babel-plugin-handbook` care va deschide acest document 
   * [中文](/translations/zh-CN/README.md)
   * [繁體中文](/translations/zh-TW/README.md)
 
-If you are reading a non-english translation of this document you will find a number of english words that are programming concepts. If these were translated to other languages there would be a lack of consistency and fluency when reading about them. In many cases you will find the literal translation followed by the english term in parenthesis `()`. For example: Abstract Syntax Trees (ASTs).
+In cazul in care cititi o traducere din limba engleza, veti gasi cuvinte in engleza care se refera la concepte de programare. If these were translated to other languages there would be a lack of consistency and fluency when reading about them. In many cases you will find the literal translation followed by the english term in parenthesis `()`. For example: Abstract Syntax Trees (ASTs).
 
 # Table of Contents
 

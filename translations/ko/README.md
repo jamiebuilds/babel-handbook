@@ -41,7 +41,7 @@ $ npm install -g babel-plugin-handbook
   * [Português](/translations/pl/README.md)
   * [Português (Brasil)](/translations/pt-BR/README.md)
   * [Portugisisk](/translations/pt-PT/README.md)
-  * [Romeno](/translations/ro/README.md)
+  * [Română](/translations/ro/README.md)
   * [Pусский](/translations/ru/README.md)
   * [Српски језик (Ћирилица)](/translations/sr/README.md)
   * [Svenska](/translations/sv-SE/README.md)
@@ -51,7 +51,7 @@ $ npm install -g babel-plugin-handbook
   * [中文](/translations/zh-CN/README.md)
   * [繁體中文](/translations/zh-TW/README.md)
 
-If you are reading a non-english translation of this document you will find a number of english words that are programming concepts. (만약 번역된 문서를 읽고 있다면 몇 가지 프로그래밍 개념상의 영단어들을 찾을 수 있습니다.) If these were translated to other languages there would be a lack of consistency and fluency when reading about them. (이는 문서가 다른 언어로 번역되었기 때문에 문서를 읽을 때 원문에 비해 일관성과 표현이 부족할 수 있습니다.) In many cases you will find the literal translation followed by the english term in parenthesis `()`. For example: Abstract Syntax Trees (ASTs).
+If you are reading a non-english translation of this document you will find a number of english words that are programming concepts. (만약 번역된 문서를 읽고 있다면 몇 가지 프로그래밍 개념상의 영단어들을 찾을 수 있습니다.) If these were translated to other languages there would be a lack of consistency and fluency when reading about them. (이는 문서가 다른 언어로 번역되었기 때문에 문서를 읽을 때 원문에 비해 일관성과 표현이 부족할 수 있습니다.) In many cases you will find the literal translation followed by the english term in parenthesis `()`. (영문 그대로의 문장 또는 단어를 괄호에 그대로 넣은 경우를 많이 볼 수 있습니다.) 예를 들면: 추상 구문 트리 (ASTs).
 
 # 목차
 
