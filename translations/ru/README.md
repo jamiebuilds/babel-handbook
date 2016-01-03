@@ -1,55 +1,74 @@
 # babel-plugin-handbook
 
-This document covers how to create [Babel](https://babeljs.io) [plugins](https://babeljs.io/docs/advanced/plugins/).
+В этом документе описано как создавать [плагины](https://babeljs.io/docs/advanced/plugins/) для [Babel](https://babeljs.io).
 
-If you are reading a non-english translation of this handbook you may still find english sections that have not yet been translated. If you would like to contribute to one of the translations you must do so through Crowdin. Please read the [contributing guidelines](/CONTRIBUTING.md) for more information.
+Если вы читаете это не на английском языке, то вы можете наткнуться на разделы на английском, которые ещё не переведены. Если вы хотите помочь с переводом, то вы должны делать это, используя Crowdin. Прочтите, пожалуйста, [рекомендации](/CONTRIBUTING.md) для подробной информации.
 
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
-Special thanks to [@sebmck](https://github.com/sebmck/), [@hzoo](https://github.com/hzoo), [@jdalton](https://github.com/jdalton), [@abraithwaite](https://github.com/abraithwaite), [@robey](https://github.com/robey), and others for their amazing help on this handbook.
+Отдельное спасибо [@sebmck](https://github.com/sebmck/), [@hzoo](https://github.com/hzoo), [@jdalton](https://github.com/jdalton), [@abraithwaite](https://github.com/abraithwaite), [@robey](https://github.com/robey) и другим за их невероятную помощь в создании этого руководства.
 
 # Node Packaged Manuscript
 
-You can install this handbook with npm. Just do:
+Вы можете установить это руководство с помощью npm. Просто выполните:
 
 ```sh
 $ npm install -g babel-plugin-handbook
 ```
 
-Now you will have a `babel-plugin-handbook` command that will open this readme file in your `$PAGER`. Otherwise, you may continue reading this document as you are presently doing.
+Теперь вам доступна команда `babel-plugin-handbook`, которая открывает этот readme-файл в вашем `$PAGER`. Или же вы можете продолжить читать этот документ, как вы делаете это сейчас.
 
-# Translations
+# Переводы
 
   * [English](/README.md)
+  * [Afrikaans](/translations/af/README.md)
+  * [العربية](/translations/ar/README.md)
+  * [Català](/translations/ca/README.md)
+  * [Čeština](/translations/cs/README.md)
+  * [Danske](/translations/da/README.md)
   * [Deutsche](/translations/de/README.md)
+  * [ελληνικά](/translations/el/README.md)
   * [Español](/translations/es-ES/README.md)
+  * [Suomi](/translations/fi/README.md)
   * [Français](/translations/fr/README.md)
+  * [עִברִית](/translations/he/README.md)
+  * [Magyar](/translations/hu/README.md)
   * [Italiano](/translations/it/README.md)
   * [日本語](/translations/ja/README.md)
   * [한국어](/translations/ko/README.md)
+  * [Norsk](/translations/no/README.md)
   * [Nederlands](/translations/nl/README.md)
   * [Português](/translations/pl/README.md)
+  * [Português (Brasil)](/translations/pt-BR/README.md)
+  * [Portugisisk](/translations/pt-PT/README.md)
+  * [Romeno](/translations/ro/README.md)
   * [Pусский](/translations/ru/README.md)
+  * [Српски језик (Ћирилица)](/translations/sr/README.md)
+  * [Svenska](/translations/sv-SE/README.md)
+  * [Türk](/translations/tr/README.md)
+  * [Український](/translations/uk/README.md)
+  * [Tiếng Việt](/translations/vi/README.md)
   * [中文](/translations/zh-CN/README.md)
+  * [繁體中文](/translations/zh-TW/README.md)
 
-If you are reading a non-english translation of this document you will find a number of english words that are programming concepts. If these were translated to other languages there would be a lack of consistency and fluency when reading about them. In many cases you will find the literal translation followed by the english term in parenthesis `()`. For example: Abstract Syntax Trees (ASTs).
+Если вы читаете этот документ на на английском языке, вы найдёте некоторое количество английских слов, которые являются программистскими терминами. If these were translated to other languages there would be a lack of consistency and fluency when reading about them. Во многих случаях вы найдете дословные переводы с последующим английским термином в скобках `()`. Например: Абстрактные Синтаксические Деревья (ASTs).
 
-# Table of Contents
+# Содержание
 
-  * [Introduction](#introduction)
-  * [Basics](#basics) 
-      * [ASTs](#asts)
+  * [Введение](#introduction)
+  * [Базовые концепции](#basics) 
+      * [Абстрактные синтаксические деревья (ASTs)](#asts)
       * [Stages of Babel](#stages-of-babel)
-      * [Parse](#parse) 
-          * [Lexical Analysis](#lexical-analysis)
-          * [Syntactic Analysis](#syntactic-analysis)
-      * [Transform](#transform)
-      * [Generate](#generate)
+      * [Парсинг](#parse) 
+          * [Лексический анализ](#lexical-analysis)
+          * [Синтаксический анализ](#syntactic-analysis)
+      * [Трансформация](#transform)
+      * [Генерация](#generate)
       * [Traversal](#traversal)
       * [Visitors](#visitors)
       * [Paths](#paths) 
           * [Paths in Visitors](#paths-in-visitors)
-      * [State](#state)
+      * [Состояние](#state)
       * [Scopes](#scopes) 
           * [Bindings](#bindings)
   * [API](#api) 
@@ -62,7 +81,7 @@ If you are reading a non-english translation of this document you will find a nu
       * [Converters](#converters)
       * [babel-generator](#babel-generator)
       * [babel-template](#babel-template)
-  * [Writing your first Babel Plugin](#writing-your-first-babel-plugin)
+  * [Создание вашего первого плагина Babel](#writing-your-first-babel-plugin)
   * [Transformation Operations](#transformation-operations) 
       * [Visiting](#visiting)
       * [Check if a node is a certain type](#check-if-a-node-is-a-certain-type)
@@ -89,23 +108,23 @@ If you are reading a non-english translation of this document you will find a nu
       * [Optimizing nested visitors](#optimizing-nested-visitors)
       * [Being aware of nested structures](#being-aware-of-nested-structures)
 
-# Introduction
+# Введение
 
-Babel is a generic multi-purpose compiler for JavaScript. More than that it is a collection of modules that can be used for many different forms of static analysis.
+Babel - это многоцелевой компилятор общего назначения для JavaScript. Более того, это коллекция модулей, которая может быть использована для множества различных форм синтаксического анализа.
 
-> Static analysis is the process of analyzing code without executing it. (Analysis of code while executing it is known as dynamic analysis). The purpose of static analysis varies greatly. It can be used for linting, compiling, code highlighting, code transformation, optimization, minification, and much more.
+> Статический анализ - это процесс анализа кода без запуска этого кода. (Анализ кода во время выполнения известен как динамический анализ). Цели синтаксического анализа очень разнообразны. Это может быть использовано для контроля качества кода (linting), компиляции, подсветки синтаксиса, трансформации, оптимизации, минификации и много другого.
 
-You can use Babel to build many different types of tools that can help you be more productive and write better programs.
+Вы можете использовать Babel для создания множества различных инструментов, которые помогут вам стать более продуктивным и писать лучшие программы.
 
-# Basics
+# Базовые концепции
 
-Babel is a JavaScript compiler, specifically a source-to-source compiler, often called a "transpiler". This means that you give Babel some JavaScript code, Babel modifies the code, and generates the new code back out.
+Babel - это JavaScript компилятор, точнее компилятор, преобразующий программу на одном языке в программу на другом языке (source-to-source compiler), часто называемый трянслятор. Это означает, что вы даёте Babel некоторый JavaScript код, а Babel модифицирует его, генерирует новый код и возвращает его.
 
-## ASTs
+## Абстрактные синтаксические деревья (ASTs)
 
-Each of these steps involve creating or working with an [Abstract Syntax Tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree) or AST.
+Каждый из этих шагов требует создания или работы с [Абстрактным синтаксическим деревом](https://en.wikipedia.org/wiki/Abstract_syntax_tree), или AST.
 
-> Babel uses an AST modified from [ESTree](https://github.com/estree/estree), with the core spec located [here](https://github.com/babel/babel/blob/master/doc/ast/spec.md).
+> Babel использует в качестве AST модифицированный [ESTree](https://github.com/estree/estree) и его спецификация находится [здесь](https://github.com/babel/babel/blob/master/doc/ast/spec.md).
 
 ```js
 function square(n) {
@@ -113,9 +132,9 @@ function square(n) {
 }
 ```
 
-> Check out [AST Explorer](http://astexplorer.net/) to get a better sense of the AST nodes. [Here](http://astexplorer.net/#/Z1exs6BWMq) is a link to it with the example code above pasted in.
+> Взгляните на [AST Explorer](http://astexplorer.net/) чтобы получить более полное представление об AST-нодах. [Здесь](http://astexplorer.net/#/Z1exs6BWMq) находится ссылка на него с уже скопированным примером выше.
 
-This same program can be represented as a list like this:
+Эта же программа может быть представлена в виде подобного списка:
 
 ```md
 - FunctionDeclaration:
@@ -140,7 +159,7 @@ This same program can be represented as a list like this:
                   - name: n
 ```
 
-Or as a JavaScript Object like this:
+Или в виде JavaScript-объекта, вроде этого:
 
 ```js
 {
@@ -174,7 +193,7 @@ Or as a JavaScript Object like this:
 }
 ```
 
-You'll notice that each level of the AST has a similar structure:
+Вы могли заметить, что каждый уровень AST имеет одинаковую структуру:
 
 ```js
 {
@@ -201,11 +220,11 @@ You'll notice that each level of the AST has a similar structure:
 }
 ```
 
-> Note: Some properties have been removed for simplicity.
+> Некоторые свойства были убраны для упрощения.
 
-Each of these are known as a **Node**. An AST can be made up of a single Node, or hundreds if not thousands of Nodes. Together they are able to describe the syntax of a program that can be used for static analysis.
+Каждый из этих уровней называется **Нода (Node)**. Отдельный AST может состоять как из одной ноды, так и из сотен, если не тысяч нод. Все вместе они способны описать синтаксис программы, который может быть использован для статического анализа.
 
-Every Node has this interface:
+Каждая нода имеет следующий интерфейс:
 
 ```typescript
 interface Node {
@@ -213,9 +232,9 @@ interface Node {
 }
 ```
 
-The `type` field is a string representing the type of Node the object is (ie. `"FunctionDeclaration"`, `"Identifier"`, or `"BinaryExpression"`). Each type of Node defines an additional set of properties that describe that particular node type.
+Поле `type` - это строка, описывающая, чем является объект, представляемый данной нодой (т.е. `"FunctionDeclaration"`, `"Identifier"`, или `"BinaryExpression"`). Каждый тип ноды определяет некоторый дополнительный набор полей, описывающий этот конкретный тип.
 
-There are additional properties on every Node that Babel generates which describe the position of the Node in the original source code.
+Пример. Каждая нода, сгенерированная Babel, имеет дополнительные свойства, которые описывают позицию этой ноды в оригинальном исходном коде.
 
 ```js
 {
@@ -236,7 +255,7 @@ There are additional properties on every Node that Babel generates which describ
 }
 ```
 
-These properties `start`, `end`, `loc`, appear in every single Node.
+Эти свойства - `start`, `end`, `loc` - присутствуют в каждой отдельной ноде.
 
 ## Stages of Babel
 

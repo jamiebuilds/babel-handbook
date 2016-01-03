@@ -1,43 +1,62 @@
 # babel-plugin-handbook
 
-This document covers how to create [Babel](https://babeljs.io) [plugins](https://babeljs.io/docs/advanced/plugins/).
+Ce présent document décrit les méthodes de création des [plugins](https://babeljs.io/docs/advanced/plugins/) pour [Babel](https://babeljs.io).
 
-If you are reading a non-english translation of this handbook you may still find english sections that have not yet been translated. If you would like to contribute to one of the translations you must do so through Crowdin. Please read the [contributing guidelines](/CONTRIBUTING.md) for more information.
+Si vous êtes entrain de lire une traduction de la documentation anglaise, vous allez sûrement trouver des sections qui ne sont pas encore traduites. Si vous voulez contribuer à la traduction, vous pouvez le faire à l'aide du site Crowdin. Veuillez lire le [guide de contribution](/CONTRIBUTING.md) pour plus d'informations.
 
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
-Special thanks to [@sebmck](https://github.com/sebmck/), [@hzoo](https://github.com/hzoo), [@jdalton](https://github.com/jdalton), [@abraithwaite](https://github.com/abraithwaite), [@robey](https://github.com/robey), and others for their amazing help on this handbook.
+Un grand merci à [@sebmck](https://github.com/sebmck/),[@hzoo](https://github.com/hzoo),[@jdalton](https://github.com/jdalton),[@abraithwaite](https://github.com/abraithwaite),[@robey](https://github.com/robey), et d'autres pour leurs contribution.
 
 # Node Packaged Manuscript
 
-You can install this handbook with npm. Just do:
+Vous pouvez installer ce manuel avec npm avec la commande:
 
 ```sh
 $ npm install -g babel-plugin-handbook
 ```
 
-Now you will have a `babel-plugin-handbook` command that will open this readme file in your `$PAGER`. Otherwise, you may continue reading this document as you are presently doing.
+Maintenant vous aurez une commande `babel-plugin-handbook` qui va ouvrir ce fichier dans le `$PAGER`. Sinon, vous pouvez continuer la lecture de ce document en ligne.
 
-# Translations
+# Traductions
 
   * [English](/README.md)
+  * [Afrikaans](/translations/af/README.md)
+  * [العربية](/translations/ar/README.md)
+  * [Català](/translations/ca/README.md)
+  * [Čeština](/translations/cs/README.md)
+  * [Danske](/translations/da/README.md)
   * [Deutsche](/translations/de/README.md)
+  * [ελληνικά](/translations/el/README.md)
   * [Español](/translations/es-ES/README.md)
+  * [Suomi](/translations/fi/README.md)
   * [Français](/translations/fr/README.md)
+  * [עִברִית](/translations/he/README.md)
+  * [Magyar](/translations/hu/README.md)
   * [Italiano](/translations/it/README.md)
   * [日本語](/translations/ja/README.md)
   * [한국어](/translations/ko/README.md)
+  * [Norsk](/translations/no/README.md)
   * [Nederlands](/translations/nl/README.md)
   * [Português](/translations/pl/README.md)
+  * [Português (Brasil)](/translations/pt-BR/README.md)
+  * [Portugisisk](/translations/pt-PT/README.md)
+  * [Romeno](/translations/ro/README.md)
   * [Pусский](/translations/ru/README.md)
+  * [Српски језик (Ћирилица)](/translations/sr/README.md)
+  * [Svenska](/translations/sv-SE/README.md)
+  * [Türk](/translations/tr/README.md)
+  * [Український](/translations/uk/README.md)
+  * [Tiếng Việt](/translations/vi/README.md)
   * [中文](/translations/zh-CN/README.md)
+  * [繁體中文](/translations/zh-TW/README.md)
 
-If you are reading a non-english translation of this document you will find a number of english words that are programming concepts. If these were translated to other languages there would be a lack of consistency and fluency when reading about them. In many cases you will find the literal translation followed by the english term in parenthesis `()`. For example: Abstract Syntax Trees (ASTs).
+Si vous êtes entrain de lire une traduction de la documentation anglaise, plusieurs concepts de programmation sont en Anglais. Ces concepts risque de perdre leurs sens une fois traduits à une autre langue. Dans de nombreux cas, vous allez avoir la traduction du terme en Français, suivi du terme en Anglais entre parenthèse `()`. Par exemple : arbres de syntaxe abstraite (ASTs).
 
-# Table of Contents
+# Sommaire
 
   * [Introduction](#introduction)
-  * [Basics](#basics) 
+  * [Notions de base](#basics) 
       * [ASTs](#asts)
       * [Stages of Babel](#stages-of-babel)
       * [Parse](#parse) 

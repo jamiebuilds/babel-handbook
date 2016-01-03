@@ -1,24 +1,24 @@
 # babel-plugin-handbook
 
-This document covers how to create [Babel](https://babeljs.io) [plugins](https://babeljs.io/docs/advanced/plugins/).
+Acest document descrie cum se pot crea [plugin-uri](https://babeljs.io/docs/advanced/plugins/) pentru [Babel](https://babeljs.io).
 
-If you are reading a non-english translation of this handbook you may still find english sections that have not yet been translated. If you would like to contribute to one of the translations you must do so through Crowdin. Please read the [contributing guidelines](/CONTRIBUTING.md) for more information.
+In cazul in care cititi intr-o limba diferita de engleza, este posibil ca unele sectiuni care nu au fost traduse inca, sa le gasiti in engleza. Daca doriti sa contribuiti la traducerea acestui document intr-una din limbi, va trebui sa folositi Crowdin. Va rugam sa cititi [ghidul de contributie](/CONTRIBUTING.md) pentru mai multe informatii.
 
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
-Special thanks to [@sebmck](https://github.com/sebmck/), [@hzoo](https://github.com/hzoo), [@jdalton](https://github.com/jdalton), [@abraithwaite](https://github.com/abraithwaite), [@robey](https://github.com/robey), and others for their amazing help on this handbook.
+Multumim in mod special urmatorilor: [@sebmck](https://github.com/sebmck/), [@hzoo](https://github.com/hzoo), [@jdalton](https://github.com/jdalton), [@abraithwaite](https://github.com/abraithwaite), [@robey](https://github.com/robey), si altora pentru ajutorul extraordinar adus acestui document.
 
-# Node Packaged Manuscript
+# Pachet Node
 
-You can install this handbook with npm. Just do:
+Puteti instala acest document folosing npm, in felul urmator:
 
 ```sh
 $ npm install -g babel-plugin-handbook
 ```
 
-Now you will have a `babel-plugin-handbook` command that will open this readme file in your `$PAGER`. Otherwise, you may continue reading this document as you are presently doing.
+Acum ve-ti avea comanda `babel-plugin-handbook` care va deschide acest document in `$PAGER`. Ca alternativa, puteti continua sa cititi acest document, asa cum o faceti in acest moment.
 
-# Translations
+# Traduceri
 
   * [English](/README.md)
   * [Afrikaans](/translations/af/README.md)

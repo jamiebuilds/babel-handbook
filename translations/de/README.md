@@ -1,6 +1,6 @@
-# babel-plugin-handbook
+# Babel Plugin Handbuch
 
-This document covers how to create [Babel](https://babeljs.io) [plugins](https://babeljs.io/docs/advanced/plugins/).
+Dieses Dokument beschreibt das Erstellen von [Babel](https://babeljs.io) [Plugins](https://babeljs.io/docs/advanced/plugins/).
 
 If you are reading a non-english translation of this handbook you may still find english sections that have not yet been translated. If you would like to contribute to one of the translations you must do so through Crowdin. Please read the [contributing guidelines](/CONTRIBUTING.md) for more information.
 
@@ -21,16 +21,35 @@ Now you will have a `babel-plugin-handbook` command that will open this readme f
 # Translations
 
   * [English](/README.md)
+  * [Afrikaans](/translations/af/README.md)
+  * [العربية](/translations/ar/README.md)
+  * [Català](/translations/ca/README.md)
+  * [Čeština](/translations/cs/README.md)
+  * [Danske](/translations/da/README.md)
   * [Deutsche](/translations/de/README.md)
+  * [ελληνικά](/translations/el/README.md)
   * [Español](/translations/es-ES/README.md)
+  * [Suomi](/translations/fi/README.md)
   * [Français](/translations/fr/README.md)
+  * [עִברִית](/translations/he/README.md)
+  * [Magyar](/translations/hu/README.md)
   * [Italiano](/translations/it/README.md)
   * [日本語](/translations/ja/README.md)
   * [한국어](/translations/ko/README.md)
+  * [Norsk](/translations/no/README.md)
   * [Nederlands](/translations/nl/README.md)
   * [Português](/translations/pl/README.md)
+  * [Português (Brasil)](/translations/pt-BR/README.md)
+  * [Portugisisk](/translations/pt-PT/README.md)
+  * [Romeno](/translations/ro/README.md)
   * [Pусский](/translations/ru/README.md)
+  * [Српски језик (Ћирилица)](/translations/sr/README.md)
+  * [Svenska](/translations/sv-SE/README.md)
+  * [Türk](/translations/tr/README.md)
+  * [Український](/translations/uk/README.md)
+  * [Tiếng Việt](/translations/vi/README.md)
   * [中文](/translations/zh-CN/README.md)
+  * [繁體中文](/translations/zh-TW/README.md)
 
 If you are reading a non-english translation of this document you will find a number of english words that are programming concepts. If these were translated to other languages there would be a lack of consistency and fluency when reading about them. In many cases you will find the literal translation followed by the english term in parenthesis `()`. For example: Abstract Syntax Trees (ASTs).
 

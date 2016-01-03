@@ -1,40 +1,59 @@
 # babel-plugin-handbook
 
-이 문서는 [Babel](https://babeljs.io) [플러그인](https://babeljs.io/docs/advanced/plugins/)을 만드는 방법을 설명합니다..
+이 문서는 [Babel](https://babeljs.io) [플러그인](https://babeljs.io/docs/advanced/plugins/)을 만드는 방법을 설명합니다.
 
-If you are reading a non-english translation of this handbook you may still find english sections that have not yet been translated. If you would like to contribute to one of the translations you must do so through Crowdin. Please read the [contributing guidelines](/CONTRIBUTING.md) for more information.
+If you are reading a non-english translation of this handbook you may still find english sections that have not yet been translated. (만약 영문 문서가 아닌 번역된 핸드북을 읽고 있다면, 여전히 번역되지 않은 영문 문서 섹션을 찾아 읽을 수 있습니다.) If you would like to contribute to one of the translations you must do so through Crowdin. (만약 다른 언어로 문서를 번역하고 싶다면 Crowdin을 통해 기여해야 합니다.) 자세한 사항은 [기여 가이드](/CONTRIBUTING.md)를 참고하세요.
 
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
-Special thanks to [@sebmck](https://github.com/sebmck/), [@hzoo](https://github.com/hzoo), [@jdalton](https://github.com/jdalton), [@abraithwaite](https://github.com/abraithwaite), [@robey](https://github.com/robey), and others for their amazing help on this handbook.
+[@sebmck](https://github.com/sebmck/), [@hzoo](https://github.com/hzoo), [@jdalton](https://github.com/jdalton), [@abraithwaite](https://github.com/abraithwaite), [@robey](https://github.com/robey), 와 다른 기여자 분들이 이 핸드북 제작에 큰 도움을 주셨습니다.
 
-# Node Packaged Manuscript
+# Node로 포장된 원고
 
-You can install this handbook with npm. Just do:
+이 핸드북은 npm을 통해 설치할 수 있습니다. 다음 커맨드를 입력하세요:
 
 ```sh
 $ npm install -g babel-plugin-handbook
 ```
 
-Now you will have a `babel-plugin-handbook` command that will open this readme file in your `$PAGER`. Otherwise, you may continue reading this document as you are presently doing.
+이제 `babel-plugin-handbook` 커맨드를 입력하면 이 readme 파일을 `$PAGER`에서 열 수 있습니다. 아니면, 지금처럼 현재 문서를 계속 읽어도 됩니다.
 
-# Translations
+# 번역 문서
 
   * [English](/README.md)
+  * [Afrikaans](/translations/af/README.md)
+  * [العربية](/translations/ar/README.md)
+  * [Català](/translations/ca/README.md)
+  * [Čeština](/translations/cs/README.md)
+  * [Danske](/translations/da/README.md)
   * [Deutsche](/translations/de/README.md)
+  * [ελληνικά](/translations/el/README.md)
   * [Español](/translations/es-ES/README.md)
+  * [Suomi](/translations/fi/README.md)
   * [Français](/translations/fr/README.md)
+  * [עִברִית](/translations/he/README.md)
+  * [Magyar](/translations/hu/README.md)
   * [Italiano](/translations/it/README.md)
   * [日本語](/translations/ja/README.md)
   * [한국어](/translations/ko/README.md)
+  * [Norsk](/translations/no/README.md)
   * [Nederlands](/translations/nl/README.md)
   * [Português](/translations/pl/README.md)
+  * [Português (Brasil)](/translations/pt-BR/README.md)
+  * [Portugisisk](/translations/pt-PT/README.md)
+  * [Romeno](/translations/ro/README.md)
   * [Pусский](/translations/ru/README.md)
+  * [Српски језик (Ћирилица)](/translations/sr/README.md)
+  * [Svenska](/translations/sv-SE/README.md)
+  * [Türk](/translations/tr/README.md)
+  * [Український](/translations/uk/README.md)
+  * [Tiếng Việt](/translations/vi/README.md)
   * [中文](/translations/zh-CN/README.md)
+  * [繁體中文](/translations/zh-TW/README.md)
 
-If you are reading a non-english translation of this document you will find a number of english words that are programming concepts. If these were translated to other languages there would be a lack of consistency and fluency when reading about them. In many cases you will find the literal translation followed by the english term in parenthesis `()`. For example: Abstract Syntax Trees (ASTs).
+If you are reading a non-english translation of this document you will find a number of english words that are programming concepts. (만약 번역된 문서를 읽고 있다면 몇 가지 프로그래밍 개념상의 영단어들을 찾을 수 있습니다.) If these were translated to other languages there would be a lack of consistency and fluency when reading about them. (이는 문서가 다른 언어로 번역되었기 때문에 문서를 읽을 때 원문에 비해 일관성과 표현이 부족할 수 있습니다.) In many cases you will find the literal translation followed by the english term in parenthesis `()`. For example: Abstract Syntax Trees (ASTs).
 
-# Table of Contents
+# 목차
 
   * [Introduction](#introduction)
   * [Basics](#basics) 
@@ -89,7 +108,7 @@ If you are reading a non-english translation of this document you will find a nu
       * [Optimizing nested visitors](#optimizing-nested-visitors)
       * [Being aware of nested structures](#being-aware-of-nested-structures)
 
-# Introduction
+# 소개
 
 Babel is a generic multi-purpose compiler for JavaScript. More than that it is a collection of modules that can be used for many different forms of static analysis.
 
@@ -97,11 +116,11 @@ Babel is a generic multi-purpose compiler for JavaScript. More than that it is a
 
 You can use Babel to build many different types of tools that can help you be more productive and write better programs.
 
-# Basics
+# 기본
 
 Babel is a JavaScript compiler, specifically a source-to-source compiler, often called a "transpiler". This means that you give Babel some JavaScript code, Babel modifies the code, and generates the new code back out.
 
-## ASTs
+## 추상 구문 트리 (ASTs)
 
 Each of these steps involve creating or working with an [Abstract Syntax Tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree) or AST.
 
@@ -238,15 +257,15 @@ There are additional properties on every Node that Babel generates which describ
 
 These properties `start`, `end`, `loc`, appear in every single Node.
 
-## Stages of Babel
+## Babel의 실행 절차
 
 The three primary stages of Babel are **parse**, **transform**, **generate**.
 
-### Parse
+### 문법 분석
 
 The **parse** stage, takes code and outputs an AST. There are two phases of parsing in Babel: [**Lexical Analysis**](https://en.wikipedia.org/wiki/Lexical_analysis) and [**Syntactic Analysis**](https://en.wikipedia.org/wiki/Parsing).
 
-#### Lexical Analysis
+#### 어휘 분석
 
 Lexical Analysis will take a string of code and turn it into a stream of **tokens**.
 
@@ -288,21 +307,21 @@ Each of the `type`s here have a set of properties describing the token:
 
 Like AST nodes they also have a `start`, `end`, and `loc`.
 
-#### Syntactic Analysis
+#### 구문 분석
 
 Syntactic Analysis will take a stream of tokens and turn it into an AST representation. Using the information in the tokens, this phase will reformat them as an AST which represents the structure of the code in a way that makes it easier to work with.
 
-### Transform
+### 변환
 
 The [transform](https://en.wikipedia.org/wiki/Program_transformation) stage takes an AST and traverses through it, adding, updating, and removing nodes as it goes along. This is by far the most complex part of Babel or any compiler. This is where plugins operate and so it will be the subject of most of this handbook. So we won't dive too deep right now.
 
-### Generate
+### 생성
 
 The [code generation](https://en.wikipedia.org/wiki/Code_generation_(compiler)) stage takes the final AST and turns in back into a string of code, also creating [source maps](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/).
 
 Code generation is pretty simple: you traverse through the AST depth-first, building a string that represents the transformed code.
 
-## Traversal
+## 탐색
 
 When you want to transform an AST you have to [traverse the tree](https://en.wikipedia.org/wiki/Tree_traversal) recursively.
 
@@ -1012,7 +1031,7 @@ console.log(generate(ast).code);
 var myModule = require("my-module");
 ```
 
-# Writing your first Babel Plugin
+# 첫 Babel 플러그인 작성
 
 Now that you're familiar with all the basics of Babel, let's tie it together with the plugin API.
 
@@ -1559,7 +1578,7 @@ You can find all of the actual [definitions here](https://github.com/babel/babel
 
 * * *
 
-# Best Practices
+# 모범 지침
 
 > I'll be working on this section over the coming weeks.
 
