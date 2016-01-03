@@ -51,7 +51,7 @@ $ npm install -g babel-plugin-handbook
   * [中文](/translations/zh-CN/README.md)
   * [繁體中文](/translations/zh-TW/README.md)
 
-Если вы читаете этот документ на на английском языке, вы найдёте некоторое количество английских слов, которые являются программистскими терминами. If these were translated to other languages there would be a lack of consistency and fluency when reading about them. Во многих случаях вы найдете дословные переводы с последующим английским термином в скобках `()`. Например: Абстрактные Синтаксические Деревья (ASTs).
+Если вы читаете этот документ на на английском языке, вы найдёте некоторое количество английских слов, которые являются программистскими терминами. Если бы они были переведены на другие языки это привело бы к отсутствию последовательности и плавности, когда вы читаете о них. Во многих случаях вы найдете дословные переводы с последующим английским термином в скобках `()`. Например: Абстрактные Синтаксические Деревья (ASTs).
 
 # Содержание
 
@@ -100,7 +100,7 @@ $ npm install -g babel-plugin-handbook
       * [Pushing a variable declaration to a parent scope](#pushing-a-variable-declaration-to-a-parent-scope)
       * [Rename a binding and its references](#rename-a-binding-and-its-references)
   * [Параметры плагина](#plugin-options)
-  * [Создание узлов](#building-nodes)
+  * [Построение узлов](#building-nodes)
   * [Лучшие практики](#best-practices) 
       * [Avoid traversing the AST as much as possible](#avoid-traversing-the-ast-as-much-as-possible)
       * [Merge visitors whenever possible](#merge-visitors-whenever-possible)
@@ -257,15 +257,15 @@ interface Node {
 
 Эти свойства - `start`, `end`, `loc` - присутствуют в каждой отдельной ноде.
 
-## Stages of Babel
+## Этапы работы Babel
 
-The three primary stages of Babel are **parse**, **transform**, **generate**.
+Три основных этапа работы Babel это **парсинг**, **трансформация**, **генерация**.
 
-### Parse
+### Парсинг
 
 The **parse** stage, takes code and outputs an AST. There are two phases of parsing in Babel: [**Lexical Analysis**](https://en.wikipedia.org/wiki/Lexical_analysis) and [**Syntactic Analysis**](https://en.wikipedia.org/wiki/Parsing).
 
-#### Lexical Analysis
+#### Лексический Анализ
 
 Lexical Analysis will take a string of code and turn it into a stream of **tokens**.
 
@@ -1467,7 +1467,7 @@ These options are plugin-specific and you cannot access options from other plugi
 
 * * *
 
-# Building Nodes
+# Построение узлов
 
 When writing transformations you'll often want to build up some nodes to insert into the AST. As mentioned previously, you can do this using the [builder](#builder) methods in the [`babel-types`](#babel-types) package.
 

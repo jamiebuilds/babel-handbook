@@ -16,32 +16,32 @@ Dieses Handbuch kann mit npm folgendermaßen installiert werden:
 $ npm install -g babel-plugin-handbook
 ```
 
-Now you will have a `babel-plugin-handbook` command that will open this readme file in your `$PAGER`. Otherwise, you may continue reading this document as you are presently doing.
+Nun gibt es den Befehl `babel-plugin-handbook` Kommando, welches dieses Handbuch im `$PAGER` öffnet. Ansonsten kann dieses Dokument hier weitergelesen werden.
 
-# Translations
+# Übersetzungen
 
   * [English](/README.md)
   * [Afrikaans](/translations/af/README.md)
   * [العربية](/translations/ar/README.md)
   * [Català](/translations/ca/README.md)
   * [Čeština](/translations/cs/README.md)
-  * [Danske](/translations/da/README.md)
-  * [Deutsche](/translations/de/README.md)
+  * [Dänisch](/translations/da/README.md)
+  * [Deutsch](/translations/de/README.md)
   * [ελληνικά](/translations/el/README.md)
-  * [Español](/translations/es-ES/README.md)
-  * [Suomi](/translations/fi/README.md)
-  * [Français](/translations/fr/README.md)
+  * [Spanisch](/translations/es-ES/README.md)
+  * [Finnisch](/translations/fi/README.md)
+  * [Französisch](/translations/fr/README.md)
   * [עִברִית](/translations/he/README.md)
   * [Magyar](/translations/hu/README.md)
-  * [Italiano](/translations/it/README.md)
+  * [Italienisch](/translations/it/README.md)
   * [日本語](/translations/ja/README.md)
   * [한국어](/translations/ko/README.md)
   * [Norsk](/translations/no/README.md)
-  * [Nederlands](/translations/nl/README.md)
-  * [Português](/translations/pl/README.md)
-  * [Português (Brasil)](/translations/pt-BR/README.md)
+  * [Niederländisch](/translations/nl/README.md)
+  * [Portugisisch](/translations/pl/README.md)
+  * [Portugisisch (Brasilien)](/translations/pt-BR/README.md)
   * [Portugisisk](/translations/pt-PT/README.md)
-  * [Română](/translations/ro/README.md)
+  * [Rumänisch](/translations/ro/README.md)
   * [Pусский](/translations/ru/README.md)
   * [Српски језик (Ћирилица)](/translations/sr/README.md)
   * [Svenska](/translations/sv-SE/README.md)
