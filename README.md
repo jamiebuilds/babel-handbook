@@ -62,6 +62,8 @@ are presently doing.
 - [中文](/translations/zh-CN/README.md)
 - [繁體中文](/translations/zh-TW/README.md)
 
+**[Request another translation](https://github.com/thejameskyle/babel-plugin-handbook/issues/new?title=Translation%20Request:%20[Please%20enter%20language%20here]&body=I%20am%20able%20to%20translate%20this%20language%20[yes/no])**
+
 If you are reading a non-english translation of this document you will find a
 number of english words that are programming concepts. If these were translated
 to other languages there would be a lack of consistency and fluency when reading
