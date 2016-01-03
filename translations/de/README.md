@@ -6,11 +6,11 @@ Beim Lesen einer Übersetzung dieses Dokumentes, kann es sein, dass einige Kapit
 
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
-Special thanks to [@sebmck](https://github.com/sebmck/), [@hzoo](https://github.com/hzoo), [@jdalton](https://github.com/jdalton), [@abraithwaite](https://github.com/abraithwaite), [@robey](https://github.com/robey), and others for their amazing help on this handbook.
+Namentlich möchten wir [@sebmck](https://github.com/sebmck/), [@hzoo](https://github.com/hzoo), [jdalton](https://github.com/jdalton),[@abraithwaite](https://github.com/abraithwaite), [@robey](https://github.com/robey) und anderen für die Hilfe an diesem Handbuch danken.
 
 # Node Packaged Manuscript
 
-You can install this handbook with npm. Just do:
+Dieses Handbuch kann mit npm folgendermaßen installiert werden:
 
 ```sh
 $ npm install -g babel-plugin-handbook

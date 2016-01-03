@@ -1063,7 +1063,7 @@ export default function({ types: t }) {
 };
 ```
 
-Let's write a quick plugin to show off how it works. Here's our source code:
+Давайте быстро напишем плагин, чтобы показать как это работает. Вот наш исходный код:
 
 ```js
 foo === bar;
@@ -1206,7 +1206,7 @@ Identifier(path) {
 }
 ```
 
-Alternatively:
+В качестве альтернативы:
 
 ```js
 Identifier(path) {
@@ -1218,7 +1218,7 @@ Identifier(path) {
 
 ## Manipulation
 
-### Replacing a node
+### Замена узла
 
 ```js
 BinaryExpression(path) {
@@ -1235,7 +1235,7 @@ BinaryExpression(path) {
   }
 ```
 
-### Replacing a node with multiple nodes
+### Замена узла несколькими узлами
 
 ```js
 ReturnStatement(path) {
@@ -1256,9 +1256,9 @@ ReturnStatement(path) {
   }
 ```
 
-> **Note:** When replacing an expression with multiple nodes, they must be statements. This is because Babel uses heuristics extensively when replacing nodes which means that you can do some pretty crazy transformations that would be extremely verbose otherwise.
+> **Примечание:** При замене выражения с несколькими узлами, они должны быть выражениями. Это потому, что Babel широко использует эвристику, при замене узлов, что означает, что вы можете сделать некоторые довольно сумасшедшие преобразования, которые в противном случае были бы чрезвычайно многословные.
 
-### Replacing a node with a source string
+### Замена узла исходной строкой
 
 ```js
 FunctionDeclaration(path) {
@@ -1278,7 +1278,7 @@ FunctionDeclaration(path) {
 
 > **Note:** It's not recommended to use this API unless you're dealing with dynamic source strings, otherwise it's more efficient to parse the code outside of the visitor.
 
-### Inserting a sibling node
+### Добавление узла-потомка
 
 ```js
 FunctionDeclaration(path) {
@@ -1297,7 +1297,7 @@ FunctionDeclaration(path) {
 
 > **Note:** This should always be a statement or an array of statements. This uses the same heuristics mentioned in [Replacing a node with multiple nodes](#replacing-a-node-with-multiple-nodes).
 
-### Removing a node
+### Удаление узла
 
 ```js
 FunctionDeclaration(path) {
@@ -1311,7 +1311,7 @@ FunctionDeclaration(path) {
 - }
 ```
 
-### Replacing a parent
+### Замена родителя
 
 ```js
 BinaryExpression(path) {
@@ -1328,7 +1328,7 @@ BinaryExpression(path) {
   }
 ```
 
-### Removing a parent
+### Удаление родителя
 
 ```js
 BinaryExpression(path) {
@@ -1342,7 +1342,7 @@ BinaryExpression(path) {
   }
 ```
 
-## Scope
+## Область видимости
 
 ### Checking if a local variable is bound
 
