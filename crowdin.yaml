@@ -3,9 +3,9 @@ api_key_env: CROWDIN_API_KEY
 base_path: .
 files:
   - source: '/README.md'
-    translation: '/translations/%two_letters_code%/%original_file_name%'
+    translation: '/translations/%locale%/%original_file_name%'
     languages_mapping:
-      two_letters_code:
+      locale:
         'af': 'af'
         'ar': 'ar'
         'ca': 'ca'
