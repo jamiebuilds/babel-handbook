@@ -315,15 +315,15 @@ Like AST nodes they also have a `start`, `end`, and `loc`.
 
 Этап преобразования принимает AST и проходит через него, добавляя, обновляя, и удаляя узлы по мере прохождения. Это, безусловно, наиболее сложная часть Babel или любого компилятора. Здесь работают плагины и это будет предметом обсуждения большей части этого руководства. Поэтому мы не погружаемся слишком глубоко прямо сейчас.
 
-### Generate
+### Генерация
 
-The [code generation](https://en.wikipedia.org/wiki/Code_generation_(compiler)) stage takes the final AST and turns in back into a string of code, also creating [source maps](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/).
+Этапе [генерации кода](https://en.wikipedia.org/wiki/Code_generation_(compiler)) принимает окончательное AST и преобразует его в сроку кода, так же создавая [source maps](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/).
 
 Генерация кода довольно проста: вы проходите через AST в глубину, строя строку, которая представляет преобразованный код.
 
-## Traversal
+## Обход
 
-When you want to transform an AST you have to [traverse the tree](https://en.wikipedia.org/wiki/Tree_traversal) recursively.
+Когда вы хотите трансорфмировать AST вам необходимо [пройти по всему дереву](https://en.wikipedia.org/wiki/Tree_traversal) рекурсивно.
 
 Say we have the type `FunctionDeclaration`. It has a few properties: `id`, `params`, and `body`. Each of them have nested nodes.
 
@@ -1031,9 +1031,9 @@ console.log(generate(ast).code);
 var myModule = require("my-module");
 ```
 
-# Writing your first Babel Plugin
+# Пишем ваш первый Babel-плагин
 
-Now that you're familiar with all the basics of Babel, let's tie it together with the plugin API.
+Теперь, когда вы знакомы с основами Babel, давайте свяжем это вместе с API для плагинов.
 
 Start off with a `function` that gets passed the current `babel` object.
 

@@ -82,7 +82,7 @@ In cazul in care cititi o traducere din limba engleza, veti gasi cuvinte in engl
       * [babel-generator](#babel-generator)
       * [babel-template](#babel-template)
   * [Scrierea primului Plugin Babel](#writing-your-first-babel-plugin)
-  * [Transformation Operations](#transformation-operations) 
+  * [Operatii de Transformare](#transformation-operations) 
       * [Visiting](#visiting)
       * [Check if a node is a certain type](#check-if-a-node-is-a-certain-type)
       * [Check if an identifier is referenced](#check-if-an-identifier-is-referenced)
