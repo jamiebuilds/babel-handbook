@@ -1,4 +1,4 @@
-# babel-plugin-handbook
+# Руководство по написанию плагинов для Babel
 
 В этом документе описано как создавать [плагины](https://babeljs.io/docs/advanced/plugins/) для [Babel](https://babeljs.io).
 
@@ -64,9 +64,9 @@ $ npm install -g babel-plugin-handbook
           * [Синтаксический анализ](#syntactic-analysis)
       * [Трансформация](#transform)
       * [Генерация](#generate)
-      * [Traversal](#traversal)
-      * [Visitors](#visitors)
-      * [Paths](#paths) 
+      * [Обход](#traversal)
+      * [Посетители](#visitors)
+      * [Пути](#paths) 
           * [Paths in Visitors](#paths-in-visitors)
       * [Состояние](#state)
       * [Scopes](#scopes) 
@@ -75,15 +75,15 @@ $ npm install -g babel-plugin-handbook
       * [babylon](#babylon)
       * [babel-traverse](#babel-traverse)
       * [babel-types](#babel-types)
-      * [Definitions](#definitions)
-      * [Builders](#builders)
-      * [Validators](#validators)
-      * [Converters](#converters)
+      * [Определения](#definitions)
+      * [Строители](#builders)
+      * [Валидаторы](#validators)
+      * [Преобразователи](#converters)
       * [babel-generator](#babel-generator)
       * [babel-template](#babel-template)
   * [Создание вашего первого плагина Babel](#writing-your-first-babel-plugin)
-  * [Transformation Operations](#transformation-operations) 
-      * [Visiting](#visiting)
+  * [Операции преобразования](#transformation-operations) 
+      * [Посещение](#visiting)
       * [Check if a node is a certain type](#check-if-a-node-is-a-certain-type)
       * [Check if an identifier is referenced](#check-if-an-identifier-is-referenced)
       * [Манипуляция](#manipulation)
@@ -96,7 +96,7 @@ $ npm install -g babel-plugin-handbook
       * [Удаление родителя](#removing-a-parent)
       * [Область видимости](#scope)
       * [Checking if a local variable is bound](#checking-if-a-local-variable-is-bound)
-      * [Generating a UID](#generating-a-uid)
+      * [Создание UID](#generating-a-uid)
       * [Pushing a variable declaration to a parent scope](#pushing-a-variable-declaration-to-a-parent-scope)
       * [Rename a binding and its references](#rename-a-binding-and-its-references)
   * [Параметры плагина](#plugin-options)
@@ -261,15 +261,15 @@ interface Node {
 
 Три основных этапа работы Babel это **парсинг**, **трансформация**, **генерация**.
 
-### Парсинг
+### Разбор
 
-The **parse** stage, takes code and outputs an AST. There are two phases of parsing in Babel: [**Lexical Analysis**](https://en.wikipedia.org/wiki/Lexical_analysis) and [**Syntactic Analysis**](https://en.wikipedia.org/wiki/Parsing).
+Стадия **разбора** принимает код и выводит AST. Существуют два этапа разбора в Babel: [**Лексический анализ**](https://en.wikipedia.org/wiki/Lexical_analysis) и [**Синтаксический анализ**](https://en.wikipedia.org/wiki/Parsing).
 
 #### Лексический Анализ
 
 Лексический анализ будет принимать строку кода и превращать его в поток **токенов**.
 
-You can think of tokens as a flat array of language syntax pieces.
+Вы можете думать о токенах как о плоском массиве элементов синтаксиса языка.
 
 ```js
 n * n;
@@ -284,7 +284,7 @@ n * n;
 ]
 ```
 
-Each of the `type`s here have a set of properties describing the token:
+Каждый `тип` здесь имеет набор свойств, описывающих токен:
 
 ```js
 {
@@ -305,7 +305,7 @@ Each of the `type`s here have a set of properties describing the token:
 }
 ```
 
-Like AST nodes they also have a `start`, `end`, and `loc`.
+Как узлы AST, они также имеют `start`, `end` и `loc`.
 
 #### Синтаксический Анализ
 
@@ -325,7 +325,7 @@ Like AST nodes they also have a `start`, `end`, and `loc`.
 
 Когда вы хотите трансорфмировать AST вам необходимо [пройти по всему дереву](https://en.wikipedia.org/wiki/Tree_traversal) рекурсивно.
 
-Say we have the type `FunctionDeclaration`. It has a few properties: `id`, `params`, and `body`. Each of them have nested nodes.
+Скажем, у нас есть тип `FunctionDeclaration`. Он имеет несколько свойств: `id`, `params` и `body`. Каждый из них имеет вложенные узлы.
 
 ```js
 {
@@ -359,21 +359,21 @@ Say we have the type `FunctionDeclaration`. It has a few properties: `id`, `para
 }
 ```
 
-So we start at the `FunctionDeclaration` and we know its internal properties so we visit each of them and their children in order.
+Итак, мы начинаем с `FunctionDeclaration`, и мы знаем его внутренние свойства, поэтому мы посещаем каждое из них и их детей в по порядку.
 
-Next we go to `id` which is an `Identifier`. `Identifier`s don't have any child node properties so we move on.
+Далее мы идем к `id`, который представляет собой ` Identifier `. ` Identifier`ы не имеют дочерних узлов, поэтому мы двигаемся дальше.
 
-After that is `params` which is an array of nodes so we visit each of them. In this case it's a single node which is also an `Identifier` so we move on.
+Затем следует `params`, который представляет собой массив узлов, и мы посещаем каждый из них. В данном случае это один узел, который также является ` Identifier`. Идем дальше.
 
-Then we hit `body` which is a `BlockStatement` with a property `body` that is an array of Nodes so we go to each of them.
+Затем мы попали `тело`, которое является `BlockStatement` со свойством `body`, которое является массивом узлов, поэтому мы проходимся по каждому из них.
 
-The only item here is a `ReturnStatement` node which has an `argument`, we go to the `argument` and find a `BinaryExpression`.
+Единственным элементом здесь является узел `ReturnStatement`, который имеет `argument`, мы идем на `argument` и находим выражение `BinaryExpression`.
 
-The `BinaryExpression` has an `operator`, a `left`, and a `right`. The operator isn't a node, just a value, so we don't go to it, and instead just visit `left` and `right`.
+`BinaryExpression` имеет `оператор`, `левую часть` и `правую часть`. Оператор это не узел, а просто значение, поэтому мы не переходим к нему, и вместо этого просто посещаем `левую` и `правую` части.
 
-This traversal process happens throughout the Babel transform stage.
+Этот процесс обхода происходит в Babel на этапе преобразования.
 
-### Visitors
+### Посетители
 
 When we talk about "going" to a node, we actually mean we are **visiting** them. The reason we use that term is because there is this concept of a [**visitor**](https://en.wikipedia.org/wiki/Visitor_pattern).
 
@@ -408,7 +408,7 @@ Called!
 
 These calls are all on node **enter**. However there is also the possibility of calling a visitor method when on **exit**.
 
-Imagine we have this tree structure:
+Представьте, что у нас есть следующая древовидная структура:
 
 ```js
 - FunctionDeclaration
@@ -423,30 +423,30 @@ Imagine we have this tree structure:
 
 As we traverse down each branch of the tree we eventually hit dead ends where we need to traverse back up the tree to get to the next node. Going down the tree we **enter** each node, then going back up we **exit** each node.
 
-Let's *walk* through what this process looks like for the above tree.
+Давайте *пройдем* через этот процесс для дерева из примера выше.
 
-  * Enter `FunctionDeclaration` 
-      * Enter `Identifier (id)`
-      * Hit dead end
-      * Exit `Identifier (id)`
-      * Enter `Identifier (params[0])`
-      * Hit dead end
-      * Exit `Identifier (params[0])`
-      * Enter `BlockStatement (body)`
-      * Enter `ReturnStatement (body)` 
-          * Enter `BinaryExpression (argument)`
-          * Enter `Identifier (left)` 
-              * Hit dead end
-          * Exit `Identifier (left)`
-          * Enter `Identifier (right)` 
-              * Hit dead end
-          * Exit `Identifier (right)`
-          * Exit `BinaryExpression (argument)`
-      * Exit `ReturnStatement (body)`
-      * Exit `BlockStatement (body)`
-  * Exit `FunctionDeclaration`
+  * Вход в `FunctionDeclaration` 
+      * Вход в `Identifier (id)`
+      * Попадание в тупик
+      * Выход из `Identifier (id)`
+      * Вход в `Identifier (params[0])`
+      * Попадание в тупик
+      * Выход из `Identifier (params[0])`
+      * Вход в `BlockStatement (body)`
+      * Вход в `ReturnStatement (body)` 
+          * Вход в `BinaryExpression (argument)`
+          * Вход в `Identifier (left)` 
+              * Попадание в тупик
+          * Выход из `Identifier (left)`
+          * Вход в `Identifier (right)` 
+              * Попадание в тупик
+          * Выход из `Identifier (right)`
+          * Выход из `BinaryExpression (argument)`
+      * Выход из `ReturnStatement (body)`
+      * Выход из `BlockStatement (body)`
+  * Выход из `FunctionDeclaration`
 
-So when creating a visitor you have two opportunities to visit a node.
+Итак, при создании посетителей у вас есть две возможности для посещения узла.
 
 ```js
 const MyVisitor = {
@@ -461,7 +461,7 @@ const MyVisitor = {
 };
 ```
 
-### Paths
+### Пути
 
 An AST generally has many Nodes, but how do Nodes relate to one another? We could have one giant mutable object that you manipulate and have full access to, or we can simplify this with **Paths**.
 
@@ -496,7 +496,7 @@ And represent the child `Identifier` as a path, it looks something like this:
 }
 ```
 
-It also has additional metadata about the path:
+Он также имеет дополнительные метаданные о пути:
 
 ```js
 {
@@ -528,7 +528,7 @@ As well as tons and tons of methods related to adding, updating, moving, and rem
 
 In a sense, paths are a **reactive** representation of a node's position in the tree and all sorts of information about the node. Whenever you call a method that modifies the tree, this information is updated. Babel manages all of this for you to make working with nodes easy and as stateless as possible.
 
-#### Paths in Visitors
+#### Пути в Посетителях
 
 When you have a visitor that has a `Identifier()` method, you're actually visiting the path instead of the node. This way you are mostly working with the reactive representation of a node instead of the node itself.
 
@@ -550,11 +550,11 @@ Visiting: b
 Visiting: c
 ```
 
-### State
+### Состояние
 
 State is the enemy of AST transformation. State will bite you over and over again and your assumptions about state will almost always be proven wrong by some syntax that you didn't consider.
 
-Take the following code:
+Возьмем следующий код:
 
 ```js
 function square(n) {
@@ -752,13 +752,13 @@ Babel is actually a collection of modules. In this section we'll walk through th
 
 Babylon is Babel's parser. Started as a fork of Acorn, it's fast, simple to use, has plugin-based architecture for non-standard features (as well as future standards).
 
-First, let's install it.
+Сперва давайте установим его.
 
 ```sh
 $ npm install --save babylon
 ```
 
-Let's start by simply parsing a string of code:
+Давайте начнем с разбора строки кода:
 
 ```js
 import * as babylon from "babylon";
@@ -779,7 +779,7 @@ babylon.parse(code);
 // }
 ```
 
-We can also pass options to `parse()` like so:
+Мы также можем передать опции в `parse()` следующим образом:
 
 ```js
 babylon.parse(code, {
@@ -788,25 +788,25 @@ babylon.parse(code, {
 });
 ```
 
-`sourceType` can either be `"module"` or `"script"` which is the mode that Babylon should parse in. `"module"` will parse in strict mode and allow module declarations, `"script"` will not.
+`sourceType` может быть как `"module"`, так и `"script"` и представляет собой режим разбора в Babylon. `"module"` будет производить разбор в strict mode и позволяет объявления модуля, `"script"` — нет.
 
-> **Note:** `sourceType` defaults to `"script"` and will error when it finds `import` or `export`. Pass `sourceType: "module"` to get rid of these errors.
+> **Примечание:** значением `sourceType` по умолчанию является `"script"`, и если будет найден ` import ` или ` export `, то произойдет ошибка. Передайте `sourceType: "module"` чтобы избежать этой ошибки.
 
-Since Babylon is built with a plugin-based architecture, there is also a `plugins` option which will enable the internal plugins. Note that Babylon has not yet opened this API to external plugins, although may do so in the future.
+Поскольку Babylon имеет плагин-архитектуру, есть также опция `plugins`, которая включит внутренние плагины. Обратите внимание, что в этот API Babylon еще не открыт для внешних плагинов, но может сделать это в будущем.
 
-To see a full list of plugins, see the [Babylon README](https://github.com/babel/babel/blob/master/packages/babylon/README.md#plugins).
+Чтобы увидеть полный список плагинов, посетите [Babylon README](https://github.com/babel/babel/blob/master/packages/babylon/README.md#plugins).
 
 ## [`babel-traverse`](https://github.com/babel/babel/tree/master/packages/babel-traverse)
 
 The Babel Traverse module maintains the overall tree state, and is responsible for replacing, removing, and adding nodes.
 
-Install it by running:
+Установите его, выполнив:
 
 ```sh
 $ npm install --save babel-traverse
 ```
 
-We can use it alongside Babylon to traverse and update nodes:
+Мы можем использовать его вместе с Babylon для обхода и обновления узлов:
 
 ```js
 import * as babylon from "babylon";
@@ -834,13 +834,13 @@ traverse(ast, {
 
 Babel Types is a Lodash-esque utility library for AST nodes. It contains methods for building, validating, and converting AST nodes. It's useful for cleaning up AST logic with well thought out utility methods.
 
-You can install it by running:
+Его можно установить, запустив:
 
 ```sh
 $ npm install --save babel-types
 ```
 
-Then start using it:
+Затем начнете его использовать:
 
 ```js
 import traverse from "babel-traverse";
@@ -855,11 +855,11 @@ traverse(ast, {
 });
 ```
 
-### Definitions
+### Определения
 
-Babel Types has definitions for every single type of node, with information on what properties belong where, what values are valid, how to build that node, how the node should be traversed, and aliases of the Node.
+Типы Babel имеют определения для каждого типа узла с информацией о том, какие свойства чему принадлежат, какие значения являются допустимыми, как построить этот узел, как узел должен быть пройден, а также псевдонимы узла.
 
-A single node type definition looks like this:
+Определение типа узла выглядит следующим образом:
 
 ```js
 defineType("BinaryExpression", {
@@ -880,21 +880,21 @@ defineType("BinaryExpression", {
 });
 ```
 
-### Builders
+### Строители
 
-You'll notice the above definition for `BinaryExpression` has a field for a `builder`.
+Обратите внимание, что в приведенном выше определении для `BinaryExpression` есть поле `builder`.
 
 ```js
 builder: ["operator", "left", "right"]
 ```
 
-This is because each node type gets a builder method, which when used looks like this:
+Это потому, что каждый тип узла получает метод-строитель, который при использовании выглядит следующим образом:
 
 ```js
 t.binaryExpression("*", t.identifier("a"), t.identifier("b"));
 ```
 
-Which creates an AST like this:
+И создает следующий AST:
 
 ```js
 {
@@ -911,15 +911,15 @@ Which creates an AST like this:
 }
 ```
 
-Which when printed looks like this:
+Который при выводе выглядит следующим образом:
 
 ```js
 a * b
 ```
 
-Builders will also validate the nodes they are creating and throw descriptive errors if used improperly. Which leads into the next type of method.
+Строители также будут проверять узлы, которые они создают и бросить ошибки если используются ненадлежащим образом. Что приводит нас к необходимости познакомиться со следующим типом методов.
 
-### Validators
+### Валидаторы
 
 The definition for `BinaryExpression` also includes information on the `fields` of a node and how to validate them.
 
@@ -957,21 +957,21 @@ t.assertBinaryExpression(maybeBinaryExpressionNode, { operator: "*" });
 // Error: Expected type "BinaryExpression" with option { "operator": "*" }
 ```
 
-### Converters
+### Преобразователи
 
 > [WIP]
 
 ## [`babel-generator`](https://github.com/babel/babel/tree/master/packages/babel-generator)
 
-Babel Generator is the code generator for Babel. It takes an AST and turns it into code with sourcemaps.
+Babel Generator — это генератор кода Babel. Он принимает AST и превращает его в код с sourcemaps.
 
-Run the following to install it:
+Выполните следующие действия, чтобы установить его:
 
 ```sh
 $ npm install --save babel-generator
 ```
 
-Then use it
+Затем используйте его
 
 ```js
 import * as babylon from "babylon";
@@ -990,7 +990,7 @@ generate(ast, null, code);
 // }
 ```
 
-You can also pass options to `generate()`.
+Вы также можете передать параметры в `generate()`.
 
 ```js
 generate(ast, {
@@ -1035,7 +1035,7 @@ var myModule = require("my-module");
 
 Теперь, когда вы знакомы с основами Babel, давайте свяжем это вместе с API для плагинов.
 
-Start off with a `function` that gets passed the current `babel` object.
+Начнём с `функции`, в которую передается текущий `babel`-объект.
 
 ```js
 export default function(babel) {
@@ -1043,7 +1043,7 @@ export default function(babel) {
 }
 ```
 
-Since you'll be using it so often, you'll likely want to grab just `babel.types` like so:
+Так как вы будете использовать его так часто, вы, скорее всего, захотите просто взять `babel.types` следующим образом:
 
 ```js
 export default function({ types: t }) {
@@ -1051,7 +1051,7 @@ export default function({ types: t }) {
 }
 ```
 
-Then you return an object with a property `visitor` which is the primary visitor for the plugin.
+Затем вы возвращаете объект со свойством `visitor`, который является основным посетитель для плагина.
 
 ```js
 export default function({ types: t }) {
@@ -1069,7 +1069,7 @@ export default function({ types: t }) {
 foo === bar;
 ```
 
-Or in AST form:
+Или в виде AST:
 
 ```js
 {
@@ -1086,7 +1086,7 @@ Or in AST form:
 }
 ```
 
-We'll start off by adding a `BinaryExpression` visitor method.
+Мы начнем с добавления метода посетителя `BinaryExpression`.
 
 ```js
 export default function({ types: t }) {
@@ -1100,7 +1100,7 @@ export default function({ types: t }) {
 }
 ```
 
-Then let's narrow it down to just `BinaryExpression`s that are using the `===` operator.
+Затем давайте сведем это к `BinaryExpression`, которые используют оператор `===`.
 
 ```js
 visitor: {
@@ -1114,7 +1114,7 @@ visitor: {
 }
 ```
 
-Now let's replace the `left` property with a new identifier:
+Теперь давайте заменить свойство `left` новым идентификатором:
 
 ```js
 BinaryExpression(path) {
@@ -1127,13 +1127,13 @@ BinaryExpression(path) {
 }
 ```
 
-Already if we run this plugin we would get:
+Уже теперь если мы запустим этот плагин, мы получим:
 
 ```js
 sebmck === bar;
 ```
 
-Now let's just replace the `right` property.
+Теперь давайте просто заменим свойство `right`.
 
 ```js
 BinaryExpression(path) {
@@ -1146,23 +1146,23 @@ BinaryExpression(path) {
 }
 ```
 
-And now for our final result:
+И теперь для нашего конечного результата:
 
 ```js
 sebmck === dork;
 ```
 
-Awesome! Our very first Babel plugin.
+Великолепно! Наш самый первый плагин для Babel.
 
 * * *
 
-# Transformation Operations
+# Операции преобразования
 
-## Visiting
+## Посещение
 
-### Check if a node is a certain type
+### Проверка типа узла
 
-If you want to check what the type of a node is, the preferred way to do so is:
+Если вы хотите проверить тип узла, то лучше всего сделать это следующим образом:
 
 ```js
 BinaryExpression(path) {
@@ -1172,7 +1172,7 @@ BinaryExpression(path) {
 }
 ```
 
-You can also do a shallow check for properties on that node:
+Вы также можете сделать поверхностную проверку свойств в этом узле:
 
 ```js
 BinaryExpression(path) {
@@ -1182,7 +1182,7 @@ BinaryExpression(path) {
 }
 ```
 
-This is functionally equivalent to:
+Это функционально эквивалентно:
 
 ```js
 BinaryExpression(path) {
@@ -1216,7 +1216,7 @@ Identifier(path) {
 }
 ```
 
-## Manipulation
+## Манипуляция
 
 ### Замена узла
 
@@ -1366,9 +1366,9 @@ FunctionDeclaration(path) {
 }
 ```
 
-### Generating a UID
+### Создание UID
 
-This will generate an identifier that doesn't collide with any locally defined variables.
+Следующий код сгенерирует идентификатор, который не конфликтует ни содной из локально определенных переменных.
 
 ```js
 FunctionDeclaration(path) {
@@ -1433,9 +1433,9 @@ FunctionDeclaration(path) {
 
 * * *
 
-# Plugin Options
+# Параметры плагина
 
-If you would like to let your users customize the behavior of your Babel plugin you can accept plugin specific options which users can specify like this:
+Если вы хотите позволить пользователям настраивать поведение вашего плагина для Babel, вы можете принимать параметры, специфичные для этого плагина, которые пользователи могут указать следующим образом:
 
 ```js
 {
@@ -1448,7 +1448,7 @@ If you would like to let your users customize the behavior of your Babel plugin 
 }
 ```
 
-These options then get passed into plugin visitors through the `state` object:
+Затем эти параметры передаются в посетителей через объект `state`:
 
 ```js
 export default function({ types: t }) {
@@ -1463,7 +1463,7 @@ export default function({ types: t }) {
 }
 ```
 
-These options are plugin-specific and you cannot access options from other plugins.
+Эти параметры зависят от плагина, и вам не удается получить доступ к параметрам от других плагинов.
 
 * * *
 
@@ -1578,7 +1578,7 @@ You can find all of the actual [definitions here](https://github.com/babel/babel
 
 * * *
 
-# Best Practices
+# Лучшие практики
 
 > I'll be working on this section over the coming weeks.
 

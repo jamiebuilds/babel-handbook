@@ -112,19 +112,19 @@ If you are reading a non-english translation of this document you will find a nu
 
 Babel ist ein generischer Compiler für JavaScript. Des weiteren ist es eine Sammlung von Modulen, welche für vielfältige Arten von statischer Analyse benutzt werden können.
 
-> Statische Analyse ist die Analyse von Code ohne ihn auszuführen. (Analyse von Code mit Ausführung desselben wird als dynamische Analyse bezeichnet). Die statische Analyse kann vielfältige Anwendungen haben. It can be used for linting, compiling, code highlighting, code transformation, optimization, minification, and much more.
+> Statische Analyse ist die Analyse von Code ohne ihn auszuführen. (Analyse von Code mit Ausführung desselben wird als dynamische Analyse bezeichnet). Die statische Analyse kann vielfältige Anwendungen haben. Sie kann für Linting, Kompilieren, Syntax-Highlighting, Codetransformation, Optimierung, Minifikation und vielen anderen Anwendungen verwendet werden.
 
-You can use Babel to build many different types of tools that can help you be more productive and write better programs.
+Babel kann zur erstellung von verschiedenen Arten von Tools verwedet werden um produktiver zu werden und bessere Programme zu schreiben.
 
-# Basics
+# Grundlagen
 
-Babel is a JavaScript compiler, specifically a source-to-source compiler, often called a "transpiler". This means that you give Babel some JavaScript code, Babel modifies the code, and generates the new code back out.
+Babel ist ein JavaScript Compiler, genauer ein Source zu Source Compiler, auch "Transpiler" genannt. Das heißt, dass Babel als Eingabe JavsScript Code bekommt, den Code modifiziert und neuen Code als Ausgabe produziert.
 
-## ASTs
+## ASTs (Abstrakte Syntaxbäume)
 
-Each of these steps involve creating or working with an [Abstract Syntax Tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree) or AST.
+In jeden dieser Schritte ist das Erstellen oder das Arbeiten mit einem [Abstrakten Syntaxbaum](https://en.wikipedia.org/wiki/Abstract_syntax_tree) oder AST enthalten.
 
-> Babel uses an AST modified from [ESTree](https://github.com/estree/estree), with the core spec located [here](https://github.com/babel/babel/blob/master/doc/ast/spec.md).
+> Babel verwendet einen auf [ESTree](https://github.com/estree/estree) basierten AST mit folgender [Spezifikation](https://github.com/babel/babel/blob/master/doc/ast/spec.md).
 
 ```js
 function square(n) {
@@ -132,9 +132,9 @@ function square(n) {
 }
 ```
 
-> Check out [AST Explorer](http://astexplorer.net/) to get a better sense of the AST nodes. [Here](http://astexplorer.net/#/Z1exs6BWMq) is a link to it with the example code above pasted in.
+> Um mit AST Knoten zu experimentieren kann das Tool [AST Explorer](http://astexplorer.net/) verwendet werden. Dieser [Link](http://astexplorer.net/#/Z1exs6BWMq) enthält den Ast für den Beispielcode von oben.
 
-This same program can be represented as a list like this:
+Das Programm kann auch als Liste wie folgt abgebildet werden:
 
 ```md
 - FunctionDeclaration:
@@ -159,7 +159,7 @@ This same program can be represented as a list like this:
                   - name: n
 ```
 
-Or as a JavaScript Object like this:
+Oder auch als JavaScript Objekt:
 
 ```js
 {
@@ -193,7 +193,7 @@ Or as a JavaScript Object like this:
 }
 ```
 
-You'll notice that each level of the AST has a similar structure:
+Jede Ebene des AST hat eine ähnliche Struktur:
 
 ```js
 {
@@ -220,11 +220,11 @@ You'll notice that each level of the AST has a similar structure:
 }
 ```
 
-> Note: Some properties have been removed for simplicity.
+> Hinweis: Der Einfachheit halber wurden einige Eigenschaften entfernt.
 
-Each of these are known as a **Node**. An AST can be made up of a single Node, or hundreds if not thousands of Nodes. Together they are able to describe the syntax of a program that can be used for static analysis.
+Jede dieser Ebenen wird auch als **Knoten** bezeichnet. Ein AST kann aus einem einzelnen Knoten oder hunderten wenn nicht tausenden von Knoten bestehen. Zusammen können sie die Syntax eines Programmes beschreiben und können für die statische Analyse verwendet werden.
 
-Every Node has this interface:
+Jeder Knoten hat das folgende Interface:
 
 ```typescript
 interface Node {
@@ -232,7 +232,7 @@ interface Node {
 }
 ```
 
-The `type` field is a string representing the type of Node the object is (ie. `"FunctionDeclaration"`, `"Identifier"`, or `"BinaryExpression"`). Each type of Node defines an additional set of properties that describe that particular node type.
+Das `type` Feld ist ein String welcher die Art des Knotens repräsentiert (z.B. `"FunctionDeclaration"`, `"Identifier"`, oder `"BinaryExpression"`). Jeder Knotentyp definiert zusätzliche Eigenschaften welche den speziellen Knotentypen genauer beschreiben.
 
 There are additional properties on every Node that Babel generates which describe the position of the Node in the original source code.
 

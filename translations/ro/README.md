@@ -2,21 +2,21 @@
 
 Acest document descrie cum se pot crea [plugin-uri](https://babeljs.io/docs/advanced/plugins/) pentru [Babel](https://babeljs.io).
 
-In cazul in care cititi intr-o limba diferita de engleza, este posibil ca unele sectiuni care nu au fost traduse inca, sa le gasiti in engleza. Daca doriti sa contribuiti la traducerea acestui document intr-una din limbi, va trebui sa folositi Crowdin. Va rugam sa cititi [ghidul de contributie](/CONTRIBUTING.md) pentru mai multe informatii.
+În cazul în care citiți într-o limbă diferită de engleză, este posibil ca unele secțiuni care nu au fost traduse incă, să le găsiți în engleză. Dacă doriți să contribuiți la traducerea acestui document, va trebui să folosiți Crowdin. Vă rugăm să citiți [ghidul de contribuție](/CONTRIBUTING.md) pentru mai multe informații.
 
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
-Multumim in mod special urmatorilor: [@sebmck](https://github.com/sebmck/), [@hzoo](https://github.com/hzoo), [@jdalton](https://github.com/jdalton), [@abraithwaite](https://github.com/abraithwaite), [@robey](https://github.com/robey), si altora, pentru ajutorul extraordinar adus acestui document.
+Mulțumim în mod special lui [@sebmck](https://github.com/sebmck/), [@hzoo](https://github.com/hzoo), [@jdalton](https://github.com/jdalton), [@abraithwaite](https://github.com/abraithwaite), [@robey](https://github.com/robey), și altora, pentru ajutorul extraordinar adus acestui document.
 
 # Pachet Node
 
-Puteti instala acest document folosing npm, in felul urmator:
+Puteți instala acest document folosing npm, în felul următor:
 
 ```sh
 $ npm install -g babel-plugin-handbook
 ```
 
-Acum ve-ti avea comanda `babel-plugin-handbook` care va deschide acest document in `$PAGER`. Ca alternativa, puteti continua sa cititi acest document, asa cum o faceti in acest moment.
+Acum veți avea comanda `babel-plugin-handbook` care va deschide acest document în `$PAGER`. Ca alternativă, puteti continua să citiți acest document, așa cum o faceți în acest moment.
 
 # Traduceri
 
@@ -51,80 +51,80 @@ Acum ve-ti avea comanda `babel-plugin-handbook` care va deschide acest document 
   * [中文](/translations/zh-CN/README.md)
   * [繁體中文](/translations/zh-TW/README.md)
 
-In cazul in care cititi o traducere din limba engleza, veti gasi cuvinte in engleza care se refera la concepte de programare. Daca acestea ar fi traduse in alte limbi s-ar pierde consistenta si fluenta in citire. In anumite cazuri veti gasi traducerea literara urmata de termenul in engleza intre paranteze `()`. De exemplu: Arbori Abstracti de Sintaxa (ASTs).
+În cazul în care citiți o traducere din limba engleză, veți găsi cuvinte în engleză care se referă la concepte de programare. Daca acestea ar fi traduse în alte limbi s-ar pierde consistența și fluența în citire. În anumite cazuri veți găsi traducerea literară urmată de termenul în engleză între paranteze `()`. De exemplu: Arbori Abstracți de Sintaxă (ASTs).
 
 # Cuprins
 
   * [Introducere](#introduction)
-  * [Elemente de bază](#basics) 
+  * [Concepte de bază](#basics) 
       * [ASTs](#asts)
       * [Etapele Babel](#stages-of-babel)
-      * [Analiza](#parse) 
-          * [Analiza Lexicala](#lexical-analysis)
-          * [Analiza Sintactica](#syntactic-analysis)
+      * [Analiză](#parse) 
+          * [Analiză Lexicală](#lexical-analysis)
+          * [Analiză Sintactică](#syntactic-analysis)
       * [Transformare](#transform)
       * [Generare](#generate)
       * [Traversare](#traversal)
       * [Vizitatori (Visitors)](#visitors)
-      * [Rute (Paths)](#paths) 
-          * [Rute in Vizitatori (Paths in Visitors)](#paths-in-visitors)
+      * [Trasee (Paths)](#paths) 
+          * [Trasee în Vizitatori (Paths in Visitors)](#paths-in-visitors)
       * [Stare](#state)
       * [Domenii (Scopes)](#scopes) 
-          * [Legaturi (Bindings)](#bindings)
+          * [Legături (Bindings)](#bindings)
   * [API](#api) 
       * [babylon](#babylon)
       * [babel-traverse](#babel-traverse)
       * [babel-types](#babel-types)
-      * [Definitii](#definitions)
+      * [Definiții](#definitions)
       * [Constructori](#builders)
       * [Validatori](#validators)
       * [Convertori](#converters)
       * [babel-generator](#babel-generator)
       * [babel-template](#babel-template)
   * [Scrierea primului Plugin Babel](#writing-your-first-babel-plugin)
-  * [Operatii de Transformare](#transformation-operations) 
+  * [Operații de Transformare](#transformation-operations) 
       * [Vizitare (Visiting)](#visiting)
-      * [Verifica daca un nod este de un anumit tip](#check-if-a-node-is-a-certain-type)
-      * [Verifica daca un identificator are referinta](#check-if-an-identifier-is-referenced)
+      * [Verificare dacă un nod este de un anumit tip](#check-if-a-node-is-a-certain-type)
+      * [Verificare dacă un identificator are referință](#check-if-an-identifier-is-referenced)
       * [Manipulare](#manipulation)
-      * [Inlocuirea unui nod](#replacing-a-node)
-      * [Inlocuirea unui nod cu mai multe noduri](#replacing-a-node-with-multiple-nodes)
-      * [Inlocuirea unui nod cu un sir de caractere sursa](#replacing-a-node-with-a-source-string)
-      * [Inserarea unui nod pe acelasi nivel](#inserting-a-sibling-node)
-      * [Stergerea unui nod](#removing-a-node)
-      * [Inlocuirea unui parinte](#replacing-a-parent)
-      * [Stergerea unui parinte](#removing-a-parent)
+      * [Înlocuirea unui nod](#replacing-a-node)
+      * [Înlocuirea unui nod cu mai multe noduri](#replacing-a-node-with-multiple-nodes)
+      * [Înlocuirea unui nod cu un șir de caractere sursă](#replacing-a-node-with-a-source-string)
+      * [Inserarea unui nod pe același nivel](#inserting-a-sibling-node)
+      * [Ștergerea unui nod](#removing-a-node)
+      * [Înlocuirea unui părinte](#replacing-a-parent)
+      * [Ștergerea unui părinte](#removing-a-parent)
       * [Domeniu (Scope)](#scope)
-      * [Verificare daca o variabila locala are legatura](#checking-if-a-local-variable-is-bound)
+      * [Verificare dacă o variabilă locală este legată](#checking-if-a-local-variable-is-bound)
       * [Generarea unui UID](#generating-a-uid)
-      * [Mutarea unei declaratii de variabile intr-un domeniu parinte](#pushing-a-variable-declaration-to-a-parent-scope)
-      * [Redenumirea unei legaturi si a referintelor sale](#rename-a-binding-and-its-references)
-  * [Optiuni](#plugin-options)
+      * [Mutarea unei declarații de variabilă într-un domeniu părinte](#pushing-a-variable-declaration-to-a-parent-scope)
+      * [Redenumirea unei legături și a referințelor sale](#rename-a-binding-and-its-references)
+  * [Opțiuni de plugin](#plugin-options)
   * [Construirea nodurilor](#building-nodes)
   * [Practici preferate](#best-practices) 
-      * [Evitati traversarea AST pe cat posibil](#avoid-traversing-the-ast-as-much-as-possible)
-      * [Imbinare vizitatori ori de cate ori este posibil](#merge-visitors-whenever-possible)
-      * [Nu traversati cand o cautare manuala este suficienta](#do-not-traverse-when-manual-lookup-will-do)
-      * [Optimizarea vizitatorilor imbricati](#optimizing-nested-visitors)
-      * [Atentie la structuri imbricate](#being-aware-of-nested-structures)
+      * [Evitați traversarea AST pe cât posibil](#avoid-traversing-the-ast-as-much-as-possible)
+      * [Îmbinarea vizitatorilor ori de câte ori este posibil](#merge-visitors-whenever-possible)
+      * [Evitați traversarea când o căutare manuală este suficientă](#do-not-traverse-when-manual-lookup-will-do)
+      * [Optimizarea vizitatorilor imbricați](#optimizing-nested-visitors)
+      * [Atenție la structuri imbricate](#being-aware-of-nested-structures)
 
 # Introducere
 
-Babel is a generic multi-purpose compiler for JavaScript. More than that it is a collection of modules that can be used for many different forms of static analysis.
+Babel este un compilator generic multi-scop pentru JavaScript. Mai mult decât atât, este o colecție de module care pot fi utilizate pentru diverse tipuri de analiză statică.
 
-> Static analysis is the process of analyzing code without executing it. (Analysis of code while executing it is known as dynamic analysis). The purpose of static analysis varies greatly. It can be used for linting, compiling, code highlighting, code transformation, optimization, minification, and much more.
+> Analiza statică este procesul de a analiza cod fără a-l executa. (Analiza de cod, în timp ce se execută este cunoscută ca analiză dinamică). Scopul analizei statice variază foarte mult. Poate fi folosită pentru validare (linting), compilare, evidențiere (highlighting), transformare, optimizare, minimizare, și multe altele.
 
-You can use Babel to build many different types of tools that can help you be more productive and write better programs.
+Puteți utiliza Babel pentru a construi diverse tipuri de instrumente care vă pot ajuta să fiți mai productivi și pentru a scrie programe mai bune.
 
-# Basics
+# Concepte de bază
 
-Babel is a JavaScript compiler, specifically a source-to-source compiler, often called a "transpiler". This means that you give Babel some JavaScript code, Babel modifies the code, and generates the new code back out.
+Babel este un compilator de JavaScript, mai exact un compilator sursă-la-sursă, deseori numit un "transpiler". Asta înseamnă că daca îi pasezi cod JavaScript, Babel modifică codul, și generează cod nou.
 
 ## ASTs
 
-Each of these steps involve creating or working with an [Abstract Syntax Tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree) or AST.
+Fiecare dintre acești pași implică crearea sau lucrul cu un [Arbore Abstract de Sintaxa](https://en.wikipedia.org/wiki/Abstract_syntax_tree) sau AST.
 
-> Babel uses an AST modified from [ESTree](https://github.com/estree/estree), with the core spec located [here](https://github.com/babel/babel/blob/master/doc/ast/spec.md).
+> Babel folosește un AST modificat din [ESTree](https://github.com/estree/estree), cu specificațiile interne aflate [aici](https://github.com/babel/babel/blob/master/doc/ast/spec.md).
 
 ```js
 function square(n) {
@@ -132,9 +132,9 @@ function square(n) {
 }
 ```
 
-> Check out [AST Explorer](http://astexplorer.net/) to get a better sense of the AST nodes. [Here](http://astexplorer.net/#/Z1exs6BWMq) is a link to it with the example code above pasted in.
+> Examinați [AST Explorer](http://astexplorer.net/) pentru a înțelege mai bine nodurile AST. [Aici](http://astexplorer.net/#/Z1exs6BWMq) este un link, cu exemplul de cod de mai sus.
 
-This same program can be represented as a list like this:
+Același program poate fi reprezentat printr-o listă, ca aceasta:
 
 ```md
 - FunctionDeclaration:
@@ -159,7 +159,7 @@ This same program can be represented as a list like this:
                   - name: n
 ```
 
-Or as a JavaScript Object like this:
+Sau printr-un obiect JavaScript ca acesta:
 
 ```js
 {
@@ -193,7 +193,7 @@ Or as a JavaScript Object like this:
 }
 ```
 
-You'll notice that each level of the AST has a similar structure:
+Veți observa că fiecare nivel AST are o structură similară:
 
 ```js
 {
@@ -220,11 +220,11 @@ You'll notice that each level of the AST has a similar structure:
 }
 ```
 
-> Note: Some properties have been removed for simplicity.
+> Notă: Unele proprietăți au fost eliminate pentru simplitate.
 
-Each of these are known as a **Node**. An AST can be made up of a single Node, or hundreds if not thousands of Nodes. Together they are able to describe the syntax of a program that can be used for static analysis.
+Fiecare dintre acestea sunt cunoscute sub denumirea de **Nod**. AST-ul poate fi alcătuit dintr-un singur nod, sute sau mii de noduri. Impreună ele sunt capabile să descrie sintaxa unui program care poate fi folosită pentru analiză statică.
 
-Every Node has this interface:
+Fiecare Nod are această interfață:
 
 ```typescript
 interface Node {
@@ -232,9 +232,9 @@ interface Node {
 }
 ```
 
-The `type` field is a string representing the type of Node the object is (ie. `"FunctionDeclaration"`, `"Identifier"`, or `"BinaryExpression"`). Each type of Node defines an additional set of properties that describe that particular node type.
+Câmpul `type` este un string reprezentând tipul Nodului (ex. `"FunctionDeclaration"`, `"Identifier"`, sau `"BinaryExpression"`). Fiecare tip de Nod definește un set suplimentar de proprietăţi care descriu acel nod.
 
-There are additional properties on every Node that Babel generates which describe the position of the Node in the original source code.
+Există proprietăţi suplimentare pe fiecare Nod, generate de Babel, care descriu poziţia Nodului în codul sursă original.
 
 ```js
 {
@@ -255,21 +255,21 @@ There are additional properties on every Node that Babel generates which describ
 }
 ```
 
-These properties `start`, `end`, `loc`, appear in every single Node.
+Aceste proprietăţi `start`, `end`, `loc`, apar în fiecare Nod.
 
-## Stages of Babel
+## Etapele Babel
 
-The three primary stages of Babel are **parse**, **transform**, **generate**.
+Cele trei etape principale ale Babel sunt **analiză**, **transformare**, **generare**.
 
-### Parse
+### Analiză
 
-The **parse** stage, takes code and outputs an AST. There are two phases of parsing in Babel: [**Lexical Analysis**](https://en.wikipedia.org/wiki/Lexical_analysis) and [**Syntactic Analysis**](https://en.wikipedia.org/wiki/Parsing).
+Etapa de **analiză**, primeste codul şi produce AST-ul. Există două faze ale analizei în Babel: [**Analiza lexicală**](https://en.wikipedia.org/wiki/Lexical_analysis) şi [**Analiza sintactică**](https://en.wikipedia.org/wiki/Parsing).
 
-#### Lexical Analysis
+#### Analiza lexicală
 
-Lexical Analysis will take a string of code and turn it into a stream of **tokens**.
+Analiza lexicală primeste un şir de cod şi-l transformă într-un flux de simboluri (**tokens**).
 
-You can think of tokens as a flat array of language syntax pieces.
+Vă puteţi gândi la tokens ca o matrice uni-dimensională de piese de sintaxă a limbii.
 
 ```js
 n * n;
@@ -284,7 +284,7 @@ n * n;
 ]
 ```
 
-Each of the `type`s here have a set of properties describing the token:
+Fiecare `type` au un set de proprietăţi care descrie token-ul:
 
 ```js
 {
@@ -305,27 +305,27 @@ Each of the `type`s here have a set of properties describing the token:
 }
 ```
 
-Like AST nodes they also have a `start`, `end`, and `loc`.
+La fel ca nodurile AST, acestea conțin `start`, `end`, și `loc`.
 
-#### Syntactic Analysis
+#### Analiza sintactică
 
-Syntactic Analysis will take a stream of tokens and turn it into an AST representation. Using the information in the tokens, this phase will reformat them as an AST which represents the structure of the code in a way that makes it easier to work with.
+Analiza sintactică primește un flux de token-uri şi-l transformă într-o reprezentare AST. Folosind informaţiile din token-uri, această fază le va reformata ca un AST care reprezintă structura codului într-un mod care este mai uşor de utilizat.
 
-### Transform
+### Transformare
 
-The [transform](https://en.wikipedia.org/wiki/Program_transformation) stage takes an AST and traverses through it, adding, updating, and removing nodes as it goes along. This is by far the most complex part of Babel or any compiler. This is where plugins operate and so it will be the subject of most of this handbook. So we won't dive too deep right now.
+Etapa de [Transformare](https://en.wikipedia.org/wiki/Program_transformation) primește un AST pe care-l traversează, adăugă, actualizează şi sterge noduri. Această etapă este de departe cea mai complexă din Babel sau din orice alt compilator. Aici este locul în care plugin-uri operează aşadar va fi subiectul majorității capitolelor din acest manual. Nu vom intra prea adânc în detalii pentru moment.
 
-### Generate
+### Generare
 
-The [code generation](https://en.wikipedia.org/wiki/Code_generation_(compiler)) stage takes the final AST and turns in back into a string of code, also creating [source maps](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/).
+Etapa de [generare de cod](https://en.wikipedia.org/wiki/Code_generation_(compiler)) primește AST-ul final şi-l transformă înapoi într-un şir de cod, creând şi [source maps](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/).
 
-Code generation is pretty simple: you traverse through the AST depth-first, building a string that represents the transformed code.
+Generarea de cod este destul de simplă: se traversează AST-ul și se construiește un şir de caractere care reprezintă codul transformat.
 
-## Traversal
+## Traversare
 
-When you want to transform an AST you have to [traverse the tree](https://en.wikipedia.org/wiki/Tree_traversal) recursively.
+Atunci când doriţi să transformați un AST trebuie să-l [traversați](https://en.wikipedia.org/wiki/Tree_traversal) recursiv.
 
-Say we have the type `FunctionDeclaration`. It has a few properties: `id`, `params`, and `body`. Each of them have nested nodes.
+Să zicem ca avem tipul `FunctionDeclaration`. El are câteva proprietăți: `id`, `params` si `body`. Fiecare dintre ele au noduri imbricate.
 
 ```js
 {
@@ -359,25 +359,25 @@ Say we have the type `FunctionDeclaration`. It has a few properties: `id`, `para
 }
 ```
 
-So we start at the `FunctionDeclaration` and we know its internal properties so we visit each of them and their children in order.
+Vom începe cu `FunctionDeclaration` şi ştim proprietăţile sale interne, astfel încât vom vizita fiecare proprietate şi copiii lor în ordine.
 
-Next we go to `id` which is an `Identifier`. `Identifier`s don't have any child node properties so we move on.
+Apoi vom continua cu `id`, care este un `Identificator`. `Identificatorii` nu au proprietăţi copil astfel încât putem merge mai departe.
 
-After that is `params` which is an array of nodes so we visit each of them. In this case it's a single node which is also an `Identifier` so we move on.
+Urmează `params`, care este o matrice de noduri, așadar vom vizita pe fiecare dintre ele. În acest caz este un singur nod care este de asemenea un `Identificator` aşadar putem merge mai departe.
 
-Then we hit `body` which is a `BlockStatement` with a property `body` that is an array of Nodes so we go to each of them.
+Apoi ajungem la `body`, care este un `BlockStatement` cu o proprietate `body`, care este o serie de noduri, aşa că le vom vizita pe fiecare dintre ele.
 
-The only item here is a `ReturnStatement` node which has an `argument`, we go to the `argument` and find a `BinaryExpression`.
+Singurul element de aici este un nod `ReturnStatement`, care are un `argument`, vom merge la `argument` unde găsim un `BinaryExpression`.
 
-The `BinaryExpression` has an `operator`, a `left`, and a `right`. The operator isn't a node, just a value, so we don't go to it, and instead just visit `left` and `right`.
+`BinaryExpression` conține un `operator`, un `left`, şi un `right`. "Operator" nu este un nod, doar o valoare, așadar o ignorăm, şi în schimb vizităm doar `left` şi `right`.
 
-This traversal process happens throughout the Babel transform stage.
+Acest proces de traversare se întâmplă de-a lungul etapei de transformare Babel.
 
-### Visitors
+### Vizitatori (Visitors)
 
-When we talk about "going" to a node, we actually mean we are **visiting** them. The reason we use that term is because there is this concept of a [**visitor**](https://en.wikipedia.org/wiki/Visitor_pattern).
+Atunci când vorbim despre "a merge" la un nod, ne referim de fapt la a-l **vizita**. Motivul pentru care vom folosi acest termen este pentru că există acest concept de [**vizitator**](https://en.wikipedia.org/wiki/Visitor_pattern).
 
-Visitors are a pattern used in AST traversal across languages. Simply put they are an object with methods defined for accepting particular node types in a tree. That's a bit abstract so let's look at an example.
+Vizitatorii sunt un model folosit în traversarea AST traversare, utilizat în diverse limbaje. În termeni simpli, aceștia sunt obiecte cu metode definite pentru a accepta anumite tipuri de nod dintr-un AST. Asta poate fi putin abstract, așadar să luăm un exemplu.
 
 ```js
 const MyVisitor = {
@@ -387,11 +387,11 @@ const MyVisitor = {
 };
 ```
 
-> **Note:** `Identifier() { ... }` is shorthand for `Identifier: { enter() { ... } }`.
+> **Notă:** `Identifier() { ... }` este o prescurtare pentru `Identifier: {enter() { ... }}`.
 
-This is a basic visitor that when used during a traversal will call the `Identifier()` method for every `Identifier` in the tree.
+Aceasta este un vizitator simplu care atunci când este utilizat în timpul traversării va apela metoda `Identifier()` pentru fiecare `Identificator` din arbore.
 
-So with this code the `Identifier()` method will be called four times with each `Identifier` (including `square`).
+Așadar cu acest cod metoda `Identifier()` va fi apelată de patru ori cu fiecare `Identificator` (inclusiv `square`).
 
 ```js
 function square(n) {
@@ -406,9 +406,9 @@ Called!
 Called!
 ```
 
-These calls are all on node **enter**. However there is also the possibility of calling a visitor method when on **exit**.
+Toate aceste apeluri se petrec la **intrarea** în nod. Cu toate acestea, există, de asemenea, posibilitatea de a apela o metodă vizitator la **ieşire**.
 
-Imagine we have this tree structure:
+Imaginaţi-vă că avem această structură de arbore:
 
 ```js
 - FunctionDeclaration
@@ -421,32 +421,32 @@ Imagine we have this tree structure:
         - Identifier (right)
 ```
 
-As we traverse down each branch of the tree we eventually hit dead ends where we need to traverse back up the tree to get to the next node. Going down the tree we **enter** each node, then going back up we **exit** each node.
+În timpul parcurgerii fiecărei ramuri, vom ajunge în cele din urmă într-o înfundătură, unde trebuie să traversăm arborele în sens invers pentru a ajunge la nodul următor. Mergând în jos prin arbore **intrăm** în fiecare nod, iar când parcurgem în sens invers **ieșim** din fiecare nod.
 
-Let's *walk* through what this process looks like for the above tree.
+Haideţi să *parcurgem* acest proces de traversare pentru arborele de mai sus.
 
-  * Enter `FunctionDeclaration` 
-      * Enter `Identifier (id)`
-      * Hit dead end
-      * Exit `Identifier (id)`
-      * Enter `Identifier (params[0])`
-      * Hit dead end
-      * Exit `Identifier (params[0])`
-      * Enter `BlockStatement (body)`
-      * Enter `ReturnStatement (body)` 
-          * Enter `BinaryExpression (argument)`
-          * Enter `Identifier (left)` 
-              * Hit dead end
-          * Exit `Identifier (left)`
-          * Enter `Identifier (right)` 
-              * Hit dead end
-          * Exit `Identifier (right)`
-          * Exit `BinaryExpression (argument)`
-      * Exit `ReturnStatement (body)`
-      * Exit `BlockStatement (body)`
-  * Exit `FunctionDeclaration`
+  * Intrare `FunctionDeclaration` 
+      * Intrare `Identifier (id)`
+      * Înfundătură
+      * Ieșire `Identifier (id)`
+      * Intrare `Identifier (params[0])`
+      * Înfundătură
+      * Ieșire `Identifier (params[0])`
+      * Intrare `BlockStatement (body)`
+      * Intrare `ReturnStatement (body)` 
+          * Intrare `BinaryExpression (argument)`
+          * Intrare `Identifier (left)` 
+              * Înfundătură
+          * Ieșire `Identifier (left)`
+          * Intrare `Identifier (right)` 
+              * Înfundătură
+          * Ieșire `Identifier (right)`
+          * Ieșire `BinaryExpression (argument)`
+      * Ieșire `ReturnStatement (body)`
+      * Ieșire `BlockStatement (body)`
+  * Ieșire `FunctionDeclaration`
 
-So when creating a visitor you have two opportunities to visit a node.
+Așadar, când creaţi un vizitator aveţi două ocazii de a vizita un nod.
 
 ```js
 const MyVisitor = {
@@ -461,13 +461,13 @@ const MyVisitor = {
 };
 ```
 
-### Paths
+### Trasee (Paths)
 
-An AST generally has many Nodes, but how do Nodes relate to one another? We could have one giant mutable object that you manipulate and have full access to, or we can simplify this with **Paths**.
+AST o are în general multe Noduri, dar cum se relaționează unul la altul? Am putea avea un singur obiect mutabil gigant, care să-l manipulăm şi să avem acces deplin la el, sau putem simplifica acest lucru cu Trasee (**Paths**).
 
-A **Path** is an object representation of the link between two nodes.
+Un Traseu (**Path**) este o reprezentare de obiect a legăturii între două noduri.
 
-For example if we take the following node and its child:
+De exemplu, dacă luăm următorul nod şi copilul său:
 
 ```js
 {
@@ -480,7 +480,7 @@ For example if we take the following node and its child:
 }
 ```
 
-And represent the child `Identifier` as a path, it looks something like this:
+Şi reprezentăm copilul ` Identifier ` ca un Traseu, ar arăta ceva de genul acesta:
 
 ```js
 {
@@ -496,7 +496,7 @@ And represent the child `Identifier` as a path, it looks something like this:
 }
 ```
 
-It also has additional metadata about the path:
+De asemenea, conține metadate suplimentare despre traseu:
 
 ```js
 {
@@ -524,13 +524,13 @@ It also has additional metadata about the path:
 }
 ```
 
-As well as tons and tons of methods related to adding, updating, moving, and removing nodes, but we'll get into those later.
+Precum şi foarte multe metode legate de adăugarea, actualizarea, mutarea, şi ștergerea de noduri, dar vom ajunge la ele mai târziu.
 
-In a sense, paths are a **reactive** representation of a node's position in the tree and all sorts of information about the node. Whenever you call a method that modifies the tree, this information is updated. Babel manages all of this for you to make working with nodes easy and as stateless as possible.
+Într-un anumit sens, traseele sunt o reprezentare **reactivă** a poziţiei unui nod în arbore şi multe alte informatii despre nod. Ori de câte ori apelați o metodă care modifică arborele, această informaţie este actualizată. Babel gestionează toate acestea pentru a face lucrul cu noduri cât mai ușor posibil.
 
-#### Paths in Visitors
+#### Trasee în Vizitatori (Paths in Visitors)
 
-When you have a visitor that has a `Identifier()` method, you're actually visiting the path instead of the node. This way you are mostly working with the reactive representation of a node instead of the node itself.
+Când aveţi un vizitator care are o metodă `Identifier()`, de fapt se vizitează traseul, nu nodul. În acest fel se lucrează cu reprezentarea reactivă a nodului, nu cu nodul în sine.
 
 ```js
 const MyVisitor = {
@@ -550,11 +550,11 @@ Visiting: b
 Visiting: c
 ```
 
-### State
+### Stare
 
-State is the enemy of AST transformation. State will bite you over and over again and your assumptions about state will almost always be proven wrong by some syntax that you didn't consider.
+Starea este duşmanul transformării AST-ului. Starea îți va crea mari probleme şi ipotezele tale despre stare vor fi aproape întotdeauna greşite de o sintaxă care nu ai luat-o în considerare.
 
-Take the following code:
+Să considerăm următorul cod:
 
 ```js
 function square(n) {
@@ -562,7 +562,7 @@ function square(n) {
 }
 ```
 
-Let's write a quick hacky visitor that will rename `n` to `x`.
+Să scriem un vizitator rapid, care va redenumi `n` în `x`.
 
 ```js
 let paramName;
@@ -582,7 +582,7 @@ const MyVisitor = {
 };
 ```
 
-This might work for the above code, but we can easily break that by doing this:
+Acest lucru ar putea funcționa pentru codul de mai sus, dar îl putem strica uşor dacă facem acest lucru:
 
 ```js
 function square(n) {
@@ -591,7 +591,7 @@ function square(n) {
 n;
 ```
 
-The better way to deal with this is recursion. So let's make like a Christopher Nolan film and put a visitor inside of a visitor.
+O modalitate mai bună de a rezolva asta este folosind recursivitate. Așadar, hai să facem ca într-un film de Christopher Nolan şi să punem un vizitator în interiorul unui vizitator.
 
 ```js
 const updateParamNameVisitor = {
@@ -613,11 +613,11 @@ const MyVisitor = {
 };
 ```
 
-Of course, this is a contrived example but it demonstrates how to eliminate global state from your visitors.
+Desigur, acesta este un exemplu teoretic, insă demonstrează cum să eliminăm starea globală din vizitatori.
 
-### Scopes
+### Domenii (Scopes)
 
-Next let's introduce the concept of a [**scope**](https://en.wikipedia.org/wiki/Scope_(computer_science)). JavaScript has [lexical scoping](https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scoping_vs._dynamic_scoping), which is a tree structure where blocks create new scope.
+În continuare vom introduce conceptul de [**domeniu**](https://en.wikipedia.org/wiki/Scope_(computer_science)). JavaScript utilizează [domenii lexicale](https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scoping_vs._dynamic_scoping), care este o structură de arbore, în care fiecare bloc crează un nou domeniu.
 
 ```js
 // global scope
@@ -631,7 +631,7 @@ function scopeOne() {
 }
 ```
 
-Whenever you create a reference in JavaScript, whether that be by a variable, function, class, param, import, label, etc., it belongs to the current scope.
+Ori de câte ori creaţi o referinţă în JavaScript, fie că este o variabilă, funcție, clasă, parametru, import, eticheta, etc., aceasta aparţine actualului domeniu.
 
 ```js
 var global = "I am in the global scope";
@@ -645,7 +645,7 @@ function scopeOne() {
 }
 ```
 
-Code within a deeper scope may use a reference from a higher scope.
+Codul dintr-un domeniu mai adânc poate utiliza o referință dintr-un domeniu superior.
 
 ```js
 function scopeOne() {
@@ -657,7 +657,7 @@ function scopeOne() {
 }
 ```
 
-A lower scope might also create a reference of the same name without modifying it.
+Un domeniu mai adânc ar putea crea, de asemenea, o referință cu același nume fără a o modifica.
 
 ```js
 function scopeOne() {
@@ -669,11 +669,11 @@ function scopeOne() {
 }
 ```
 
-When writing a transform, we want to be wary of scope. We need to make sure we don't break existing code while modifying different parts of it.
+Când scriem o transformare, vrem să ținem cont de domeniu. Trebuie să ne asigurăm că nu stricăm cod existent în timp ce modificăm diverse părți din el.
 
-We may want to add new references and make sure they don't collide with existing ones. Or maybe we just want to find where a variable is referenced. We want to be able to track these references within a given scope.
+Probabil vom dori să adăugăm noi referinţe şi trebuie sa ne asigurăm că acestea nu intră în coliziune cu cele existente. Sau poate vrem doar să găsim unde se referențiază o anumită variabilă. Vrem să fim capabili să urmărim aceste referinţe într-un anumit domeniu.
 
-A scope can be represented as:
+Un domeniu poate fi reprezentat în felul următor:
 
 ```js
 {
@@ -685,13 +685,13 @@ A scope can be represented as:
 }
 ```
 
-When you create a new scope you do so by giving it a path and a parent scope. Then during the traversal process it collects all the references ("bindings") within that scope.
+Crearea unui domeniu nou implică pasarea unui traseu şi a unui domeniu părinte. Apoi, în timpul procesului de traversare se colectează toate referințele ("legături") din acel domeniu.
 
-Once that's done, there's all sorts of methods you can use on scopes. We'll get into those later though.
+Odată ce am făcut acest lucru, există tot felul de metode ce le putem utiliza pe domenii. Însă le vom examina mai târziu.
 
-#### Bindings
+#### Legături (Bindings)
 
-References all belong to a particular scope; this relationship is known as a **binding**.
+Toate referinţele aparţin unui anumit domeniu; această relaţie este cunoscut ca o **legătură**.
 
 ```js
 function scopeOnce() {
@@ -705,7 +705,7 @@ function scopeOnce() {
 }
 ```
 
-A single binding looks like this:
+O singură legătură arată astfel:
 
 ```js
 {
@@ -723,9 +723,9 @@ A single binding looks like this:
 }
 ```
 
-With this information you can find all the references to a binding, see what type of binding it is (parameter, declaration, etc.), lookup what scope it belongs to, or get a copy of its identifier. You can even tell if it's constant and if not, see what paths are causing it to be non-constant.
+Cu aceste informaţii putem găsi toate referințele la o legătură, putem vedea ce tip de legătură este (parametru, declaraţie etc.), putem căuta cărui domeniu îi aparține, sau să-i copiem identificatorul. Putem chiar să aflăm dacă este constantă şi, dacă nu, putem afla ce trasee o determină să fie variabilă, nu constantă.
 
-Being able to tell if a binding is constant is useful for many purposes, the largest of which is minification.
+Fiind capabili să spunem dacă o legătură este constantă este utilă pentru multe scopuri, insă cel mai mare este minimizarea codului.
 
 ```js
 function scopeOne() {
@@ -744,21 +744,21 @@ function scopeOne() {
 
 # API
 
-Babel is actually a collection of modules. In this section we'll walk through the major ones, explaining what they do and how to use them.
+Babel este de fapt o colecţie de module. În această secţiune vom trece prin cele mai importante, explicând la ce ajută şi cum se utilizează.
 
-> Note: This is not a replacement for detailed API documentation which will be available elsewhere shortly.
+> Notă: Aceasta nu este un înlocuitor pentru documentaţia detaliată a API-ului, care va fi disponibilă în altă parte în scurt timp.
 
 ## [`babylon`](https://github.com/babel/babel/tree/master/packages/babylon)
 
-Babylon is Babel's parser. Started as a fork of Acorn, it's fast, simple to use, has plugin-based architecture for non-standard features (as well as future standards).
+Babylon este analizorul din Babel. A început ca o bifurcație din Acorn, este rapid, simplu de utilizat, are o arhitectură bazată pe plugin-uri pentru caracteristici neconvenţionale (precum şi viitoarele standarde).
 
-First, let's install it.
+În primul rând, să-l instalăm.
 
 ```sh
 $ npm install --save babylon
 ```
 
-Let's start by simply parsing a string of code:
+Să începem pur şi simplu prin parsarea unui şir de cod:
 
 ```js
 import * as babylon from "babylon";
@@ -779,7 +779,7 @@ babylon.parse(code);
 // }
 ```
 
-We can also pass options to `parse()` like so:
+Putem, de asemenea, sa pasăm opţiuni metodei `parse()` astfel:
 
 ```js
 babylon.parse(code, {
@@ -788,25 +788,25 @@ babylon.parse(code, {
 });
 ```
 
-`sourceType` can either be `"module"` or `"script"` which is the mode that Babylon should parse in. `"module"` will parse in strict mode and allow module declarations, `"script"` will not.
+`sourceType` poate fi `"module"` sau `"script"`, care este modul în care Babylon ar trebui să-l analizeze. `"module"` va analiza în mod strict (strict mode) şi permite declaraţii de module, `"script"` nu va permite acest lucru si nu va analiza implicit in mod strict.
 
-> **Note:** `sourceType` defaults to `"script"` and will error when it finds `import` or `export`. Pass `sourceType: "module"` to get rid of these errors.
+> **Notă:** `sourceType` va lua valoarea implicită `"script"` si va arunca eroare atunci când găsește valoarea `import` sau `export`. Pasați `sourceType: "module"` pentru a scăpa de aceste erori.
 
-Since Babylon is built with a plugin-based architecture, there is also a `plugins` option which will enable the internal plugins. Note that Babylon has not yet opened this API to external plugins, although may do so in the future.
+Din moment ce Babylon este construit cu o arhitectură bazată pe plugin-uri, există, de asemenea, o opţiune ` plugins` care permite activarea plugin-urilor interne. Reţineţi că Babylon nu a deschis încă API-ul pentru plugin-uri externe, deşi este posibil sa facă acest lucru în viitor.
 
-To see a full list of plugins, see the [Babylon README](https://github.com/babel/babel/blob/master/packages/babylon/README.md#plugins).
+Pentru a vedea o listă completă de plugin-uri, examinați [Babylon README](https://github.com/babel/babel/blob/master/packages/babylon/README.md#plugins).
 
 ## [`babel-traverse`](https://github.com/babel/babel/tree/master/packages/babel-traverse)
 
-The Babel Traverse module maintains the overall tree state, and is responsible for replacing, removing, and adding nodes.
+Modulul de Traversare Babel conține starea generală a arborelui, şi este responsabil pentru înlocuirea, ștergerea şi adăugarea de noduri.
 
-Install it by running:
+Instalaţi-l prin rularea:
 
 ```sh
 $ npm install --save babel-traverse
 ```
 
-We can use it alongside Babylon to traverse and update nodes:
+Putem să-l folosim alături de Babylon să traversăm şi să actualizăm noduri:
 
 ```js
 import * as babylon from "babylon";
@@ -832,15 +832,15 @@ traverse(ast, {
 
 ## [`babel-types`](https://github.com/babel/babel/tree/master/packages/babel-types)
 
-Babel Types is a Lodash-esque utility library for AST nodes. It contains methods for building, validating, and converting AST nodes. It's useful for cleaning up AST logic with well thought out utility methods.
+Babel Types este o librărie de utilitare, similară cu Lodash, pentru nodurile AST. Conține metode pentru construirea, validarea şi conversia nodurilor AST. Este util pentru curățarea logicii AST cu metode utilitare bine gândite.
 
-You can install it by running:
+Îl puteţi instala prin rularea:
 
 ```sh
 $ npm install --save babel-types
 ```
 
-Then start using it:
+Apoi să-l utilizaţi:
 
 ```js
 import traverse from "babel-traverse";
@@ -855,11 +855,11 @@ traverse(ast, {
 });
 ```
 
-### Definitions
+### Definiții
 
-Babel Types has definitions for every single type of node, with information on what properties belong where, what values are valid, how to build that node, how the node should be traversed, and aliases of the Node.
+Babel Types conține definiţii pentru fiecare tip de nod, și informaţii cu privire la ce proprietăţile aparţin cui, ce valori sunt valide, cum se construiește un nod, cum ar trebui traversat nodul şi pseudonime ale nodului.
 
-A single node type definition looks like this:
+O definiţie a unui tip de nod arată astfel:
 
 ```js
 defineType("BinaryExpression", {
@@ -880,21 +880,21 @@ defineType("BinaryExpression", {
 });
 ```
 
-### Builders
+### Constructori
 
-You'll notice the above definition for `BinaryExpression` has a field for a `builder`.
+Veţi observa mai sus că definiţia pentru `BinaryExpression` are un câmp `builder`.
 
 ```js
 builder: ["operator", "left", "right"]
 ```
 
-This is because each node type gets a builder method, which when used looks like this:
+Acest lucru se datorează faptului că fiecare tip de nod primește o metodă constructor, care, atunci când este utilizată arată în felul următor:
 
 ```js
 t.binaryExpression("*", t.identifier("a"), t.identifier("b"));
 ```
 
-Which creates an AST like this:
+Care creează un AST ca acesta:
 
 ```js
 {
@@ -911,17 +911,17 @@ Which creates an AST like this:
 }
 ```
 
-Which when printed looks like this:
+Iar atunci când este tipărit arată astfel:
 
 ```js
 a * b
 ```
 
-Builders will also validate the nodes they are creating and throw descriptive errors if used improperly. Which leads into the next type of method.
+Constructorii, de asemenea, vor valida nodurile pe care le crează şi arunca erori descriptive dacă sunt folosiți necorespunzător. Ceea ce ne conduce la următorul tip de metodă.
 
-### Validators
+### Validatori
 
-The definition for `BinaryExpression` also includes information on the `fields` of a node and how to validate them.
+Definiția pentru `BinaryExpression` include informații privind cămpurile (`fields`) nodului şi cum să le validăm.
 
 ```js
 fields: {
@@ -937,19 +937,19 @@ fields: {
 }
 ```
 
-This is used to create two types of validating methods. The first of which is `isX`.
+Acest lucru este folosit pentru a crea două tipuri de metode de validare. Prima dintre acestea este `isX`.
 
 ```js
 t.isBinaryExpression(maybeBinaryExpressionNode);
 ```
 
-This tests to make sure that the node is a binary expression, but you can also pass a second parameter to ensure that the node contains certain properties and values.
+Aceasta testează pentru a se asigura că nodul este o expresie binară, dar puteţi pasa, de asemenea, un al doilea parametru pentru a se asigura că nodul conţine anumite proprietăţi şi valori.
 
 ```js
 t.isBinaryExpression(maybeBinaryExpressionNode, { operator: "*" });
 ```
 
-There is also the more, *ehem*, assertive version of these methods, which will throw errors instead of returning `true` or `false`.
+Există, de asemenea, mai multe, *ehem*, versiuni dogmatice ale acestor metode, care vor arunca erori în loc sa returneze adevărat (`true`) sau fals (`false`).
 
 ```js
 t.assertBinaryExpression(maybeBinaryExpressionNode);
@@ -957,21 +957,21 @@ t.assertBinaryExpression(maybeBinaryExpressionNode, { operator: "*" });
 // Error: Expected type "BinaryExpression" with option { "operator": "*" }
 ```
 
-### Converters
+### Convertori
 
-> [WIP]
+> [WIP] în lucru
 
 ## [`babel-generator`](https://github.com/babel/babel/tree/master/packages/babel-generator)
 
-Babel Generator is the code generator for Babel. It takes an AST and turns it into code with sourcemaps.
+Babel Generator este generatorul de cod pentru Babel. Primește un AST şi îl transformă în cod cu sourcemaps.
 
-Run the following to install it:
+Executaţi următoarea comandă pentru a-l instala:
 
 ```sh
 $ npm install --save babel-generator
 ```
 
-Then use it
+Apoi folosiți-l
 
 ```js
 import * as babylon from "babylon";
@@ -990,7 +990,7 @@ generate(ast, null, code);
 // }
 ```
 
-You can also pass options to `generate()`.
+Puteţi pasa, de asemenea, opţiuni metodei `generate()`.
 
 ```js
 generate(ast, {
@@ -1004,7 +1004,7 @@ generate(ast, {
 
 ## [`babel-template`](https://github.com/babel/babel/tree/master/packages/babel-template)
 
-Babel Template is another tiny but incredibly useful module. It allows you to write strings of code with placeholders that you can use instead of manually building up a massive AST.
+Babel Template este un alt modul micuț dar incredibil de util. Vă permite să scrieți şiruri de cod cu substituenţi care îi puteţi folosi în loc să construiți manual un AST uriaș.
 
 ```sh
 $ npm install --save babel-template
@@ -1031,11 +1031,11 @@ console.log(generate(ast).code);
 var myModule = require("my-module");
 ```
 
-# Writing your first Babel Plugin
+# Scrierea primului Plugin Babel
 
-Now that you're familiar with all the basics of Babel, let's tie it together with the plugin API.
+Acum că sunteţi familiarizați cu toate elementele de bază din Babel, haideţi să le utilizăm împreună cu API-ul pentru plugin-uri.
 
-Start off with a `function` that gets passed the current `babel` object.
+Să începem cu o `funcţie` care primește obiectu `babel`.
 
 ```js
 export default function(babel) {
@@ -1043,7 +1043,7 @@ export default function(babel) {
 }
 ```
 
-Since you'll be using it so often, you'll likely want to grab just `babel.types` like so:
+Deoarece veţi folosi foarte des, probabil doriți sa pasați doar `babel.types` astfel:
 
 ```js
 export default function({ types: t }) {
@@ -1051,7 +1051,7 @@ export default function({ types: t }) {
 }
 ```
 
-Then you return an object with a property `visitor` which is the primary visitor for the plugin.
+Apoi, veţi returna un obiect cu o proprietate `visitor` care este principalul vizitator pentru plugin.
 
 ```js
 export default function({ types: t }) {
@@ -1063,13 +1063,13 @@ export default function({ types: t }) {
 };
 ```
 
-Let's write a quick plugin to show off how it works. Here's our source code:
+Să scriem un plug-in rapid pentru a scoate în evidenţă modul în care funcţionează. Acesta este codul nostru sursă:
 
 ```js
 foo === bar;
 ```
 
-Or in AST form:
+Sau în forma AST:
 
 ```js
 {
@@ -1086,7 +1086,7 @@ Or in AST form:
 }
 ```
 
-We'll start off by adding a `BinaryExpression` visitor method.
+Vom începe prin adăugarea unei metode vizitator `BinaryExpression`.
 
 ```js
 export default function({ types: t }) {
@@ -1100,7 +1100,7 @@ export default function({ types: t }) {
 }
 ```
 
-Then let's narrow it down to just `BinaryExpression`s that are using the `===` operator.
+Apoi să filtrăm doar token-urile `BinaryExpression` care folosesc operatorul `===`.
 
 ```js
 visitor: {
@@ -1114,7 +1114,7 @@ visitor: {
 }
 ```
 
-Now let's replace the `left` property with a new identifier:
+Acum să înlocuim proprietatea `left` cu un nou identificator:
 
 ```js
 BinaryExpression(path) {
@@ -1127,13 +1127,13 @@ BinaryExpression(path) {
 }
 ```
 
-Already if we run this plugin we would get:
+În cazul în care vom rula acest plugin ar rezulta:
 
 ```js
 sebmck === bar;
 ```
 
-Now let's just replace the `right` property.
+Acum să înlocuim si proprietatea `right`.
 
 ```js
 BinaryExpression(path) {
@@ -1146,23 +1146,23 @@ BinaryExpression(path) {
 }
 ```
 
-And now for our final result:
+Ceea ce conduce la rezultatul nostru final:
 
 ```js
 sebmck === dork;
 ```
 
-Awesome! Our very first Babel plugin.
+Super mișto! Primul nostru plug-in pentru Babel.
 
 * * *
 
-# Transformation Operations
+# Operații de Transformare
 
-## Visiting
+## Vizitare (Visiting)
 
-### Check if a node is a certain type
+### Verificare dacă un nod este de un anumit tip
 
-If you want to check what the type of a node is, the preferred way to do so is:
+Dacă doriţi să verificaţi de ce tip este un anumit nod, modul preferat de a face acest lucru este:
 
 ```js
 BinaryExpression(path) {
@@ -1172,7 +1172,7 @@ BinaryExpression(path) {
 }
 ```
 
-You can also do a shallow check for properties on that node:
+De asemenea, puteţi face o verificare superficială pentru proprietăţile acelui nod:
 
 ```js
 BinaryExpression(path) {
@@ -1182,7 +1182,7 @@ BinaryExpression(path) {
 }
 ```
 
-This is functionally equivalent to:
+Aceasta este echivalentă cu:
 
 ```js
 BinaryExpression(path) {
@@ -1196,7 +1196,7 @@ BinaryExpression(path) {
 }
 ```
 
-### Check if an identifier is referenced
+### Verificare dacă un identificator are referință
 
 ```js
 Identifier(path) {
@@ -1206,7 +1206,7 @@ Identifier(path) {
 }
 ```
 
-Alternatively:
+Alternativ:
 
 ```js
 Identifier(path) {
@@ -1216,9 +1216,9 @@ Identifier(path) {
 }
 ```
 
-## Manipulation
+## Manipulare
 
-### Replacing a node
+### Înlocuirea unui nod
 
 ```js
 BinaryExpression(path) {
@@ -1235,7 +1235,7 @@ BinaryExpression(path) {
   }
 ```
 
-### Replacing a node with multiple nodes
+### Înlocuirea unui nod cu mai multe noduri
 
 ```js
 ReturnStatement(path) {
@@ -1256,9 +1256,9 @@ ReturnStatement(path) {
   }
 ```
 
-> **Note:** When replacing an expression with multiple nodes, they must be statements. This is because Babel uses heuristics extensively when replacing nodes which means that you can do some pretty crazy transformations that would be extremely verbose otherwise.
+> **Notă:** Când se înlocuieşte o expresie cu mai multe noduri, acestea trebuie să fie declaraţii. Acest lucru este necesar deoarece Babel utilizează euristică pe scară largă la înlocuirea nodurilor, ceea ce înseamnă că puteţi face unele transformări destul de complexe, care altfel ar fi extrem de detaliate.
 
-### Replacing a node with a source string
+### Înlocuirea unui nod cu un șir de caractere sursă
 
 ```js
 FunctionDeclaration(path) {
@@ -1276,9 +1276,9 @@ FunctionDeclaration(path) {
   }
 ```
 
-> **Note:** It's not recommended to use this API unless you're dealing with dynamic source strings, otherwise it's more efficient to parse the code outside of the visitor.
+> **Notă:** Nu este recomandat să utilizaţi acest API daca nu aveți de a face cu șiruri de caractere sursă dinamice, altfel este mult mai eficient pentru a analiza codul în afara vizitatorului.
 
-### Inserting a sibling node
+### Inserarea unui nod pe același nivel
 
 ```js
 FunctionDeclaration(path) {
@@ -1295,9 +1295,9 @@ FunctionDeclaration(path) {
 + "A little high, little low.";
 ```
 
-> **Note:** This should always be a statement or an array of statements. This uses the same heuristics mentioned in [Replacing a node with multiple nodes](#replacing-a-node-with-multiple-nodes).
+> **Notă:** Acesta ar trebui să fie întotdeauna o declaraţie sau o serie de declaraţii. Aceasta utilizează aceleaşi euristici menţionate în [Înlocuirea unui nod cu mai multe noduri](#replacing-a-node-with-multiple-nodes).
 
-### Removing a node
+### Ștergerea unui nod
 
 ```js
 FunctionDeclaration(path) {
@@ -1311,7 +1311,7 @@ FunctionDeclaration(path) {
 - }
 ```
 
-### Replacing a parent
+### Înlocuirea unui părinte
 
 ```js
 BinaryExpression(path) {
@@ -1328,7 +1328,7 @@ BinaryExpression(path) {
   }
 ```
 
-### Removing a parent
+### Ștergerea unui părinte
 
 ```js
 BinaryExpression(path) {
@@ -1342,9 +1342,9 @@ BinaryExpression(path) {
   }
 ```
 
-## Scope
+## Domeniu (Scope)
 
-### Checking if a local variable is bound
+### Verificare dacă o variabilă locală este legată
 
 ```js
 FunctionDeclaration(path) {
@@ -1354,9 +1354,9 @@ FunctionDeclaration(path) {
 }
 ```
 
-This will walk up the scope tree and check for that particular binding.
+Aceasta va parcurge arborele şi va căuta acea legatură anume.
 
-You can also check if a scope has its **own** binding:
+Puteţi verifica și dacă un domeniu are o anumita legătura proprie (**own**):
 
 ```js
 FunctionDeclaration(path) {
@@ -1366,9 +1366,9 @@ FunctionDeclaration(path) {
 }
 ```
 
-### Generating a UID
+### Generarea unui UID
 
-This will generate an identifier that doesn't collide with any locally defined variables.
+Următorul cod va genera un identificator care nu se ciocnește cu nicio variabilă definită local.
 
 ```js
 FunctionDeclaration(path) {
@@ -1379,9 +1379,9 @@ FunctionDeclaration(path) {
 }
 ```
 
-### Pushing a variable declaration to a parent scope
+### Mutarea unei declarații de variabilă într-un domeniu părinte
 
-Sometimes you may want to push a `VariableDeclaration` so you can assign to it.
+Uneori, poate doriţi să mutați un `VariableDeclaration`, pentru a-i putea asocia o valoare.
 
 ```js
 FunctionDeclaration(path) {
@@ -1399,7 +1399,7 @@ FunctionDeclaration(path) {
 + };
 ```
 
-### Rename a binding and its references
+### Redenumirea unei legături și a referințelor sale
 
 ```js
 FunctionDeclaration(path) {
@@ -1415,7 +1415,7 @@ FunctionDeclaration(path) {
   }
 ```
 
-Alternatively, you can rename a binding to a generated unique identifier:
+Alternativ, puteţi redenumi o legătura cu un identificator unic generat:
 
 ```js
 FunctionDeclaration(path) {
@@ -1433,9 +1433,9 @@ FunctionDeclaration(path) {
 
 * * *
 
-# Plugin Options
+# Opțiuni de plugin
 
-If you would like to let your users customize the behavior of your Babel plugin you can accept plugin specific options which users can specify like this:
+Dacă doriţi să lasați utilizatorii să particularizeze comportamentul plugin-ul vostru Babel, puteţi accepta opţiuni de plugin specifice, pe care utilizatorii le pot specifica în felul următor:
 
 ```js
 {
@@ -1448,7 +1448,7 @@ If you would like to let your users customize the behavior of your Babel plugin 
 }
 ```
 
-These options then get passed into plugin visitors through the `state` object:
+Aceste opţiuni sunt pasate apoi vizitatorilor plugin-ului prin obiectul `state`:
 
 ```js
 export default function({ types: t }) {
@@ -1463,19 +1463,19 @@ export default function({ types: t }) {
 }
 ```
 
-These options are plugin-specific and you cannot access options from other plugins.
+Aceste opţiuni sunt specifice plugin-ului şi nu puteţi accesa opţiuni din alte plugin-uri.
 
 * * *
 
-# Building Nodes
+# Construirea nodurilor
 
-When writing transformations you'll often want to build up some nodes to insert into the AST. As mentioned previously, you can do this using the [builder](#builder) methods in the [`babel-types`](#babel-types) package.
+Când scrieţi transformări veţi dori adesea să construiți unele noduri pentru a le insera în AST. Aşa cum am menţionat anterior, puteţi face acest lucru folosind metodele constructor ([builder](#builder)) din pachetul [`babel-types`](#babel-types).
 
-The method name for a builder is simply the name of the node type you want to build except with the first letter lowercased. For example if you wanted to build a `MemberExpression` you would use `t.memberExpression(...)`.
+Numele metodei pentru un constructor este pur şi simplu numele tipului de nod pe care doriţi să-l construiți cu excepţia că prima literă trebuie sa fie mică. De exemplu dacă doriți să construiți `MemberExpression` ar trebui să utilizaţi `t.memberExpression(...)`.
 
-The arguments of these builders are decided by the node definition. There's some work that's being done to generate easy-to-read documentation on the definitions, but for now they can all be found [here](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions).
+Argumentele acestor constructori sunt hotărâte prin definiţia nodului. In momentul de față se lucrează pentru a genera documentaţie uşor de citit pentru definiţii, dar pentru moment toate pot fi găsite [aici](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions).
 
-A node definition looks like the following:
+O definiţie de nod arată în felul următor:
 
 ```js
 defineType("MemberExpression", {
@@ -1499,17 +1499,17 @@ defineType("MemberExpression", {
 });
 ```
 
-Here you can see all the information about this particular node type, including how to build it, traverse it, and validate it.
+Aici puteţi vedea toate informaţiile despre acest tip de nod, inclusiv modul de construcție, traversare şi validare.
 
-By looking at the `builder` property, you can see the 3 arguments that will be needed to call the builder method (`t.memberExpression`).
+Uitându-ne la proprietatea `builder`, putem vedea 3 argumente care vor fi necesare pentru a apela metoda constructor (`t.memberExpression`).
 
 ```js
 builder: ["object", "property", "computed"],
 ```
 
-> Note that sometimes there are more properties that you can customize on the node than the `builder` array contains. This is to keep the builder from having too many arguments. In these cases you need to set the properties manually. An example of this is [`ClassMethod`](https://github.com/babel/babel/blob/bbd14f88c4eea88fa584dd877759dd6b900bf35e/packages/babel-types/src/definitions/es2015.js#L238-L276).
+> Reţineţi că, uneori, există mai multe proprietăţi care le puteți particulariza, decât cele conținute in seria constructorului (`builder`). Aceasta este de a evita prea multe argumente pe constructor. În aceste cazuri, trebuie să setaţi proprietăţile manual. Un exemplu este [`ClassMethod`](https://github.com/babel/babel/blob/bbd14f88c4eea88fa584dd877759dd6b900bf35e/packages/babel-types/src/definitions/es2015.js#L238-L276).
 
-You can see the validation for the builder arguments with the `fields` object.
+Puteţi vedea validarea pentru argumentele constructorului cu obiectul `fields`.
 
 ```js
 fields: {
@@ -1528,9 +1528,9 @@ fields: {
 }
 ```
 
-You can see that `object` needs to be an `Expression`, `property` either needs to be an `Expression` or an `Identifier` depending on if the member expression is `computed` or not and `computed` is simply a boolean that defaults to `false`.
+Puteţi vedea că `object` trebuie să fie `Expression`, `property` trebuie să fie `Expression` sau `Identifier` în funcţie dacă expresia de membru este calculată (`computed`) sau nu şi `computed` este pur şi simplu un boolean care implicit este `false`.
 
-So we can construct a `MemberExpression` by doing the following:
+Aşadar putem construi un `MemberExpression` în felul următor:
 
 ```js
 t.memberExpression(
@@ -1540,21 +1540,21 @@ t.memberExpression(
 );
 ```
 
-Which will result in:
+Ceea ce va rezulta în:
 
 ```js
 object.property
 ```
 
-However, we said that `object` needed to be an `Expression` so why is `Identifier` valid?
+Cu toate acestea, am spus că `object` să fie `Expression`, așadar de ce `Identifier` este valid?
 
-Well if we look at the definition of `Identifier` we can see that it has an `aliases` property which states that it is also an expression.
+Ei bine, dacă ne uităm la definiţia pentru `Identifier` putem vedea că are o proprietate `aliases` care declară că este, de asemenea, o expresie.
 
 ```js
 aliases: ["Expression", "LVal"],
 ```
 
-So since `MemberExpression` is a type of `Expression`, we could set it as the `object` of another `MemberExpression`:
+Așadar, din moment ce `MemberExpression` este de tip `Expression`, l-am putea seta ca un `object` pentru alt `MemberExpression`:
 
 ```js
 t.memberExpression(
@@ -1566,31 +1566,31 @@ t.memberExpression(
 )
 ```
 
-Which will result in:
+Ceea ce va rezulta în:
 
 ```js
 member.expression.property
 ```
 
-It's very unlikely that you will ever memorize the builder method signatures for every node type. So you should take some time and understand how they are generated from the node definitions.
+Este foarte puţin probabil că veți memora vreodată semnăturile metodei constructor pentru fiecare tip de nod. Așadar, ar trebui să vă rezervați ceva timp să înţelegeți cum sunt generate acestea din definiţiile nodului.
 
-You can find all of the actual [definitions here](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions) and you can see them [documented here](https://github.com/babel/babel/blob/master/doc/ast/spec.md)
+Puteţi găsi toate [definiţiile aici](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions) şi le puteţi vedea [documentate aici](https://github.com/babel/babel/blob/master/doc/ast/spec.md)
 
 * * *
 
-# Best Practices
+# Practici preferate
 
-> I'll be working on this section over the coming weeks.
+> Voi lucra la această secţiune în următoarele săptămâni.
 
-## Avoid traversing the AST as much as possible
+## Evitați traversarea AST pe cât posibil
 
-Traversing the AST is expensive, and it's easy to accidentally traverse the AST more than necessary. This could be thousands if not tens of thousands of extra operations.
+Traversarea AST este scumpă, şi este uşor să traversați accidental AST mai mult decât este necesar. Acest lucru ar putea însemna mii daca nu zeci de mii de operaţiuni suplimentare.
 
-Babel optimizes this as much as possible, merging visitors together if it can in order to do everything in a single traversal.
+Babel optimizează acest lucru cât mai mult posibil, prin îmbinarea vizitatorilor împreună, dacă este posibil, pentru a face totul într-o singură traversare.
 
-### Merge visitors whenever possible
+### Îmbinarea vizitatorilor ori de câte ori este posibil
 
-When writing visitors, it may be tempting to call `path.traverse` in multiple places where they are logically necessary.
+Când scrieţi vizitatori, poate fi tentant să apelați `path.traverse` în mai multe locuri unde sunt necesare în mod logic.
 
 ```js
 path.traverse({
@@ -1606,7 +1606,7 @@ path.traverse({
 });
 ```
 
-However, it is far better to write these as a single visitor that only gets run once. Otherwise you are traversing the same tree multiple times for no reason.
+Cu toate acestea, este mult mai bine să scrieți toate acestea ca un vizitator unic care este rulat doar o singură dată. Altfel veți traversa acelaşi arbore mai multe ori pentru niciun motiv.
 
 ```js
 path.traverse({
@@ -1619,9 +1619,9 @@ path.traverse({
 });
 ```
 
-### Do not traverse when manual lookup will do
+### Evitați traversarea când o căutare manuală este suficientă
 
-It may also be tempting to call `path.traverse` when looking for a particular node type.
+De asemenea, poate fi tentant să apelați `path.traverse` atunci când cautați un anumit tip de nod.
 
 ```js
 const visitorOne = {
@@ -1637,7 +1637,7 @@ const MyVisitor = {
 };
 ```
 
-However, if you are looking for something specific and shallow, there is a good chance you can manually lookup the nodes you need without performing a costly traversal.
+Așadar, în cazul în care căutați ceva specific, este o şansă bună să gasiți nodurile respective printr-o căutare manuală, fără a efectua vreo traversare costisitoare.
 
 ```js
 const MyVisitor = {
@@ -1649,9 +1649,9 @@ const MyVisitor = {
 };
 ```
 
-## Optimizing nested visitors
+## Optimizarea vizitatorilor imbricați
 
-When you are nesting visitors, it might make sense to write them nested in your code.
+Atunci când aveți vizitatori imbricați, ar putea face mai mult sens să-i scrieți imbricat și în codul dumneavoastră.
 
 ```js
 const MyVisitor = {
@@ -1665,7 +1665,7 @@ const MyVisitor = {
 };
 ```
 
-However, this creates a new visitor object everytime `FunctionDeclaration()` is called above, which Babel then needs to explode and validate every single time. This can be costly, so it is better to hoist the visitor up.
+Însă acest lucru creează un nou obiect vizitator de fiecare dată când `FunctionDeclaration()` este apelată, iar Babel trebuie să o spargă şi să o valideze de fiecare dată. Acest lucru poate fi costisitor, așadar este mai bine să declarați vizitatorul în afară.
 
 ```js
 const visitorOne = {
@@ -1681,7 +1681,7 @@ const MyVisitor = {
 };
 ```
 
-If you need some state within the nested visitor, like so:
+Dacă aveţi nevoie de stare în cadrul vizitatorilor imbricați, astfel:
 
 ```js
 const MyVisitor = {
@@ -1699,7 +1699,7 @@ const MyVisitor = {
 };
 ```
 
-You can pass it in as state to the `traverse()` method and have access to it on `this` in the visitor.
+Puteţi să-l pasați ca stare metodei `traverse()` şi să aveți acces la ea pe obiectul `this` al vizitatorului.
 
 ```js
 const visitorOne = {
@@ -1718,11 +1718,11 @@ const MyVisitor = {
 };
 ```
 
-## Being aware of nested structures
+## Atenție la structuri imbricate
 
-Sometimes when thinking about a given transform, you might forget that the given structure can be nested.
+Uneori când ne gândim la o transformare, am putea uita că structura poate fi imbricată.
 
-For example, imagine we want to lookup the `constructor` `ClassMethod` from the `Foo` `ClassDeclaration`.
+De exemplu, imaginaţi-vă că dorim să căutăm `constructor` `ClassMethod` din `Foo` `ClassDeclaration`.
 
 ```js
 class Foo {
@@ -1750,7 +1750,7 @@ const MyVisitor = {
 }
 ```
 
-We are ignoring the fact that classes can be nested and using the traversal above we will hit a nested `constructor` as well:
+Putem ușor ignora faptul că clasele pot fi imbricate şi folosind traversarea mai sus ne vom lovi de un `constructor` imbricat, precum:
 
 ```js
 class Foo {
