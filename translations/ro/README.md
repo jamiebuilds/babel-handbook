@@ -106,7 +106,7 @@ In cazul in care cititi o traducere din limba engleza, veti gasi cuvinte in engl
       * [Imbinare vizitatori ori de cate ori este posibil](#merge-visitors-whenever-possible)
       * [Nu traversati cand o cautare manuala este suficienta](#do-not-traverse-when-manual-lookup-will-do)
       * [Optimizarea vizitatorilor imbricati](#optimizing-nested-visitors)
-      * [Being aware of nested structures](#being-aware-of-nested-structures)
+      * [Atentie la structuri imbricate](#being-aware-of-nested-structures)
 
 # Introduction
 

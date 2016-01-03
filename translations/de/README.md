@@ -45,7 +45,7 @@ Nun gibt es den Befehl `babel-plugin-handbook` Kommando, welches dieses Handbuch
   * [Pусский](/translations/ru/README.md)
   * [Српски језик (Ћирилица)](/translations/sr/README.md)
   * [Svenska](/translations/sv-SE/README.md)
-  * [Türk](/translations/tr/README.md)
+  * [Türkisch](/translations/tr/README.md)
   * [Український](/translations/uk/README.md)
   * [Tiếng Việt](/translations/vi/README.md)
   * [中文](/translations/zh-CN/README.md)
@@ -108,7 +108,7 @@ If you are reading a non-english translation of this document you will find a nu
       * [Optimizing nested visitors](#optimizing-nested-visitors)
       * [Being aware of nested structures](#being-aware-of-nested-structures)
 
-# Introduction
+# Einleitung
 
 Babel is a generic multi-purpose compiler for JavaScript. More than that it is a collection of modules that can be used for many different forms of static analysis.
 
