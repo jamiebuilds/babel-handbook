@@ -267,7 +267,7 @@ The **parse** stage, takes code and outputs an AST. There are two phases of pars
 
 #### Лексический Анализ
 
-Lexical Analysis will take a string of code and turn it into a stream of **tokens**.
+Лексический анализ будет принимать строку кода и превращать его в поток **токенов**.
 
 You can think of tokens as a flat array of language syntax pieces.
 

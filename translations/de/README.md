@@ -25,27 +25,27 @@ Nun gibt es den Befehl `babel-plugin-handbook` Kommando, welches dieses Handbuch
   * [العربية](/translations/ar/README.md)
   * [Català](/translations/ca/README.md)
   * [Čeština](/translations/cs/README.md)
-  * [Dänisch](/translations/da/README.md)
+  * [Danske](/translations/da/README.md)
   * [Deutsch](/translations/de/README.md)
   * [ελληνικά](/translations/el/README.md)
-  * [Spanisch](/translations/es-ES/README.md)
-  * [Finnisch](/translations/fi/README.md)
-  * [Französisch](/translations/fr/README.md)
+  * [Español](/translations/es-ES/README.md)
+  * [Suomi](/translations/fi/README.md)
+  * [Français](/translations/fr/README.md)
   * [עִברִית](/translations/he/README.md)
   * [Magyar](/translations/hu/README.md)
-  * [Italienisch](/translations/it/README.md)
+  * [Italiano](/translations/it/README.md)
   * [日本語](/translations/ja/README.md)
   * [한국어](/translations/ko/README.md)
   * [Norsk](/translations/no/README.md)
-  * [Niederländisch](/translations/nl/README.md)
-  * [Portugisisch](/translations/pl/README.md)
-  * [Portugisisch (Brasilien)](/translations/pt-BR/README.md)
+  * [Nederlands](/translations/nl/README.md)
+  * [Português](/translations/pl/README.md)
+  * [Português (Brasil)](/translations/pt-BR/README.md)
   * [Portugisisk](/translations/pt-PT/README.md)
-  * [Rumänisch](/translations/ro/README.md)
+  * [Română](/translations/ro/README.md)
   * [Pусский](/translations/ru/README.md)
   * [Српски језик (Ћирилица)](/translations/sr/README.md)
   * [Svenska](/translations/sv-SE/README.md)
-  * [Türkisch](/translations/tr/README.md)
+  * [Türk](/translations/tr/README.md)
   * [Український](/translations/uk/README.md)
   * [Tiếng Việt](/translations/vi/README.md)
   * [中文](/translations/zh-CN/README.md)
@@ -110,9 +110,9 @@ If you are reading a non-english translation of this document you will find a nu
 
 # Einleitung
 
-Babel is a generic multi-purpose compiler for JavaScript. More than that it is a collection of modules that can be used for many different forms of static analysis.
+Babel ist ein generischer Compiler für JavaScript. Des weiteren ist es eine Sammlung von Modulen, welche für vielfältige Arten von statischer Analyse benutzt werden können.
 
-> Static analysis is the process of analyzing code without executing it. (Analysis of code while executing it is known as dynamic analysis). The purpose of static analysis varies greatly. It can be used for linting, compiling, code highlighting, code transformation, optimization, minification, and much more.
+> Statische Analyse ist die Analyse von Code ohne ihn auszuführen. (Analyse von Code mit Ausführung desselben wird als dynamische Analyse bezeichnet). Die statische Analyse kann vielfältige Anwendungen haben. It can be used for linting, compiling, code highlighting, code transformation, optimization, minification, and much more.
 
 You can use Babel to build many different types of tools that can help you be more productive and write better programs.
 

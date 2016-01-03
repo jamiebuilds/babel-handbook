@@ -100,7 +100,7 @@ In cazul in care cititi o traducere din limba engleza, veti gasi cuvinte in engl
       * [Mutarea unei declaratii de variabile intr-un domeniu parinte](#pushing-a-variable-declaration-to-a-parent-scope)
       * [Redenumirea unei legaturi si a referintelor sale](#rename-a-binding-and-its-references)
   * [Optiuni](#plugin-options)
-  * [Building Nodes](#building-nodes)
+  * [Construirea nodurilor](#building-nodes)
   * [Practici preferate](#best-practices) 
       * [Evitati traversarea AST pe cat posibil](#avoid-traversing-the-ast-as-much-as-possible)
       * [Imbinare vizitatori ori de cate ori este posibil](#merge-visitors-whenever-possible)
@@ -108,7 +108,7 @@ In cazul in care cititi o traducere din limba engleza, veti gasi cuvinte in engl
       * [Optimizarea vizitatorilor imbricati](#optimizing-nested-visitors)
       * [Atentie la structuri imbricate](#being-aware-of-nested-structures)
 
-# Introduction
+# Introducere
 
 Babel is a generic multi-purpose compiler for JavaScript. More than that it is a collection of modules that can be used for many different forms of static analysis.
 
