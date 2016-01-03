@@ -51,14 +51,14 @@ Acum ve-ti avea comanda `babel-plugin-handbook` care va deschide acest document 
   * [中文](/translations/zh-CN/README.md)
   * [繁體中文](/translations/zh-TW/README.md)
 
-In cazul in care cititi o traducere din limba engleza, veti gasi cuvinte in engleza care se refera la concepte de programare. Daca acestea ar fi traduse in alte limbi s-ar pierde consistenta si fluenta in citire. In many cases you will find the literal translation followed by the english term in parenthesis `()`. For example: Abstract Syntax Trees (ASTs).
+In cazul in care cititi o traducere din limba engleza, veti gasi cuvinte in engleza care se refera la concepte de programare. Daca acestea ar fi traduse in alte limbi s-ar pierde consistenta si fluenta in citire. In anumite cazuri veti gasi traducerea literara urmata de termenul in engleza intre paranteze `()`. De exemplu: Arbori Abstracti de Sintaxa (ASTs).
 
-# Table of Contents
+# Cuprins
 
-  * [Introduction](#introduction)
-  * [Basics](#basics) 
+  * [Introducere](#introduction)
+  * [Elemente de bază](#basics) 
       * [ASTs](#asts)
-      * [Stages of Babel](#stages-of-babel)
+      * [Etapele Babel](#stages-of-babel)
       * [Parse](#parse) 
           * [Lexical Analysis](#lexical-analysis)
           * [Syntactic Analysis](#syntactic-analysis)
