@@ -1,4 +1,4 @@
-# babel-plugin-handbook
+# Manual pentru Plugin-uri Babel
 
 Acest document descrie cum se pot crea [plugin-uri](https://babeljs.io/docs/advanced/plugins/) pentru [Babel](https://babeljs.io).
 
@@ -51,7 +51,7 @@ Acum ve-ti avea comanda `babel-plugin-handbook` care va deschide acest document 
   * [中文](/translations/zh-CN/README.md)
   * [繁體中文](/translations/zh-TW/README.md)
 
-In cazul in care cititi o traducere din limba engleza, veti gasi cuvinte in engleza care se refera la concepte de programare. If these were translated to other languages there would be a lack of consistency and fluency when reading about them. In many cases you will find the literal translation followed by the english term in parenthesis `()`. For example: Abstract Syntax Trees (ASTs).
+In cazul in care cititi o traducere din limba engleza, veti gasi cuvinte in engleza care se refera la concepte de programare. Daca acestea ar fi traduse in alte limbi s-ar pierde consistenta si fluenta in citire. In many cases you will find the literal translation followed by the english term in parenthesis `()`. For example: Abstract Syntax Trees (ASTs).
 
 # Table of Contents
 

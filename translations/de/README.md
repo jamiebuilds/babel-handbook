@@ -2,7 +2,7 @@
 
 Dieses Dokument beschreibt das Erstellen von [Babel](https://babeljs.io) [Plugins](https://babeljs.io/docs/advanced/plugins/).
 
-Beim Lesen einer Übersetzung dieses Dokumentes, kann es sein, dass einige Kapitel noch nicht aus dem Englischen übersetzt worden sind. Um bei der Übersetzung mitzuhelfen kann dies mittels Crowdin durchgeführt werden. Please read the [contributing guidelines](/CONTRIBUTING.md) for more information.
+Beim Lesen einer Übersetzung dieses Dokumentes, kann es sein, dass einige Kapitel noch nicht aus dem Englischen übersetzt worden sind. Um bei der Übersetzung mitzuhelfen kann dies mittels Crowdin durchgeführt werden. Für weitere Informationen bitte die [Regeln zur Mitarbeit](/CONTRIBUTING.md) lesen.
 
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
