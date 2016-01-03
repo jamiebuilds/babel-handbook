@@ -42,7 +42,7 @@ $ npm install -g babel-plugin-handbook
   * [Português (Brasil)](/translations/pt-BR/README.md)
   * [Portugisisk](/translations/pt-PT/README.md)
   * [Română](/translations/ro/README.md)
-  * [Pусский](/translations/ru/README.md)
+  * [Русский](/translations/ru/README.md)
   * [Српски језик (Ћирилица)](/translations/sr/README.md)
   * [Svenska](/translations/sv-SE/README.md)
   * [Türk](/translations/tr/README.md)
@@ -87,10 +87,10 @@ $ npm install -g babel-plugin-handbook
       * [Check if a node is a certain type](#check-if-a-node-is-a-certain-type)
       * [Check if an identifier is referenced](#check-if-an-identifier-is-referenced)
       * [Манипуляция](#manipulation)
-      * [Replacing a node](#replacing-a-node)
-      * [Replacing a node with multiple nodes](#replacing-a-node-with-multiple-nodes)
-      * [Replacing a node with a source string](#replacing-a-node-with-a-source-string)
-      * [Inserting a sibling node](#inserting-a-sibling-node)
+      * [Замена узла](#replacing-a-node)
+      * [Замена узла несколькими узлами](#replacing-a-node-with-multiple-nodes)
+      * [Замена узла исходной строкой](#replacing-a-node-with-a-source-string)
+      * [Добавление узла-потомка](#inserting-a-sibling-node)
       * [Удаление узла](#removing-a-node)
       * [Замена родителя](#replacing-a-parent)
       * [Удаление родителя](#removing-a-parent)
@@ -319,7 +319,7 @@ Like AST nodes they also have a `start`, `end`, and `loc`.
 
 The [code generation](https://en.wikipedia.org/wiki/Code_generation_(compiler)) stage takes the final AST and turns in back into a string of code, also creating [source maps](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/).
 
-Code generation is pretty simple: you traverse through the AST depth-first, building a string that represents the transformed code.
+Генерация кода довольно проста: вы проходите через AST в глубину, строя строку, которая представляет преобразованный код.
 
 ## Traversal
 
