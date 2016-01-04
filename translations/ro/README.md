@@ -393,7 +393,7 @@ const MyVisitor = {
 
 Aceasta este un vizitator simplu care atunci când este utilizat în timpul traversării va apela metoda `Identifier()` pentru fiecare `Identificator` din arbore.
 
-Așadar cu acest cod metoda `Identifier()` va fi apelată de patru ori cu fiecare `Identificator` (inclusiv `square`).
+Așadar, cu acest cod, metoda `Identifier()` va fi apelată de patru ori cu fiecare `Identificator` (inclusiv `square`).
 
 ```js
 function square(n) {
@@ -465,7 +465,7 @@ const MyVisitor = {
 
 ### Trasee (Paths)
 
-AST o are în general multe Noduri, dar cum se relaționează unul la altul? Am putea avea un singur obiect mutabil gigant, care să-l manipulăm şi să avem acces deplin la el, sau putem simplifica acest lucru cu Trasee (**Paths**).
+AST o are în general multe Noduri, dar cum se relaționează ele unul la altul? Am putea avea un singur obiect mutabil gigant, care să-l manipulăm şi să avem acces deplin la el, sau putem simplifica acest lucru cu Trasee (**Paths**).
 
 Un Traseu (**Path**) este o reprezentare de obiect a legăturii între două noduri.
 
@@ -554,7 +554,7 @@ Visiting: c
 
 ### Stare
 
-Starea este duşmanul transformării AST-ului. Starea îți va crea mari probleme şi ipotezele tale despre stare vor fi aproape întotdeauna greşite de o sintaxă care nu ai luat-o în considerare.
+Starea este duşmanul transformării AST-ului. Starea îți va crea mari probleme şi ipotezele tale despre stare vor fi aproape întotdeauna greşite, din cauza unei sintaxe care nu ai luat-o în considerare.
 
 Să considerăm următorul cod:
 
@@ -593,7 +593,7 @@ function square(n) {
 n;
 ```
 
-O modalitate mai bună de a rezolva asta este folosind recursivitate. Așadar, hai să facem ca într-un film de Christopher Nolan şi să punem un vizitator în interiorul unui vizitator.
+O modalitate mai bună de a rezolva această problema este folosind recursivitate. Așadar, haideți să facem ca într-un film de Christopher Nolan şi să punem un vizitator în interiorul unui vizitator.
 
 ```js
 const updateParamNameVisitor = {
@@ -615,7 +615,7 @@ const MyVisitor = {
 };
 ```
 
-Desigur, acesta este un exemplu teoretic, insă demonstrează cum să eliminăm starea globală din vizitatori.
+Desigur, acesta este un exemplu teoretic, însă demonstrează cum să eliminăm starea globală din vizitatori.
 
 ### Domenii (Scopes)
 
