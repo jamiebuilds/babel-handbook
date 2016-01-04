@@ -1475,7 +1475,7 @@ Când scrieţi transformări veţi dori adesea să construiți unele noduri pent
 
 Numele metodei pentru un constructor este pur şi simplu numele tipului de nod pe care doriţi să-l construiți cu excepţia că prima literă trebuie sa fie mică. De exemplu dacă doriți să construiți `MemberExpression` ar trebui să utilizaţi `t.memberExpression(...)`.
 
-Argumentele acestor constructori sunt hotărâte prin definiţia nodului. In momentul de față se lucrează pentru a genera documentaţie uşor de citit pentru definiţii, dar pentru moment toate pot fi găsite [aici](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions).
+Argumentele acestor constructori sunt stabilite prin definiţia nodului. În momentul de față se lucrează pentru a genera documentaţie uşor de citit pentru definiţii, dar pentru moment toate pot fi găsite [aici](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions).
 
 O definiţie de nod arată în felul următor:
 
@@ -1509,7 +1509,7 @@ Uitându-ne la proprietatea `builder`, putem vedea 3 argumente care vor fi neces
 builder: ["object", "property", "computed"],
 ```
 
-> Reţineţi că, uneori, există mai multe proprietăţi care le puteți particulariza, decât cele conținute in seria constructorului (`builder`). Aceasta este de a evita prea multe argumente pe constructor. În aceste cazuri, trebuie să setaţi proprietăţile manual. Un exemplu este [`ClassMethod`](https://github.com/babel/babel/blob/bbd14f88c4eea88fa584dd877759dd6b900bf35e/packages/babel-types/src/definitions/es2015.js#L238-L276).
+> Reţineţi că, uneori, există mai multe proprietăţi care le puteți particulariza, decât cele conținute în seria constructorului (`builder`). Acest lucru se întâmplă pentru a evita prea multe argumente pe constructor. În aceste cazuri, trebuie să setaţi proprietăţile manual. Un exemplu este [`ClassMethod`](https://github.com/babel/babel/blob/bbd14f88c4eea88fa584dd877759dd6b900bf35e/packages/babel-types/src/definitions/es2015.js#L238-L276).
 
 Puteţi vedea validarea pentru argumentele constructorului cu obiectul `fields`.
 
