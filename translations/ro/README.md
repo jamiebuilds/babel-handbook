@@ -619,7 +619,7 @@ Desigur, acesta este un exemplu teoretic, însă demonstrează cum să eliminăm
 
 ### Domenii (Scopes)
 
-În continuare vom introduce conceptul de [**domeniu**](https://en.wikipedia.org/wiki/Scope_(computer_science)). JavaScript utilizează [domenii lexicale](https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scoping_vs._dynamic_scoping), care este o structură de arbore, în care fiecare bloc crează un nou domeniu.
+În continuare vom introduce conceptul de [**domeniu**](https://en.wikipedia.org/wiki/Scope_(computer_science)). JavaScript utilizează [domeniu lexical](https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scoping_vs._dynamic_scoping), care este o structură de arbore, în care fiecare bloc crează un nou domeniu.
 
 ```js
 // global scope
@@ -633,7 +633,7 @@ function scopeOne() {
 }
 ```
 
-Ori de câte ori creaţi o referinţă în JavaScript, fie că este o variabilă, funcție, clasă, parametru, import, eticheta, etc., aceasta aparţine actualului domeniu.
+Ori de câte ori creaţi o referinţă în JavaScript, fie că este o variabilă, funcție, clasă, parametru, import, etichetî, etc., aceasta aparţine actualului domeniu.
 
 ```js
 var global = "I am in the global scope";
@@ -693,7 +693,7 @@ Odată ce am făcut acest lucru, există tot felul de metode ce le putem utiliza
 
 #### Legături (Bindings)
 
-Toate referinţele aparţin unui anumit domeniu; această relaţie este cunoscut ca o **legătură**.
+Toate referinţele aparţin unui anumit domeniu; această relaţie este cunoscută sub denumirea de **legătură**.
 
 ```js
 function scopeOnce() {
@@ -707,7 +707,7 @@ function scopeOnce() {
 }
 ```
 
-O singură legătură arată astfel:
+O legătură arată astfel:
 
 ```js
 {
@@ -725,7 +725,7 @@ O singură legătură arată astfel:
 }
 ```
 
-Cu aceste informaţii putem găsi toate referințele la o legătură, putem vedea ce tip de legătură este (parametru, declaraţie etc.), putem căuta cărui domeniu îi aparține, sau să-i copiem identificatorul. Putem chiar să aflăm dacă este constantă şi, dacă nu, putem afla ce trasee o determină să fie variabilă, nu constantă.
+Cu aceste informaţii putem găsi toate referințele la o legătură, putem vedea ce tip de legătură este (parametru, declaraţie etc.), putem căuta cărui domeniu îi aparține, sau putem să-i copiem identificatorul. Putem chiar să aflăm dacă este constantă şi, dacă nu, putem afla ce trasee o determină să fie variabilă, nu constantă.
 
 Fiind capabili să spunem dacă o legătură este constantă este utilă pentru multe scopuri, insă cel mai mare este minimizarea codului.
 
@@ -748,7 +748,7 @@ function scopeOne() {
 
 Babel este de fapt o colecţie de module. În această secţiune vom trece prin cele mai importante, explicând la ce ajută şi cum se utilizează.
 
-> Notă: Aceasta nu este un înlocuitor pentru documentaţia detaliată a API-ului, care va fi disponibilă în altă parte în scurt timp.
+> Notă: Acest document nu este un înlocuitor pentru documentaţia detaliată a API-ului, care va fi disponibilă în altă parte în scurt timp.
 
 ## [`babylon`](https://github.com/babel/babel/tree/master/packages/babylon)
 
