@@ -48,8 +48,8 @@ $ npm install -g babel-plugin-handbook
   * [Türk](/translations/tr/README.md)
   * [Український](/translations/uk/README.md)
   * [Tiếng Việt](/translations/vi/README.md)
-  * [简体中文](/translations/zh-CN/README.md)
-  * [繁體中文](/translations/zh-TW/README.md)
+  * [简体中文](/translations/zh-Hans/README.md)
+  * [繁體中文](/translations/zh-Hant/README.md)
 
 **[请求增加新的语种](https://github.com/thejameskyle/babel-plugin-handbook/issues/new?title=Translation%20Request:%20[Please%20enter%20language%20here]&body=I%20am%20able%20to%20translate%20this%20language%20[yes/no])**
 
@@ -58,22 +58,22 @@ $ npm install -g babel-plugin-handbook
 # 目录
 
   * [介绍](#introduction)
-  * [基础](#basics)
+  * [基础](#basics) 
       * [抽象语法树（ASTs）](#asts)
       * [Babel 的处理步骤](#stages-of-babel)
-      * [解析](#parse)
+      * [解析](#parse) 
           * [词法分析](#lexical-analysis)
           * [语法分析](#syntactic-analysis)
       * [转换](#transform)
       * [生成](#generate)
       * [遍历](#traversal)
       * [Visitors（访问者）](#visitors)
-      * [Paths（路径）](#paths)
+      * [Paths（路径）](#paths) 
           * [Paths in Visitors（存在于访问者中的路径）](#paths-in-visitors)
       * [State（状态）](#state)
-      * [Scopes（作用域）](#scopes)
+      * [Scopes（作用域）](#scopes) 
           * [Bindings（绑定）](#bindings)
-  * [API](#api)
+  * [API](#api) 
       * [babylon](#babylon)
       * [babel-traverse](#babel-traverse)
       * [babel-types](#babel-types)
@@ -84,7 +84,7 @@ $ npm install -g babel-plugin-handbook
       * [babel-generator](#babel-generator)
       * [babel-template](#babel-template)
   * [编写你的第一个 Babel 插件](#writing-your-first-babel-plugin)
-  * [转换操作](#transformation-operations)
+  * [转换操作](#transformation-operations) 
       * [访问](#visiting)
       * [检查节点是否为某种特定类型](#check-if-a-node-is-a-certain-type)
       * [检查标识符是否正在被引用着](#check-if-an-identifier-is-referenced)
@@ -103,7 +103,7 @@ $ npm install -g babel-plugin-handbook
       * [重命名绑定及其引用](#rename-a-binding-and-its-references)
   * [插件选项](#plugin-options)
   * [构建节点](#building-nodes)
-  * [最佳实践](#best-practices)
+  * [最佳实践](#best-practices) 
       * [尽量避免遍历抽象语法树（AST）](#avoid-traversing-the-ast-as-much-as-possible)
       * [及时合并访问者对象](#merge-visitors-whenever-possible)
       * [可以手动查找就不要遍历](#do-not-traverse-when-manual-lookup-will-do)
@@ -427,7 +427,7 @@ Called!
 
 让我们以上面那棵树为例子走一遍这个过程。
 
-  * 进入 `FunctionDeclaration`
+  * 进入 `FunctionDeclaration` 
       * 进入 `Identifier (id)`
       * 走到尽头
       * 退出 `Identifier (id)`
@@ -435,12 +435,12 @@ Called!
       * 走到尽头
       * 退出 `Identifier (params[0])`
       * 进入 `BlockStatement (body)`
-      * 进入 `ReturnStatement (body)`
+      * 进入 `ReturnStatement (body)` 
           * 进入 `BinaryExpression (argument)`
-          * 进入 `Identifier (left)`
+          * 进入 `Identifier (left)` 
               * 走到尽头
           * 退出 `Identifier (left)`
-          * 进入 `Identifier (right)`
+          * 进入 `Identifier (right)` 
               * 走到尽头
           * 退出 `Identifier (right)`
           * 退出 `BinaryExpression (argument)`

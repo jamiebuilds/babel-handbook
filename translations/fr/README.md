@@ -48,8 +48,8 @@ Maintenant vous aurez une commande `babel-plugin-handbook` qui va ouvrir ce fich
   * [Türk](/translations/tr/README.md)
   * [Український](/translations/uk/README.md)
   * [Tiếng Việt](/translations/vi/README.md)
-  * [中文](/translations/zh-CN/README.md)
-  * [繁體中文](/translations/zh-TW/README.md)
+  * [中文](/translations/zh-Hans/README.md)
+  * [繁體中文](/translations/zh-Hant/README.md)
 
 **[Request another translation](https://github.com/thejameskyle/babel-plugin-handbook/issues/new?title=Translation%20Request:%20[Please%20enter%20language%20here]&body=I%20am%20able%20to%20translate%20this%20language%20[yes/no])**
 

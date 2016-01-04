@@ -6,7 +6,7 @@ Beim Lesen einer Übersetzung dieses Dokumentes, kann es sein, dass einige Kapit
 
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
-Namentlich möchten wir [@sebmck](https://github.com/sebmck/), [@hzoo](https://github.com/hzoo), [jdalton](https://github.com/jdalton),[@abraithwaite](https://github.com/abraithwaite), [@robey](https://github.com/robey) und anderen für die Hilfe an diesem Handbuch danken.
+Namentlich möchten wir [@sebmck](https://github.com/sebmck/), [@hzoo](https://github.com/hzoo), [@jdalton](https://github.com/jdalton),[@abraithwaite](https://github.com/abraithwaite), [@robey](https://github.com/robey) und anderen für die Hilfe an diesem Handbuch danken.
 
 # Node Packaged Manuscript
 
@@ -48,8 +48,8 @@ Nun gibt es den Befehl `babel-plugin-handbook` Kommando, welches dieses Handbuch
   * [Türk](/translations/tr/README.md)
   * [Український](/translations/uk/README.md)
   * [Tiếng Việt](/translations/vi/README.md)
-  * [中文](/translations/zh-CN/README.md)
-  * [繁體中文](/translations/zh-TW/README.md)
+  * [中文](/translations/zh-Hans/README.md)
+  * [繁體中文](/translations/zh-Hant/README.md)
 
 **[Request another translation](https://github.com/thejameskyle/babel-plugin-handbook/issues/new?title=Translation%20Request:%20[Please%20enter%20language%20here]&body=I%20am%20able%20to%20translate%20this%20language%20[yes/no])**
 
@@ -134,7 +134,7 @@ function square(n) {
 }
 ```
 
-> Um mit AST Knoten zu experimentieren kann das Tool [AST Explorer](http://astexplorer.net/) verwendet werden. Dieser [Link](http://astexplorer.net/#/Z1exs6BWMq) enthält den Ast für den Beispielcode von oben.
+> Um mit AST Knoten zu experimentieren kann das Tool [AST Explorer](http://astexplorer.net/) verwendet werden. Dieser [Link](http://astexplorer.net/#/Z1exs6BWMq) enthält den AST für den Beispielcode von oben.
 
 Das Programm kann auch als Liste wie folgt abgebildet werden:
 
@@ -236,7 +236,7 @@ interface Node {
 
 Das `type` Feld ist ein String welcher die Art des Knotens repräsentiert (z.B. `"FunctionDeclaration"`, `"Identifier"`, oder `"BinaryExpression"`). Jeder Knotentyp definiert zusätzliche Eigenschaften welche den speziellen Knotentypen genauer beschreiben.
 
-There are additional properties on every Node that Babel generates which describe the position of the Node in the original source code.
+Babel generiert zusätzliche Eigenschaften für jeden Knoten, welche die Position des Knotens im originalen Source Code beschreiben.
 
 ```js
 {
@@ -257,21 +257,21 @@ There are additional properties on every Node that Babel generates which describ
 }
 ```
 
-These properties `start`, `end`, `loc`, appear in every single Node.
+Die Eigenschaften `start`, `end` und `loc` werden zu jedem Knoten hinzugefügt.
 
-## Stages of Babel
+## Phasen von Babel
 
-The three primary stages of Babel are **parse**, **transform**, **generate**.
+Die drei grundsätzlichen Phasen von Babel sind **Parsen(parse)**, **Transformieren(transform)** und **Generieren(generate)**.
 
-### Parse
+### Parsen
 
-The **parse** stage, takes code and outputs an AST. There are two phases of parsing in Babel: [**Lexical Analysis**](https://en.wikipedia.org/wiki/Lexical_analysis) and [**Syntactic Analysis**](https://en.wikipedia.org/wiki/Parsing).
+Die **parse** Phase erhält Source Code als Eingabe und produziert einen AST als Ausgabe. Die Phase wird in zwei Schritte aufgeteilt: [**Lexikalische Analyse**](https://en.wikipedia.org/wiki/Lexical_analysis) und [**Syntaktische Analyse**](https://en.wikipedia.org/wiki/Parsing).
 
-#### Lexical Analysis
+#### Lexikalische Analyse
 
-Lexical Analysis will take a string of code and turn it into a stream of **tokens**.
+Lexikalische Analyse nimmt einen Source Code String und wandelt ihn in einen Strom von **Tokens** um.
 
-You can think of tokens as a flat array of language syntax pieces.
+Man kann sich die Tokens als eine Liste von syntaktischen Sprachelementen vorstellen.
 
 ```js
 n * n;
@@ -286,7 +286,7 @@ n * n;
 ]
 ```
 
-Each of the `type`s here have a set of properties describing the token:
+Jeder `type` hat eine Menge von Eigenschaften welche das Token beschreiben:
 
 ```js
 {
@@ -307,25 +307,25 @@ Each of the `type`s here have a set of properties describing the token:
 }
 ```
 
-Like AST nodes they also have a `start`, `end`, and `loc`.
+Analog zu AST Knoten haben Tokens auch eine `start`, `end` und `loc` Eigenschaft.
 
-#### Syntactic Analysis
+#### Syntaktische Analyse
 
-Syntactic Analysis will take a stream of tokens and turn it into an AST representation. Using the information in the tokens, this phase will reformat them as an AST which represents the structure of the code in a way that makes it easier to work with.
+Syntaktische Analyse wandelt einen Strom von Tokens in einen AST um. Diese Phase verwendet die Informationen welche in den Tokens vorhanden ist und wandelt diese in einen AST um, welcher die Struktur des Codes so darstellt welche einfacher bearbeitet werden kann.
 
-### Transform
+### Transformieren
 
-The [transform](https://en.wikipedia.org/wiki/Program_transformation) stage takes an AST and traverses through it, adding, updating, and removing nodes as it goes along. This is by far the most complex part of Babel or any compiler. This is where plugins operate and so it will be the subject of most of this handbook. So we won't dive too deep right now.
+Die [Transformations](https://en.wikipedia.org/wiki/Program_transformation)-Phase traversiert einen AST und fügt neue Knoten hinzu, ändert vorhandene Knoten ab oder entfernt Knoten. Dies ist der komplexeste Schritt von Babel oder anderen Compilern. Das ist auch die Phase in welcher Plugins eingesetzt weden und ist somit ein großer Bestandteil dieses Handbuches. Deshalb werden wir diese Phase nicht weiter vertiefen.
 
-### Generate
+### Generieren
 
-The [code generation](https://en.wikipedia.org/wiki/Code_generation_(compiler)) stage takes the final AST and turns in back into a string of code, also creating [source maps](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/).
+Die [Code Generierung](https://en.wikipedia.org/wiki/Code_generation_(compiler)) Phase wandelt den finalen AST wieder in einen String um und erzeugt auch [Source Maps](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/).
 
-Code generation is pretty simple: you traverse through the AST depth-first, building a string that represents the transformed code.
+Die Code Generierung ist ziemlich einfach: Der AST wird mit einer Tiefensuche traversiert. Dabei wird eine Zeichenkette generiert, welche den transformierten Code darstellt.
 
-## Traversal
+## Traversierung
 
-When you want to transform an AST you have to [traverse the tree](https://en.wikipedia.org/wiki/Tree_traversal) recursively.
+Um einen AST zu transformieren muss der Baum rekursiv [durchlaufen](https://en.wikipedia.org/wiki/Tree_traversal) werden.
 
 Say we have the type `FunctionDeclaration`. It has a few properties: `id`, `params`, and `body`. Each of them have nested nodes.
 

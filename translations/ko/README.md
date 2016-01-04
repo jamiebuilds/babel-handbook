@@ -8,7 +8,7 @@ If you are reading a non-english translation of this handbook you may still find
 
 [@sebmck](https://github.com/sebmck/), [@hzoo](https://github.com/hzoo), [@jdalton](https://github.com/jdalton), [@abraithwaite](https://github.com/abraithwaite), [@robey](https://github.com/robey), 와 다른 기여자 분들이 이 핸드북 제작에 큰 도움을 주셨습니다.
 
-# Node로 포장된 원고
+# Node로 패키징된 원고
 
 이 핸드북은 npm을 통해 설치할 수 있습니다. 다음 커맨드를 입력하세요:
 
@@ -48,18 +48,18 @@ $ npm install -g babel-plugin-handbook
   * [Türk](/translations/tr/README.md)
   * [Український](/translations/uk/README.md)
   * [Tiếng Việt](/translations/vi/README.md)
-  * [中文](/translations/zh-CN/README.md)
-  * [繁體中文](/translations/zh-TW/README.md)
+  * [中文](/translations/zh-Hans/README.md)
+  * [繁體中文](/translations/zh-Hant/README.md)
 
-**[Request another translation](https://github.com/thejameskyle/babel-plugin-handbook/issues/new?title=Translation%20Request:%20[Please%20enter%20language%20here]&body=I%20am%20able%20to%20translate%20this%20language%20[yes/no])**
+**[또 다른 번역 요청](https://github.com/thejameskyle/babel-plugin-handbook/issues/new?title=Translation%20Request:%20[Please%20enter%20language%20here]&body=I%20am%20able%20to%20translate%20this%20language%20[yes/no])**
 
 If you are reading a non-english translation of this document you will find a number of english words that are programming concepts. (만약 번역된 문서를 읽고 있다면 몇 가지 프로그래밍 개념상의 영단어들을 찾을 수 있습니다.) If these were translated to other languages there would be a lack of consistency and fluency when reading about them. (이는 문서가 다른 언어로 번역되었기 때문에 문서를 읽을 때 원문에 비해 일관성과 표현이 부족할 수 있습니다.) In many cases you will find the literal translation followed by the english term in parenthesis `()`. (영문 그대로의 문장 또는 단어를 괄호에 그대로 넣은 경우를 많이 볼 수 있습니다.) 예를 들면: 추상 구문 트리 (ASTs).
 
 # 목차
 
-  * [Introduction](#introduction)
-  * [Basics](#basics) 
-      * [ASTs](#asts)
+  * [소개](#introduction)
+  * [기본](#basics) 
+      * [추상 구문 트리 (ASTs)](#asts)
       * [Stages of Babel](#stages-of-babel)
       * [Parse](#parse) 
           * [Lexical Analysis](#lexical-analysis)
@@ -110,7 +110,7 @@ If you are reading a non-english translation of this document you will find a nu
       * [Optimizing nested visitors](#optimizing-nested-visitors)
       * [Being aware of nested structures](#being-aware-of-nested-structures)
 
-# Introduction
+# 소개
 
 Babel is a generic multi-purpose compiler for JavaScript. More than that it is a collection of modules that can be used for many different forms of static analysis.
 
@@ -118,11 +118,11 @@ Babel is a generic multi-purpose compiler for JavaScript. More than that it is a
 
 You can use Babel to build many different types of tools that can help you be more productive and write better programs.
 
-# Basics
+# 기본
 
 Babel is a JavaScript compiler, specifically a source-to-source compiler, often called a "transpiler". This means that you give Babel some JavaScript code, Babel modifies the code, and generates the new code back out.
 
-## ASTs
+## 추상 구문 트리 (ASTs)
 
 Each of these steps involve creating or working with an [Abstract Syntax Tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree) or AST.
 
@@ -1435,7 +1435,7 @@ FunctionDeclaration(path) {
 
 * * *
 
-# Plugin Options
+# 플러그인 옵션
 
 If you would like to let your users customize the behavior of your Babel plugin you can accept plugin specific options which users can specify like this:
 
@@ -1580,7 +1580,7 @@ You can find all of the actual [definitions here](https://github.com/babel/babel
 
 * * *
 
-# Best Practices
+# 모범 사례
 
 > I'll be working on this section over the coming weeks.
 

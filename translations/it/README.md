@@ -48,8 +48,8 @@ Adesso avete a disposizione il comando `babel-plugin-handbook` che aprirà quest
   * [Türk](/translations/tr/README.md)
   * [Український](/translations/uk/README.md)
   * [Tiếng Việt](/translations/vi/README.md)
-  * [中文](/translations/zh-CN/README.md)
-  * [繁體中文](/translations/zh-TW/README.md)
+  * [中文](/translations/zh-Hans/README.md)
+  * [繁體中文](/translations/zh-Hant/README.md)
 
 **[Richiedi la traduzione in un'altra lingua](https://github.com/thejameskyle/babel-plugin-handbook/issues/new?title=Translation%20Request:%20[Please%20enter%20language%20here]&body=I%20am%20able%20to%20translate%20this%20language%20[yes/no])**
 
@@ -327,7 +327,7 @@ Code generation is pretty simple: you traverse through the AST depth-first, buil
 
 When you want to transform an AST you have to [traverse the tree](https://en.wikipedia.org/wiki/Tree_traversal) recursively.
 
-Say we have the type `FunctionDeclaration`. It has a few properties: `id`, `params`, and `body`. Each of them have nested nodes.
+Per esempio prendiamo un nodo di tipo `FunctionDeclaration`. Ha diverse proprietà: `id`, `params` e `body`. Ognuno di essi ha uno o più nodi nidificati.
 
 ```js
 {
@@ -361,9 +361,9 @@ Say we have the type `FunctionDeclaration`. It has a few properties: `id`, `para
 }
 ```
 
-So we start at the `FunctionDeclaration` and we know its internal properties so we visit each of them and their children in order.
+Così iniziamo dalla `FunctionDeclaration` e conosciamo le proprietà interne quindi visitiamo ciascuno di essi e i loro figli in ordine.
 
-Next we go to `id` which is an `Identifier`. `Identifier`s don't have any child node properties so we move on.
+La proprietà successiva è `id` è un `identificatore`. L'`identificatore ` non ha altri nodi nidificati quindi andiamo avanti.
 
 After that is `params` which is an array of nodes so we visit each of them. In this case it's a single node which is also an `Identifier` so we move on.
 

@@ -48,8 +48,8 @@ $ npm install -g babel-plugin-handbook
   * [Türk](/translations/tr/README.md)
   * [Український](/translations/uk/README.md)
   * [Tiếng Việt](/translations/vi/README.md)
-  * [中文](/translations/zh-CN/README.md)
-  * [繁體中文](/translations/zh-TW/README.md)
+  * [中文](/translations/zh-Hans/README.md)
+  * [繁體中文](/translations/zh-Hant/README.md)
 
 **[Request another translation](https://github.com/thejameskyle/babel-plugin-handbook/issues/new?title=Translation%20Request:%20[Please%20enter%20language%20here]&body=I%20am%20able%20to%20translate%20this%20language%20[yes/no])**
 
@@ -71,7 +71,7 @@ $ npm install -g babel-plugin-handbook
       * [Пути](#paths) 
           * [Paths in Visitors](#paths-in-visitors)
       * [Состояние](#state)
-      * [Scopes](#scopes) 
+      * [Области видимости](#scopes) 
           * [Bindings](#bindings)
   * [API](#api) 
       * [babylon](#babylon)
@@ -467,9 +467,9 @@ const MyVisitor = {
 
 An AST generally has many Nodes, but how do Nodes relate to one another? We could have one giant mutable object that you manipulate and have full access to, or we can simplify this with **Paths**.
 
-A **Path** is an object representation of the link between two nodes.
+**Путь** — это объектное представление ссылки между двумя узлами.
 
-For example if we take the following node and its child:
+Например, если мы возьмем следующий узел и его дочерний:
 
 ```js
 {
@@ -593,7 +593,7 @@ function square(n) {
 n;
 ```
 
-The better way to deal with this is recursion. So let's make like a Christopher Nolan film and put a visitor inside of a visitor.
+Лучший способ справиться с этим — рекурсия. Так что давайте делать как в фильме Кристофера Нолан и положить посетителя в посетителя.
 
 ```js
 const updateParamNameVisitor = {
@@ -615,11 +615,11 @@ const MyVisitor = {
 };
 ```
 
-Of course, this is a contrived example but it demonstrates how to eliminate global state from your visitors.
+Конечно это надуманный пример, но он демонстрирует как исключить глобальное состояние из ваших посетителей.
 
-### Scopes
+### Области видимости
 
-Next let's introduce the concept of a [**scope**](https://en.wikipedia.org/wiki/Scope_(computer_science)). JavaScript has [lexical scoping](https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scoping_vs._dynamic_scoping), which is a tree structure where blocks create new scope.
+Далее введем понятие [**области видимости**](https://en.wikipedia.org/wiki/Scope_(computer_science)). JavaScript имеет [лексическую область видимости](https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scoping_vs._dynamic_scoping), которая имеет структуру дерева, где блоки создают новую область видимости.
 
 ```js
 // global scope
@@ -647,7 +647,7 @@ function scopeOne() {
 }
 ```
 
-Code within a deeper scope may use a reference from a higher scope.
+Код в пределах более глубокой области видимости может использовать ссылку из более высокой области видимости.
 
 ```js
 function scopeOne() {
@@ -659,7 +659,7 @@ function scopeOne() {
 }
 ```
 
-A lower scope might also create a reference of the same name without modifying it.
+Более низкая область видимости также может создать ссылку с тем же именем без её изменения.
 
 ```js
 function scopeOne() {
@@ -675,7 +675,7 @@ When writing a transform, we want to be wary of scope. We need to make sure we d
 
 We may want to add new references and make sure they don't collide with existing ones. Or maybe we just want to find where a variable is referenced. We want to be able to track these references within a given scope.
 
-A scope can be represented as:
+Область видимости может быть представлена как:
 
 ```js
 {
