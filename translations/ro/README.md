@@ -286,7 +286,7 @@ n * n;
 ]
 ```
 
-Fiecare `type` au un set de proprietăţi care descrie token-ul:
+Fiecare `type` are un set de proprietăţi care descrie token-ul:
 
 ```js
 {
@@ -315,7 +315,7 @@ Analiza sintactică primește un flux de token-uri şi-l transformă într-o rep
 
 ### Transformare
 
-Etapa de [Transformare](https://en.wikipedia.org/wiki/Program_transformation) primește un AST pe care-l traversează, adăugă, actualizează şi sterge noduri. Această etapă este de departe cea mai complexă din Babel sau din orice alt compilator. Aici este locul în care plugin-uri operează aşadar va fi subiectul majorității capitolelor din acest manual. Nu vom intra prea adânc în detalii pentru moment.
+Etapa de [Transformare](https://en.wikipedia.org/wiki/Program_transformation) primește un AST pe care-l traversează, adăugă, actualizează şi sterge noduri. Această etapă este de departe cea mai complexă din Babel sau din orice alt compilator. Acesta este locul în care plugin-urile acționează de fapt, aşadar va fi subiectul majorității capitolelor din acest manual. Nu vom intra prea adânc în detalii pentru moment.
 
 ### Generare
 
@@ -327,7 +327,7 @@ Generarea de cod este destul de simplă: se traversează AST-ul și se construie
 
 Atunci când doriţi să transformați un AST trebuie să-l [traversați](https://en.wikipedia.org/wiki/Tree_traversal) recursiv.
 
-Să zicem ca avem tipul `FunctionDeclaration`. El are câteva proprietăți: `id`, `params` si `body`. Fiecare dintre ele au noduri imbricate.
+Să zicem că avem tipul `FunctionDeclaration`. El are câteva proprietăți: `id`, `params` și `body`. Fiecare dintre ele au noduri imbricate.
 
 ```js
 {
@@ -361,11 +361,11 @@ Să zicem ca avem tipul `FunctionDeclaration`. El are câteva proprietăți: `id
 }
 ```
 
-Vom începe cu `FunctionDeclaration` şi ştim proprietăţile sale interne, astfel încât vom vizita fiecare proprietate şi copiii lor în ordine.
+Vom începe cu `FunctionDeclaration` şi ştim proprietăţile sale interne, astfel încât vom vizita fiecare proprietate şi copiii săi, în ordine.
 
-Apoi vom continua cu `id`, care este un `Identificator`. `Identificatorii` nu au proprietăţi copil astfel încât putem merge mai departe.
+Apoi vom continua cu `id`, care este un `Identificator`. `Identificatorii` nu au proprietăţi copil, așadar putem merge mai departe.
 
-Urmează `params`, care este o matrice de noduri, așadar vom vizita pe fiecare dintre ele. În acest caz este un singur nod care este de asemenea un `Identificator` aşadar putem merge mai departe.
+Urmează `params`, care este o matrice de noduri, așadar le vom vizita pe fiecare în parte. În acest caz este un singur nod care este de asemenea un `Identificator` aşadar putem merge mai departe.
 
 Apoi ajungem la `body`, care este un `BlockStatement` cu o proprietate `body`, care este o serie de noduri, aşa că le vom vizita pe fiecare dintre ele.
 
@@ -379,7 +379,7 @@ Acest proces de traversare se întâmplă de-a lungul etapei de transformare Bab
 
 Atunci când vorbim despre "a merge" la un nod, ne referim de fapt la a-l **vizita**. Motivul pentru care vom folosi acest termen este pentru că există acest concept de [**vizitator**](https://en.wikipedia.org/wiki/Visitor_pattern).
 
-Vizitatorii sunt un model folosit în traversarea AST traversare, utilizat în diverse limbaje. În termeni simpli, aceștia sunt obiecte cu metode definite pentru a accepta anumite tipuri de nod dintr-un AST. Asta poate fi putin abstract, așadar să luăm un exemplu.
+Vizitatorii sunt un model folosit în traversarea AST, utilizat în diverse limbaje. În termeni simpli, aceștia sunt obiecte cu metode definite pentru a accepta anumite tipuri de nod dintr-un AST. Această definiție poate fi puțin abstractă, așadar să luăm un exemplu.
 
 ```js
 const MyVisitor = {
