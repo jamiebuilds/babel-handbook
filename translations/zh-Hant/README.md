@@ -58,22 +58,22 @@ If you are reading a non-english translation of this document you will find a nu
 # Table of Contents
 
   * [Introduction](#introduction)
-  * [Basics](#basics) 
+  * [Basics](#basics)
       * [ASTs](#asts)
       * [Stages of Babel](#stages-of-babel)
-      * [Parse](#parse) 
+      * [Parse](#parse)
           * [Lexical Analysis](#lexical-analysis)
           * [Syntactic Analysis](#syntactic-analysis)
       * [Transform](#transform)
       * [Generate](#generate)
       * [Traversal](#traversal)
       * [Visitors](#visitors)
-      * [Paths](#paths) 
+      * [Paths](#paths)
           * [Paths in Visitors](#paths-in-visitors)
       * [State](#state)
-      * [Scopes](#scopes) 
+      * [Scopes](#scopes)
           * [Bindings](#bindings)
-  * [API](#api) 
+  * [API](#api)
       * [babylon](#babylon)
       * [babel-traverse](#babel-traverse)
       * [babel-types](#babel-types)
@@ -84,7 +84,7 @@ If you are reading a non-english translation of this document you will find a nu
       * [babel-generator](#babel-generator)
       * [babel-template](#babel-template)
   * [Writing your first Babel Plugin](#writing-your-first-babel-plugin)
-  * [Transformation Operations](#transformation-operations) 
+  * [Transformation Operations](#transformation-operations)
       * [Visiting](#visiting)
       * [Check if a node is a certain type](#check-if-a-node-is-a-certain-type)
       * [Check if an identifier is referenced](#check-if-an-identifier-is-referenced)
@@ -103,7 +103,7 @@ If you are reading a non-english translation of this document you will find a nu
       * [Rename a binding and its references](#rename-a-binding-and-its-references)
   * [Plugin Options](#plugin-options)
   * [Building Nodes](#building-nodes)
-  * [Best Practices](#best-practices) 
+  * [Best Practices](#best-practices)
       * [Avoid traversing the AST as much as possible](#avoid-traversing-the-ast-as-much-as-possible)
       * [Merge visitors whenever possible](#merge-visitors-whenever-possible)
       * [Do not traverse when manual lookup will do](#do-not-traverse-when-manual-lookup-will-do)
@@ -427,7 +427,7 @@ As we traverse down each branch of the tree we eventually hit dead ends where we
 
 Let's *walk* through what this process looks like for the above tree.
 
-  * Enter `FunctionDeclaration` 
+  * Enter `FunctionDeclaration`
       * Enter `Identifier (id)`
       * Hit dead end
       * Exit `Identifier (id)`
@@ -435,12 +435,12 @@ Let's *walk* through what this process looks like for the above tree.
       * Hit dead end
       * Exit `Identifier (params[0])`
       * Enter `BlockStatement (body)`
-      * Enter `ReturnStatement (body)` 
+      * Enter `ReturnStatement (body)`
           * Enter `BinaryExpression (argument)`
-          * Enter `Identifier (left)` 
+          * Enter `Identifier (left)`
               * Hit dead end
           * Exit `Identifier (left)`
-          * Enter `Identifier (right)` 
+          * Enter `Identifier (right)`
               * Hit dead end
           * Exit `Identifier (right)`
           * Exit `BinaryExpression (argument)`

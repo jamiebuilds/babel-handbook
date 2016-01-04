@@ -33,5 +33,5 @@ files:
         'tr': 'tr'
         'uk': 'uk'
         'vi': 'vi'
-        'zh-CN': 'zh-CN'
-        'zh-TW': 'zh-TW'
+        'zh-CN': 'zh-Hans'
+        'zh-TW': 'zh-Hant'
