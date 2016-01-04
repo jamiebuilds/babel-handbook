@@ -919,7 +919,7 @@ Iar atunci când este tipărit arată astfel:
 a * b
 ```
 
-Constructorii, de asemenea, vor valida nodurile pe care le crează şi arunca erori descriptive dacă sunt folosiți necorespunzător. Ceea ce ne conduce la următorul tip de metodă.
+Constructorii, de asemenea, vor valida nodurile pe care le crează şi aruncă erori descriptive dacă sunt folosiți necorespunzător. Ceea ce ne conduce la următorul tip de metodă.
 
 ### Validatori
 
@@ -1037,7 +1037,7 @@ var myModule = require("my-module");
 
 Acum că sunteţi familiarizați cu toate elementele de bază din Babel, haideţi să le utilizăm împreună cu API-ul pentru plugin-uri.
 
-Să începem cu o `funcţie` care primește obiectu `babel`.
+Să începem cu o `funcţie` care primește obiectul `babel`.
 
 ```js
 export default function(babel) {
@@ -1045,7 +1045,7 @@ export default function(babel) {
 }
 ```
 
-Deoarece veţi folosi foarte des, probabil doriți sa pasați doar `babel.types` astfel:
+Deoarece îl veţi folosi foarte des, probabil doriți să pasați doar `babel.types` astfel:
 
 ```js
 export default function({ types: t }) {
@@ -1129,7 +1129,7 @@ BinaryExpression(path) {
 }
 ```
 
-În cazul în care vom rula acest plugin ar rezulta:
+În cazul în care vom rula acest plugin, ar rezulta:
 
 ```js
 sebmck === bar;
@@ -1154,7 +1154,7 @@ Ceea ce conduce la rezultatul nostru final:
 sebmck === dork;
 ```
 
-Super mișto! Primul nostru plug-in pentru Babel.
+Super mișto! Primul nostru plugin pentru Babel.
 
 * * *
 
@@ -1278,7 +1278,7 @@ FunctionDeclaration(path) {
   }
 ```
 
-> **Notă:** Nu este recomandat să utilizaţi acest API daca nu aveți de a face cu șiruri de caractere sursă dinamice, altfel este mult mai eficient pentru a analiza codul în afara vizitatorului.
+> **Notă:** Nu este recomandat să utilizaţi acest API dacă nu aveți de a face cu șiruri de caractere sursă dinamice, altfel este mult mai eficient pentru a analiza codul în afara vizitatorului.
 
 ### Inserarea unui nod pe același nivel
 
@@ -1358,7 +1358,7 @@ FunctionDeclaration(path) {
 
 Aceasta va parcurge arborele şi va căuta acea legatură anume.
 
-Puteţi verifica și dacă un domeniu are o anumita legătura proprie (**own**):
+Puteţi verifica și dacă un domeniu are o anumită legătură proprie (**own**):
 
 ```js
 FunctionDeclaration(path) {
@@ -1417,7 +1417,7 @@ FunctionDeclaration(path) {
   }
 ```
 
-Alternativ, puteţi redenumi o legătura cu un identificator unic generat:
+Alternativ, puteţi redenumi o legătură cu un identificator unic generat:
 
 ```js
 FunctionDeclaration(path) {
@@ -1437,7 +1437,7 @@ FunctionDeclaration(path) {
 
 # Opțiuni de plugin
 
-Dacă doriţi să lasați utilizatorii să particularizeze comportamentul plugin-ul vostru Babel, puteţi accepta opţiuni de plugin specifice, pe care utilizatorii le pot specifica în felul următor:
+Dacă doriţi să lăsați utilizatorii să particularizeze comportamentul plugin-ul vostru Babel, puteţi accepta opţiuni de plugin specifice, pe care utilizatorii le pot specifica în felul următor:
 
 ```js
 {
