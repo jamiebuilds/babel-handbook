@@ -26,7 +26,7 @@ Now you will have a `babel-plugin-handbook` command that will open this readme f
   * [Català](/translations/ca/README.md)
   * [Čeština](/translations/cs/README.md)
   * [Danske](/translations/da/README.md)
-  * [Deutsche](/translations/de/README.md)
+  * [Deutsch](/translations/de/README.md)
   * [ελληνικά](/translations/el/README.md)
   * [Español](/translations/es-ES/README.md)
   * [Español](/translations/fi/README.md)

@@ -26,7 +26,7 @@ Acum veți avea comanda `babel-plugin-handbook` care va deschide acest document 
   * [Català](/translations/ca/README.md)
   * [Čeština](/translations/cs/README.md)
   * [Danske](/translations/da/README.md)
-  * [Deutsche](/translations/de/README.md)
+  * [Deutsch](/translations/de/README.md)
   * [ελληνικά](/translations/el/README.md)
   * [Español](/translations/es-ES/README.md)
   * [Suomi](/translations/fi/README.md)
