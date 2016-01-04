@@ -114,17 +114,17 @@ Acum veți avea comanda `babel-plugin-handbook` care va deschide acest document 
 
 Babel este un compilator generic multi-scop pentru JavaScript. Mai mult decât atât, este o colecție de module care pot fi utilizate pentru diverse tipuri de analiză statică.
 
-> Analiza statică este procesul de a analiza cod fără a-l executa. (Analiza de cod, în timp ce se execută este cunoscută ca analiză dinamică). Scopul analizei statice variază foarte mult. Poate fi folosită pentru validare (linting), compilare, evidențiere (highlighting), transformare, optimizare, minimizare, și multe altele.
+> Analiza statică este procesul de a analiza cod fără a-l executa. (Analiza de cod, în timp ce se execută este cunoscută sub denumirea de analiză dinamică). Scopul analizei statice variază foarte mult. Poate fi folosită pentru validare (linting), compilare, evidențiere (highlighting), transformare, optimizare, minimizare, și multe altele.
 
 Puteți utiliza Babel pentru a construi diverse tipuri de instrumente care vă pot ajuta să fiți mai productivi și pentru a scrie programe mai bune.
 
 # Concepte de bază
 
-Babel este un compilator de JavaScript, mai exact un compilator sursă-la-sursă, deseori numit un "transpiler". Asta înseamnă că daca îi pasezi cod JavaScript, Babel modifică codul, și generează cod nou.
+Babel este un compilator de JavaScript, mai exact un compilator sursă-la-sursă, deseori numit un "transpiler". Asta înseamnă că dacă îi pasezi cod JavaScript, Babel modifică codul, și generează cod nou.
 
 ## ASTs
 
-Fiecare dintre acești pași implică crearea sau lucrul cu un [Arbore Abstract de Sintaxa](https://en.wikipedia.org/wiki/Abstract_syntax_tree) sau AST.
+Fiecare dintre acești pași implică crearea sau lucrul cu un [Arbore Abstract de Sintaxă](https://en.wikipedia.org/wiki/Abstract_syntax_tree) sau AST.
 
 > Babel folosește un AST modificat din [ESTree](https://github.com/estree/estree), cu specificațiile interne aflate [aici](https://github.com/babel/babel/blob/master/doc/ast/spec.md).
 
