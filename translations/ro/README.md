@@ -51,7 +51,7 @@ Acum veți avea comanda `babel-plugin-handbook` care va deschide acest document 
   * [中文](/translations/zh-CN/README.md)
   * [繁體中文](/translations/zh-TW/README.md)
 
-**[Request another translation](https://github.com/thejameskyle/babel-plugin-handbook/issues/new?title=Translation%20Request:%20[Please%20enter%20language%20here]&body=I%20am%20able%20to%20translate%20this%20language%20[yes/no])**
+**[Solicită o altă traducere](https://github.com/thejameskyle/babel-plugin-handbook/issues/new?title=Translation%20Request:%20[Please%20enter%20language%20here]&body=I%20am%20able%20to%20translate%20this%20language%20[yes/no])**
 
 În cazul în care citiți o traducere din limba engleză, veți găsi cuvinte în engleză care se referă la concepte de programare. Daca acestea ar fi traduse în alte limbi s-ar pierde consistența și fluența în citire. În anumite cazuri veți găsi traducerea literară urmată de termenul în engleză între paranteze `()`. De exemplu: Arbori Abstracți de Sintaxă (ASTs).
 
