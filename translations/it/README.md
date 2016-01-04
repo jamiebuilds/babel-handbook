@@ -16,9 +16,9 @@ Potete installare questo documento tramite npm. Eseguire da riga di comando:
 $ npm install -g babel-plugin-handbook
 ```
 
-Now you will have a `babel-plugin-handbook` command that will open this readme file in your `$PAGER`. Otherwise, you may continue reading this document as you are presently doing.
+Adesso avete a disposizione il comando `babel-plugin-handbook` che aprirà questo file readme nel vostro `$PAGER`. Altrimenti, potete continuare a leggere questo documento nello stesso modo in cui lo state leggendo al momento.
 
-# Translations
+# Traduzioni
 
   * [English](/README.md)
   * [Afrikaans](/translations/af/README.md)
@@ -51,78 +51,80 @@ Now you will have a `babel-plugin-handbook` command that will open this readme f
   * [中文](/translations/zh-CN/README.md)
   * [繁體中文](/translations/zh-TW/README.md)
 
-If you are reading a non-english translation of this document you will find a number of english words that are programming concepts. If these were translated to other languages there would be a lack of consistency and fluency when reading about them. In many cases you will find the literal translation followed by the english term in parenthesis `()`. For example: Abstract Syntax Trees (ASTs).
+**[Richiedi la traduzione in un'altra lingua](https://github.com/thejameskyle/babel-plugin-handbook/issues/new?title=Translation%20Request:%20[Please%20enter%20language%20here]&body=I%20am%20able%20to%20translate%20this%20language%20[yes/no])**
 
-# Table of Contents
+Se stai leggendo una traduzione di questo documento in una lingua diversa dall'Inglese, troverai alcuni concetti di programmazione espressi in lingua Inglese. Se questi sono stati tradotti in altre lingue, ci sarà una mancanza di coerenza e fluidità durante la lettura di essi. In molti casi troverete la traduzione letterale, seguita dal termine Inglese in parentesi `()`. Ad esempio: Albero Sintattico Astratto (AST).
 
-  * [Introduction](#introduction)
-  * [Basics](#basics) 
+# Sommario
+
+  * [Introduzione](#introduction)
+  * [Nozioni di base](#basics) 
       * [ASTs](#asts)
-      * [Stages of Babel](#stages-of-babel)
+      * [Fasi di Babel](#stages-of-babel)
       * [Parse](#parse) 
-          * [Lexical Analysis](#lexical-analysis)
-          * [Syntactic Analysis](#syntactic-analysis)
-      * [Transform](#transform)
-      * [Generate](#generate)
+          * [Analisi Lessicale](#lexical-analysis)
+          * [Analisi Sintattica](#syntactic-analysis)
+      * [Trasformazione](#transform)
+      * [Generazione](#generate)
       * [Traversal](#traversal)
-      * [Visitors](#visitors)
-      * [Paths](#paths) 
-          * [Paths in Visitors](#paths-in-visitors)
-      * [State](#state)
+      * [Visitatori](#visitors)
+      * [Percorsi](#paths) 
+          * [Percorsi in visitatori](#paths-in-visitors)
+      * [Stato](#state)
       * [Scopes](#scopes) 
           * [Bindings](#bindings)
   * [API](#api) 
       * [babylon](#babylon)
       * [babel-traverse](#babel-traverse)
       * [babel-types](#babel-types)
-      * [Definitions](#definitions)
-      * [Builders](#builders)
-      * [Validators](#validators)
-      * [Converters](#converters)
+      * [Definizioni](#definitions)
+      * [Costruttori](#builders)
+      * [Validatori](#validators)
+      * [Convertitori](#converters)
       * [babel-generator](#babel-generator)
       * [babel-template](#babel-template)
-  * [Writing your first Babel Plugin](#writing-your-first-babel-plugin)
-  * [Transformation Operations](#transformation-operations) 
+  * [Scrivere il tuo primo Plugin per Babel](#writing-your-first-babel-plugin)
+  * [Operazioni di trasformazione](#transformation-operations) 
       * [Visiting](#visiting)
-      * [Check if a node is a certain type](#check-if-a-node-is-a-certain-type)
+      * [Verifica se un nodo è di un certo tipo](#check-if-a-node-is-a-certain-type)
       * [Check if an identifier is referenced](#check-if-an-identifier-is-referenced)
-      * [Manipulation](#manipulation)
-      * [Replacing a node](#replacing-a-node)
-      * [Replacing a node with multiple nodes](#replacing-a-node-with-multiple-nodes)
+      * [Manipolazione](#manipulation)
+      * [Sostituzione di un nodo](#replacing-a-node)
+      * [Sostituzione di un nodo con più nodi](#replacing-a-node-with-multiple-nodes)
       * [Replacing a node with a source string](#replacing-a-node-with-a-source-string)
-      * [Inserting a sibling node](#inserting-a-sibling-node)
-      * [Removing a node](#removing-a-node)
-      * [Replacing a parent](#replacing-a-parent)
-      * [Removing a parent](#removing-a-parent)
+      * [Inserimento di un nodo di pari livello](#inserting-a-sibling-node)
+      * [Rimozione di un nodo](#removing-a-node)
+      * [Sostituzione di un genitore](#replacing-a-parent)
+      * [Rimozione di un genitore](#removing-a-parent)
       * [Scope](#scope)
-      * [Checking if a local variable is bound](#checking-if-a-local-variable-is-bound)
-      * [Generating a UID](#generating-a-uid)
+      * [Verifica se una variabile locale è associata](#checking-if-a-local-variable-is-bound)
+      * [Generazione di un UID](#generating-a-uid)
       * [Pushing a variable declaration to a parent scope](#pushing-a-variable-declaration-to-a-parent-scope)
       * [Rename a binding and its references](#rename-a-binding-and-its-references)
-  * [Plugin Options](#plugin-options)
+  * [Opzioni del plugin](#plugin-options)
   * [Building Nodes](#building-nodes)
-  * [Best Practices](#best-practices) 
+  * [Procedure consigliate](#best-practices) 
       * [Avoid traversing the AST as much as possible](#avoid-traversing-the-ast-as-much-as-possible)
       * [Merge visitors whenever possible](#merge-visitors-whenever-possible)
       * [Do not traverse when manual lookup will do](#do-not-traverse-when-manual-lookup-will-do)
       * [Optimizing nested visitors](#optimizing-nested-visitors)
       * [Being aware of nested structures](#being-aware-of-nested-structures)
 
-# Introduction
+# Introduzione
 
-Babel is a generic multi-purpose compiler for JavaScript. More than that it is a collection of modules that can be used for many different forms of static analysis.
+Babel è un compilatore multiuso per JavaScript. Inoltre è un insieme di moduli che possono essere usati per diverse forme di analisi statica.
 
-> Static analysis is the process of analyzing code without executing it. (Analysis of code while executing it is known as dynamic analysis). The purpose of static analysis varies greatly. It can be used for linting, compiling, code highlighting, code transformation, optimization, minification, and much more.
+> La analisi statica è il processo di analisi di codice senza essere eseguito. (L'analisi del codice durante l'esecuzione di esso è noto come analisi dinamica). The purpose of static analysis varies greatly. It can be used for linting, compiling, code highlighting, code transformation, optimization, minification, and much more.
 
-You can use Babel to build many different types of tools that can help you be more productive and write better programs.
+È possibile utilizzare Babel per costruire diversi tipi di strumenti che consentono di essere più produttivi e scrivere programmi migliori.
 
-# Basics
+# Nozioni di base
 
-Babel is a JavaScript compiler, specifically a source-to-source compiler, often called a "transpiler". This means that you give Babel some JavaScript code, Babel modifies the code, and generates the new code back out.
+Babel è un compilatore JavaScript, specificamente un compilatore di fonte a fonte, spesso chiamato un "transpiler". Ciò significa che puoi dare Babel del codice JavaScript che viene modificato da Babel, il quale genera del nuovo codice.
 
 ## ASTs
 
-Each of these steps involve creating or working with an [Abstract Syntax Tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree) or AST.
+Ognuno di questi passaggi comportano la creazione o l'utilizzo con un [Albero Sintattico Astratto](https://en.wikipedia.org/wiki/Abstract_syntax_tree) o AST.
 
 > Babel uses an AST modified from [ESTree](https://github.com/estree/estree), with the core spec located [here](https://github.com/babel/babel/blob/master/doc/ast/spec.md).
 
@@ -134,7 +136,7 @@ function square(n) {
 
 > Check out [AST Explorer](http://astexplorer.net/) to get a better sense of the AST nodes. [Here](http://astexplorer.net/#/Z1exs6BWMq) is a link to it with the example code above pasted in.
 
-This same program can be represented as a list like this:
+Questo stesso programma può essere rappresentato come un elenco come questo:
 
 ```md
 - FunctionDeclaration:
@@ -159,7 +161,7 @@ This same program can be represented as a list like this:
                   - name: n
 ```
 
-Or as a JavaScript Object like this:
+Oppure come un oggetto JavaScript come questo:
 
 ```js
 {
@@ -193,7 +195,7 @@ Or as a JavaScript Object like this:
 }
 ```
 
-You'll notice that each level of the AST has a similar structure:
+Noterete che ogni livello di un AST ha una struttura simile:
 
 ```js
 {
@@ -220,11 +222,11 @@ You'll notice that each level of the AST has a similar structure:
 }
 ```
 
-> Note: Some properties have been removed for simplicity.
+> Nota: Alcune proprietà sono state rimosse per semplicità.
 
-Each of these are known as a **Node**. An AST can be made up of a single Node, or hundreds if not thousands of Nodes. Together they are able to describe the syntax of a program that can be used for static analysis.
+Ognuno di questi è conosciuto come un **Nodo**. Un AST può essere costituito da un singolo nodo, o centinaia se non migliaia di nodi. Insieme, essi sono in grado di descrivere la sintassi di un programma che può essere utilizzato per l'analisi statica.
 
-Every Node has this interface:
+Ogni Nodo ha questa interfaccia:
 
 ```typescript
 interface Node {
@@ -232,9 +234,9 @@ interface Node {
 }
 ```
 
-The `type` field is a string representing the type of Node the object is (ie. `"FunctionDeclaration"`, `"Identifier"`, or `"BinaryExpression"`). Each type of Node defines an additional set of properties that describe that particular node type.
+La proprietà `type` è una stringa che rappresenta il tipo di oggetto del Nodo (ie. `"FunctionDeclaration"`, `"Identificatore"` o `"BinaryExpression"`). Ogni tipo di Nodo definisce un ulteriore insieme di proprietà che descrivono il tipo di Nodo in particolare.
 
-There are additional properties on every Node that Babel generates which describe the position of the Node in the original source code.
+Ci sono altre proprietà su ogni nodo che Babel genera che descrivono la posizione del nodo nel codice sorgente originale.
 
 ```js
 {
@@ -255,21 +257,21 @@ There are additional properties on every Node that Babel generates which describ
 }
 ```
 
-These properties `start`, `end`, `loc`, appear in every single Node.
+Queste proprietà `start`, `end`, `loc`, appaiono in ogni singolo Nodo.
 
-## Stages of Babel
+## Fasi di Babel
 
-The three primary stages of Babel are **parse**, **transform**, **generate**.
+Le tre fasi primarie di Babel sono **parse**, **trasformare**, **generare**.
 
 ### Parse
 
-The **parse** stage, takes code and outputs an AST. There are two phases of parsing in Babel: [**Lexical Analysis**](https://en.wikipedia.org/wiki/Lexical_analysis) and [**Syntactic Analysis**](https://en.wikipedia.org/wiki/Parsing).
+Lo stage di **parse** ha come input del codice e come output un AST. Ci sono due fasi di analisi in Babel: [**Analisi Lessicale**](https://en.wikipedia.org/wiki/Lexical_analysis) e [**Analisi Sintattica**](https://en.wikipedia.org/wiki/Parsing).
 
-#### Lexical Analysis
+#### Analisi Lessicale
 
-Lexical Analysis will take a string of code and turn it into a stream of **tokens**.
+Durante l'analisi lessicale, Babel analizza una stringa di codice e la trasforma in una serie di **tokens**.
 
-You can think of tokens as a flat array of language syntax pieces.
+Si può pensare ai tokens come un vettore che contiene pezzi di sintassi del linguaggio.
 
 ```js
 n * n;
@@ -284,7 +286,7 @@ n * n;
 ]
 ```
 
-Each of the `type`s here have a set of properties describing the token:
+Ciascun `type` ha un insieme di proprietà che descrivono il token:
 
 ```js
 {
@@ -305,19 +307,19 @@ Each of the `type`s here have a set of properties describing the token:
 }
 ```
 
-Like AST nodes they also have a `start`, `end`, and `loc`.
+In modo simile ai Nodi AST, anche i tokens hanno le proprietà `start`, `end` e `loc`.
 
-#### Syntactic Analysis
+#### Analisi Sintattica
 
-Syntactic Analysis will take a stream of tokens and turn it into an AST representation. Using the information in the tokens, this phase will reformat them as an AST which represents the structure of the code in a way that makes it easier to work with.
+L'analisi sintattica prende una serie di tokens e costruisce una rappresentazione AST. Utilizzando le informazioni nei token, questa fase li riformatterà come un AST che rappresenta la struttura del codice.
 
-### Transform
+### Trasformazione
 
-The [transform](https://en.wikipedia.org/wiki/Program_transformation) stage takes an AST and traverses through it, adding, updating, and removing nodes as it goes along. This is by far the most complex part of Babel or any compiler. This is where plugins operate and so it will be the subject of most of this handbook. So we won't dive too deep right now.
+La fase di [trasformazione](https://en.wikipedia.org/wiki/Program_transformation) prende un AST e lo attraversa aggiungendo, modificando e rimuovendo Nodi durante l'attraversamento. Questa è di gran lunga la parte più complessa di Babel o qualsiasi altro compilatore. Questa fase è dove operano i plugin ed è quindi l'argomento principale trattato in questo manuale. Quindi non andremo in profondo in questa fase in questa sezione.
 
-### Generate
+### Generazione
 
-The [code generation](https://en.wikipedia.org/wiki/Code_generation_(compiler)) stage takes the final AST and turns in back into a string of code, also creating [source maps](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/).
+La fase di [generazione del codice](https://en.wikipedia.org/wiki/Code_generation_(compiler)) prende l'AST finale e lo trasforma in una stringa di codice, ed allo stesso tempo crea una [mappa di origine](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/).
 
 Code generation is pretty simple: you traverse through the AST depth-first, building a string that represents the transformed code.
 
@@ -373,7 +375,7 @@ The `BinaryExpression` has an `operator`, a `left`, and a `right`. The operator 
 
 This traversal process happens throughout the Babel transform stage.
 
-### Visitors
+### Visitatori
 
 When we talk about "going" to a node, we actually mean we are **visiting** them. The reason we use that term is because there is this concept of a [**visitor**](https://en.wikipedia.org/wiki/Visitor_pattern).
 
@@ -461,7 +463,7 @@ const MyVisitor = {
 };
 ```
 
-### Paths
+### Percorsi
 
 An AST generally has many Nodes, but how do Nodes relate to one another? We could have one giant mutable object that you manipulate and have full access to, or we can simplify this with **Paths**.
 
@@ -528,7 +530,7 @@ As well as tons and tons of methods related to adding, updating, moving, and rem
 
 In a sense, paths are a **reactive** representation of a node's position in the tree and all sorts of information about the node. Whenever you call a method that modifies the tree, this information is updated. Babel manages all of this for you to make working with nodes easy and as stateless as possible.
 
-#### Paths in Visitors
+#### Percorsi in visitatori
 
 When you have a visitor that has a `Identifier()` method, you're actually visiting the path instead of the node. This way you are mostly working with the reactive representation of a node instead of the node itself.
 
@@ -550,7 +552,7 @@ Visiting: b
 Visiting: c
 ```
 
-### State
+### Stato
 
 State is the enemy of AST transformation. State will bite you over and over again and your assumptions about state will almost always be proven wrong by some syntax that you didn't consider.
 
@@ -855,7 +857,7 @@ traverse(ast, {
 });
 ```
 
-### Definitions
+### Definizioni
 
 Babel Types has definitions for every single type of node, with information on what properties belong where, what values are valid, how to build that node, how the node should be traversed, and aliases of the Node.
 
@@ -880,7 +882,7 @@ defineType("BinaryExpression", {
 });
 ```
 
-### Builders
+### Costruttori
 
 You'll notice the above definition for `BinaryExpression` has a field for a `builder`.
 
@@ -919,7 +921,7 @@ a * b
 
 Builders will also validate the nodes they are creating and throw descriptive errors if used improperly. Which leads into the next type of method.
 
-### Validators
+### Validatori
 
 The definition for `BinaryExpression` also includes information on the `fields` of a node and how to validate them.
 
@@ -957,7 +959,7 @@ t.assertBinaryExpression(maybeBinaryExpressionNode, { operator: "*" });
 // Error: Expected type "BinaryExpression" with option { "operator": "*" }
 ```
 
-### Converters
+### Convertitori
 
 > [WIP]
 
@@ -1031,7 +1033,7 @@ console.log(generate(ast).code);
 var myModule = require("my-module");
 ```
 
-# Writing your first Babel Plugin
+# Scrivere il tuo primo Plugin per Babel
 
 Now that you're familiar with all the basics of Babel, let's tie it together with the plugin API.
 
@@ -1156,11 +1158,11 @@ Awesome! Our very first Babel plugin.
 
 * * *
 
-# Transformation Operations
+# Operazioni di trasformazione
 
 ## Visiting
 
-### Check if a node is a certain type
+### Verifica se un nodo è di un certo tipo
 
 If you want to check what the type of a node is, the preferred way to do so is:
 
@@ -1216,9 +1218,9 @@ Identifier(path) {
 }
 ```
 
-## Manipulation
+## Manipolazione
 
-### Replacing a node
+### Sostituzione di un nodo
 
 ```js
 BinaryExpression(path) {
@@ -1235,7 +1237,7 @@ BinaryExpression(path) {
   }
 ```
 
-### Replacing a node with multiple nodes
+### Sostituzione di un nodo con più nodi
 
 ```js
 ReturnStatement(path) {
@@ -1278,7 +1280,7 @@ FunctionDeclaration(path) {
 
 > **Note:** It's not recommended to use this API unless you're dealing with dynamic source strings, otherwise it's more efficient to parse the code outside of the visitor.
 
-### Inserting a sibling node
+### Inserimento di un nodo di pari livello
 
 ```js
 FunctionDeclaration(path) {
@@ -1297,7 +1299,7 @@ FunctionDeclaration(path) {
 
 > **Note:** This should always be a statement or an array of statements. This uses the same heuristics mentioned in [Replacing a node with multiple nodes](#replacing-a-node-with-multiple-nodes).
 
-### Removing a node
+### Rimozione di un nodo
 
 ```js
 FunctionDeclaration(path) {
@@ -1311,7 +1313,7 @@ FunctionDeclaration(path) {
 - }
 ```
 
-### Replacing a parent
+### Sostituzione di un genitore
 
 ```js
 BinaryExpression(path) {
@@ -1328,7 +1330,7 @@ BinaryExpression(path) {
   }
 ```
 
-### Removing a parent
+### Rimozione di un genitore
 
 ```js
 BinaryExpression(path) {
@@ -1344,7 +1346,7 @@ BinaryExpression(path) {
 
 ## Scope
 
-### Checking if a local variable is bound
+### Verifica se una variabile locale è associata
 
 ```js
 FunctionDeclaration(path) {
@@ -1366,7 +1368,7 @@ FunctionDeclaration(path) {
 }
 ```
 
-### Generating a UID
+### Generazione di un UID
 
 This will generate an identifier that doesn't collide with any locally defined variables.
 
@@ -1433,7 +1435,7 @@ FunctionDeclaration(path) {
 
 * * *
 
-# Plugin Options
+# Opzioni del plugin
 
 If you would like to let your users customize the behavior of your Babel plugin you can accept plugin specific options which users can specify like this:
 
@@ -1578,7 +1580,7 @@ You can find all of the actual [definitions here](https://github.com/babel/babel
 
 * * *
 
-# Best Practices
+# Procedure consigliate
 
 > I'll be working on this section over the coming weeks.
 

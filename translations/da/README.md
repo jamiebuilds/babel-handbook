@@ -29,15 +29,15 @@ Now you will have a `babel-plugin-handbook` command that will open this readme f
   * [Deutsche](/translations/de/README.md)
   * [ελληνικά](/translations/el/README.md)
   * [Español](/translations/es-ES/README.md)
-  * [Suomi](/translations/fi/README.md)
-  * [Français](/translations/fr/README.md)
-  * [עִברִית](/translations/he/README.md)
+  * [Español](/translations/fi/README.md)
+  * [Suomi](/translations/fr/README.md)
+  * [Français](/translations/he/README.md)
   * [Magyar](/translations/hu/README.md)
   * [Italiano](/translations/it/README.md)
-  * [日本語](/translations/ja/README.md)
-  * [한국어](/translations/ko/README.md)
+  * [Italiano](/translations/ja/README.md)
+  * [日本語](/translations/ko/README.md)
   * [Norsk](/translations/no/README.md)
-  * [Nederlands](/translations/nl/README.md)
+  * [Norsk](/translations/nl/README.md)
   * [Português](/translations/pl/README.md)
   * [Português (Brasil)](/translations/pt-BR/README.md)
   * [Portugisisk](/translations/pt-PT/README.md)
@@ -50,6 +50,8 @@ Now you will have a `babel-plugin-handbook` command that will open this readme f
   * [Tiếng Việt](/translations/vi/README.md)
   * [中文](/translations/zh-CN/README.md)
   * [繁體中文](/translations/zh-TW/README.md)
+
+**[Request another translation](https://github.com/thejameskyle/babel-plugin-handbook/issues/new?title=Translation%20Request:%20[Please%20enter%20language%20here]&body=I%20am%20able%20to%20translate%20this%20language%20[yes/no])**
 
 If you are reading a non-english translation of this document you will find a number of english words that are programming concepts. If these were translated to other languages there would be a lack of consistency and fluency when reading about them. In many cases you will find the literal translation followed by the english term in parenthesis `()`. For example: Abstract Syntax Trees (ASTs).
 

@@ -51,6 +51,8 @@ Maintenant vous aurez une commande `babel-plugin-handbook` qui va ouvrir ce fich
   * [中文](/translations/zh-CN/README.md)
   * [繁體中文](/translations/zh-TW/README.md)
 
+**[Request another translation](https://github.com/thejameskyle/babel-plugin-handbook/issues/new?title=Translation%20Request:%20[Please%20enter%20language%20here]&body=I%20am%20able%20to%20translate%20this%20language%20[yes/no])**
+
 Si vous êtes entrain de lire une traduction de la documentation anglaise, plusieurs concepts de programmation sont en Anglais. Ces concepts risque de perdre leurs sens une fois traduits à une autre langue. Dans de nombreux cas, vous allez avoir la traduction du terme en Français, suivi du terme en Anglais entre parenthèse `()`. Par exemple : arbres de syntaxe abstraite (ASTs).
 
 # Sommaire
@@ -116,7 +118,7 @@ Babel is a generic multi-purpose compiler for JavaScript. More than that it is a
 
 You can use Babel to build many different types of tools that can help you be more productive and write better programs.
 
-# Basics
+# Notions de base
 
 Babel is a JavaScript compiler, specifically a source-to-source compiler, often called a "transpiler". This means that you give Babel some JavaScript code, Babel modifies the code, and generates the new code back out.
 

@@ -2,7 +2,7 @@
 
 这篇文档涵盖了如何创建 [Babel](https://babeljs.io) [插件](https://babeljs.io/docs/advanced/plugins/)等方面的内容。.
 
-如果你正在读这本手册的非英语翻译，你还可以找到 英语的部分尚未被翻译。 如果您想有助于你必须通过Crowdin这样做翻译之一。 请阅读[促进准则](/CONTRIBUTING.md)了解更多信息。
+如果你正在阅读本手册的非英语版本，你或许会发现一些英文的部分还没有被翻译。 如果你想帮助翻译的话你需要通过 Crowdin 来完成。 请先阅读[贡献指导](/CONTRIBUTING.md)来了解这方面更多的信息。
 
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
@@ -48,10 +48,12 @@ $ npm install -g babel-plugin-handbook
   * [Türk](/translations/tr/README.md)
   * [Український](/translations/uk/README.md)
   * [Tiếng Việt](/translations/vi/README.md)
-  * [中文](/translations/zh-CN/README.md)
+  * [简体中文](/translations/zh-CN/README.md)
   * [繁體中文](/translations/zh-TW/README.md)
 
-如果您正在阅读本文的非英语翻译，你会发现一个 那是编程概念英语单词数量。 如果这些被翻译其他语言阅读时会有缺乏连贯性和流畅性关于他们。 在此情形下，字面翻译会写在原文后面的 `（）` 内。 例如：抽象语法树（ASTs）
+**[请求增加新的语种](https://github.com/thejameskyle/babel-plugin-handbook/issues/new?title=Translation%20Request:%20[Please%20enter%20language%20here]&body=I%20am%20able%20to%20translate%20this%20language%20[yes/no])**
+
+如果您正在阅读本手册的非英语翻译版本，你会发现一些英文单词是编程概念。 如果按照字面翻译这些单词会导致在阅读时缺乏一致性和流畅性。 在此情形下，字面翻译会写在原文后面的 `（）` 内。 例如：抽象语法树（ASTs）
 
 # 目录
 
@@ -1566,7 +1568,7 @@ t.memberExpression(
 )
 ```
 
-最终结果是：
+得到结果为：
 
 ```js
 member.expression.property

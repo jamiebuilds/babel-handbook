@@ -51,6 +51,8 @@ Now you will have a `babel-plugin-handbook` command that will open this readme f
   * [中文](/translations/zh-CN/README.md)
   * [繁體中文](/translations/zh-TW/README.md)
 
+**[Request another translation](https://github.com/thejameskyle/babel-plugin-handbook/issues/new?title=Translation%20Request:%20[Please%20enter%20language%20here]&body=I%20am%20able%20to%20translate%20this%20language%20[yes/no])**
+
 If you are reading a non-english translation of this document you will find a number of english words that are programming concepts. If these were translated to other languages there would be a lack of consistency and fluency when reading about them. In many cases you will find the literal translation followed by the english term in parenthesis `()`. For example: Abstract Syntax Trees (ASTs).
 
 # Table of Contents

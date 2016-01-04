@@ -51,6 +51,8 @@ $ npm install -g babel-plugin-handbook
   * [中文](/translations/zh-CN/README.md)
   * [繁體中文](/translations/zh-TW/README.md)
 
+**[Request another translation](https://github.com/thejameskyle/babel-plugin-handbook/issues/new?title=Translation%20Request:%20[Please%20enter%20language%20here]&body=I%20am%20able%20to%20translate%20this%20language%20[yes/no])**
+
 Если вы читаете этот документ на на английском языке, вы найдёте некоторое количество английских слов, которые являются программистскими терминами. Если бы они были переведены на другие языки это привело бы к отсутствию последовательности и плавности, когда вы читаете о них. Во многих случаях вы найдете дословные переводы с последующим английским термином в скобках `()`. Например: Абстрактные Синтаксические Деревья (ASTs).
 
 # Содержание
@@ -261,11 +263,11 @@ interface Node {
 
 Три основных этапа работы Babel это **парсинг**, **трансформация**, **генерация**.
 
-### Разбор
+### Парсинг
 
 Стадия **разбора** принимает код и выводит AST. Существуют два этапа разбора в Babel: [**Лексический анализ**](https://en.wikipedia.org/wiki/Lexical_analysis) и [**Синтаксический анализ**](https://en.wikipedia.org/wiki/Parsing).
 
-#### Лексический Анализ
+#### Лексический анализ
 
 Лексический анализ будет принимать строку кода и превращать его в поток **токенов**.
 
@@ -307,11 +309,11 @@ n * n;
 
 Как узлы AST, они также имеют `start`, `end` и `loc`.
 
-#### Синтаксический Анализ
+#### Синтаксический анализ
 
 Синтаксический анализ примет поток токенов и преобразует их в AST представление. Используя информацию в токенах, этот этап переформатирует их как AST, который отображает структуру кода таким образом, что облегчает работу с ним.
 
-### Преобразование
+### Трансформация
 
 Этап преобразования принимает AST и проходит через него, добавляя, обновляя, и удаляя узлы по мере прохождения. Это, безусловно, наиболее сложная часть Babel или любого компилятора. Здесь работают плагины и это будет предметом обсуждения большей части этого руководства. Поэтому мы не погружаемся слишком глубоко прямо сейчас.
 
@@ -528,7 +530,7 @@ As well as tons and tons of methods related to adding, updating, moving, and rem
 
 In a sense, paths are a **reactive** representation of a node's position in the tree and all sorts of information about the node. Whenever you call a method that modifies the tree, this information is updated. Babel manages all of this for you to make working with nodes easy and as stateless as possible.
 
-#### Пути в Посетителях
+#### Paths in Visitors
 
 When you have a visitor that has a `Identifier()` method, you're actually visiting the path instead of the node. This way you are mostly working with the reactive representation of a node instead of the node itself.
 
@@ -1031,7 +1033,7 @@ console.log(generate(ast).code);
 var myModule = require("my-module");
 ```
 
-# Пишем ваш первый Babel-плагин
+# Создание вашего первого плагина Babel
 
 Теперь, когда вы знакомы с основами Babel, давайте свяжем это вместе с API для плагинов.
 
@@ -1160,7 +1162,7 @@ sebmck === dork;
 
 ## Посещение
 
-### Проверка типа узла
+### Check if a node is a certain type
 
 Если вы хотите проверить тип узла, то лучше всего сделать это следующим образом:
 

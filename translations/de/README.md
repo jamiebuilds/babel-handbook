@@ -51,6 +51,8 @@ Nun gibt es den Befehl `babel-plugin-handbook` Kommando, welches dieses Handbuch
   * [中文](/translations/zh-CN/README.md)
   * [繁體中文](/translations/zh-TW/README.md)
 
+**[Request another translation](https://github.com/thejameskyle/babel-plugin-handbook/issues/new?title=Translation%20Request:%20[Please%20enter%20language%20here]&body=I%20am%20able%20to%20translate%20this%20language%20[yes/no])**
+
 If you are reading a non-english translation of this document you will find a number of english words that are programming concepts. If these were translated to other languages there would be a lack of consistency and fluency when reading about them. In many cases you will find the literal translation followed by the english term in parenthesis `()`. For example: Abstract Syntax Trees (ASTs).
 
 # Table of Contents
@@ -108,7 +110,7 @@ If you are reading a non-english translation of this document you will find a nu
       * [Optimizing nested visitors](#optimizing-nested-visitors)
       * [Being aware of nested structures](#being-aware-of-nested-structures)
 
-# Einleitung
+# Introduction
 
 Babel ist ein generischer Compiler für JavaScript. Des weiteren ist es eine Sammlung von Modulen, welche für vielfältige Arten von statischer Analyse benutzt werden können.
 
@@ -116,11 +118,11 @@ Babel ist ein generischer Compiler für JavaScript. Des weiteren ist es eine Sam
 
 Babel kann zur erstellung von verschiedenen Arten von Tools verwedet werden um produktiver zu werden und bessere Programme zu schreiben.
 
-# Grundlagen
+# Basics
 
 Babel ist ein JavaScript Compiler, genauer ein Source zu Source Compiler, auch "Transpiler" genannt. Das heißt, dass Babel als Eingabe JavsScript Code bekommt, den Code modifiziert und neuen Code als Ausgabe produziert.
 
-## ASTs (Abstrakte Syntaxbäume)
+## ASTs
 
 In jeden dieser Schritte ist das Erstellen oder das Arbeiten mit einem [Abstrakten Syntaxbaum](https://en.wikipedia.org/wiki/Abstract_syntax_tree) oder AST enthalten.
 

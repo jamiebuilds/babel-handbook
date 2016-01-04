@@ -51,6 +51,8 @@ $ npm install -g babel-plugin-handbook
   * [中文](/translations/zh-CN/README.md)
   * [繁體中文](/translations/zh-TW/README.md)
 
+**[Request another translation](https://github.com/thejameskyle/babel-plugin-handbook/issues/new?title=Translation%20Request:%20[Please%20enter%20language%20here]&body=I%20am%20able%20to%20translate%20this%20language%20[yes/no])**
+
 If you are reading a non-english translation of this document you will find a number of english words that are programming concepts. (만약 번역된 문서를 읽고 있다면 몇 가지 프로그래밍 개념상의 영단어들을 찾을 수 있습니다.) If these were translated to other languages there would be a lack of consistency and fluency when reading about them. (이는 문서가 다른 언어로 번역되었기 때문에 문서를 읽을 때 원문에 비해 일관성과 표현이 부족할 수 있습니다.) In many cases you will find the literal translation followed by the english term in parenthesis `()`. (영문 그대로의 문장 또는 단어를 괄호에 그대로 넣은 경우를 많이 볼 수 있습니다.) 예를 들면: 추상 구문 트리 (ASTs).
 
 # 목차
@@ -108,7 +110,7 @@ If you are reading a non-english translation of this document you will find a nu
       * [Optimizing nested visitors](#optimizing-nested-visitors)
       * [Being aware of nested structures](#being-aware-of-nested-structures)
 
-# 소개
+# Introduction
 
 Babel is a generic multi-purpose compiler for JavaScript. More than that it is a collection of modules that can be used for many different forms of static analysis.
 
@@ -116,11 +118,11 @@ Babel is a generic multi-purpose compiler for JavaScript. More than that it is a
 
 You can use Babel to build many different types of tools that can help you be more productive and write better programs.
 
-# 기본
+# Basics
 
 Babel is a JavaScript compiler, specifically a source-to-source compiler, often called a "transpiler". This means that you give Babel some JavaScript code, Babel modifies the code, and generates the new code back out.
 
-## 추상 구문 트리 (ASTs)
+## ASTs
 
 Each of these steps involve creating or working with an [Abstract Syntax Tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree) or AST.
 
@@ -257,15 +259,15 @@ There are additional properties on every Node that Babel generates which describ
 
 These properties `start`, `end`, `loc`, appear in every single Node.
 
-## Babel의 실행 절차
+## Stages of Babel
 
 The three primary stages of Babel are **parse**, **transform**, **generate**.
 
-### 문법 분석
+### Parse
 
 The **parse** stage, takes code and outputs an AST. There are two phases of parsing in Babel: [**Lexical Analysis**](https://en.wikipedia.org/wiki/Lexical_analysis) and [**Syntactic Analysis**](https://en.wikipedia.org/wiki/Parsing).
 
-#### 어휘 분석
+#### Lexical Analysis
 
 Lexical Analysis will take a string of code and turn it into a stream of **tokens**.
 
@@ -307,21 +309,21 @@ Each of the `type`s here have a set of properties describing the token:
 
 Like AST nodes they also have a `start`, `end`, and `loc`.
 
-#### 구문 분석
+#### Syntactic Analysis
 
 Syntactic Analysis will take a stream of tokens and turn it into an AST representation. Using the information in the tokens, this phase will reformat them as an AST which represents the structure of the code in a way that makes it easier to work with.
 
-### 변환
+### Transform
 
 The [transform](https://en.wikipedia.org/wiki/Program_transformation) stage takes an AST and traverses through it, adding, updating, and removing nodes as it goes along. This is by far the most complex part of Babel or any compiler. This is where plugins operate and so it will be the subject of most of this handbook. So we won't dive too deep right now.
 
-### 생성
+### Generate
 
 The [code generation](https://en.wikipedia.org/wiki/Code_generation_(compiler)) stage takes the final AST and turns in back into a string of code, also creating [source maps](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/).
 
 Code generation is pretty simple: you traverse through the AST depth-first, building a string that represents the transformed code.
 
-## 탐색
+## Traversal
 
 When you want to transform an AST you have to [traverse the tree](https://en.wikipedia.org/wiki/Tree_traversal) recursively.
 
@@ -1031,7 +1033,7 @@ console.log(generate(ast).code);
 var myModule = require("my-module");
 ```
 
-# 첫 Babel 플러그인 작성
+# Writing your first Babel Plugin
 
 Now that you're familiar with all the basics of Babel, let's tie it together with the plugin API.
 
@@ -1578,7 +1580,7 @@ You can find all of the actual [definitions here](https://github.com/babel/babel
 
 * * *
 
-# 모범 지침
+# Best Practices
 
 > I'll be working on this section over the coming weeks.
 

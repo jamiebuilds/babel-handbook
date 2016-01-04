@@ -51,6 +51,8 @@ Acum veți avea comanda `babel-plugin-handbook` care va deschide acest document 
   * [中文](/translations/zh-CN/README.md)
   * [繁體中文](/translations/zh-TW/README.md)
 
+**[Request another translation](https://github.com/thejameskyle/babel-plugin-handbook/issues/new?title=Translation%20Request:%20[Please%20enter%20language%20here]&body=I%20am%20able%20to%20translate%20this%20language%20[yes/no])**
+
 În cazul în care citiți o traducere din limba engleză, veți găsi cuvinte în engleză care se referă la concepte de programare. Daca acestea ar fi traduse în alte limbi s-ar pierde consistența și fluența în citire. În anumite cazuri veți găsi traducerea literară urmată de termenul în engleză între paranteze `()`. De exemplu: Arbori Abstracți de Sintaxă (ASTs).
 
 # Cuprins
@@ -265,7 +267,7 @@ Cele trei etape principale ale Babel sunt **analiză**, **transformare**, **gene
 
 Etapa de **analiză**, primeste codul şi produce AST-ul. Există două faze ale analizei în Babel: [**Analiza lexicală**](https://en.wikipedia.org/wiki/Lexical_analysis) şi [**Analiza sintactică**](https://en.wikipedia.org/wiki/Parsing).
 
-#### Analiza lexicală
+#### Analiză Lexicală
 
 Analiza lexicală primeste un şir de cod şi-l transformă într-un flux de simboluri (**tokens**).
 
@@ -307,7 +309,7 @@ Fiecare `type` au un set de proprietăţi care descrie token-ul:
 
 La fel ca nodurile AST, acestea conțin `start`, `end`, și `loc`.
 
-#### Analiza sintactică
+#### Analiză Sintactică
 
 Analiza sintactică primește un flux de token-uri şi-l transformă într-o reprezentare AST. Folosind informaţiile din token-uri, această fază le va reformata ca un AST care reprezintă structura codului într-un mod care este mai uşor de utilizat.
 
