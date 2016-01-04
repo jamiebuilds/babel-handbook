@@ -1623,7 +1623,7 @@ path.traverse({
 
 ### Evitați traversarea când o căutare manuală este suficientă
 
-De asemenea, poate fi tentant să apelați `path.traverse` atunci când cautați un anumit tip de nod.
+De asemenea, poate fi tentant să apelați `path.traverse` atunci când căutați un anumit tip de nod.
 
 ```js
 const visitorOne = {
