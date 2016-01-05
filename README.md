@@ -29,6 +29,10 @@ Now you will have a `babel-plugin-handbook` command that will open this readme
 file in your `$PAGER`. Otherwise, you may continue reading this document as you
 are presently doing.
 
+To experiment as you read, you can use this [jsbin][jsbin] to write plugins in the comfort of your web browser.
+
+[jsbin]: http://jsbin.com/yucugihigi/2/edit?js,output
+
 # Translations
 
 - [English](/README.md)
