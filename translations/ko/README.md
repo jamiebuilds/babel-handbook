@@ -60,7 +60,7 @@ If you are reading a non-english translation of this document you will find a nu
   * [소개](#introduction)
   * [기본](#basics) 
       * [추상 구문 트리 (ASTs)](#asts)
-      * [Stages of Babel](#stages-of-babel)
+      * [Babel의 실행 절차](#stages-of-babel)
       * [Parse](#parse) 
           * [Lexical Analysis](#lexical-analysis)
           * [Syntactic Analysis](#syntactic-analysis)
@@ -83,7 +83,7 @@ If you are reading a non-english translation of this document you will find a nu
       * [Converters](#converters)
       * [babel-generator](#babel-generator)
       * [babel-template](#babel-template)
-  * [Writing your first Babel Plugin](#writing-your-first-babel-plugin)
+  * [첫 Babel 플러그인 작성](#writing-your-first-babel-plugin)
   * [Transformation Operations](#transformation-operations) 
       * [Visiting](#visiting)
       * [Check if a node is a certain type](#check-if-a-node-is-a-certain-type)
@@ -101,9 +101,9 @@ If you are reading a non-english translation of this document you will find a nu
       * [Generating a UID](#generating-a-uid)
       * [Pushing a variable declaration to a parent scope](#pushing-a-variable-declaration-to-a-parent-scope)
       * [Rename a binding and its references](#rename-a-binding-and-its-references)
-  * [Plugin Options](#plugin-options)
+  * [플러그인 옵션](#plugin-options)
   * [Building Nodes](#building-nodes)
-  * [Best Practices](#best-practices) 
+  * [모범 사례](#best-practices) 
       * [Avoid traversing the AST as much as possible](#avoid-traversing-the-ast-as-much-as-possible)
       * [Merge visitors whenever possible](#merge-visitors-whenever-possible)
       * [Do not traverse when manual lookup will do](#do-not-traverse-when-manual-lookup-will-do)
@@ -120,7 +120,7 @@ You can use Babel to build many different types of tools that can help you be mo
 
 # 기본
 
-Babel is a JavaScript compiler, specifically a source-to-source compiler, often called a "transpiler". This means that you give Babel some JavaScript code, Babel modifies the code, and generates the new code back out.
+Babel은 JavaScript 컴파일러입니다. 정확히는 소스를 소스로 컴파일하는 "transpiler"로 불리우는 컴파일러입니다. This means that you give Babel some JavaScript code, Babel modifies the code, and generates the new code back out.
 
 ## 추상 구문 트리 (ASTs)
 
@@ -259,7 +259,7 @@ There are additional properties on every Node that Babel generates which describ
 
 These properties `start`, `end`, `loc`, appear in every single Node.
 
-## Stages of Babel
+## Babel의 실행 절차
 
 The three primary stages of Babel are **parse**, **transform**, **generate**.
 
@@ -1033,7 +1033,7 @@ console.log(generate(ast).code);
 var myModule = require("my-module");
 ```
 
-# Writing your first Babel Plugin
+# 첫 Babel 플러그인 작성
 
 Now that you're familiar with all the basics of Babel, let's tie it together with the plugin API.
 

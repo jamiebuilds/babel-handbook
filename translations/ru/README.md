@@ -69,7 +69,7 @@ $ npm install -g babel-plugin-handbook
       * [Обход](#traversal)
       * [Посетители](#visitors)
       * [Пути](#paths) 
-          * [Paths in Visitors](#paths-in-visitors)
+          * [Пути в Посетителях](#paths-in-visitors)
       * [Состояние](#state)
       * [Области видимости](#scopes) 
           * [Bindings](#bindings)
@@ -97,18 +97,18 @@ $ npm install -g babel-plugin-handbook
       * [Замена родителя](#replacing-a-parent)
       * [Удаление родителя](#removing-a-parent)
       * [Область видимости](#scope)
-      * [Checking if a local variable is bound](#checking-if-a-local-variable-is-bound)
+      * [Проверка, привязана ли локальная переменная](#checking-if-a-local-variable-is-bound)
       * [Создание UID](#generating-a-uid)
-      * [Pushing a variable declaration to a parent scope](#pushing-a-variable-declaration-to-a-parent-scope)
-      * [Rename a binding and its references](#rename-a-binding-and-its-references)
+      * [Отправка объявления переменной в родительскую область видимости](#pushing-a-variable-declaration-to-a-parent-scope)
+      * [Переименование привязки и ссылок на нее](#rename-a-binding-and-its-references)
   * [Параметры плагина](#plugin-options)
   * [Построение узлов](#building-nodes)
   * [Лучшие практики](#best-practices) 
-      * [Avoid traversing the AST as much as possible](#avoid-traversing-the-ast-as-much-as-possible)
+      * [Избегайте обхода AST насколько это возможно](#avoid-traversing-the-ast-as-much-as-possible)
       * [Merge visitors whenever possible](#merge-visitors-whenever-possible)
       * [Do not traverse when manual lookup will do](#do-not-traverse-when-manual-lookup-will-do)
-      * [Optimizing nested visitors](#optimizing-nested-visitors)
-      * [Being aware of nested structures](#being-aware-of-nested-structures)
+      * [Оптимизации вложенных посетителей](#optimizing-nested-visitors)
+      * [Избегайте вложенных структур](#being-aware-of-nested-structures)
 
 # Введение
 
@@ -530,7 +530,7 @@ As well as tons and tons of methods related to adding, updating, moving, and rem
 
 In a sense, paths are a **reactive** representation of a node's position in the tree and all sorts of information about the node. Whenever you call a method that modifies the tree, this information is updated. Babel manages all of this for you to make working with nodes easy and as stateless as possible.
 
-#### Paths in Visitors
+#### Пути в Посетителях
 
 When you have a visitor that has a `Identifier()` method, you're actually visiting the path instead of the node. This way you are mostly working with the reactive representation of a node instead of the node itself.
 
@@ -1006,7 +1006,7 @@ generate(ast, {
 
 ## [`babel-template`](https://github.com/babel/babel/tree/master/packages/babel-template)
 
-Babel Template is another tiny but incredibly useful module. It allows you to write strings of code with placeholders that you can use instead of manually building up a massive AST.
+Babel Template это еще один крошечный, но невероятно полезный модуль. Он позволяет писать строки кода с заполнителями, которые можно использовать вместо создания вручную массовых AST.
 
 ```sh
 $ npm install --save babel-template
@@ -1162,7 +1162,7 @@ sebmck === dork;
 
 ## Посещение
 
-### Check if a node is a certain type
+### Проверка типа узла
 
 Если вы хотите проверить тип узла, то лучше всего сделать это следующим образом:
 
@@ -1278,7 +1278,7 @@ FunctionDeclaration(path) {
   }
 ```
 
-> **Note:** It's not recommended to use this API unless you're dealing with dynamic source strings, otherwise it's more efficient to parse the code outside of the visitor.
+> **Примечание:** Не рекомендуется использовать этот API, если вы имеете дело с динамическим источником строк, в противном случае это более эффективно для разбора кода вне посетителя.
 
 ### Добавление узла-потомка
 
@@ -1346,7 +1346,7 @@ BinaryExpression(path) {
 
 ## Область видимости
 
-### Checking if a local variable is bound
+### Проверка, привязана ли локальная переменная
 
 ```js
 FunctionDeclaration(path) {
@@ -1381,7 +1381,7 @@ FunctionDeclaration(path) {
 }
 ```
 
-### Pushing a variable declaration to a parent scope
+### Отправка объявления переменной в родительскую область видимости
 
 Sometimes you may want to push a `VariableDeclaration` so you can assign to it.
 
@@ -1401,7 +1401,7 @@ FunctionDeclaration(path) {
 + };
 ```
 
-### Rename a binding and its references
+### Переименование привязки и ссылок на нее
 
 ```js
 FunctionDeclaration(path) {
@@ -1471,13 +1471,13 @@ export default function({ types: t }) {
 
 # Построение узлов
 
-When writing transformations you'll often want to build up some nodes to insert into the AST. As mentioned previously, you can do this using the [builder](#builder) methods in the [`babel-types`](#babel-types) package.
+При написании преобразования часто вы хотите построить некоторые узлы для вставки в AST. Как упоминалось ранее, вы можете сделать это с помощью методов [builder](#builder) в пакете [`babel-types`](#babel-types).
 
-The method name for a builder is simply the name of the node type you want to build except with the first letter lowercased. For example if you wanted to build a `MemberExpression` you would use `t.memberExpression(...)`.
+Имя метода для builder это просто имя типа узла, который вы хотите построить за исключением того, что первая буква в нижнем регистре. For example if you wanted to build a `MemberExpression` you would use `t.memberExpression(...)`.
 
 The arguments of these builders are decided by the node definition. There's some work that's being done to generate easy-to-read documentation on the definitions, but for now they can all be found [here](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions).
 
-A node definition looks like the following:
+Определение узла выглядит следующим образом:
 
 ```js
 defineType("MemberExpression", {
@@ -1501,7 +1501,7 @@ defineType("MemberExpression", {
 });
 ```
 
-Here you can see all the information about this particular node type, including how to build it, traverse it, and validate it.
+Здесь вы можете увидеть всю информацию об этом конкретном типе узла, включая то как построить его, пройти по нему и проверить его.
 
 By looking at the `builder` property, you can see the 3 arguments that will be needed to call the builder method (`t.memberExpression`).
 
@@ -1576,7 +1576,7 @@ member.expression.property
 
 It's very unlikely that you will ever memorize the builder method signatures for every node type. So you should take some time and understand how they are generated from the node definitions.
 
-You can find all of the actual [definitions here](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions) and you can see them [documented here](https://github.com/babel/babel/blob/master/doc/ast/spec.md)
+Вы можете найти все актуальные [определения здесь](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions) и вы можете увидеть их [документацию здесь](https://github.com/babel/babel/blob/master/doc/ast/spec.md)
 
 * * *
 
@@ -1584,13 +1584,13 @@ You can find all of the actual [definitions here](https://github.com/babel/babel
 
 > I'll be working on this section over the coming weeks.
 
-## Avoid traversing the AST as much as possible
+## Избегайте обхода AST насколько это возможно
 
 Traversing the AST is expensive, and it's easy to accidentally traverse the AST more than necessary. This could be thousands if not tens of thousands of extra operations.
 
 Babel optimizes this as much as possible, merging visitors together if it can in order to do everything in a single traversal.
 
-### Merge visitors whenever possible
+### Слияние посетителей, когда это возможно
 
 When writing visitors, it may be tempting to call `path.traverse` in multiple places where they are logically necessary.
 
@@ -1651,7 +1651,7 @@ const MyVisitor = {
 };
 ```
 
-## Optimizing nested visitors
+## Оптимизации вложенных посетителей
 
 When you are nesting visitors, it might make sense to write them nested in your code.
 
@@ -1683,7 +1683,7 @@ const MyVisitor = {
 };
 ```
 
-If you need some state within the nested visitor, like so:
+Если вам нужно некоторое состояние в пределах вложенного посетителя, как:
 
 ```js
 const MyVisitor = {
@@ -1720,9 +1720,9 @@ const MyVisitor = {
 };
 ```
 
-## Being aware of nested structures
+## Избегайте вложенных структур
 
-Sometimes when thinking about a given transform, you might forget that the given structure can be nested.
+Иногда, когда думаете о данном преобразовании, вы можете забыть, что данная структура может быть вложенной.
 
 For example, imagine we want to lookup the `constructor` `ClassMethod` from the `Foo` `ClassDeclaration`.
 

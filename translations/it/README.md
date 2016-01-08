@@ -16,7 +16,7 @@ Potete installare questo documento tramite npm. Eseguire da riga di comando:
 $ npm install -g babel-plugin-handbook
 ```
 
-Adesso avete a disposizione il comando `babel-plugin-handbook` che aprirà questo file readme nel vostro `$PAGER`. Altrimenti, potete continuare a leggere questo documento nello stesso modo in cui lo state leggendo al momento.
+Adesso avete a disposizione il comando `babel-plugin-handbook` che aprirà questo file readme nel vostro `$PAGER`. Altrimenti, potete procedere nella lettura del presente documento.
 
 # Traduzioni
 
@@ -26,7 +26,7 @@ Adesso avete a disposizione il comando `babel-plugin-handbook` che aprirà quest
   * [Català](/translations/ca/README.md)
   * [Čeština](/translations/cs/README.md)
   * [Danske](/translations/da/README.md)
-  * [Deutsch](/translations/de/README.md)
+  * [Deutsche](/translations/de/README.md)
   * [ελληνικά](/translations/el/README.md)
   * [Español](/translations/es-ES/README.md)
   * [Suomi](/translations/fi/README.md)
@@ -53,26 +53,26 @@ Adesso avete a disposizione il comando `babel-plugin-handbook` che aprirà quest
 
 **[Richiedi la traduzione in un'altra lingua](https://github.com/thejameskyle/babel-plugin-handbook/issues/new?title=Translation%20Request:%20[Please%20enter%20language%20here]&body=I%20am%20able%20to%20translate%20this%20language%20[yes/no])**
 
-Se stai leggendo una traduzione di questo documento in una lingua diversa dall'Inglese, troverai alcuni concetti di programmazione espressi in lingua Inglese. Se questi sono stati tradotti in altre lingue, ci sarà una mancanza di coerenza e fluidità durante la lettura di essi. In molti casi troverete la traduzione letterale, seguita dal termine Inglese in parentesi `()`. Ad esempio: Albero Sintattico Astratto (AST).
+Se state leggendo questo documento in una lingua diversa dall'inglese, troverete una serie di termini in inglese qualora siano relativi a specifici concetti di programmazione. Nel caso in questi fossero stati tradotti in altre lingue, ci potrà essere una mancanza di coerenza e fluidità durante la lettura di essi. In molti casi troverete la traduzione letterale, seguita dal termine inglese tra parentesi `()`. Ad esempio: Alberi Sintattici Astratti (AST).
 
 # Sommario
 
   * [Introduzione](#introduction)
   * [Nozioni di base](#basics) 
-      * [ASTs](#asts)
-      * [Fasi di Babel](#stages-of-babel)
+      * [AST](#asts)
+      * [Stadi primari di Babel](#stages-of-babel)
       * [Parse](#parse) 
           * [Analisi Lessicale](#lexical-analysis)
           * [Analisi Sintattica](#syntactic-analysis)
-      * [Trasformazione](#transform)
-      * [Generazione](#generate)
-      * [Traversal](#traversal)
-      * [Visitatori](#visitors)
-      * [Percorsi](#paths) 
-          * [Percorsi in visitatori](#paths-in-visitors)
-      * [Stato](#state)
-      * [Scopes](#scopes) 
-          * [Bindings](#bindings)
+      * [Transform](#transform)
+      * [Generate](#generate)
+      * [Navigazione (traverse)](#traversal)
+      * [Visitatori (visitor)](#visitors)
+      * [Percorsi (path)](#paths) 
+          * [Oggetto "path" disponibile nei visitatori](#paths-in-visitors)
+      * [Stato (state)](#state)
+      * [Scope](#scopes) 
+          * [Binding](#bindings)
   * [API](#api) 
       * [babylon](#babylon)
       * [babel-traverse](#babel-traverse)
@@ -83,32 +83,32 @@ Se stai leggendo una traduzione di questo documento in una lingua diversa dall'I
       * [Convertitori](#converters)
       * [babel-generator](#babel-generator)
       * [babel-template](#babel-template)
-  * [Scrivere il tuo primo Plugin per Babel](#writing-your-first-babel-plugin)
+  * [Scrivere il primo plugin per Babel](#writing-your-first-babel-plugin)
   * [Operazioni di trasformazione](#transformation-operations) 
-      * [Visiting](#visiting)
-      * [Verifica se un nodo è di un certo tipo](#check-if-a-node-is-a-certain-type)
-      * [Check if an identifier is referenced](#check-if-an-identifier-is-referenced)
-      * [Manipolazione](#manipulation)
-      * [Sostituzione di un nodo](#replacing-a-node)
-      * [Sostituzione di un nodo con più nodi](#replacing-a-node-with-multiple-nodes)
-      * [Replacing a node with a source string](#replacing-a-node-with-a-source-string)
-      * [Inserimento di un nodo di pari livello](#inserting-a-sibling-node)
-      * [Rimozione di un nodo](#removing-a-node)
-      * [Sostituzione di un genitore](#replacing-a-parent)
-      * [Rimozione di un genitore](#removing-a-parent)
-      * [Scope](#scope)
-      * [Verifica se una variabile locale è associata](#checking-if-a-local-variable-is-bound)
-      * [Generazione di un UID](#generating-a-uid)
-      * [Pushing a variable declaration to a parent scope](#pushing-a-variable-declaration-to-a-parent-scope)
-      * [Rename a binding and its references](#rename-a-binding-and-its-references)
-  * [Opzioni del plugin](#plugin-options)
-  * [Building Nodes](#building-nodes)
-  * [Procedure consigliate](#best-practices) 
-      * [Avoid traversing the AST as much as possible](#avoid-traversing-the-ast-as-much-as-possible)
-      * [Merge visitors whenever possible](#merge-visitors-whenever-possible)
-      * [Do not traverse when manual lookup will do](#do-not-traverse-when-manual-lookup-will-do)
-      * [Optimizing nested visitors](#optimizing-nested-visitors)
-      * [Being aware of nested structures](#being-aware-of-nested-structures)
+      * [Navigazione AST](#visiting)
+      * [Verificare se un nodo è di uno specifico tipo](#check-if-a-node-is-a-certain-type)
+      * [Verificare se esistono referenze ad un identifier](#check-if-an-identifier-is-referenced)
+      * [Manipolazione AST](#manipulation)
+      * [Sostituire un nodo](#replacing-a-node)
+      * [Sostituire un nodo con più nodi](#replacing-a-node-with-multiple-nodes)
+      * [Sostituire un nodo con una stringa di codice](#replacing-a-node-with-a-source-string)
+      * [Inserire un nodo adiacente](#inserting-a-sibling-node)
+      * [Rimuovere un nodo](#removing-a-node)
+      * [Sostituire un nodo padre](#replacing-a-parent)
+      * [Rimuovere un nodo padre](#removing-a-parent)
+      * [Scope (e variabili)](#scope)
+      * [Verificare se una variabile locale è associata ad uno scope](#checking-if-a-local-variable-is-bound)
+      * [Generare un nuovo nome di variabile (UID)](#generating-a-uid)
+      * [Promuovere la dichiarazione di una variabile ad uno scope padre](#pushing-a-variable-declaration-to-a-parent-scope)
+      * [Rinominare una variabile (e tutte le sue referenze)](#rename-a-binding-and-its-references)
+  * [Opzioni per i propri plugin](#plugin-options)
+  * [Generare nodi (per inserimenti e trasformazioni)](#building-nodes)
+  * [Best practice](#best-practices) 
+      * [Evitare navigazioni non necessarie dell'AST](#avoid-traversing-the-ast-as-much-as-possible)
+      * [Aggregare i visitatori quando possibile](#merge-visitors-whenever-possible)
+      * [Evitare navigazioni programmatiche nidificate](#do-not-traverse-when-manual-lookup-will-do)
+      * [Ottimizzare i visitatori nidificati](#optimizing-nested-visitors)
+      * [Essere consapevoli delle strutture nidificate](#being-aware-of-nested-structures)
 
 # Introduzione
 
@@ -122,7 +122,7 @@ Babel è un compilatore multiuso per JavaScript. Inoltre è un insieme di moduli
 
 Babel è un compilatore JavaScript, specificamente un compilatore di fonte a fonte, spesso chiamato un "transpiler". Ciò significa che puoi dare Babel del codice JavaScript che viene modificato da Babel, il quale genera del nuovo codice.
 
-## ASTs
+## AST
 
 Ognuno di questi passaggi comportano la creazione o l'utilizzo con un [Albero Sintattico Astratto](https://en.wikipedia.org/wiki/Abstract_syntax_tree) o AST.
 
@@ -259,7 +259,7 @@ Ci sono altre proprietà su ogni nodo che Babel genera che descrivono la posizio
 
 Queste proprietà `start`, `end`, `loc`, appaiono in ogni singolo Nodo.
 
-## Fasi di Babel
+## Stadi primari di Babel
 
 Le tre fasi primarie di Babel sono **parse**, **trasformare**, **generare**.
 
@@ -313,17 +313,17 @@ In modo simile ai Nodi AST, anche i tokens hanno le proprietà `start`, `end` e 
 
 L'analisi sintattica prende una serie di tokens e costruisce una rappresentazione AST. Utilizzando le informazioni nei token, questa fase li riformatterà come un AST che rappresenta la struttura del codice.
 
-### Trasformazione
+### Transform
 
 La fase di [trasformazione](https://en.wikipedia.org/wiki/Program_transformation) prende un AST e lo attraversa aggiungendo, modificando e rimuovendo Nodi durante l'attraversamento. Questa è di gran lunga la parte più complessa di Babel o qualsiasi altro compilatore. Questa fase è dove operano i plugin ed è quindi l'argomento principale trattato in questo manuale. Quindi non andremo in profondo in questa fase in questa sezione.
 
-### Generazione
+### Generate
 
 La fase di [generazione del codice](https://en.wikipedia.org/wiki/Code_generation_(compiler)) prende l'AST finale e lo trasforma in una stringa di codice, ed allo stesso tempo crea una [mappa di origine](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/).
 
 Code generation is pretty simple: you traverse through the AST depth-first, building a string that represents the transformed code.
 
-## Traversal
+## Navigazione (traverse)
 
 When you want to transform an AST you have to [traverse the tree](https://en.wikipedia.org/wiki/Tree_traversal) recursively.
 
@@ -365,21 +365,21 @@ Così iniziamo dalla `FunctionDeclaration` e conosciamo le proprietà interne qu
 
 La proprietà successiva è `id` è un `identificatore`. L'`identificatore ` non ha altri nodi nidificati quindi andiamo avanti.
 
-After that is `params` which is an array of nodes so we visit each of them. In this case it's a single node which is also an `Identifier` so we move on.
+Successivamente troviamo la proprietà `params`, ovvero un vettore di nodi. Visitiamo ciascuno di essi. In questo caso è un singolo nodo che è anche un `identificatore`, quindi andiamo avanti.
 
-Then we hit `body` which is a `BlockStatement` with a property `body` that is an array of Nodes so we go to each of them.
+Adesso arriviamo alla proprietà `body` che è un `BlockStatement` con una proprietà `body` che è un vettore di nodi, quindi andiamo a ciascuno di essi.
 
-The only item here is a `ReturnStatement` node which has an `argument`, we go to the `argument` and find a `BinaryExpression`.
+Qui l'unico elemento è un nodo di `ReturnStatement` che ha un `argument`, andiamo all' `argument` e troviamo una `BinaryExpression`.
 
-The `BinaryExpression` has an `operator`, a `left`, and a `right`. The operator isn't a node, just a value, so we don't go to it, and instead just visit `left` and `right`.
+L'oggetto `BinaryExpression` ha le proprietà `operator`, `left` e `right`. L'operator non è un nodo ma solo un valore - "*", quindi visitiamo le proprietà `left` e `right`.
 
-This traversal process happens throughout the Babel transform stage.
+Questo processo di attraversamento dell'AST avviene durante lo stage di trasformazione di Babel.
 
-### Visitatori
+### Visitatori (visitor)
 
-When we talk about "going" to a node, we actually mean we are **visiting** them. The reason we use that term is because there is this concept of a [**visitor**](https://en.wikipedia.org/wiki/Visitor_pattern).
+Quando si parla di "andare" a un nodo, intendiamo in realtà la **visita** di un nodo. La ragione per che cui usiamo quel termine è perché è sfruttato il concetto di [**visitatore**](https://en.wikipedia.org/wiki/Visitor_pattern).
 
-Visitors are a pattern used in AST traversal across languages. Simply put they are an object with methods defined for accepting particular node types in a tree. That's a bit abstract so let's look at an example.
+I visitatori sono un modello utilizzato in attraversamento di AST tra i diversi linguaggi. In poche parole sono un oggetto con metodi definiti per accettare tipi di nodi particolari in un albero. È un po' astratto, quindi diamo un'occhiata a un esempio.
 
 ```js
 const MyVisitor = {
@@ -389,11 +389,11 @@ const MyVisitor = {
 };
 ```
 
-> **Note:** `Identifier() { ... }` is shorthand for `Identifier: { enter() { ... } }`.
+> **Nota:** `Identifier() { ... }` è l'abbreviazione di `Identifier: {enter () { ... }}`.
 
-This is a basic visitor that when used during a traversal will call the `Identifier()` method for every `Identifier` in the tree.
+Questo è un visitatore base che quando utilizzato durante un attraversamento chiamerà il metodo `Identifier()` per ogni `identifier` nell'albero.
 
-So with this code the `Identifier()` method will be called four times with each `Identifier` (including `square`).
+Per esempio con questo codice il metodo `Identifier()` verrà chiamato quattro volte con ogni `identificatore` (tra cui `square`).
 
 ```js
 function square(n) {
@@ -408,9 +408,9 @@ Called!
 Called!
 ```
 
-These calls are all on node **enter**. However there is also the possibility of calling a visitor method when on **exit**.
+Queste chiamate sono tutte eseguite mentre si sta per**entrare** nel nodo. Però c'è anche la possibilità di eseguire un metodo di un visitatore durante **l'uscita** dal nodo.
 
-Imagine we have this tree structure:
+Immaginate di avere questa struttura ad albero:
 
 ```js
 - FunctionDeclaration
@@ -423,32 +423,32 @@ Imagine we have this tree structure:
         - Identifier (right)
 ```
 
-As we traverse down each branch of the tree we eventually hit dead ends where we need to traverse back up the tree to get to the next node. Going down the tree we **enter** each node, then going back up we **exit** each node.
+Durante l'attraversamento di ogni ramo dell'albero, eventualmente raggiungiamo dei nodi senza altri rami, quindi per arrivare al nodo successivo c'è bisogno di ritornare in su per arrivare al nodo successivo. Andando verso il basso l'albero **entriamo** ciascun nodo, quindi tornando indietro **usciamo** da ogni nodo.
 
-Let's *walk* through what this process looks like for the above tree.
+Adesso andiamo *passo per passo* attraverso il processo che viene eseguito per l'AST descritto in precedenza.
 
-  * Enter `FunctionDeclaration` 
-      * Enter `Identifier (id)`
-      * Hit dead end
-      * Exit `Identifier (id)`
-      * Enter `Identifier (params[0])`
-      * Hit dead end
-      * Exit `Identifier (params[0])`
-      * Enter `BlockStatement (body)`
-      * Enter `ReturnStatement (body)` 
-          * Enter `BinaryExpression (argument)`
-          * Enter `Identifier (left)` 
-              * Hit dead end
-          * Exit `Identifier (left)`
-          * Enter `Identifier (right)` 
-              * Hit dead end
-          * Exit `Identifier (right)`
-          * Exit `BinaryExpression (argument)`
-      * Exit `ReturnStatement (body)`
-      * Exit `BlockStatement (body)`
-  * Exit `FunctionDeclaration`
+  * Entra nella `FunctionDeclaration` 
+      * Entra nell' `Identifier (id)`
+      * Vicolo cieco (non ci sono ulteriori nodi dato che id ha un solo valore)
+      * Esci dall' `Identifier(id)`
+      * Entra nell'`Identifier (params[0])`
+      * Vicolo cieco
+      * Esci dall'`Identifier (params[0])`
+      * Entra nel `BlockStatement (body)`
+      * Entra nel `ReturnStatement (body)` 
+          * Entra nella `BinaryExpression (argument)`
+          * Entra nell' `Identifier (left)` 
+              * Vicolo cieco
+          * Esci dall'`Identifier (left)`
+          * Entra nell' `Identifier (right)` 
+              * Vicolo cieco
+          * Esci dall'`Identifier (right)`
+          * Esci dalla `BinaryExpression (argument)`
+      * Esci dal `ReturnStatement (body)`
+      * Esci dal `BlockStatement (body)`
+  * Esci dalla `FunctionDeclaration`
 
-So when creating a visitor you have two opportunities to visit a node.
+Quindi durante la creazione di un visitatore hai due opportunità per visitare il nodo.
 
 ```js
 const MyVisitor = {
@@ -463,13 +463,13 @@ const MyVisitor = {
 };
 ```
 
-### Percorsi
+### Percorsi (path)
 
-An AST generally has many Nodes, but how do Nodes relate to one another? We could have one giant mutable object that you manipulate and have full access to, or we can simplify this with **Paths**.
+Un AST ha generalmente molti nodi, ma come sono collegati tra di loro? Potremmo esporre un oggetto modificabile con pieno accesso, o possiamo semplificare questo con **percorsi**.
 
-A **Path** is an object representation of the link between two nodes.
+Un **percorso** è una rappresentazione in forma di oggetto del collegamento tra due nodi.
 
-For example if we take the following node and its child:
+Per esempio se prendiamo il seguente nodo e suo figlio:
 
 ```js
 {
@@ -482,7 +482,7 @@ For example if we take the following node and its child:
 }
 ```
 
-And represent the child `Identifier` as a path, it looks something like this:
+E rappresentiamo l'`identifier` come un percorso, può essere definito come segue:
 
 ```js
 {
@@ -498,7 +498,7 @@ And represent the child `Identifier` as a path, it looks something like this:
 }
 ```
 
-It also has additional metadata about the path:
+Inoltre un percorso ha anche metadati aggiuntivi sul percorso:
 
 ```js
 {
@@ -526,13 +526,13 @@ It also has additional metadata about the path:
 }
 ```
 
-As well as tons and tons of methods related to adding, updating, moving, and removing nodes, but we'll get into those later.
+E ha anche molti metodi che permettono di aggiungere, aggiornare, spostare e rimuovere nodi. Questi metodi verranno visitati in sezioni successive.
 
-In a sense, paths are a **reactive** representation of a node's position in the tree and all sorts of information about the node. Whenever you call a method that modifies the tree, this information is updated. Babel manages all of this for you to make working with nodes easy and as stateless as possible.
+In un certo senso, i percorsi sono una rappresentazione **reattiva** della posizione di un nodo nell'albero e di tutte le informazioni sul nodo. Ogni volta che si esegue un metodo che modifica la struttura dell'albero, queste informazioni vengono aggiornate. Babel gestisce tutto questo per voi, per rendere il lavoro con i nodi il più semplice possibile.
 
-#### Percorsi in visitatori
+#### Oggetto "path" disponibile nei visitatori
 
-When you have a visitor that has a `Identifier()` method, you're actually visiting the path instead of the node. This way you are mostly working with the reactive representation of a node instead of the node itself.
+Quando si dispone di un visitatore che ha un metodo di `Identifier()`, in realtà stai visitando il percorso invece del nodo. In questo modo si lavora principalmente con la rappresentazione reattiva di un nodo anziché il nodo stesso.
 
 ```js
 const MyVisitor = {
@@ -552,11 +552,11 @@ Visiting: b
 Visiting: c
 ```
 
-### Stato
+### Stato (state)
 
-State is the enemy of AST transformation. State will bite you over and over again and your assumptions about state will almost always be proven wrong by some syntax that you didn't consider.
+Lo "stato" è un nemico quando si parla di trasformazione di AST. Lo stato la morderà più e più volte e le tue ipotesi sullo stato saranno quasi sempre smentite da alcune sintassi che non hai considerato.
 
-Take the following code:
+Prendete il seguente codice:
 
 ```js
 function square(n) {
@@ -564,7 +564,7 @@ function square(n) {
 }
 ```
 
-Let's write a quick hacky visitor that will rename `n` to `x`.
+Scriviamo un visitatore velocemente che rinomina `n` a `x`.
 
 ```js
 let paramName;
@@ -584,7 +584,7 @@ const MyVisitor = {
 };
 ```
 
-This might work for the above code, but we can easily break that by doing this:
+Questo potrebbe funzionare per il codice sopra riportato, ma potrebbe facilmente non funzionare con questo codice:
 
 ```js
 function square(n) {
@@ -593,7 +593,7 @@ function square(n) {
 n;
 ```
 
-The better way to deal with this is recursion. So let's make like a Christopher Nolan film and put a visitor inside of a visitor.
+Il modo migliore per affrontare questo problema è la ricorsione. Quindi cerchiamo di imitare un film di Christopher Nolan e mettere un visitatore all'interno di un visitatore.
 
 ```js
 const updateParamNameVisitor = {
@@ -615,11 +615,11 @@ const MyVisitor = {
 };
 ```
 
-Of course, this is a contrived example but it demonstrates how to eliminate global state from your visitors.
+Naturalmente, questo è solo un esempio ma viene illustrato come eliminare lo stato globale dai tuoi visitatori.
 
-### Scopes
+### Scope
 
-Next let's introduce the concept of a [**scope**](https://en.wikipedia.org/wiki/Scope_(computer_science)). JavaScript has [lexical scoping](https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scoping_vs._dynamic_scoping), which is a tree structure where blocks create new scope.
+Adesso introduciamo il concetto di [**scope**](https://en.wikipedia.org/wiki/Scope_(computer_science)). JavaScript ha uno [scoping lessicale](https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scoping_vs._dynamic_scoping), che è una struttura ad albero dove i blocchi creano nuovo scope.
 
 ```js
 // global scope
@@ -633,7 +633,7 @@ function scopeOne() {
 }
 ```
 
-Whenever you create a reference in JavaScript, whether that be by a variable, function, class, param, import, label, etc., it belongs to the current scope.
+Ogni volta che si crea un riferimento in JavaScript, sia che si tratti di una variabile, funzione, classe, parametro, import, etichetta, ecc., appartiene allo scope corrente.
 
 ```js
 var global = "I am in the global scope";
@@ -647,7 +647,7 @@ function scopeOne() {
 }
 ```
 
-Code within a deeper scope may use a reference from a higher scope.
+Il codice all'interno di uno scope più profondo può utilizzare un riferimento da uno scope superiore.
 
 ```js
 function scopeOne() {
@@ -659,7 +659,7 @@ function scopeOne() {
 }
 ```
 
-A lower scope might also create a reference of the same name without modifying it.
+Uno scope inferiore potrebbe anche creare un riferimento dello stesso nome senza modificarlo.
 
 ```js
 function scopeOne() {
@@ -671,7 +671,7 @@ function scopeOne() {
 }
 ```
 
-When writing a transform, we want to be wary of scope. We need to make sure we don't break existing code while modifying different parts of it.
+Quando scriviamo un file di trasformazione, bisogna essere cauti nei confronti dello scope. Dobbiamo essere certi di non rompere il codice esistente durante la modifica di diverse parti del codice.
 
 We may want to add new references and make sure they don't collide with existing ones. Or maybe we just want to find where a variable is referenced. We want to be able to track these references within a given scope.
 
@@ -691,7 +691,7 @@ When you create a new scope you do so by giving it a path and a parent scope. Th
 
 Once that's done, there's all sorts of methods you can use on scopes. We'll get into those later though.
 
-#### Bindings
+#### Binding
 
 References all belong to a particular scope; this relationship is known as a **binding**.
 
@@ -1033,7 +1033,7 @@ console.log(generate(ast).code);
 var myModule = require("my-module");
 ```
 
-# Scrivere il tuo primo Plugin per Babel
+# Scrivere il primo plugin per Babel
 
 Now that you're familiar with all the basics of Babel, let's tie it together with the plugin API.
 
@@ -1160,9 +1160,9 @@ Awesome! Our very first Babel plugin.
 
 # Operazioni di trasformazione
 
-## Visiting
+## Navigazione AST
 
-### Verifica se un nodo è di un certo tipo
+### Verificare se un nodo è di uno specifico tipo
 
 If you want to check what the type of a node is, the preferred way to do so is:
 
@@ -1198,7 +1198,7 @@ BinaryExpression(path) {
 }
 ```
 
-### Check if an identifier is referenced
+### Verificare se esistono referenze ad un identifier
 
 ```js
 Identifier(path) {
@@ -1218,9 +1218,9 @@ Identifier(path) {
 }
 ```
 
-## Manipolazione
+## Manipolazione AST
 
-### Sostituzione di un nodo
+### Sostituire un nodo
 
 ```js
 BinaryExpression(path) {
@@ -1237,7 +1237,7 @@ BinaryExpression(path) {
   }
 ```
 
-### Sostituzione di un nodo con più nodi
+### Sostituire un nodo con più nodi
 
 ```js
 ReturnStatement(path) {
@@ -1260,7 +1260,7 @@ ReturnStatement(path) {
 
 > **Note:** When replacing an expression with multiple nodes, they must be statements. This is because Babel uses heuristics extensively when replacing nodes which means that you can do some pretty crazy transformations that would be extremely verbose otherwise.
 
-### Replacing a node with a source string
+### Sostituire un nodo con una stringa di codice
 
 ```js
 FunctionDeclaration(path) {
@@ -1280,7 +1280,7 @@ FunctionDeclaration(path) {
 
 > **Note:** It's not recommended to use this API unless you're dealing with dynamic source strings, otherwise it's more efficient to parse the code outside of the visitor.
 
-### Inserimento di un nodo di pari livello
+### Inserire un nodo adiacente
 
 ```js
 FunctionDeclaration(path) {
@@ -1299,7 +1299,7 @@ FunctionDeclaration(path) {
 
 > **Note:** This should always be a statement or an array of statements. This uses the same heuristics mentioned in [Replacing a node with multiple nodes](#replacing-a-node-with-multiple-nodes).
 
-### Rimozione di un nodo
+### Rimuovere un nodo
 
 ```js
 FunctionDeclaration(path) {
@@ -1313,7 +1313,7 @@ FunctionDeclaration(path) {
 - }
 ```
 
-### Sostituzione di un genitore
+### Sostituire un nodo padre
 
 ```js
 BinaryExpression(path) {
@@ -1330,7 +1330,7 @@ BinaryExpression(path) {
   }
 ```
 
-### Rimozione di un genitore
+### Rimuovere un nodo padre
 
 ```js
 BinaryExpression(path) {
@@ -1344,9 +1344,9 @@ BinaryExpression(path) {
   }
 ```
 
-## Scope
+## Scope (e variabili)
 
-### Verifica se una variabile locale è associata
+### Verificare se una variabile locale è associata ad uno scope
 
 ```js
 FunctionDeclaration(path) {
@@ -1368,7 +1368,7 @@ FunctionDeclaration(path) {
 }
 ```
 
-### Generazione di un UID
+### Generare un nuovo nome di variabile (UID)
 
 This will generate an identifier that doesn't collide with any locally defined variables.
 
@@ -1381,7 +1381,7 @@ FunctionDeclaration(path) {
 }
 ```
 
-### Pushing a variable declaration to a parent scope
+### Promuovere la dichiarazione di una variabile ad uno scope padre
 
 Sometimes you may want to push a `VariableDeclaration` so you can assign to it.
 
@@ -1401,7 +1401,7 @@ FunctionDeclaration(path) {
 + };
 ```
 
-### Rename a binding and its references
+### Rinominare una variabile (e tutte le sue referenze)
 
 ```js
 FunctionDeclaration(path) {
@@ -1435,7 +1435,7 @@ FunctionDeclaration(path) {
 
 * * *
 
-# Opzioni del plugin
+# Opzioni per i propri plugin
 
 If you would like to let your users customize the behavior of your Babel plugin you can accept plugin specific options which users can specify like this:
 
@@ -1469,7 +1469,7 @@ These options are plugin-specific and you cannot access options from other plugi
 
 * * *
 
-# Building Nodes
+# Generare nodi (per inserimenti e trasformazioni)
 
 When writing transformations you'll often want to build up some nodes to insert into the AST. As mentioned previously, you can do this using the [builder](#builder) methods in the [`babel-types`](#babel-types) package.
 
@@ -1580,17 +1580,17 @@ You can find all of the actual [definitions here](https://github.com/babel/babel
 
 * * *
 
-# Procedure consigliate
+# Best practice
 
 > I'll be working on this section over the coming weeks.
 
-## Avoid traversing the AST as much as possible
+## Evitare navigazioni non necessarie dell'AST
 
 Traversing the AST is expensive, and it's easy to accidentally traverse the AST more than necessary. This could be thousands if not tens of thousands of extra operations.
 
 Babel optimizes this as much as possible, merging visitors together if it can in order to do everything in a single traversal.
 
-### Merge visitors whenever possible
+### Aggregare i visitatori quando possibile
 
 When writing visitors, it may be tempting to call `path.traverse` in multiple places where they are logically necessary.
 
@@ -1621,7 +1621,7 @@ path.traverse({
 });
 ```
 
-### Do not traverse when manual lookup will do
+### Evitare navigazioni programmatiche nidificate
 
 It may also be tempting to call `path.traverse` when looking for a particular node type.
 
@@ -1651,7 +1651,7 @@ const MyVisitor = {
 };
 ```
 
-## Optimizing nested visitors
+## Ottimizzare i visitatori nidificati
 
 When you are nesting visitors, it might make sense to write them nested in your code.
 
@@ -1720,7 +1720,7 @@ const MyVisitor = {
 };
 ```
 
-## Being aware of nested structures
+## Essere consapevoli delle strutture nidificate
 
 Sometimes when thinking about a given transform, you might forget that the given structure can be nested.
 

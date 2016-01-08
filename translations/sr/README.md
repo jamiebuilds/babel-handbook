@@ -1,24 +1,24 @@
 # babel-plugin-handbook
 
-This document covers how to create [Babel](https://babeljs.io) [plugins](https://babeljs.io/docs/advanced/plugins/).
+U dokumentu je objašnjeno kako se kreiraju [Babel](https://babeljs.io) [plugini](https://babeljs.io/docs/advanced/plugins/).
 
-If you are reading a non-english translation of this handbook you may still find english sections that have not yet been translated. If you would like to contribute to one of the translations you must do so through Crowdin. Please read the [contributing guidelines](/CONTRIBUTING.md) for more information.
+Ako čitate prevod ovog priručnika koji nije na engleskom jeziku, još uvek možete pronaći neprevedene delove koji su pisani englekim jezikom. Uz pomoć Crowdin-a možete da doprinesete u prevođenju na neki od jezika. Molim vas pročitajte [vodič za učešće](/CONTRIBUTING.md) ukoliko vam je potrebno više informacija.
 
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
-Special thanks to [@sebmck](https://github.com/sebmck/), [@hzoo](https://github.com/hzoo), [@jdalton](https://github.com/jdalton), [@abraithwaite](https://github.com/abraithwaite), [@robey](https://github.com/robey), and others for their amazing help on this handbook.
+Posebno smo zahvalni [@sebmck](https://github.com/sebmck/), [@hzoo](https://github.com/hzoo), [@jdalton](https://github.com/jdalton), [@abraithwaite](https://github.com/abraithwaite), [@robey](https://github.com/robey), i ostalim na njihovoj velikoj pomoći pri izradi ovog priručnika.
 
 # Node Packaged Manuscript
 
-You can install this handbook with npm. Just do:
+Da biste instalirali ovaj priručnik uz pomoć npm-a izvršite u konzoli:
 
 ```sh
 $ npm install -g babel-plugin-handbook
 ```
 
-Now you will have a `babel-plugin-handbook` command that will open this readme file in your `$PAGER`. Otherwise, you may continue reading this document as you are presently doing.
+Sad možete da pozovete komandu `babel-plugin-handbook` koja će otvoriti ovaj readme fajl u vašem `$PAGER`/u. Inače, možete da nastavite da čitate ovaj dokument kao što i sad činite.
 
-# Translations
+# Prevodi
 
   * [English](/README.md)
   * [Afrikaans](/translations/af/README.md)
@@ -51,14 +51,14 @@ Now you will have a `babel-plugin-handbook` command that will open this readme f
   * [中文](/translations/zh-Hans/README.md)
   * [繁體中文](/translations/zh-Hant/README.md)
 
-**[Request another translation](https://github.com/thejameskyle/babel-plugin-handbook/issues/new?title=Translation%20Request:%20[Please%20enter%20language%20here]&body=I%20am%20able%20to%20translate%20this%20language%20[yes/no])**
+**[Zahtev za novi jezik](https://github.com/thejameskyle/babel-plugin-handbook/issues/new?title=Translation%20Request:%20[Please%20enter%20language%20here]&body=I%20am%20able%20to%20translate%20this%20language%20[yes/no])**
 
-If you are reading a non-english translation of this document you will find a number of english words that are programming concepts. If these were translated to other languages there would be a lack of consistency and fluency when reading about them. In many cases you will find the literal translation followed by the english term in parenthesis `()`. For example: Abstract Syntax Trees (ASTs).
+Ako čitate prevod ovog dokumenta koji nije pisan engleskim jezikom, naći ćete brojne engleske reči koje predstavljaju koncepte u programiranju. Da su prevedene na druge jezike, nedostajala bi konzistentnost i tečnost kada se čita o njima. U mnogim slučajevima naći ćete doslovne prevode iza kojih sledi engleski izraz pisan u zagradama `()`. Na primer: apstraktna sintaksna stabla (ASTs).
 
-# Table of Contents
+# Sadržaj
 
-  * [Introduction](#introduction)
-  * [Basics](#basics) 
+  * [Uvod](#introduction)
+  * [Osnove](#basics) 
       * [ASTs](#asts)
       * [Stages of Babel](#stages-of-babel)
       * [Parse](#parse) 
@@ -110,23 +110,23 @@ If you are reading a non-english translation of this document you will find a nu
       * [Optimizing nested visitors](#optimizing-nested-visitors)
       * [Being aware of nested structures](#being-aware-of-nested-structures)
 
-# Introduction
+# Uvod
 
-Babel is a generic multi-purpose compiler for JavaScript. More than that it is a collection of modules that can be used for many different forms of static analysis.
+Babel je generički višenamenski kompajler za JavaScript. Čini ga kolekcija modula koji se mogu koristiti za različite oblike statičke analize koda.
 
-> Static analysis is the process of analyzing code without executing it. (Analysis of code while executing it is known as dynamic analysis). The purpose of static analysis varies greatly. It can be used for linting, compiling, code highlighting, code transformation, optimization, minification, and much more.
+> Statička analiza je proces analiziranja koda bez njegovog izvršavanja. (Analiza koda prilikom njegovog izvršavanja se naziva dinamička analiza). Namena statičke analize moze biti vrlo različita. Može biti korišćena za proveru stila i načina pisanja (linting), kompajliranje, predstavljanje sintakse jezika bojama (color highlighting), transformisanje koda, optimizacije, minifikacije i druge operacije.
 
-You can use Babel to build many different types of tools that can help you be more productive and write better programs.
+Uz pomoć Babel-a možete napisati mnoštvo različitih tipova alatki koje vam mogu pomoći da povećate produktivnost i pišete bolje programe.
 
-# Basics
+# Osnove
 
-Babel is a JavaScript compiler, specifically a source-to-source compiler, often called a "transpiler". This means that you give Babel some JavaScript code, Babel modifies the code, and generates the new code back out.
+Babel je JavaScript kompajler, tačnije kompajler iz koda u kod, što se najčešće naziva "transpiler". Drugim rečima, Babel će da modifikuje vaš kod i da generiše potpuno novi kod.
 
 ## ASTs
 
-Each of these steps involve creating or working with an [Abstract Syntax Tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree) or AST.
+Svaki od koraka pri kompajliranju uključuje kreiranje ili korišćenje apstraktnog sintaksnog stabla [Abstract Syntax Tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree) tj. AST.
 
-> Babel uses an AST modified from [ESTree](https://github.com/estree/estree), with the core spec located [here](https://github.com/babel/babel/blob/master/doc/ast/spec.md).
+> Babel za AST koristi modifikovanu verziju [ESTree](https://github.com/estree/estree), čija se osnovna specifikacija nalazi [ovde](https://github.com/babel/babel/blob/master/doc/ast/spec.md).
 
 ```js
 function square(n) {
@@ -134,9 +134,9 @@ function square(n) {
 }
 ```
 
-> Check out [AST Explorer](http://astexplorer.net/) to get a better sense of the AST nodes. [Here](http://astexplorer.net/#/Z1exs6BWMq) is a link to it with the example code above pasted in.
+> Da biste stekli bolji osećaj u vezi sa strukturama koje koristi AST možete da pogledate [AST Explorer](http://astexplorer.net/). [Ovde](http://astexplorer.net/#/Z1exs6BWMq) se nalazi njegov link sa kodom iz prethodnog primera.
 
-This same program can be represented as a list like this:
+Isto parče koda može se predstaviti listom kao:
 
 ```md
 - FunctionDeclaration:
@@ -161,7 +161,7 @@ This same program can be represented as a list like this:
                   - name: n
 ```
 
-Or as a JavaScript Object like this:
+Ili kao JavaScript objekt kao:
 
 ```js
 {
@@ -195,7 +195,7 @@ Or as a JavaScript Object like this:
 }
 ```
 
-You'll notice that each level of the AST has a similar structure:
+Možete da primetite da svaki nivo AST-a ima sličnu strukturu:
 
 ```js
 {
@@ -222,11 +222,11 @@ You'll notice that each level of the AST has a similar structure:
 }
 ```
 
-> Note: Some properties have been removed for simplicity.
+> Napomena: neki delovi objekta (properties) su sklonjeni da bi se videla suština.
 
-Each of these are known as a **Node**. An AST can be made up of a single Node, or hundreds if not thousands of Nodes. Together they are able to describe the syntax of a program that can be used for static analysis.
+Svaki deo (property) se naziva **čvor** (node). Struktura AST-a može da se sastoji bilo od jednog, bilo od ogromnog broja čvorova (nodes). Svi čvorovi zajedno mogu da opišu sintaksu programa što može da se koristi za statičku analizu.
 
-Every Node has this interface:
+Svaki čvor je predstavljen sledećom strukturom:
 
 ```typescript
 interface Node {
@@ -234,9 +234,9 @@ interface Node {
 }
 ```
 
-The `type` field is a string representing the type of Node the object is (ie. `"FunctionDeclaration"`, `"Identifier"`, or `"BinaryExpression"`). Each type of Node defines an additional set of properties that describe that particular node type.
+Polje `type` je string koji sadrži tip objekta koji je predstavljen čvorom. (npr. `"FunctionDeclaration"`, `"Identifier"`, ili `"BinaryExpression"`). Za svaki od tipova čvorova se koristi posebana dodatna grupa podataka kojim je opisan dati čvor.
 
-There are additional properties on every Node that Babel generates which describe the position of the Node in the original source code.
+Za svaki čvor koji je generisan Babelom koriste se dodatni podaci koji sadrže informaciju o položaju čvora u originalnom kodu.
 
 ```js
 {
@@ -257,21 +257,21 @@ There are additional properties on every Node that Babel generates which describ
 }
 ```
 
-These properties `start`, `end`, `loc`, appear in every single Node.
+Polja (properties) `start`, `end`, `loc` se mogu naći u svakom pojedinačnom čvoru.
 
-## Stages of Babel
+## Faze kompajliranja (Stages of Babel)
 
-The three primary stages of Babel are **parse**, **transform**, **generate**.
+Tri osnovna stanja kroz koje Babel prolazi su **parsiranje**, **transformisanje**, **generisanje**.
 
-### Parse
+### Parsiranje
 
-The **parse** stage, takes code and outputs an AST. There are two phases of parsing in Babel: [**Lexical Analysis**](https://en.wikipedia.org/wiki/Lexical_analysis) and [**Syntactic Analysis**](https://en.wikipedia.org/wiki/Parsing).
+U fazi **parsiranja**, kod se pretvara u AST strukturu. Parsiranje čine dve faze: [**Leksička analiza**](https://en.wikipedia.org/wiki/Lexical_analysis) (Lexical Analysis) i [**Analiza sintakse**](https://en.wikipedia.org/wiki/Parsing) (Syntactic Analysis).
 
-#### Lexical Analysis
+#### Leksička analiza (Lexical Analysis)
 
-Lexical Analysis will take a string of code and turn it into a stream of **tokens**.
+U leksičkoj analizi delić koda se pretvara u niz **tokena**.
 
-You can think of tokens as a flat array of language syntax pieces.
+Tokene možete da zamislite kao linearan niz sačinjen od delova koji čine sintaksu jezika (npr. operatori ili ključne reči).
 
 ```js
 n * n;
@@ -286,7 +286,7 @@ n * n;
 ]
 ```
 
-Each of the `type`s here have a set of properties describing the token:
+U svakom `tipu` imamo skup polja (properties) koje opisuju dati token:
 
 ```js
 {
@@ -307,27 +307,27 @@ Each of the `type`s here have a set of properties describing the token:
 }
 ```
 
-Like AST nodes they also have a `start`, `end`, and `loc`.
+Kao i u elementima AST strukture i ovde imamo polja `start`, `end`, and `loc`.
 
-#### Syntactic Analysis
+#### Analiza sintakse (Syntactic Analysis)
 
-Syntactic Analysis will take a stream of tokens and turn it into an AST representation. Using the information in the tokens, this phase will reformat them as an AST which represents the structure of the code in a way that makes it easier to work with.
+Analiza sintakse koristi niz tokena i pretvara ih u AST formu. U ovoj fazi tokeni su, na osnovu informacija koje nose, restruktuirani u formu AST-a. Ovakva reprezentacija strukture koda je daleko jednostavnija za dalje procesiranje.
 
-### Transform
+### Transformisanje (Transform)
 
-The [transform](https://en.wikipedia.org/wiki/Program_transformation) stage takes an AST and traverses through it, adding, updating, and removing nodes as it goes along. This is by far the most complex part of Babel or any compiler. This is where plugins operate and so it will be the subject of most of this handbook. So we won't dive too deep right now.
+U stanju [transformisanja](https://en.wikipedia.org/wiki/Program_transformation) Babel prolazi kroz čvorove AST strukture i pri tom kreira nove, briše ili modifikuje postojeće čvorove. Ovo je daleko najsloženiji deo kroz koji prolazi bilo Babel bilo koji drugi kompajler. Plaginovi svoje procese obavljaju u ovom stanju pa će ovo stanje biti glavna tema u većem delu ovog priručnika. Zbog toga nećemo ulaziti duboko u detalje za sad.
 
-### Generate
+### Generisanje (Generate)
 
-The [code generation](https://en.wikipedia.org/wiki/Code_generation_(compiler)) stage takes the final AST and turns in back into a string of code, also creating [source maps](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/).
+Stanje [generisanje koda](https://en.wikipedia.org/wiki/Code_generation_(compiler)) koristi AST generisan u prethodnom stanju i na osnovu njega generiše kod i kreira [mapu koda](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/) (source map).
 
-Code generation is pretty simple: you traverse through the AST depth-first, building a string that represents the transformed code.
+Generisanje koda je prilično jednostavan proces: prolazi se kroz AST strukturu i ispišu stringovi koji predstavljaju transformisani kod.
 
-## Traversal
+## Prolazak (Traversal)
 
-When you want to transform an AST you have to [traverse the tree](https://en.wikipedia.org/wiki/Tree_traversal) recursively.
+Pri transformaciji AST strukture potrebno je rekurzivno [proći kroz stablo](https://en.wikipedia.org/wiki/Tree_traversal) kojim je predstavljen.
 
-Say we have the type `FunctionDeclaration`. It has a few properties: `id`, `params`, and `body`. Each of them have nested nodes.
+Recimo za tip `FunctionDeclaration` je karakteristično nekoliko podataka: `id`, `params`, i `body`. Svaki od njih ima ugnežđene druge čvorove.
 
 ```js
 {
@@ -361,25 +361,25 @@ Say we have the type `FunctionDeclaration`. It has a few properties: `id`, `para
 }
 ```
 
-So we start at the `FunctionDeclaration` and we know its internal properties so we visit each of them and their children in order.
+Polazimo od `FunctionDeclaration` i pošto znamo polja njegove unutrašnje strukture, prolazimo redom kroz svako od tih polja i sve njihove podstruture (children).
 
-Next we go to `id` which is an `Identifier`. `Identifier`s don't have any child node properties so we move on.
+Zatim dolazimo do `id` koji predstavlja `identifikator` (Identifier). `Identifikatori` nemaju podstrukturu pa možemo da nastavimo dalje sa prolaskom.
 
-After that is `params` which is an array of nodes so we visit each of them. In this case it's a single node which is also an `Identifier` so we move on.
+Sledi `params` koji je predstaljen nizom čvorova pa ćemo da prođemo kroz svakog od njih. U ovom slučaju nailazimo samo na jedan čvor koji je takođe `identifikator` pa možemo da nastavimo dalje.
 
-Then we hit `body` which is a `BlockStatement` with a property `body` that is an array of Nodes so we go to each of them.
+Tada nailazimo na `body` koji je tipa `BlockStatement` i ima polje `body` koje predstavlja niz čvorova pa ćemo da prođemo kroz svaki od članova niza.
 
-The only item here is a `ReturnStatement` node which has an `argument`, we go to the `argument` and find a `BinaryExpression`.
+Jedini član niza je tipa `ReturnStatement` koji ima čvor tipa `argument`. Prolazeći kroz njega nailazimo na čvor tipa `BinaryExpression`.
 
-The `BinaryExpression` has an `operator`, a `left`, and a `right`. The operator isn't a node, just a value, so we don't go to it, and instead just visit `left` and `right`.
+Struktura `BinaryExpression` ima polja `operator`, a `left`, i a `right`. Polje operator nije čvor nego primitivni tip, pa nastavljamo dalje prolazak kroz `left` i `right`.
 
-This traversal process happens throughout the Babel transform stage.
+Opisani proces prolaska se desava u stanju transformisanja (transform stage).
 
-### Visitors
+### Posetioci (Visitors)
 
-When we talk about "going" to a node, we actually mean we are **visiting** them. The reason we use that term is because there is this concept of a [**visitor**](https://en.wikipedia.org/wiki/Visitor_pattern).
+Kada govorimo o "prolasku" kroz čvor, zapravo mislimo na njihovo **podsećivanje**. Ovaj termin se korisiti zato što postoji koncept [**visitora**](https://en.wikipedia.org/wiki/Visitor_pattern) (visitor).
 
-Visitors are a pattern used in AST traversal across languages. Simply put they are an object with methods defined for accepting particular node types in a tree. That's a bit abstract so let's look at an example.
+Posetioci (visitors) su algoritam (pattern) koji se koristi u AST za prolaske u raznim jezicima. Jednostavno rečeno, radi se o objektima sa definisanim metodama za prihvaćanje određenog tipa nodova u stablu. Kako sam koncept deluje pomalo apstraktno, pogledaćemo jedan primer.
 
 ```js
 const MyVisitor = {
@@ -389,11 +389,11 @@ const MyVisitor = {
 };
 ```
 
-> **Note:** `Identifier() { ... }` is shorthand for `Identifier: { enter() { ... } }`.
+> **Napomena:** `Identifier() { ... }` je skraćeno zapisano `Identifier: { enter() { ... } }`.
 
-This is a basic visitor that when used during a traversal will call the `Identifier()` method for every `Identifier` in the tree.
+Ovo je osnovni posetioc (visitor). Prilikom prolaska (traversal) se za svaki `Identifier` u stablu poziva metod `Identifier()`.
 
-So with this code the `Identifier()` method will be called four times with each `Identifier` (including `square`).
+To znači da će, u datom primeru, metod `Identifier()` biti pozvan četiri puta za svaki `Identifier` (uključujući `square`).
 
 ```js
 function square(n) {
@@ -408,9 +408,9 @@ Called!
 Called!
 ```
 
-These calls are all on node **enter**. However there is also the possibility of calling a visitor method when on **exit**.
+Svi ovi pozivi se dešavaju pri **ulasku** u čvor. Međutim postoji i mogućnost pozivanja metoda posetioca i pri **izlasku** iz čvora.
 
-Imagine we have this tree structure:
+Zamislimo da imamo ovakvu strukturu:
 
 ```js
 - FunctionDeclaration
@@ -425,30 +425,30 @@ Imagine we have this tree structure:
 
 As we traverse down each branch of the tree we eventually hit dead ends where we need to traverse back up the tree to get to the next node. Going down the tree we **enter** each node, then going back up we **exit** each node.
 
-Let's *walk* through what this process looks like for the above tree.
+Pogledajmo, *korak po korak*, kako izgleda proces prolaska kroz stablo dato u poslednjem primeru.
 
-  * Enter `FunctionDeclaration` 
-      * Enter `Identifier (id)`
-      * Hit dead end
-      * Exit `Identifier (id)`
-      * Enter `Identifier (params[0])`
-      * Hit dead end
-      * Exit `Identifier (params[0])`
-      * Enter `BlockStatement (body)`
-      * Enter `ReturnStatement (body)` 
-          * Enter `BinaryExpression (argument)`
-          * Enter `Identifier (left)` 
-              * Hit dead end
-          * Exit `Identifier (left)`
-          * Enter `Identifier (right)` 
-              * Hit dead end
-          * Exit `Identifier (right)`
-          * Exit `BinaryExpression (argument)`
-      * Exit `ReturnStatement (body)`
-      * Exit `BlockStatement (body)`
-  * Exit `FunctionDeclaration`
+  * Ulaz u `FunctionDeclaration` 
+      * Ulaz u `Identifier (id)`
+      * Završeno procesiranje čvora
+      * Izlaz iz `Identifier (id)`
+      * Ulaz u `Identifier (params[0])`
+      * Završeno procesiranje čvora
+      * Izlaz iz `Identifier (params[0])`
+      * Ulaz u `BlockStatement (body)`
+      * Ulaz u `ReturnStatement (body)` 
+          * Ulaz u `BinaryExpression (argument)`
+          * Ulaz u `Identifier (left)` 
+              * Završeno procesiranje čvora
+          * Izlaz iz `Identifier (left)`
+          * Ulaz u `Identifier (right)` 
+              * Završeno procesiranje čvora
+          * Izlaz iz `Identifier (right)`
+          * Izlaz iz `BinaryExpression (argument)`
+      * Izlaz iz `ReturnStatement (body)`
+      * Izlaz iz `BlockStatement (body)`
+  * Izlaz iz `FunctionDeclaration`
 
-So when creating a visitor you have two opportunities to visit a node.
+Pri kreiranju posetioca postoje dve mogućnosti da posećivanje čvora.
 
 ```js
 const MyVisitor = {
@@ -463,13 +463,13 @@ const MyVisitor = {
 };
 ```
 
-### Paths
+### Putanje (paths)
 
-An AST generally has many Nodes, but how do Nodes relate to one another? We could have one giant mutable object that you manipulate and have full access to, or we can simplify this with **Paths**.
+Generalno, AST se sastoji od više čvorova. Postavlja se pitanje kako su oni međusobno povezani? We could have one giant mutable object that you manipulate and have full access to, or we can simplify this with **Paths**.
 
-A **Path** is an object representation of the link between two nodes.
+**Putanja** je veza između dva čvora u objektnoj reprezentaciji.
 
-For example if we take the following node and its child:
+Na primer, ako pogledamo sledeći čvor i njegove podčvore (child):
 
 ```js
 {
@@ -482,7 +482,7 @@ For example if we take the following node and its child:
 }
 ```
 
-And represent the child `Identifier` as a path, it looks something like this:
+i predstavimo podčvor `Identifier` kao "putanju", dobijeni rezultat izgleda kao:
 
 ```js
 {
@@ -498,7 +498,7 @@ And represent the child `Identifier` as a path, it looks something like this:
 }
 ```
 
-It also has additional metadata about the path:
+Ovde imamo i dodatne metapodatke (metadata) o "putanji":
 
 ```js
 {
@@ -526,13 +526,13 @@ It also has additional metadata about the path:
 }
 ```
 
-As well as tons and tons of methods related to adding, updating, moving, and removing nodes, but we'll get into those later.
+Kasnije ćemo razmotriti veliki broj metoda vezanih za dodavanje, modifikovanje, pomeranje i uklanjanje čvorova.
 
-In a sense, paths are a **reactive** representation of a node's position in the tree and all sorts of information about the node. Whenever you call a method that modifies the tree, this information is updated. Babel manages all of this for you to make working with nodes easy and as stateless as possible.
+Na neki način, "putanje" su **reaktivne** reprezentacije položaja čvorova unutar stabla kao i različite informacije o čvoru. Pozivanjem metoda koje modifikuju stablo se ažuriraju informacije o njegovoj strukturi. Sve ovo vam omogućava Babel kako bi korišćenje čvorova bilo što olakšano i nezavisno od stanja u kojima se nalaze.
 
-#### Paths in Visitors
+#### Putanje u "posetiocima"
 
-When you have a visitor that has a `Identifier()` method, you're actually visiting the path instead of the node. This way you are mostly working with the reactive representation of a node instead of the node itself.
+Kad imamo "posetioca" koji ima `Identifier()` metod, u stanju smo da radimo sa putanjom umesto sa čvorom. Na ovaj način možemo da koristimo reaktivnu reprezentaciju čvora umesto samog čvora.
 
 ```js
 const MyVisitor = {
@@ -552,11 +552,11 @@ Visiting: b
 Visiting: c
 ```
 
-### State
+### Stanje (state)
 
 State is the enemy of AST transformation. State will bite you over and over again and your assumptions about state will almost always be proven wrong by some syntax that you didn't consider.
 
-Take the following code:
+Pogledajmo sledeći primer:
 
 ```js
 function square(n) {
@@ -564,7 +564,7 @@ function square(n) {
 }
 ```
 
-Let's write a quick hacky visitor that will rename `n` to `x`.
+Napišimo mali "posetioc" koji će da preimenuje `n` u `x`.
 
 ```js
 let paramName;
@@ -584,7 +584,7 @@ const MyVisitor = {
 };
 ```
 
-This might work for the above code, but we can easily break that by doing this:
+Ovaj primer će možda raditi za prethodni primer, ali ne i za sledeći primer:
 
 ```js
 function square(n) {
@@ -593,7 +593,7 @@ function square(n) {
 n;
 ```
 
-The better way to deal with this is recursion. So let's make like a Christopher Nolan film and put a visitor inside of a visitor.
+Bolje rešenje se dobija korišćenjem rekurzije. Ubacimo "posetioca" u "posetioca" kao u filmu Christophera Nolana.
 
 ```js
 const updateParamNameVisitor = {
@@ -615,11 +615,11 @@ const MyVisitor = {
 };
 ```
 
-Of course, this is a contrived example but it demonstrates how to eliminate global state from your visitors.
+Iako je ovo specifičan primer, on demonstira kako da izbegnemo korišćenje globalog stanja u vašem "posetiocu".
 
-### Scopes
+### Domeni (scopes)
 
-Next let's introduce the concept of a [**scope**](https://en.wikipedia.org/wiki/Scope_(computer_science)). JavaScript has [lexical scoping](https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scoping_vs._dynamic_scoping), which is a tree structure where blocks create new scope.
+Uvedimo sad koncept [**domena**](https://en.wikipedia.org/wiki/Scope_(computer_science)) (scope). JavaScript koristi [leksički domen](https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scoping_vs._dynamic_scoping) (lexical scoping) - strukturu stabla u kojoj svaki blok koda kreira novi domen.
 
 ```js
 // global scope
@@ -633,7 +633,7 @@ function scopeOne() {
 }
 ```
 
-Whenever you create a reference in JavaScript, whether that be by a variable, function, class, param, import, label, etc., it belongs to the current scope.
+Uvek kad u JavaScriptu uvedemo referencu, bilo da se radi o promenljivoj, funkciji, klasi, parametaru, labela i tako dalje, ona pripada trenutnom domenu (current scope).
 
 ```js
 var global = "I am in the global scope";
@@ -647,7 +647,7 @@ function scopeOne() {
 }
 ```
 
-Code within a deeper scope may use a reference from a higher scope.
+Kod iz ugnežđenih domena može da koristi reference iz spoljašnjih domena.
 
 ```js
 function scopeOne() {
@@ -659,7 +659,7 @@ function scopeOne() {
 }
 ```
 
-A lower scope might also create a reference of the same name without modifying it.
+Ugnežđeni domen može da koristi referencu sa istim imenom kao i referenca u spoljašnjem domenu, ali ona pri tome ne menja vrednost.
 
 ```js
 function scopeOne() {
@@ -671,11 +671,11 @@ function scopeOne() {
 }
 ```
 
-When writing a transform, we want to be wary of scope. We need to make sure we don't break existing code while modifying different parts of it.
+Kada pišemo kod za transformacije, moramo voditi računa o domenima. Moramo se pobrinuti da ne pokvarimo postojeći kod pri modifikovanju njegovih raznih delova.
 
-We may want to add new references and make sure they don't collide with existing ones. Or maybe we just want to find where a variable is referenced. We want to be able to track these references within a given scope.
+Ako treba da dodamo nove reference, treba da vodimo računa da se one ne poklapaju sa već postojećim. Ili možda samo želimo da nađemo gde su referencirane promenljive. Moramo biti u stanju da pratimo te reference unutar datog domena.
 
-A scope can be represented as:
+Domen može biti predstavljen kao:
 
 ```js
 {
@@ -687,13 +687,13 @@ A scope can be represented as:
 }
 ```
 
-When you create a new scope you do so by giving it a path and a parent scope. Then during the traversal process it collects all the references ("bindings") within that scope.
+Novi domen kreiramo tako da mu dodeljujemo putanju i nadređeni domen (parent scope). U procesu prolaska se prikupljaju sve reference ("bindings") unutar domena.
 
-Once that's done, there's all sorts of methods you can use on scopes. We'll get into those later though.
+Nakon toka, na domen možemo da primenumo veliko broj metoda. Njih ćemo razmotriti kasnije.
 
-#### Bindings
+#### Vezivanje (bindings)
 
-References all belong to a particular scope; this relationship is known as a **binding**.
+Reference pripadaju određenom domenu; ovu relaciju nazivamo **vezivanje** (binding).
 
 ```js
 function scopeOnce() {
@@ -707,7 +707,7 @@ function scopeOnce() {
 }
 ```
 
-A single binding looks like this:
+Jedno "vezivanje" ima sledeći oblik:
 
 ```js
 {
@@ -725,9 +725,9 @@ A single binding looks like this:
 }
 ```
 
-With this information you can find all the references to a binding, see what type of binding it is (parameter, declaration, etc.), lookup what scope it belongs to, or get a copy of its identifier. You can even tell if it's constant and if not, see what paths are causing it to be non-constant.
+Sa ovim informacijama možemo da nađemo sve reference na "vezivanja", odgovorimo na pitanje o kom tipu "vezivanja" se radi (parametar, deklaracija,...), pronaći u kome se domenu nalaze, ili dobiti kopiju identifikatora "vezivanja". Možemo čak da proverimo da li se radi o konstanti i videti koja "putanja" uzrokuje da "vezivanje" ne može da bude predstavljeno kao konstanta.
 
-Being able to tell if a binding is constant is useful for many purposes, the largest of which is minification.
+Mogućnost da kažemo da li je neko "vezivanje konstanta" je korisno u mnogim slučajevima, pri čemu je najbitniji minifikacija koda.
 
 ```js
 function scopeOne() {
@@ -746,15 +746,15 @@ function scopeOne() {
 
 # API
 
-Babel is actually a collection of modules. In this section we'll walk through the major ones, explaining what they do and how to use them.
+Babel u osnovi čini kolekciju modula. U ovom odeljku ćemo pomenuti one koji su najbitniji, objašnjavajući šta oni rade i kako se koriste.
 
-> Note: This is not a replacement for detailed API documentation which will be available elsewhere shortly.
+> Napomena: Ovaj dokument ne zamenjuje detaljnu API dokumentaciju koja će uskoro biti dostupna na drugom mestu.
 
 ## [`babylon`](https://github.com/babel/babel/tree/master/packages/babylon)
 
-Babylon is Babel's parser. Started as a fork of Acorn, it's fast, simple to use, has plugin-based architecture for non-standard features (as well as future standards).
+Babylon je parser koji se koristi u Babelu. Ovaj modul je nastao kao "ogranak" (fork) projekta Acorn, veoma je brz, jednostavan za korišćenje, ima arhitekturu "plugina" koja je upotrebljiva za nestandardne potrebe (kao i za buduće standarde).
 
-First, let's install it.
+Prvo, treba da ga instaliramo.
 
 ```sh
 $ npm install --save babylon
@@ -800,15 +800,15 @@ To see a full list of plugins, see the [Babylon README](https://github.com/babel
 
 ## [`babel-traverse`](https://github.com/babel/babel/tree/master/packages/babel-traverse)
 
-The Babel Traverse module maintains the overall tree state, and is responsible for replacing, removing, and adding nodes.
+Babel Traverse modul procesira ukupno stanje stabla i odgovoran je za zamene, uklanjanja i dodavanje čvorova.
 
-Install it by running:
+Da biste ga instalirali izvršite sledeću komandu:
 
 ```sh
 $ npm install --save babel-traverse
 ```
 
-We can use it alongside Babylon to traverse and update nodes:
+Možemo ga koristiti zajedno sa Babylonom da bismo prošli kroz čvorove i ažurirali ih:
 
 ```js
 import * as babylon from "babylon";
@@ -965,15 +965,15 @@ t.assertBinaryExpression(maybeBinaryExpressionNode, { operator: "*" });
 
 ## [`babel-generator`](https://github.com/babel/babel/tree/master/packages/babel-generator)
 
-Babel Generator is the code generator for Babel. It takes an AST and turns it into code with sourcemaps.
+Babel Generator je generator koda u okviru Babela. Njegova uloga je da pretvori AST strukturu u kod sa mapama koda (sourcemaps).
 
-Run the following to install it:
+Izvršite sledeću komandu da biste ga instalirali:
 
 ```sh
 $ npm install --save babel-generator
 ```
 
-Then use it
+Po tom ga možete koristiti
 
 ```js
 import * as babylon from "babylon";
@@ -992,7 +992,7 @@ generate(ast, null, code);
 // }
 ```
 
-You can also pass options to `generate()`.
+Metod `generate()` prihvata opcije u formi objekta prosleđenog kao drugi parametar.
 
 ```js
 generate(ast, {
@@ -1006,7 +1006,7 @@ generate(ast, {
 
 ## [`babel-template`](https://github.com/babel/babel/tree/master/packages/babel-template)
 
-Babel Template is another tiny but incredibly useful module. It allows you to write strings of code with placeholders that you can use instead of manually building up a massive AST.
+Babel Template je sledeći mali, ali izuzetno koristan modul. On omogućava pisanje stringova koda sa "mestima za zamene" (placeholders) koje možemo koristiti umesto ručnog kreiranja ogromne AST strukture.
 
 ```sh
 $ npm install --save babel-template
@@ -1033,11 +1033,11 @@ console.log(generate(ast).code);
 var myModule = require("my-module");
 ```
 
-# Writing your first Babel Plugin
+# Kreiranje vašeg prvog Babel plugina
 
-Now that you're familiar with all the basics of Babel, let's tie it together with the plugin API.
+Nakon što smo se upoznali sa osnova Babela, pokušajmo da stečeno znanje iskoristimu u radu sa plugin API-ijem.
 
-Start off with a `function` that gets passed the current `babel` object.
+Započećemo sa `funkcijom` koja kao ulazni parametar uzima trenutni `babel` objekt.
 
 ```js
 export default function(babel) {
@@ -1045,7 +1045,7 @@ export default function(babel) {
 }
 ```
 
-Since you'll be using it so often, you'll likely want to grab just `babel.types` like so:
+Pošto će biti često korišćeno, dodaćemo kod za uzimanje `babel.types` kao:
 
 ```js
 export default function({ types: t }) {
@@ -1053,7 +1053,7 @@ export default function({ types: t }) {
 }
 ```
 
-Then you return an object with a property `visitor` which is the primary visitor for the plugin.
+Rezultat poziva treba da bude objekat koji ima polje `visitor` koji predstavlja osnovni "posetioc" u plaginu.
 
 ```js
 export default function({ types: t }) {
@@ -1065,13 +1065,13 @@ export default function({ types: t }) {
 };
 ```
 
-Let's write a quick plugin to show off how it works. Here's our source code:
+Napisaćemo mali plagin da bi smo demonstrirali kao oni rade. Ovako izgleda naš test kod:
 
 ```js
 foo === bar;
 ```
 
-Or in AST form:
+Ili u AST formi:
 
 ```js
 {
@@ -1088,7 +1088,7 @@ Or in AST form:
 }
 ```
 
-We'll start off by adding a `BinaryExpression` visitor method.
+Počećemo sa dodavanje `BinaryExpression` metoda "posetioca".
 
 ```js
 export default function({ types: t }) {
@@ -1102,7 +1102,7 @@ export default function({ types: t }) {
 }
 ```
 
-Then let's narrow it down to just `BinaryExpression`s that are using the `===` operator.
+Ograničićemo dejstvo metoda samo na `BinaryExpression` (binarne operacije) koje koriste operator `===`.
 
 ```js
 visitor: {
@@ -1116,7 +1116,7 @@ visitor: {
 }
 ```
 
-Now let's replace the `left` property with a new identifier:
+Zamenimo `left` polje sa novim identifikatorom:
 
 ```js
 BinaryExpression(path) {
@@ -1129,13 +1129,13 @@ BinaryExpression(path) {
 }
 ```
 
-Already if we run this plugin we would get:
+Ako sad izvršimo ovaj plagin kao rezultat ćemo dobiti:
 
 ```js
 sebmck === bar;
 ```
 
-Now let's just replace the `right` property.
+Zamenimo sad i `right` polje koje odgovara desnom operandu binarne operacije.
 
 ```js
 BinaryExpression(path) {
@@ -1148,13 +1148,13 @@ BinaryExpression(path) {
 }
 ```
 
-And now for our final result:
+Kao konačan rezultat dobijamo:
 
 ```js
 sebmck === dork;
 ```
 
-Awesome! Our very first Babel plugin.
+Neviđeno! Naš prvi Babel plagin.
 
 * * *
 
