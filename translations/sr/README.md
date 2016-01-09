@@ -53,7 +53,7 @@ Sad možete da pozovete komandu `babel-plugin-handbook` koja će otvoriti ovaj r
 
 **[Zahtev za dodavanje prevoda na drugi jezik](https://github.com/thejameskyle/babel-plugin-handbook/issues/new?title=Translation%20Request:%20[Please%20enter%20language%20here]&body=I%20am%20able%20to%20translate%20this%20language%20[yes/no])**
 
-Ako čitate prevod ovog dokumenta koji nije pisan engleskim jezikom, naći ćete brojne engleske reči koje predstavljaju koncepte u programiranju. Da su prevedene na druge jezike, nedostajala bi konzistentnost i tečnost kada se čita o njima. U mnogim slučajevima naći ćete doslovne prevode iza kojih sledi engleski izraz pisan u zagradama `()`. Na primer: apstraktna sintaksna stabla (ASTs).
+Ako čitate prevod ovog dokumenta koji nije pisan engleskim jezikom, videćete brojne reči na engleskom jeziku koje predstavljaju koncepte iz oblasti programiranja. Da su prevedene na druge jezike, nedostajala bi konzistentnost i jasnoća na mestima gde smo ih objašnjavali ili koristili. U mnogim slučajevima naći ćete doslovne prevode iza kojih sledi engleski izraz pisan u zagradama `()`. Na primer: apstraktna sintaksna stabla (ASTs).
 
 # Sadržaj
 
@@ -112,9 +112,9 @@ Ako čitate prevod ovog dokumenta koji nije pisan engleskim jezikom, naći ćete
 
 # Uvod
 
-Babel je generički višenamenski kompajler za JavaScript. Čini ga kolekcija modula koji se mogu koristiti za različite oblike statičke analize koda.
+Babel je generički višenamenski kompajler za JavaScript. Sastoji se od kolekcije modula koji se mogu koristiti u različitim vidovima statičke analize koda.
 
-> Statička analiza je proces analiziranja koda bez njegovog izvršavanja. (Analiza koda prilikom njegovog izvršavanja se naziva dinamička analiza). Namena statičke analize moze biti vrlo različita. Može biti korišćena za proveru stila i načina pisanja (linting), kompajliranje, predstavljanje sintakse jezika bojama (color highlighting), transformisanje koda, optimizacije, minifikacije i druge operacije.
+> Statička analiza je proces analiziranja koda bez njegovog izvršavanja. (Analiza koda prilikom njegovog izvršavanja se naziva dinamička analiza). Postoji veliki broj primena statičke analize koda. Može biti korišćena za proveru stila i načina pisanja (linting), kompajliranje, predstavljanje sintakse jezika bojama (color highlighting), transformisanje koda, optimizacije, minifikacije i druge operacije.
 
 Uz pomoć Babel-a možete napisati mnoštvo različitih tipova alatki koje vam mogu pomoći da povećate produktivnost i pišete bolje programe.
 
