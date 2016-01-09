@@ -126,7 +126,7 @@ Babel je JavaScript kompajler, tačnije kompajler iz koda u kod, što se najče�
 
 Svaki od koraka pri kompajliranju uključuje kreiranje ili korišćenje apstraktnog sintaksnog stabla [Abstract Syntax Tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree) tj. AST.
 
-> Babel za AST koristi modifikovanu verziju [ESTree](https://github.com/estree/estree), čija se osnovna specifikacija nalazi [ovde](https://github.com/babel/babel/blob/master/doc/ast/spec.md).
+> Babel za AST koristi modifikovanu verziju [ESTree](https://github.com/estree/estree), čija je osnovna specifikacija data [ovde](https://github.com/babel/babel/blob/master/doc/ast/spec.md).
 
 ```js
 function square(n) {
@@ -134,9 +134,9 @@ function square(n) {
 }
 ```
 
-> Da biste stekli bolji osećaj u vezi sa strukturama koje koristi AST možete da pogledate [AST Explorer](http://astexplorer.net/). [Ovde](http://astexplorer.net/#/Z1exs6BWMq) se nalazi njegov link sa kodom iz prethodnog primera.
+> Da biste stekli bolji osećaj u vezi sa strukturama koje koristi AST možete da pogledate [AST Explorer](http://astexplorer.net/). Da biste pogledali kod iz prethodnog primera u Ast Exploreru možete da odete na [ovaj](http://astexplorer.net/#/Z1exs6BWMq) link.
 
-Isto parče koda može se predstaviti listom kao:
+Kod iz primera može se predstaviti kao lista:
 
 ```md
 - FunctionDeclaration:
@@ -161,7 +161,7 @@ Isto parče koda može se predstaviti listom kao:
                   - name: n
 ```
 
-Ili kao JavaScript objekt kao:
+ili kao JavaScript objekt:
 
 ```js
 {
@@ -195,7 +195,7 @@ Ili kao JavaScript objekt kao:
 }
 ```
 
-Možete da primetite da svaki nivo AST-a ima sličnu strukturu:
+Svaki nivo AST strukture ima sličan oblik:
 
 ```js
 {
