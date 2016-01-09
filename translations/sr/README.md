@@ -222,11 +222,11 @@ Svaki nivo AST strukture ima sličan oblik:
 }
 ```
 
-> Napomena: neki delovi objekta (properties) su sklonjeni da bi se videla suština.
+> Napomena: neki delovi objekta (properties) su izostavljeni radi lakšeg uočavanja trenutno bitnih delova strukture.
 
-Svaki deo (property) se naziva **čvor** (node). Struktura AST-a može da se sastoji bilo od jednog, bilo od ogromnog broja čvorova (nodes). Svi čvorovi zajedno mogu da opišu sintaksu programa što može da se koristi za statičku analizu.
+Struktura predstavljenja u prethodnim primerima se naziva **čvor** (node). AST može da se sastoji bilo od jednog, bilo od ogromnog broja čvorova (nodes). Zajedno, svi čvorovi opisuju sintaksu programa, pa datu strukturu možemo da se iskoristimo za statičku analizu.
 
-Svaki čvor je predstavljen sledećom strukturom:
+Svaki čvor je predstavljen na sledeći način:
 
 ```typescript
 interface Node {
