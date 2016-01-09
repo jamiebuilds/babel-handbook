@@ -234,7 +234,7 @@ interface Node {
 }
 ```
 
-Polje `type` je string koji sadrži tip objekta koji je predstavljen čvorom. (npr. `"FunctionDeclaration"`, `"Identifier"`, ili `"BinaryExpression"`). Za svaki od tipova čvorova se koristi posebana dodatna grupa podataka kojim je opisan dati čvor.
+Polje `type` je string koji sadrži tip objekta, odnosno čvora. (npr. `"FunctionDeclaration"`, `"Identifier"`, ili `"BinaryExpression"` - deklaracija fukcije, indetifikatora ili binarnog izraza/operacije). Svaki tipova čvora ima različitu dodatnu grupa podataka koji ga opisuju.
 
 Za svaki čvor koji je generisan Babelom koriste se dodatni podaci koji sadrže informaciju o položaju čvora u originalnom kodu.
 
