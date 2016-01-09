@@ -114,13 +114,13 @@ Ako čitate prevod ovog dokumenta koji nije pisan engleskim jezikom, videćete b
 
 Babel je generički višenamenski kompajler za JavaScript. Sastoji se od kolekcije modula koji se mogu koristiti u različitim vidovima statičke analize koda.
 
-> Statička analiza je proces analiziranja koda bez njegovog izvršavanja. (Analiza koda prilikom njegovog izvršavanja se naziva dinamička analiza). Postoji veliki broj primena statičke analize koda. Može biti korišćena za proveru stila i načina pisanja (linting), kompajliranje, predstavljanje sintakse jezika bojama (color highlighting), transformisanje koda, optimizacije, minifikacije i druge operacije.
+> Statička analiza je proces analiziranja koda bez njegovog izvršavanja. (Analiza koda prilikom njegovog izvršavanja se naziva dinamička analiza). Postoji veliki broj primena statičke analize koda. Može se koristiti za proveru stila i načina pisanja (linting), kompajliranje, predstavljanje sintakse jezika bojama (color highlighting), transformisanje koda, optimizacije, minifikacije i druge operacije.
 
-Uz pomoć Babel-a možete napisati mnoštvo različitih tipova alatki koje vam mogu pomoći da povećate produktivnost i pišete bolje programe.
+Uz pomoć Babel-a možete napisati mnoštvo različitih tipova alatki koje mogu da se koriste da povećaju produktivnost i poboljšaju kvalitet pisanog koda.
 
 # Osnove
 
-Babel je JavaScript kompajler, tačnije kompajler iz koda u kod, što se najčešće naziva "transpiler". Drugim rečima, Babel će da modifikuje vaš kod i da generiše potpuno novi kod.
+Babel je JavaScript kompajler, tačnije kompajler iz koda u kod, što se najčešće naziva "transpiler". Drugim rečima, Babel može da modifikuje i da generiše potpuno novi kod na osnovu vašeg koda.
 
 ## AST strukture
 
