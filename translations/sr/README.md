@@ -2,11 +2,11 @@
 
 U dokumentu je objašnjeno kako se kreiraju [Babel](https://babeljs.io) [plaginovi](https://babeljs.io/docs/advanced/plugins/).
 
-Ako čitate prevod ovog priručnika koji nije na engleskom jeziku, još uvek možete pronaći neprevedene delove koji su pisani englekim jezikom. Uz pomoć Crowdin-a možete da doprinesete u prevođenju na neki od jezika. Molim vas pročitajte [vodič za učešće](/CONTRIBUTING.md) ukoliko vam je potrebno više informacija.
+Ako je pred vama priručnika koji nije pisan engleskim jezikom, možete da pronađete neprevedene delove, pisane englekim jezikom. Uz pomoć Crowdin-a možete da doprinesete u prevođenju na neki od jezika. Molim vas pročitajte [vodič za učešće](/CONTRIBUTING.md) ukoliko vam je potrebno više informacija.
 
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
-Posebno smo zahvalni [@sebmck](https://github.com/sebmck/), [@hzoo](https://github.com/hzoo), [@jdalton](https://github.com/jdalton), [@abraithwaite](https://github.com/abraithwaite), [@robey](https://github.com/robey), i ostalim na njihovoj velikoj pomoći pri izradi ovog priručnika.
+Posebno smo zahvalni [@sebmck](https://github.com/sebmck/), [@hzoo](https://github.com/hzoo), [@jdalton](https://github.com/jdalton), [@abraithwaite](https://github.com/abraithwaite), [@robey](https://github.com/robey) i drugima na njihovoj velikoj pomoći pri izradi ovog priručnika.
 
 # Priručnik upakovan NodeJS-om
 
@@ -16,7 +16,7 @@ Da biste instalirali ovaj priručnik uz pomoć npm-a izvršite u konzoli:
 $ npm install -g babel-plugin-handbook
 ```
 
-Sad možete da pozovete komandu `babel-plugin-handbook` koja će otvoriti ovaj readme fajl u vašem `$PAGER`/u. Inače, možete da nastavite da čitate ovaj dokument kao što i sad činite.
+Sad možete da pozovete komandu `babel-plugin-handbook` koja će otvoriti ovaj readme fajl u vašem `$PAGER-u`. Možete da nastavite da čitate ovaj priručnik i ovde u html formatu.
 
 # Prevodi
 
@@ -51,7 +51,7 @@ Sad možete da pozovete komandu `babel-plugin-handbook` koja će otvoriti ovaj r
   * [中文](/translations/zh-Hans/README.md)
   * [繁體中文](/translations/zh-Hant/README.md)
 
-**[Zahtev za novi jezik](https://github.com/thejameskyle/babel-plugin-handbook/issues/new?title=Translation%20Request:%20[Please%20enter%20language%20here]&body=I%20am%20able%20to%20translate%20this%20language%20[yes/no])**
+**[Zahtev za dodavanje prevoda na drugi jezik](https://github.com/thejameskyle/babel-plugin-handbook/issues/new?title=Translation%20Request:%20[Please%20enter%20language%20here]&body=I%20am%20able%20to%20translate%20this%20language%20[yes/no])**
 
 Ako čitate prevod ovog dokumenta koji nije pisan engleskim jezikom, naći ćete brojne engleske reči koje predstavljaju koncepte u programiranju. Da su prevedene na druge jezike, nedostajala bi konzistentnost i tečnost kada se čita o njima. U mnogim slučajevima naći ćete doslovne prevode iza kojih sledi engleski izraz pisan u zagradama `()`. Na primer: apstraktna sintaksna stabla (ASTs).
 
