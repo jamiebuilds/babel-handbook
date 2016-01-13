@@ -1,12 +1,12 @@
 # babel-plugin-handbook
 
-This document covers how to create [Babel](https://babeljs.io) [plugins](https://babeljs.io/docs/advanced/plugins/).
+Este documento cubre cómo crear [plugins](https://babeljs.io) para [Babel](https://babeljs.io/docs/advanced/plugins/).
 
-If you are reading a non-english translation of this handbook you may still find english sections that have not yet been translated. If you would like to contribute to one of the translations you must do so through Crowdin. Please read the [contributing guidelines](/CONTRIBUTING.md) for more information.
+Si está leyendo una traducción del Inglés de este manual, aún se pueden encontrar secciones en inglés que todavía no han sido traducidas. Si desea contribuir a una de las traducciones deberá hacerlo a través de Crowdin. Por favor lea el [ directrices para contribuir](/CONTRIBUTING.md) para obtener más información.
 
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
-Special thanks to [@sebmck](https://github.com/sebmck/), [@hzoo](https://github.com/hzoo), [@jdalton](https://github.com/jdalton), [@abraithwaite](https://github.com/abraithwaite), [@robey](https://github.com/robey), and others for their amazing help on this handbook.
+Agradecimiento especial a [@sebmck](https://github.com/sebmck/), [@hzoo](https://github.com/hzoo), [@jdalton](https://github.com/jdalton), [@abraithwaite](https://github.com/abraithwaite), [@robey](https://github.com/robey) y otros por su increíble ayuda en este manual.
 
 # Node Packaged Manuscript
 
@@ -1037,7 +1037,7 @@ var myModule = require("my-module");
 
 Now that you're familiar with all the basics of Babel, let's tie it together with the plugin API.
 
-Start off with a `function` that gets passed the current `babel` object.
+Start off with a `function` that gets passed the current [`babel`](https://github.com/babel/babel/tree/master/packages/babel-core) object.
 
 ```js
 export default function(babel) {

@@ -112,9 +112,9 @@ Se state leggendo questo documento in una lingua diversa dall'inglese, troverete
 
 # Introduzione
 
-Babel è un compilatore multiuso per JavaScript. Inoltre è un insieme di moduli che possono essere usati per diverse forme di analisi statica.
+Babel è un compilatore multiuso e generalista per JavaScript. Nello specifico è un insieme di moduli che possono essere usati per differenti operazioni di analisi statica del codice.
 
-> La analisi statica è il processo di analisi di codice senza essere eseguito. (L'analisi del codice durante l'esecuzione di esso è noto come analisi dinamica). The purpose of static analysis varies greatly. It can be used for linting, compiling, code highlighting, code transformation, optimization, minification, and much more.
+> Per analisi statica si intende il processo di analisi di codice senza che questo venga eseguito. (L'analisi del codice effettuata durante la sua esecuzioni è definita analisi dinamica). Le finalità dell'analisi statica possono essere moteplici. It can be used for linting, compiling, code highlighting, code transformation, optimization, minification, and much more.
 
 È possibile utilizzare Babel per costruire diversi tipi di strumenti che consentono di essere più produttivi e scrivere programmi migliori.
 
@@ -1037,7 +1037,7 @@ var myModule = require("my-module");
 
 Now that you're familiar with all the basics of Babel, let's tie it together with the plugin API.
 
-Start off with a `function` that gets passed the current `babel` object.
+Start off with a `function` that gets passed the current [`babel`](https://github.com/babel/babel/tree/master/packages/babel-core) object.
 
 ```js
 export default function(babel) {

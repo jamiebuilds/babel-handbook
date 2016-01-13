@@ -1037,7 +1037,7 @@ var myModule = require("my-module");
 
 现在你已经熟悉了 Babel 的所有基础知识了，让我们把这些知识和插件的 API融合在一起来编写第一个 Babel 插件吧。
 
-从一个接收了 `babel` 对象作为参数的 `function` 开始。
+先从一个接收了当前 [`babel`](https://github.com/babel/babel/tree/master/packages/babel-core) 对象作为参数的 `function` 开始。
 
 ```js
 export default function(babel) {

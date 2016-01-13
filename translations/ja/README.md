@@ -1,24 +1,24 @@
 # babel-plugin-handbook
 
-This document covers how to create [Babel](https://babeljs.io) [plugins](https://babeljs.io/docs/advanced/plugins/).
+このドキュメントでは[Babel](https://babeljs.io)の[プラグイン](https://babeljs.io/docs/advanced/plugins/)を作る方法を解説します。.
 
-If you are reading a non-english translation of this handbook you may still find english sections that have not yet been translated. If you would like to contribute to one of the translations you must do so through Crowdin. Please read the [contributing guidelines](/CONTRIBUTING.md) for more information.
+英語以外の翻訳版ハンドブックには、まだ翻訳されていない英語の文章があるかもしれません。 もし翻訳プロジェクトに参加いただける場合には、Crowdinを利用してください。 より詳しい情報は[貢献のためのガイドライン](/CONTRIBUTING.md)を参照してください。
 
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
-Special thanks to [@sebmck](https://github.com/sebmck/), [@hzoo](https://github.com/hzoo), [@jdalton](https://github.com/jdalton), [@abraithwaite](https://github.com/abraithwaite), [@robey](https://github.com/robey), and others for their amazing help on this handbook.
+[@sebmck](https://github.com/sebmck/)、[@hzoo](https://github.com/hzoo)、[@jdalton](https://github.com/jdalton)、[@abraithwaite](https://github.com/abraithwaite)、[@robey](https://github.com/robey)と、このハンドブックの制作に関わった人々に感謝します。
 
-# Node Packaged Manuscript
+# Nodeパッケージ化した原稿
 
-You can install this handbook with npm. Just do:
+このハンドブックはnpmでインストールできます:
 
 ```sh
 $ npm install -g babel-plugin-handbook
 ```
 
-Now you will have a `babel-plugin-handbook` command that will open this readme file in your `$PAGER`. Otherwise, you may continue reading this document as you are presently doing.
+インストール後、`$PAGER`でこのREADMEファイルを開くための`babel-plugin-handbook`コマンドが利用できるようになります。 もしくは、このままドキュメントを読み進めていっても構いません。
 
-# Translations
+# 翻訳
 
   * [English](/README.md)
   * [Afrikaans](/translations/af/README.md)
@@ -51,15 +51,15 @@ Now you will have a `babel-plugin-handbook` command that will open this readme f
   * [中文](/translations/zh-Hans/README.md)
   * [繁體中文](/translations/zh-Hant/README.md)
 
-**[Request another translation](https://github.com/thejameskyle/babel-plugin-handbook/issues/new?title=Translation%20Request:%20[Please%20enter%20language%20here]&body=I%20am%20able%20to%20translate%20this%20language%20[yes/no])**
+**[その他言語への翻訳リクエスト](https://github.com/thejameskyle/babel-plugin-handbook/issues/new?title=Translation%20Request:%20[Please%20enter%20language%20here]&body=I%20am%20able%20to%20translate%20this%20language%20[yes/no])**
 
-If you are reading a non-english translation of this document you will find a number of english words that are programming concepts. If these were translated to other languages there would be a lack of consistency and fluency when reading about them. In many cases you will find the literal translation followed by the english term in parenthesis `()`. For example: Abstract Syntax Trees (ASTs).
+このドキュメントを英語以外の言語で読んでいる場合でも、プログラミングの概念となる部分は英語のままになっています。 このような箇所は、他の言語に翻訳すると文章の一貫性と流暢さに欠けてしまう場合があります。 この様な場合、多くは`()`かっこ内に英語の直訳表現が付いています。 例えば、抽象構文木 (ASTs) などが該当します。
 
-# Table of Contents
+# 目次
 
-  * [Introduction](#introduction)
-  * [Basics](#basics) 
-      * [ASTs](#asts)
+  * [イントロダクション](#introduction)
+  * [基本](#basics) 
+      * [抽象構文木(ASTs)](#asts)
       * [Stages of Babel](#stages-of-babel)
       * [Parse](#parse) 
           * [Lexical Analysis](#lexical-analysis)
@@ -110,7 +110,7 @@ If you are reading a non-english translation of this document you will find a nu
       * [Optimizing nested visitors](#optimizing-nested-visitors)
       * [Being aware of nested structures](#being-aware-of-nested-structures)
 
-# Introduction
+# イントロダクション
 
 Babel is a generic multi-purpose compiler for JavaScript. More than that it is a collection of modules that can be used for many different forms of static analysis.
 
@@ -118,11 +118,11 @@ Babel is a generic multi-purpose compiler for JavaScript. More than that it is a
 
 You can use Babel to build many different types of tools that can help you be more productive and write better programs.
 
-# Basics
+# 基本
 
 Babel is a JavaScript compiler, specifically a source-to-source compiler, often called a "transpiler". This means that you give Babel some JavaScript code, Babel modifies the code, and generates the new code back out.
 
-## ASTs
+## 抽象構文木(ASTs)
 
 Each of these steps involve creating or working with an [Abstract Syntax Tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree) or AST.
 
@@ -1037,7 +1037,7 @@ var myModule = require("my-module");
 
 Now that you're familiar with all the basics of Babel, let's tie it together with the plugin API.
 
-Start off with a `function` that gets passed the current `babel` object.
+Start off with a `function` that gets passed the current [`babel`](https://github.com/babel/babel/tree/master/packages/babel-core) object.
 
 ```js
 export default function(babel) {

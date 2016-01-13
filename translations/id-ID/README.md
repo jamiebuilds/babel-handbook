@@ -1,24 +1,24 @@
-# babel-plugin-handbook
+# buku-petunjuk-plugin-babel
 
-במסמך הזה נלמד כיצד ליצור [הרחבות](https://babeljs.io/docs/advanced/plugins/) ל-[Babel](https://babeljs.io).
+Dokumen ini berisi langkah-langkah pembuatan [Babel](https://babeljs.io) [plugin](https://babeljs.io/docs/advanced/plugins/).
 
-אם אתה קורא את המסמך הזה בגרסה מתורגמת, כלומר, שאיננה אנגלית, יכול להיות שתמצא חלקים שעוד לא תורגמו. If you would like to contribute to one of the translations you must do so through Crowdin. Please read the [contributing guidelines](/CONTRIBUTING.md) for more information.
+Jika anda membaca terjemahan non-inggris pada buku petunjuk ini, anda dapat menuju seksi bahasa inggris yang belum diterjemahkan. Jika anda ingin berkontribusi pada salah satu terjemahan, anda harus melakukannya melalui Crowdin. Mohon membaca [petunjuk kontribusi](/CONTRIBUTING.md) untuk informasi lebih lanjut.
 
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
-Special thanks to [@sebmck](https://github.com/sebmck/), [@hzoo](https://github.com/hzoo), [@jdalton](https://github.com/jdalton), [@abraithwaite](https://github.com/abraithwaite), [@robey](https://github.com/robey), and others for their amazing help on this handbook.
+Terima kasih kepada [@sebmck](https://github.com/sebmck/),[@hzoo](https://github.com/hzoo), [@jdalton](https://github.com/jdalton), [@abraithwaite](https://github.com/abraithwaite), [@robey](https://github.com/robey), dan yang lainnya untuk bantuannya menyelesaikan buku ini.
 
-# Node Packaged Manuscript
+# Skrip Paket Node
 
-You can install this handbook with npm. Just do:
+Anda dapat memasang buku ini melalui npm. Silakan lakukan:
 
 ```sh
 $ npm install -g babel-plugin-handbook
 ```
 
-Now you will have a `babel-plugin-handbook` command that will open this readme file in your `$PAGER`. Otherwise, you may continue reading this document as you are presently doing.
+Sekarang anda sudah mempunyai perintah `babel-plugin-handbook` yang akan membuka berkas readme pada `$PAGER` anda. Selain itu, anda bisa mulai membaca dokumen ini seperti yang anda lakukan sekarang.
 
-# Translations
+# Terjemahan
 
   * [English](/README.md)
   * [Afrikaans](/translations/af/README.md)
@@ -51,23 +51,23 @@ Now you will have a `babel-plugin-handbook` command that will open this readme f
   * [中文](/translations/zh-Hans/README.md)
   * [繁體中文](/translations/zh-Hant/README.md)
 
-**[Request another translation](https://github.com/thejameskyle/babel-plugin-handbook/issues/new?title=Translation%20Request:%20[Please%20enter%20language%20here]&body=I%20am%20able%20to%20translate%20this%20language%20[yes/no])**
+**[Minta terjemahan lain](https://github.com/thejameskyle/babel-plugin-handbook/issues/new?title=Translation%20Request:%20[Please%20enter%20language%20here]&body=I%20am%20able%20to%20translate%20this%20language%20[yes/no])**
 
-If you are reading a non-english translation of this document you will find a number of english words that are programming concepts. If these were translated to other languages there would be a lack of consistency and fluency when reading about them. In many cases you will find the literal translation followed by the english term in parenthesis `()`. For example: Abstract Syntax Trees (ASTs).
+Jika Anda membaca terjemahan bahasa Inggris dari dokumen ini Anda akan menemukan sejumlah kata-kata bahasa Inggris yang adalah konsep-konsep pemrograman. Jika ini telah diterjemahkan ke bahasa lain akan ada kurangnya konsistensi dan kelancaran ketika membaca buku ini. Dalam banyak kasus, Anda akan menemukan terjemahan literal diikuti dengan istilah bahasa Inggris dalam kurung `()`. Sebagai contoh: sintaks abstrak pohon (ASTs).
 
-# Table of Contents
+# Daftar Isi
 
-  * [Introduction](#introduction)
-  * [Basics](#basics) 
+  * [Pengenalan](#introduction)
+  * [Dasar](#basics) 
       * [ASTs](#asts)
-      * [Stages of Babel](#stages-of-babel)
-      * [Parse](#parse) 
-          * [Lexical Analysis](#lexical-analysis)
-          * [Syntactic Analysis](#syntactic-analysis)
-      * [Transform](#transform)
-      * [Generate](#generate)
+      * [Status Babel](#stages-of-babel)
+      * [Penguraian](#parse) 
+          * [Analisis Leksikal](#lexical-analysis)
+          * [Analisis Sintaktik](#syntactic-analysis)
+      * [Transformasi](#transform)
+      * [Pembuatan](#generate)
       * [Traversal](#traversal)
-      * [Visitors](#visitors)
+      * [Pengunjung](#visitors)
       * [Paths](#paths) 
           * [Paths in Visitors](#paths-in-visitors)
       * [State](#state)
@@ -110,23 +110,23 @@ If you are reading a non-english translation of this document you will find a nu
       * [Optimizing nested visitors](#optimizing-nested-visitors)
       * [Being aware of nested structures](#being-aware-of-nested-structures)
 
-# Introduction
+# Pengenalan
 
-Babel is a generic multi-purpose compiler for JavaScript. More than that it is a collection of modules that can be used for many different forms of static analysis.
+Babel adalah compiler JavaScript umum yang multifungsi. Selebihnya, Babel adalah kumpulan modul yang dapat digunakan untuk beberapa bentuk analisis statik.
 
-> Static analysis is the process of analyzing code without executing it. (Analysis of code while executing it is known as dynamic analysis). The purpose of static analysis varies greatly. It can be used for linting, compiling, code highlighting, code transformation, optimization, minification, and much more.
+> Analisis statik adalah proses menganalisa kode tanpa mengeksekusinya. (Analisis kode selama mengeksekusi biasanya disebut analisis dinamik). Tujuan dari analisis statik itu beragam. Itu dapat digunakan untuk linting, compiling, higlight kode, transformasi kode, optimisasi, minifikasi, dan masih banyak lagi.
 
-You can use Babel to build many different types of tools that can help you be more productive and write better programs.
+Anda dapat menggunakan Babel untuk membangun beberapa tipe perkakas yang dapat membantu anda semakun produktif dan menulis program lebih baik.
 
-# Basics
+# Dasar
 
-Babel is a JavaScript compiler, specifically a source-to-source compiler, often called a "transpiler". This means that you give Babel some JavaScript code, Babel modifies the code, and generates the new code back out.
+Babel adalah compiler JavaScript, yang lebih spesifik sebuah kompiler sumber ke sumber, sering disebut "transpiler". Ini berarti bahwa anda memberi beberapa kode JavaScript kepada Babel, Babel memodifikasi kodenya, dan membuat kode baru dari proses di belakangnya.
 
 ## ASTs
 
-Each of these steps involve creating or working with an [Abstract Syntax Tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree) or AST.
+Setiap langkah meliputi pembuatan atau pengerjaan [Pohon Sintak Abstrak](https://en.wikipedia.org/wiki/Abstract_syntax_tree) atau AST.
 
-> Babel uses an AST modified from [ESTree](https://github.com/estree/estree), with the core spec located [here](https://github.com/babel/babel/blob/master/doc/ast/spec.md).
+> Babel menggunakan modifikasi AST dari [ESTree](https://github.com/estree/estree), dengan spec utama berlokasi di [sini](https://github.com/babel/babel/blob/master/doc/ast/spec.md).
 
 ```js
 function square(n) {
@@ -134,9 +134,9 @@ function square(n) {
 }
 ```
 
-> Check out [AST Explorer](http://astexplorer.net/) to get a better sense of the AST nodes. [Here](http://astexplorer.net/#/Z1exs6BWMq) is a link to it with the example code above pasted in.
+> Periksa [AST Explorer](http://astexplorer.net/) untuk mendapatkan informasi yang lebih baik untuk node AST. [Ini](http://astexplorer.net/#/Z1exs6BWMq) adalah linknya dengan kode contoh di atas disisipkan.
 
-This same program can be represented as a list like this:
+Program yang sama dapat dilihat sebagai daftar seperti ini:
 
 ```md
 - FunctionDeclaration:
@@ -195,7 +195,7 @@ Or as a JavaScript Object like this:
 }
 ```
 
-You'll notice that each level of the AST has a similar structure:
+Anda akan melihat bahwa setiap tingkat AST memiliki struktur serupa:
 
 ```js
 {
@@ -222,11 +222,11 @@ You'll notice that each level of the AST has a similar structure:
 }
 ```
 
-> Note: Some properties have been removed for simplicity.
+> Catatan: Beberapa properti telah dihapus untuk kesederhanaan.
 
-Each of these are known as a **Node**. An AST can be made up of a single Node, or hundreds if not thousands of Nodes. Together they are able to describe the syntax of a program that can be used for static analysis.
+Masing-masing yang dikenal sebagai **Node**. AST dapat terdiri dari satu node, atau ratusan jika tidak ribuan node. Bersama-sama mereka mampu menjelaskan sintaks dari sebuah program yang dapat digunakan untuk analisis statis.
 
-Every Node has this interface:
+Setiap Node memiliki antarmuka seperti ini:
 
 ```typescript
 interface Node {
@@ -234,9 +234,9 @@ interface Node {
 }
 ```
 
-The `type` field is a string representing the type of Node the object is (ie. `"FunctionDeclaration"`, `"Identifier"`, or `"BinaryExpression"`). Each type of Node defines an additional set of properties that describe that particular node type.
+Field `type` adalah sebuah string yang mewakili tipe Node objek (seperti. `"FunctionDeclaration"`, `"Identifier"`, or `"BinaryExpression"`). Setiap jenis Node mendefinisikan tambahan set properti yang menggambarkan jenis node tertentu.
 
-There are additional properties on every Node that Babel generates which describe the position of the Node in the original source code.
+Ada properti tambahan pada setiap Node bahwa Babel menghasilkan yang menggambarkan posisi Node dalam kode sumber aslinya.
 
 ```js
 {
@@ -257,21 +257,21 @@ There are additional properties on every Node that Babel generates which describ
 }
 ```
 
-These properties `start`, `end`, `loc`, appear in every single Node.
+Properti seperti `mulai`, `akhir`, `loc`, muncul dalam setiap Node tunggal.
 
-## Stages of Babel
+## Tahapan Babel
 
-The three primary stages of Babel are **parse**, **transform**, **generate**.
+Tiga tahap utama dari Babel adalah **penguraian**, **transformasi**, **pembuatan**.
 
-### Parse
+### Penguraian
 
-The **parse** stage, takes code and outputs an AST. There are two phases of parsing in Babel: [**Lexical Analysis**](https://en.wikipedia.org/wiki/Lexical_analysis) and [**Syntactic Analysis**](https://en.wikipedia.org/wiki/Parsing).
+Tahap **penguraian**, mengambil kode dan mengembalikan AST. Ada dua fase mengurai di Babel: [**Analisis leksikal**](https://en.wikipedia.org/wiki/Lexical_analysis) dan [**Analisis sintaksis**](https://en.wikipedia.org/wiki/Parsing).
 
-#### Lexical Analysis
+#### Analisis Leksikal
 
-Lexical Analysis will take a string of code and turn it into a stream of **tokens**.
+Analisis leksikal akan mengambil serangkaian kode dan mengubahnya menjadi aliran **tokens**.
 
-You can think of tokens as a flat array of language syntax pieces.
+Anda dapat memikirkan tokens sebagai larik datar potongan sintaks bahasa.
 
 ```js
 n * n;
@@ -286,7 +286,7 @@ n * n;
 ]
 ```
 
-Each of the `type`s here have a set of properties describing the token:
+Masing-masing `type` di sini memiliki seperangkat sifat-sifat yang menggambarkan token:
 
 ```js
 {
@@ -307,27 +307,27 @@ Each of the `type`s here have a set of properties describing the token:
 }
 ```
 
-Like AST nodes they also have a `start`, `end`, and `loc`.
+Seperti AST node mereka juga memiliki `start`, `end`, dan `loc`.
 
-#### Syntactic Analysis
+#### Analisis Sintaktik
 
-Syntactic Analysis will take a stream of tokens and turn it into an AST representation. Using the information in the tokens, this phase will reformat them as an AST which represents the structure of the code in a way that makes it easier to work with.
+Analisis sintaksis akan mengambil aliran token dan mengubahnya menjadi representasi AST. Menggunakan informasi dalam token, fase ini akan memformat mereka sebagai AST yang mewakili struktur kode dalam cara yang membuatnya lebih mudah untuk bekerja.
 
-### Transform
+### Transformasi
 
-The [transform](https://en.wikipedia.org/wiki/Program_transformation) stage takes an AST and traverses through it, adding, updating, and removing nodes as it goes along. This is by far the most complex part of Babel or any compiler. This is where plugins operate and so it will be the subject of most of this handbook. So we won't dive too deep right now.
+Tahap [transformasi](https://en.wikipedia.org/wiki/Program_transformation) mengambil AST dan melintasi, menambahkan, memperbarui, dan menghapus node dalam prosesnya. Ini adalah bagian paling kompleks dari Babel atau kompiler apapun. Ini adalah tempat plugin beroperasi dan ini akan berupa sebagian besar buku ini. Jadi kita tidak akan menyelam terlalu jauh sekarang.
 
-### Generate
+### Pembuatan
 
-The [code generation](https://en.wikipedia.org/wiki/Code_generation_(compiler)) stage takes the final AST and turns in back into a string of code, also creating [source maps](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/).
+Tahap [pembuatan kode](https://en.wikipedia.org/wiki/Code_generation_(compiler)) mengambil AST akhir dan mengubah kembali menjadi serangkaian kode, juga menciptakan [source maps](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/).
 
-Code generation is pretty simple: you traverse through the AST depth-first, building a string that represents the transformed code.
+Pembuatan kode ini cukup sederhana: Anda melintasi melalui AST pada kedalaman pertama, membangun sebuah string yang mewakili kode yang sudah ditransormasi.
 
 ## Traversal
 
-When you want to transform an AST you have to [traverse the tree](https://en.wikipedia.org/wiki/Tree_traversal) recursively.
+Bila Anda ingin mengubah AST Anda harus [melintasi pohon](https://en.wikipedia.org/wiki/Tree_traversal) secara rekursif.
 
-Say we have the type `FunctionDeclaration`. It has a few properties: `id`, `params`, and `body`. Each of them have nested nodes.
+Mengatakan bahwa kita memiliki tipe `FunctionDeclaration`. Memiliki beberapa sifat: `id`, `params` dan `body`. Masing-masing memiliki node bertingkat.
 
 ```js
 {
@@ -361,11 +361,11 @@ Say we have the type `FunctionDeclaration`. It has a few properties: `id`, `para
 }
 ```
 
-So we start at the `FunctionDeclaration` and we know its internal properties so we visit each of them and their children in order.
+Jadi kita mulai pada `FunctionDeclaration` dan kita tahu sifat internal sehingga kami mengunjungi masing-masing fungsi dan anak-anak mereka dalam urutan.
 
-Next we go to `id` which is an `Identifier`. `Identifier`s don't have any child node properties so we move on.
+Selanjutnya kita pergi ke `id` yang adalah sebuah `Identifier`. `Identifier` tidak memiliki sifat setiap node anak sehingga kita dapat melanjutkan.
 
-After that is `params` which is an array of nodes so we visit each of them. In this case it's a single node which is also an `Identifier` so we move on.
+Setelah itu adalah `params` yang merupakan array node jadi kita mengunjungi masing-masing. Dalam hal ini sebuah node yang juga sebuah `Identifier` sehingga kita dapat lanjutkan.
 
 Then we hit `body` which is a `BlockStatement` with a property `body` that is an array of Nodes so we go to each of them.
 
@@ -375,9 +375,9 @@ The `BinaryExpression` has an `operator`, a `left`, and a `right`. The operator 
 
 This traversal process happens throughout the Babel transform stage.
 
-### Visitors
+### Pengunjung
 
-When we talk about "going" to a node, we actually mean we are **visiting** them. The reason we use that term is because there is this concept of a [**visitor**](https://en.wikipedia.org/wiki/Visitor_pattern).
+Ketika kita berbicara tentang "pergi" ke sebuah node, kita benar-benar mengartikan untuk **mengunjungi** mereka. Kita menggunakan istilah itu alasannya karena ada konsep [**pengunjung**](https://en.wikipedia.org/wiki/Visitor_pattern).
 
 Visitors are a pattern used in AST traversal across languages. Simply put they are an object with methods defined for accepting particular node types in a tree. That's a bit abstract so let's look at an example.
 
@@ -463,13 +463,13 @@ const MyVisitor = {
 };
 ```
 
-### Paths
+### Path
 
 An AST generally has many Nodes, but how do Nodes relate to one another? We could have one giant mutable object that you manipulate and have full access to, or we can simplify this with **Paths**.
 
-A **Path** is an object representation of the link between two nodes.
+Sebuah **Path** adalah representasi objek berhubungan antara dua node.
 
-For example if we take the following node and its child:
+Sebagai contoh jika kita mengambil node berikut dan anaknya:
 
 ```js
 {
@@ -482,7 +482,7 @@ For example if we take the following node and its child:
 }
 ```
 
-And represent the child `Identifier` as a path, it looks something like this:
+Dan mewakili anak `Identifier` sebagai path, tampak seperti ini:
 
 ```js
 {
@@ -498,7 +498,7 @@ And represent the child `Identifier` as a path, it looks something like this:
 }
 ```
 
-It also has additional metadata about the path:
+Ini juga memiliki tambahan metadata tentang path:
 
 ```js
 {
@@ -526,13 +526,13 @@ It also has additional metadata about the path:
 }
 ```
 
-As well as tons and tons of methods related to adding, updating, moving, and removing nodes, but we'll get into those later.
+Sama halnya dengan metode yang berhubungan dengan menambahkan, update, memindahkan, dan menghapus node, tetapi kita akan masuk ke sana nanti.
 
-In a sense, paths are a **reactive** representation of a node's position in the tree and all sorts of information about the node. Whenever you call a method that modifies the tree, this information is updated. Babel manages all of this for you to make working with nodes easy and as stateless as possible.
+Dalam artinya, paths adalah sebuah representasi **reaktif** dari posisi node di pohon dan segala macam informasi tentang node. Setiap kali Anda memanggil metode yang memodifikasi pohon, informasi ini diperbarui. Babel mengelola semua ini bagi anda untuk membuat bekerja dengan node mudah dan semakin stateless.
 
-#### Paths in Visitors
+#### Path pada Pengunjung
 
-When you have a visitor that has a `Identifier()` method, you're actually visiting the path instead of the node. This way you are mostly working with the reactive representation of a node instead of the node itself.
+Bila Anda memiliki pengunjung yang memiliki metode`Identifier()`, Anda benar-benar mengunjungi path bukan node. Dengan cara ini Anda sebagian besar bekerja dengan perwakilan reaktif dari sebuah node bukan node itu sendiri.
 
 ```js
 const MyVisitor = {
@@ -615,11 +615,11 @@ const MyVisitor = {
 };
 ```
 
-Of course, this is a contrived example but it demonstrates how to eliminate global state from your visitors.
+Tentu saja, ini adalah contoh yang dibuat-buat, tapi ini menunjukkan bagaimana untuk menghilangkan state global dari pengunjung anda.
 
-### Scopes
+### Cakupan
 
-Next let's introduce the concept of a [**scope**](https://en.wikipedia.org/wiki/Scope_(computer_science)). JavaScript has [lexical scoping](https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scoping_vs._dynamic_scoping), which is a tree structure where blocks create new scope.
+Selanjutnya mari kita belajar konsep [**cakupan**](https://en.wikipedia.org/wiki/Scope_(computer_science)). JavaScript memiliki [cakupan leksikal](https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scoping_vs._dynamic_scoping), yang merupakan struktur pohon di mana blok dapat membuat cakupan baru.
 
 ```js
 // global scope
@@ -633,7 +633,7 @@ function scopeOne() {
 }
 ```
 
-Whenever you create a reference in JavaScript, whether that be by a variable, function, class, param, import, label, etc., it belongs to the current scope.
+Setiap kali Anda membuat referensi dalam JavaScript, apakah itu oleh variabel, fungsi, kelas, param, impor, label, dll, itu milik cakupan saat ini.
 
 ```js
 var global = "I am in the global scope";
@@ -647,7 +647,7 @@ function scopeOne() {
 }
 ```
 
-Code within a deeper scope may use a reference from a higher scope.
+Kode dalam cakupan yang lebih dalam dapat menggunakan referensi dari cakupan yang lebih tinggi.
 
 ```js
 function scopeOne() {
@@ -659,7 +659,7 @@ function scopeOne() {
 }
 ```
 
-A lower scope might also create a reference of the same name without modifying it.
+Cakupan yang lebih rendah juga mungkin membuat referensi dari nama yang sama tanpa memodifikasi itu.
 
 ```js
 function scopeOne() {
@@ -671,7 +671,7 @@ function scopeOne() {
 }
 ```
 
-When writing a transform, we want to be wary of scope. We need to make sure we don't break existing code while modifying different parts of it.
+Saat menulis sebuah transformasi, kita perlu berhati-hati dengan cakupan. Kita perlu memastikan bahwa kita tidak melanggar kode yang ada sementara memodifikasi bagian yang berbeda itu.
 
 We may want to add new references and make sure they don't collide with existing ones. Or maybe we just want to find where a variable is referenced. We want to be able to track these references within a given scope.
 
@@ -693,7 +693,7 @@ Once that's done, there's all sorts of methods you can use on scopes. We'll get 
 
 #### Bindings
 
-References all belong to a particular scope; this relationship is known as a **binding**.
+Semua referensi adalah milik cakupan tertentu; hubungan ini dikenal sebagai **binding**.
 
 ```js
 function scopeOnce() {
@@ -707,7 +707,7 @@ function scopeOnce() {
 }
 ```
 
-A single binding looks like this:
+Binding tunggal terlihat seperti ini:
 
 ```js
 {
@@ -725,9 +725,9 @@ A single binding looks like this:
 }
 ```
 
-With this information you can find all the references to a binding, see what type of binding it is (parameter, declaration, etc.), lookup what scope it belongs to, or get a copy of its identifier. You can even tell if it's constant and if not, see what paths are causing it to be non-constant.
+Dengan informasi ini anda dapat menemukan semua referensi pada sebuah binding, melihat apa jenis mengikat itu (parameter, deklarasi, dll), melihat cakupan apa itu, atau mendapatkan salinan dari identifier. Anda bahkan dapat memberitahu jika itu konstan dan jika tidak, dapat melihat jalan apa yang menyebabkan untuk menjadi tidak konstan.
 
-Being able to tell if a binding is constant is useful for many purposes, the largest of which is minification.
+Mampu untuk mengetahui apakah sebuah binding adalah konstan berguna untuk berbagai keperluan, yang terbesar adalah minifikasi.
 
 ```js
 function scopeOne() {
@@ -752,15 +752,15 @@ Babel is actually a collection of modules. In this section we'll walk through th
 
 ## [`babylon`](https://github.com/babel/babel/tree/master/packages/babylon)
 
-Babylon is Babel's parser. Started as a fork of Acorn, it's fast, simple to use, has plugin-based architecture for non-standard features (as well as future standards).
+Babylon adalah pengurai Babel. Dimulai sebagai sebuah fork dari Acorn, dia cepat, mudah digunakan, memiliki arsitektur berbasis plugin untuk non-standar fitur (serta standar masa depan).
 
-First, let's install it.
+Pertama, mari kita menginstalnya.
 
 ```sh
 $ npm install --save babylon
 ```
 
-Let's start by simply parsing a string of code:
+Mari kita mulai dengan hanya mengurai string kode:
 
 ```js
 import * as babylon from "babylon";
@@ -781,7 +781,7 @@ babylon.parse(code);
 // }
 ```
 
-We can also pass options to `parse()` like so:
+Kami juga dapat melewati pilihan untuk `parse()` seperti:
 
 ```js
 babylon.parse(code, {
@@ -857,7 +857,7 @@ traverse(ast, {
 });
 ```
 
-### Definitions
+### Definisi
 
 Babel Types has definitions for every single type of node, with information on what properties belong where, what values are valid, how to build that node, how the node should be traversed, and aliases of the Node.
 
@@ -923,7 +923,7 @@ Builders will also validate the nodes they are creating and throw descriptive er
 
 ### Validators
 
-The definition for `BinaryExpression` also includes information on the `fields` of a node and how to validate them.
+Definisi `BinaryExpression` juga mencakup informasi tentang `bidang` sebuah node dan bagaimana melakukan validasi.
 
 ```js
 fields: {
@@ -1580,7 +1580,7 @@ You can find all of the actual [definitions here](https://github.com/babel/babel
 
 * * *
 
-# Best Practices
+# Praktik terbaik
 
 > I'll be working on this section over the coming weeks.
 
@@ -1608,7 +1608,7 @@ path.traverse({
 });
 ```
 
-However, it is far better to write these as a single visitor that only gets run once. Otherwise you are traversing the same tree multiple times for no reason.
+Namun, itu jauh lebih baik untuk menulis ini sebagai seorang pengunjung tunggal yang hanya mendapat berjalan sekali. Sebaliknya Anda yang melintasi beberapa kali pohon yang sama tanpa alasan.
 
 ```js
 path.traverse({
@@ -1621,9 +1621,9 @@ path.traverse({
 });
 ```
 
-### Do not traverse when manual lookup will do
+### Jangan melintasi ketika pencarian manual akan dilakukan
 
-It may also be tempting to call `path.traverse` when looking for a particular node type.
+Mungkin juga akan tergoda untuk memanggil `path.traverse` ketika mencari jenis node tertentu.
 
 ```js
 const visitorOne = {
@@ -1639,7 +1639,7 @@ const MyVisitor = {
 };
 ```
 
-However, if you are looking for something specific and shallow, there is a good chance you can manually lookup the nodes you need without performing a costly traversal.
+Namun, jika anda mencari sesuatu yang spesifik dan dangkal, ada kemungkinan anda dapat secara manual mencari node yang Anda butuhkan tanpa melakukan traversal yang mahal.
 
 ```js
 const MyVisitor = {
@@ -1651,9 +1651,9 @@ const MyVisitor = {
 };
 ```
 
-## Optimizing nested visitors
+## Mengoptimalkan pengunjung bertingkat
 
-When you are nesting visitors, it might make sense to write them nested in your code.
+Ketika Anda pengunjung bertingkat, hal itu mungkin masuk akal untuk menulis mereka bertingkat dalam kode Anda.
 
 ```js
 const MyVisitor = {
@@ -1667,7 +1667,7 @@ const MyVisitor = {
 };
 ```
 
-However, this creates a new visitor object everytime `FunctionDeclaration()` is called above, which Babel then needs to explode and validate every single time. This can be costly, so it is better to hoist the visitor up.
+Namun, hal ini menciptakan baru pengunjung objek setiap kali `FunctionDeclaration()` disebut di atas, yang Babel kemudian perlu meledak dan memvalidasi setiap saat. This can be costly, so it is better to hoist the visitor up.
 
 ```js
 const visitorOne = {
@@ -1683,7 +1683,7 @@ const MyVisitor = {
 };
 ```
 
-If you need some state within the nested visitor, like so:
+Jika Anda memerlukan beberapa state dalam pengunjung bertingkat, seperti:
 
 ```js
 const MyVisitor = {
@@ -1701,7 +1701,7 @@ const MyVisitor = {
 };
 ```
 
-You can pass it in as state to the `traverse()` method and have access to it on `this` in the visitor.
+Anda dapat melewatinya dalam sebagai state dengan metode `traverse()` dan memiliki akses ke sana pada `this` dalam pengunjung.
 
 ```js
 const visitorOne = {
@@ -1720,11 +1720,11 @@ const MyVisitor = {
 };
 ```
 
-## Being aware of nested structures
+## Berhati-hati terhadap struktur bertingkat
 
-Sometimes when thinking about a given transform, you might forget that the given structure can be nested.
+Kadang-kadang ketika berpikir tentang mengubah tertentu, Anda mungkin lupa bahwa struktur yang diberikan dapat disusun bertingkat.
 
-For example, imagine we want to lookup the `constructor` `ClassMethod` from the `Foo` `ClassDeclaration`.
+Sebagai contoh, bayangkan kita ingin lookup `constuctor` `ClassMethod` dari `Foo` `ClassDeclaration`.
 
 ```js
 class Foo {
@@ -1752,7 +1752,7 @@ const MyVisitor = {
 }
 ```
 
-We are ignoring the fact that classes can be nested and using the traversal above we will hit a nested `constructor` as well:
+Kita mengabaikan fakta bahwa kelas dapat diulang dan menggunakan traversal di atas kita akan menemui `constructor` bertingkat juga:
 
 ```js
 class Foo {

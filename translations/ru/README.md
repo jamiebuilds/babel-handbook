@@ -72,7 +72,7 @@ $ npm install -g babel-plugin-handbook
           * [Пути в Посетителях](#paths-in-visitors)
       * [Состояние](#state)
       * [Области видимости](#scopes) 
-          * [Bindings](#bindings)
+          * [Привязка контекста](#bindings)
   * [API](#api) 
       * [babylon](#babylon)
       * [babel-traverse](#babel-traverse)
@@ -86,8 +86,8 @@ $ npm install -g babel-plugin-handbook
   * [Создание вашего первого плагина Babel](#writing-your-first-babel-plugin)
   * [Операции преобразования](#transformation-operations) 
       * [Посещение](#visiting)
-      * [Check if a node is a certain type](#check-if-a-node-is-a-certain-type)
-      * [Check if an identifier is referenced](#check-if-an-identifier-is-referenced)
+      * [Проверка типа узла](#check-if-a-node-is-a-certain-type)
+      * [Проверка, есть ли ссылка на идентификатор](#check-if-an-identifier-is-referenced)
       * [Манипуляция](#manipulation)
       * [Замена узла](#replacing-a-node)
       * [Замена узла несколькими узлами](#replacing-a-node-with-multiple-nodes)
@@ -105,7 +105,7 @@ $ npm install -g babel-plugin-handbook
   * [Построение узлов](#building-nodes)
   * [Лучшие практики](#best-practices) 
       * [Избегайте обхода AST насколько это возможно](#avoid-traversing-the-ast-as-much-as-possible)
-      * [Merge visitors whenever possible](#merge-visitors-whenever-possible)
+      * [Слияние посетителей, когда это возможно](#merge-visitors-whenever-possible)
       * [Do not traverse when manual lookup will do](#do-not-traverse-when-manual-lookup-will-do)
       * [Оптимизации вложенных посетителей](#optimizing-nested-visitors)
       * [Избегайте вложенных структур](#being-aware-of-nested-structures)
@@ -377,9 +377,9 @@ n * n;
 
 ### Посетители
 
-When we talk about "going" to a node, we actually mean we are **visiting** them. The reason we use that term is because there is this concept of a [**visitor**](https://en.wikipedia.org/wiki/Visitor_pattern).
+Когда мы говорим о том чтобы «пройти» к узлу, мы на самом деле имеем ввиду что мы **посещаем** его. Причина, по которой мы используем этот термин, потому что есть эта концепция [**посетителя**](https://en.wikipedia.org/wiki/Visitor_pattern).
 
-Visitors are a pattern used in AST traversal across languages. Simply put they are an object with methods defined for accepting particular node types in a tree. That's a bit abstract so let's look at an example.
+Посетители – шаблон, используемый в AST для обхода различных языков. Simply put they are an object with methods defined for accepting particular node types in a tree. Это немного абстрактно, поэтому давайте рассмотрим пример.
 
 ```js
 const MyVisitor = {
@@ -389,11 +389,11 @@ const MyVisitor = {
 };
 ```
 
-> **Note:** `Identifier() { ... }` is shorthand for `Identifier: { enter() { ... } }`.
+> **Примечание:** `Identifier() { ... }` является краткой формой для `идентификатор: {enter() { ... }}`.
 
 This is a basic visitor that when used during a traversal will call the `Identifier()` method for every `Identifier` in the tree.
 
-So with this code the `Identifier()` method will be called four times with each `Identifier` (including `square`).
+Так с этим кодом `Identifier()` метод будет вызываться в четыре раза с каждым `Identifier` (включая `square`).
 
 ```js
 function square(n) {
@@ -408,7 +408,7 @@ Called!
 Called!
 ```
 
-These calls are all on node **enter**. However there is also the possibility of calling a visitor method when on **exit**.
+Все эти вызовы на узле, **enter**. Однако существует также возможность вызова метода посетителя на **exit**.
 
 Представьте, что у нас есть следующая древовидная структура:
 
@@ -423,7 +423,7 @@ These calls are all on node **enter**. However there is also the possibility of 
         - Identifier (right)
 ```
 
-As we traverse down each branch of the tree we eventually hit dead ends where we need to traverse back up the tree to get to the next node. Going down the tree we **enter** each node, then going back up we **exit** each node.
+Как мы проходим вниз по каждой ветви дерева мы в конечном итоге доходим до тупика, где мы должны пройти обратно вверх по дереву, чтобы попасть на следующий узел. Идя вниз по дереву мы **enter** в каждый узел, затем возвращаясь мы **exit** из каждого узла.
 
 Давайте *пройдем* через этот процесс для дерева из примера выше.
 
@@ -465,7 +465,7 @@ const MyVisitor = {
 
 ### Пути
 
-An AST generally has many Nodes, but how do Nodes relate to one another? We could have one giant mutable object that you manipulate and have full access to, or we can simplify this with **Paths**.
+AST, как правило, имеет много узлов, но как узлы связаны друг с другом? Мы могли бы иметь один гигантский изменяемый объект, которым вы манипулируете и к которому имеете полный доступ, или мы можем упростить это с **путями**.
 
 **Путь** — это объектное представление ссылки между двумя узлами.
 
@@ -482,7 +482,7 @@ An AST generally has many Nodes, but how do Nodes relate to one another? We coul
 }
 ```
 
-And represent the child `Identifier` as a path, it looks something like this:
+И представление ребенка `Identifier` как путь выглядит примерно так:
 
 ```js
 {
@@ -671,7 +671,7 @@ function scopeOne() {
 }
 ```
 
-When writing a transform, we want to be wary of scope. We need to make sure we don't break existing code while modifying different parts of it.
+При написании трансформации мы хотим быть осторожными с областью видимости. Мы должны убедиться, что не поломаем существующий код в процессе изменения отдельных его частей.
 
 We may want to add new references and make sure they don't collide with existing ones. Or maybe we just want to find where a variable is referenced. We want to be able to track these references within a given scope.
 
@@ -691,7 +691,7 @@ When you create a new scope you do so by giving it a path and a parent scope. Th
 
 Once that's done, there's all sorts of methods you can use on scopes. We'll get into those later though.
 
-#### Bindings
+#### Привязка контекста
 
 References all belong to a particular scope; this relationship is known as a **binding**.
 
@@ -746,9 +746,9 @@ function scopeOne() {
 
 # API
 
-Babel is actually a collection of modules. In this section we'll walk through the major ones, explaining what they do and how to use them.
+Babel фактически представляет собой набор модулей. В этом разделе мы рассмотрим основные из них, объясняя, что они делают и как их использовать.
 
-> Note: This is not a replacement for detailed API documentation which will be available elsewhere shortly.
+> Примечание: это не замена для подробной API документации, которая вскоре будет доступна где-то в другом месте.
 
 ## [`babylon`](https://github.com/babel/babel/tree/master/packages/babylon)
 
@@ -1037,7 +1037,7 @@ var myModule = require("my-module");
 
 Теперь, когда вы знакомы с основами Babel, давайте свяжем это вместе с API для плагинов.
 
-Начнём с `функции`, в которую передается текущий `babel`-объект.
+Start off with a `function` that gets passed the current [`babel`](https://github.com/babel/babel/tree/master/packages/babel-core) object.
 
 ```js
 export default function(babel) {
@@ -1198,7 +1198,7 @@ BinaryExpression(path) {
 }
 ```
 
-### Check if an identifier is referenced
+### Проверка, есть ли ссылка на идентификатор
 
 ```js
 Identifier(path) {

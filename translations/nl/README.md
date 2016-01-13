@@ -1,22 +1,22 @@
-# babel-plugin-handbook
+# babel-plugin-handboek
 
-This document covers how to create [Babel](https://babeljs.io) [plugins](https://babeljs.io/docs/advanced/plugins/).
+Dit document beschrijft hoe [Babel](https://babeljs.io) [plugins](https://babeljs.io/docs/advanced/plugins/) te maken.
 
-If you are reading a non-english translation of this handbook you may still find english sections that have not yet been translated. If you would like to contribute to one of the translations you must do so through Crowdin. Please read the [contributing guidelines](/CONTRIBUTING.md) for more information.
+Als je een niet-engelse vertaling van dit handboek leest, kun je engelse delen tegenkomen die nog niet vertaald zijn. Als je wil bijdragen aan één van de vertalingen van dit document, moet je dat doen via Crowdin. Lees alsjeblieft de [richtlijnen voor bijdrage](/CONTRIBUTING.md) voor meer informatie.
 
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
-Special thanks to [@sebmck](https://github.com/sebmck/), [@hzoo](https://github.com/hzoo), [@jdalton](https://github.com/jdalton), [@abraithwaite](https://github.com/abraithwaite), [@robey](https://github.com/robey), and others for their amazing help on this handbook.
+Speciale dank aan [@sebmck](https://github.com/sebmck/), [@hzoo](https://github.com/hzoo), [@jdalton](https://github.com/jdalton), [@abraithwaite](https://github.com/abraithwaite), [@robey](https://github.com/robey), en anderen voor hun geweldige hulp aan dit handboek.
 
 # Node Packaged Manuscript
 
-You can install this handbook with npm. Just do:
+Je kunt dit handboek installeren met npm. Voer het volgende commando uit:
 
 ```sh
 $ npm install -g babel-plugin-handbook
 ```
 
-Now you will have a `babel-plugin-handbook` command that will open this readme file in your `$PAGER`. Otherwise, you may continue reading this document as you are presently doing.
+Nu heb je een `babel-plugin-handbook` commando dat dit leesmij bestand zal openen in jouw `$PAGER`. Otherwise, you may continue reading this document as you are presently doing.
 
 # Translations
 
@@ -1037,7 +1037,7 @@ var myModule = require("my-module");
 
 Now that you're familiar with all the basics of Babel, let's tie it together with the plugin API.
 
-Start off with a `function` that gets passed the current `babel` object.
+Start off with a `function` that gets passed the current [`babel`](https://github.com/babel/babel/tree/master/packages/babel-core) object.
 
 ```js
 export default function(babel) {

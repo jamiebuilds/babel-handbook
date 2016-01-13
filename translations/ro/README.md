@@ -1037,7 +1037,7 @@ var myModule = require("my-module");
 
 Acum că sunteţi familiarizați cu toate elementele de bază din Babel, haideţi să le utilizăm împreună cu API-ul pentru plugin-uri.
 
-Să începem cu o `funcţie` care primește obiectul `babel`.
+Start off with a `function` that gets passed the current [`babel`](https://github.com/babel/babel/tree/master/packages/babel-core) object.
 
 ```js
 export default function(babel) {
