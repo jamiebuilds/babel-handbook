@@ -1156,7 +1156,7 @@ var myModule = require("my-module");
 Now that you're familiar with all the basics of Babel, let's tie it together
 with the plugin API.
 
-Start off with a `function` that gets passed the current `babel` object.
+Start off with a `function` that gets passed the current [`babel`](https://github.com/babel/babel/tree/master/packages/babel-core) object.
 
 ```js
 export default function(babel) {
