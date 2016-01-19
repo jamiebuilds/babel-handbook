@@ -59,7 +59,7 @@ Babel does this by compiling down JavaScript code written with the latest
 standards into a version that will work everywhere today. This process is known
 as source-to-source compiling, also known as transpiling.
 
-For example, you could give it can transform the new ES2015 arrow function
+For example, Babel could transform the new ES2015 arrow function
 syntax from this:
 
 ```js
