@@ -22,7 +22,6 @@ a complete list.
   - [`babel-preset-es2015`](#babel-preset-es2015)
   - [`babel-preset-react`](#babel-preset-react)
   - [`babel-preset-stage-x`](#babel-preset-stage-x)
-  - []
 - [Executing Babel-generated code](#executing-babel-generated-code)
   - [`babel-polyfill`](#babel-polyfill)
   - [`babel-runtime`](#babel-runtime)
@@ -35,17 +34,14 @@ a complete list.
   - [Static analysis tools](#static-analysis-tools)
     - [Linting](#linting)
     - [Code Style](#code-style)
-    <!-- - [Code Coverage](#code-coverage) -->
     - [Documentation](#documentation)
   - [Frameworks](#frameworks)
     - [React](#react)
-    <!-- - [Ember](#ember) -->
   - [Text Editors and IDEs](#text-editors-and-ides)
 - [Debugging Babel](#debugging-babel)
 - [Babel Support](#babel-support)
   - [Babel Forum](#babel-forum)
   - [Babel Chat](#babel-chat)
-  <!-- - [Babel Stack Overflow](#babel-stack-overflow) -->
   - [Babel Issues](#babel-issues)
     - [Creating an awesome Babel bug report](#creating-an-awesome-babel-bug-report)
 
