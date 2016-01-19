@@ -69,7 +69,7 @@ const square = n => n * n;
 Into the following:
 
 ```js
-var square = function square(n) {
+const square = function square(n) {
   return n * n;
 };
 ```
