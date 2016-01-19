@@ -2,8 +2,8 @@ project_identifier: babel-plugin-handbook
 api_key_env: CROWDIN_API_KEY
 base_path: .
 files:
-  - source: '/README.md'
-    translation: '/translations/%locale%/%original_file_name%'
+  - source: '/translations/en/**/*.md'
+    translation: '/translations/%locale%/**/%original_file_name%'
     languages_mapping:
       locale:
         'af': 'af'

@@ -1,3 +1,0 @@
-language: ruby
-install: gem install crowdin-cli
-script: crowdin-cli upload sources --auto-update -b master
