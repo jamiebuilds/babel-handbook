@@ -1,65 +1,16 @@
-# babel-plugin-handbook
+# Babel Plugin Handbook
 
-このドキュメントでは[Babel](https://babeljs.io)の[プラグイン](https://babeljs.io/docs/advanced/plugins/)を作る方法を解説します。.
-
-英語以外の翻訳版ハンドブックには、まだ翻訳されていない英語の文章があるかもしれません。 もし翻訳プロジェクトに参加いただける場合には、Crowdinを利用してください。 より詳しい情報は[貢献のためのガイドライン](/CONTRIBUTING.md)を参照してください。
+This document covers how to create [Babel](https://babeljs.io) [plugins](https://babeljs.io/docs/advanced/plugins/).
 
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
-[@sebmck](https://github.com/sebmck/)、[@hzoo](https://github.com/hzoo)、[@jdalton](https://github.com/jdalton)、[@abraithwaite](https://github.com/abraithwaite)、[@robey](https://github.com/robey)と、このハンドブックの制作に関わった人々に感謝します。
+This handbook is available in other languages, see the [README](/README.md) for a complete list.
 
-# Nodeパッケージ化した原稿
+# Table of Contents
 
-このハンドブックはnpmでインストールできます:
-
-```sh
-$ npm install -g babel-plugin-handbook
-```
-
-インストール後、`$PAGER`でこのREADMEファイルを開くための`babel-plugin-handbook`コマンドが利用できるようになります。 もしくは、このままドキュメントを読み進めていっても構いません。
-
-# 翻訳
-
-  * [English](/README.md)
-  * [Afrikaans](/translations/af/README.md)
-  * [العربية](/translations/ar/README.md)
-  * [Català](/translations/ca/README.md)
-  * [Čeština](/translations/cs/README.md)
-  * [Danske](/translations/da/README.md)
-  * [Deutsch](/translations/de/README.md)
-  * [ελληνικά](/translations/el/README.md)
-  * [Español](/translations/es-ES/README.md)
-  * [Suomi](/translations/fi/README.md)
-  * [Français](/translations/fr/README.md)
-  * [עִברִית](/translations/he/README.md)
-  * [Magyar](/translations/hu/README.md)
-  * [Italiano](/translations/it/README.md)
-  * [日本語](/translations/ja/README.md)
-  * [한국어](/translations/ko/README.md)
-  * [Norsk](/translations/no/README.md)
-  * [Nederlands](/translations/nl/README.md)
-  * [Português](/translations/pl/README.md)
-  * [Português (Brasil)](/translations/pt-BR/README.md)
-  * [Portugisisk](/translations/pt-PT/README.md)
-  * [Română](/translations/ro/README.md)
-  * [Pусский](/translations/ru/README.md)
-  * [Српски језик (Ћирилица)](/translations/sr/README.md)
-  * [Svenska](/translations/sv-SE/README.md)
-  * [Türk](/translations/tr/README.md)
-  * [Український](/translations/uk/README.md)
-  * [Tiếng Việt](/translations/vi/README.md)
-  * [中文](/translations/zh-Hans/README.md)
-  * [繁體中文](/translations/zh-Hant/README.md)
-
-**[その他言語への翻訳リクエスト](https://github.com/thejameskyle/babel-plugin-handbook/issues/new?title=Translation%20Request:%20[Please%20enter%20language%20here]&body=I%20am%20able%20to%20translate%20this%20language%20[yes/no])**
-
-このドキュメントを英語以外の言語で読んでいる場合でも、プログラミングの概念となる部分は英語のままになっています。 このような箇所は、他の言語に翻訳すると文章の一貫性と流暢さに欠けてしまう場合があります。 この様な場合、多くは`()`かっこ内に英語の直訳表現が付いています。 例えば、抽象構文木 (ASTs) などが該当します。
-
-# 目次
-
-  * [イントロダクション](#introduction)
-  * [基本](#basics) 
-      * [抽象構文木(ASTs)](#asts)
+  * [Introduction](#introduction)
+  * [Basics](#basics) 
+      * [ASTs](#asts)
       * [Stages of Babel](#stages-of-babel)
       * [Parse](#parse) 
           * [Lexical Analysis](#lexical-analysis)
@@ -110,7 +61,7 @@ $ npm install -g babel-plugin-handbook
       * [Optimizing nested visitors](#optimizing-nested-visitors)
       * [Being aware of nested structures](#being-aware-of-nested-structures)
 
-# イントロダクション
+# Introduction
 
 Babel is a generic multi-purpose compiler for JavaScript. More than that it is a collection of modules that can be used for many different forms of static analysis.
 
@@ -118,11 +69,15 @@ Babel is a generic multi-purpose compiler for JavaScript. More than that it is a
 
 You can use Babel to build many different types of tools that can help you be more productive and write better programs.
 
-# 基本
+> For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.
+
+* * *
+
+# Basics
 
 Babel is a JavaScript compiler, specifically a source-to-source compiler, often called a "transpiler". This means that you give Babel some JavaScript code, Babel modifies the code, and generates the new code back out.
 
-## 抽象構文木(ASTs)
+## ASTs
 
 Each of these steps involve creating or working with an [Abstract Syntax Tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree) or AST.
 
@@ -1765,3 +1720,5 @@ class Foo {
   }
 }
 ```
+
+> For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.

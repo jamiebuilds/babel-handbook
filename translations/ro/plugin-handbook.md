@@ -1,59 +1,10 @@
-# Manual pentru Plugin-uri Babel
+# Babel Plugin Handbook
 
 Acest document descrie cum se pot crea [plugin-uri](https://babeljs.io/docs/advanced/plugins/) pentru [Babel](https://babeljs.io).
 
-În cazul în care citiți într-o limbă diferită de engleză, este posibil ca unele secțiuni care nu au fost traduse incă, să le găsiți în engleză. Dacă doriți să contribuiți la traducerea acestui document, va trebui să folosiți Crowdin. Vă rugăm să citiți [ghidul de contribuție](/CONTRIBUTING.md) pentru mai multe informații.
-
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
-Mulțumim în mod special lui [@sebmck](https://github.com/sebmck/), [@hzoo](https://github.com/hzoo), [@jdalton](https://github.com/jdalton), [@abraithwaite](https://github.com/abraithwaite), [@robey](https://github.com/robey), și altora, pentru ajutorul extraordinar adus acestui document.
-
-# Pachet Node
-
-Puteți instala acest document folosing npm, în felul următor:
-
-```sh
-$ npm install -g babel-plugin-handbook
-```
-
-Acum veți avea comanda `babel-plugin-handbook` care va deschide acest document în `$PAGER`. Ca alternativă, puteti continua să citiți acest document, așa cum o faceți în acest moment.
-
-# Traduceri
-
-  * [English](/README.md)
-  * [Afrikaans](/translations/af/README.md)
-  * [العربية](/translations/ar/README.md)
-  * [Català](/translations/ca/README.md)
-  * [Čeština](/translations/cs/README.md)
-  * [Danske](/translations/da/README.md)
-  * [Deutsch](/translations/de/README.md)
-  * [ελληνικά](/translations/el/README.md)
-  * [Español](/translations/es-ES/README.md)
-  * [Suomi](/translations/fi/README.md)
-  * [Français](/translations/fr/README.md)
-  * [עִברִית](/translations/he/README.md)
-  * [Magyar](/translations/hu/README.md)
-  * [Italiano](/translations/it/README.md)
-  * [日本語](/translations/ja/README.md)
-  * [한국어](/translations/ko/README.md)
-  * [Norsk](/translations/no/README.md)
-  * [Nederlands](/translations/nl/README.md)
-  * [Português](/translations/pl/README.md)
-  * [Português (Brasil)](/translations/pt-BR/README.md)
-  * [Portugisisk](/translations/pt-PT/README.md)
-  * [Română](/translations/ro/README.md)
-  * [Pусский](/translations/ru/README.md)
-  * [Српски језик (Ћирилица)](/translations/sr/README.md)
-  * [Svenska](/translations/sv-SE/README.md)
-  * [Türk](/translations/tr/README.md)
-  * [Український](/translations/uk/README.md)
-  * [Tiếng Việt](/translations/vi/README.md)
-  * [中文](/translations/zh-Hans/README.md)
-  * [繁體中文](/translations/zh-Hant/README.md)
-
-**[Solicită o altă traducere](https://github.com/thejameskyle/babel-plugin-handbook/issues/new?title=Translation%20Request:%20[Please%20enter%20language%20here]&body=I%20am%20able%20to%20translate%20this%20language%20[yes/no])**
-
-În cazul în care citiți o traducere din limba engleză, veți găsi cuvinte în engleză care se referă la concepte de programare. Daca acestea ar fi traduse în alte limbi s-ar pierde consistența și fluența în citire. În anumite cazuri veți găsi traducerea literară urmată de termenul în engleză între paranteze `()`. De exemplu: Arbori Abstracți de Sintaxă (ASTs).
+This handbook is available in other languages, see the [README](/README.md) for a complete list.
 
 # Cuprins
 
@@ -117,6 +68,10 @@ Babel este un compilator generic multi-scop pentru JavaScript. Mai mult decât a
 > Analiza statică este procesul de a analiza cod fără a-l executa. (Analiza de cod, în timp ce se execută este cunoscută sub denumirea de analiză dinamică). Scopul analizei statice variază foarte mult. Poate fi folosită pentru validare (linting), compilare, evidențiere (highlighting), transformare, optimizare, minimizare, și multe altele.
 
 Puteți utiliza Babel pentru a construi diverse tipuri de instrumente care vă pot ajuta să fiți mai productivi și pentru a scrie programe mai bune.
+
+> For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.
+
+* * *
 
 # Concepte de bază
 
@@ -1765,3 +1720,5 @@ class Foo {
   }
 }
 ```
+
+> For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.

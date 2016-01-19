@@ -1,59 +1,10 @@
-# babel-plugin-handbook
+# Babel Plugin Handbook
 
 Ce présent document décrit les méthodes de création des [plugins](https://babeljs.io/docs/advanced/plugins/) pour [Babel](https://babeljs.io).
 
-Si vous êtes entrain de lire une traduction de la documentation anglaise, vous allez sûrement trouver des sections qui ne sont pas encore traduites. Si vous voulez contribuer à la traduction, vous pouvez le faire à l'aide du site Crowdin. Veuillez lire le [guide de contribution](/CONTRIBUTING.md) pour plus d'informations.
-
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
-Un grand merci à [@sebmck](https://github.com/sebmck/),[@hzoo](https://github.com/hzoo),[@jdalton](https://github.com/jdalton),[@abraithwaite](https://github.com/abraithwaite),[@robey](https://github.com/robey), et d'autres pour leurs contribution.
-
-# Node Packaged Manuscript
-
-Vous pouvez installer ce manuel avec npm avec la commande:
-
-```sh
-$ npm install -g babel-plugin-handbook
-```
-
-Maintenant vous aurez une commande `babel-plugin-handbook` qui va ouvrir ce fichier dans le `$PAGER`. Sinon, vous pouvez continuer la lecture de ce document en ligne.
-
-# Traductions
-
-  * [English](/README.md)
-  * [Afrikaans](/translations/af/README.md)
-  * [العربية](/translations/ar/README.md)
-  * [Català](/translations/ca/README.md)
-  * [Čeština](/translations/cs/README.md)
-  * [Danske](/translations/da/README.md)
-  * [Deutsch](/translations/de/README.md)
-  * [ελληνικά](/translations/el/README.md)
-  * [Español](/translations/es-ES/README.md)
-  * [Suomi](/translations/fi/README.md)
-  * [Français](/translations/fr/README.md)
-  * [עִברִית](/translations/he/README.md)
-  * [Magyar](/translations/hu/README.md)
-  * [Italiano](/translations/it/README.md)
-  * [日本語](/translations/ja/README.md)
-  * [한국어](/translations/ko/README.md)
-  * [Norsk](/translations/no/README.md)
-  * [Nederlands](/translations/nl/README.md)
-  * [Português](/translations/pl/README.md)
-  * [Português (Brasil)](/translations/pt-BR/README.md)
-  * [Portugisisk](/translations/pt-PT/README.md)
-  * [Română](/translations/ro/README.md)
-  * [Pусский](/translations/ru/README.md)
-  * [Српски језик (Ћирилица)](/translations/sr/README.md)
-  * [Svenska](/translations/sv-SE/README.md)
-  * [Türk](/translations/tr/README.md)
-  * [Український](/translations/uk/README.md)
-  * [Tiếng Việt](/translations/vi/README.md)
-  * [中文](/translations/zh-Hans/README.md)
-  * [繁體中文](/translations/zh-Hant/README.md)
-
-**[Request another translation](https://github.com/thejameskyle/babel-plugin-handbook/issues/new?title=Translation%20Request:%20[Please%20enter%20language%20here]&body=I%20am%20able%20to%20translate%20this%20language%20[yes/no])**
-
-Si vous êtes entrain de lire une traduction de la documentation anglaise, plusieurs concepts de programmation sont en Anglais. Ces concepts risque de perdre leurs sens une fois traduits à une autre langue. Dans de nombreux cas, vous allez avoir la traduction du terme en Français, suivi du terme en Anglais entre parenthèse `()`. Par exemple : arbres de syntaxe abstraite (ASTs).
+This handbook is available in other languages, see the [README](/README.md) for a complete list.
 
 # Sommaire
 
@@ -117,6 +68,10 @@ Babel est un compilateur multi-purpose générique pour JavaScript. Plus que cel
 > Analyse statique est le processus d'analyse du code sans l'exécuter. (L'analyse du code lors de l'exécution est appelée: analyse dynamique). Le but de l'analyse statique varie grandement. Il peut être utilisé pour le "linting", la compilation, le "highlighting", la transformation du code, l'optimisation, la minification et bien plus.
 
 Vous pouvez utiliser Babel pour construire différents types d'outils qui peuvent vous aider à être plus productifs et d'écrire de bonnes programmes.
+
+> For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.
+
+* * *
 
 # Notions de base
 
@@ -1765,3 +1720,5 @@ class Foo {
   }
 }
 ```
+
+> For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.

@@ -2,58 +2,9 @@
 
 Questo documento include le linee guida per la creazione di [plugins](https://babeljs.io/docs/advanced/plugins/) per [Babel](https://babeljs.io).
 
-Nel caso in cui stiate leggendo questo documento in una lingua differente dall'inglese, potreste trovare sezioni in inglese ancora in attesa di traduzione. Se siete interessati a contribuire nella traduzione di questo documento, dovrete farlo attraverso Crowdin. Per maggiori informazioni, leggere la sezione [linee guida di contribuzione](/CONTRIBUTING.md).
-
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
-Ringraziamenti speciali vanno a [@sebmck](https://github.com/sebmck/), [@hzoo](https://github.com/hzoo), [@jdalton](https://github.com/jdalton), [@abraithwaite](https://github.com/abraithwaite), [@robey](https://github.com/robey), e a tutti gli altri per il fantastico aiuto nella stesura di questo documento.
-
-# Manoscritto pacchettizzato su Node
-
-Potete installare questo documento tramite npm. Eseguire da riga di comando:
-
-```sh
-$ npm install -g babel-plugin-handbook
-```
-
-Adesso avete a disposizione il comando `babel-plugin-handbook` che aprirà questo file readme nel vostro `$PAGER`. Altrimenti, potete procedere nella lettura del presente documento.
-
-# Traduzioni
-
-  * [English](/README.md)
-  * [Afrikaans](/translations/af/README.md)
-  * [العربية](/translations/ar/README.md)
-  * [Català](/translations/ca/README.md)
-  * [Čeština](/translations/cs/README.md)
-  * [Danske](/translations/da/README.md)
-  * [Deutsche](/translations/de/README.md)
-  * [ελληνικά](/translations/el/README.md)
-  * [Español](/translations/es-ES/README.md)
-  * [Suomi](/translations/fi/README.md)
-  * [Français](/translations/fr/README.md)
-  * [עִברִית](/translations/he/README.md)
-  * [Magyar](/translations/hu/README.md)
-  * [Italiano](/translations/it/README.md)
-  * [日本語](/translations/ja/README.md)
-  * [한국어](/translations/ko/README.md)
-  * [Norsk](/translations/no/README.md)
-  * [Nederlands](/translations/nl/README.md)
-  * [Português](/translations/pl/README.md)
-  * [Português (Brasil)](/translations/pt-BR/README.md)
-  * [Portugisisk](/translations/pt-PT/README.md)
-  * [Română](/translations/ro/README.md)
-  * [Pусский](/translations/ru/README.md)
-  * [Српски језик (Ћирилица)](/translations/sr/README.md)
-  * [Svenska](/translations/sv-SE/README.md)
-  * [Türk](/translations/tr/README.md)
-  * [Український](/translations/uk/README.md)
-  * [Tiếng Việt](/translations/vi/README.md)
-  * [中文](/translations/zh-Hans/README.md)
-  * [繁體中文](/translations/zh-Hant/README.md)
-
-**[Richiedi la traduzione in un'altra lingua](https://github.com/thejameskyle/babel-plugin-handbook/issues/new?title=Translation%20Request:%20[Please%20enter%20language%20here]&body=I%20am%20able%20to%20translate%20this%20language%20[yes/no])**
-
-Se state leggendo questo documento in una lingua diversa dall'inglese, troverete una serie di termini in inglese qualora siano relativi a specifici concetti di programmazione. Nel caso in questi fossero stati tradotti in altre lingue, ci potrà essere una mancanza di coerenza e fluidità durante la lettura di essi. In molti casi troverete la traduzione letterale, seguita dal termine inglese tra parentesi `()`. Ad esempio: Alberi Sintattici Astratti (AST).
+This handbook is available in other languages, see the [README](/README.md) for a complete list.
 
 # Sommario
 
@@ -117,6 +68,10 @@ Babel è un compilatore multiuso e generalista per JavaScript. Nello specifico �
 > Per analisi statica si intende il processo di analisi di codice senza che questo venga eseguito. (L'analisi del codice effettuata durante la sua esecuzioni è definita analisi dinamica). Le finalità dell'analisi statica possono essere moteplici. It can be used for linting, compiling, code highlighting, code transformation, optimization, minification, and much more.
 
 È possibile utilizzare Babel per costruire diversi tipi di strumenti che consentono di essere più produttivi e scrivere programmi migliori.
+
+> For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.
+
+* * *
 
 # Nozioni di base
 
@@ -432,16 +387,16 @@ Adesso andiamo *passo per passo* attraverso il processo che viene eseguito per l
       * Vicolo cieco (non ci sono ulteriori nodi dato che id ha un solo valore)
       * Esci dall' `Identifier(id)`
       * Entra nell'`Identifier (params[0])`
-      * Vicolo cieco
+      * Vicolo cieco (non ci sono ulteriori nodi dato che id ha un solo valore)
       * Esci dall'`Identifier (params[0])`
       * Entra nel `BlockStatement (body)`
-      * Entra nel `ReturnStatement (body)` 
+      * Entra nella `ReturnStatement (body)` 
           * Entra nella `BinaryExpression (argument)`
-          * Entra nell' `Identifier (left)` 
-              * Vicolo cieco
+          * Entra nella `Identifier (left)` 
+              * Vicolo cieco (non ci sono ulteriori nodi dato che id ha un solo valore)
           * Esci dall'`Identifier (left)`
-          * Entra nell' `Identifier (right)` 
-              * Vicolo cieco
+          * Entra nella `Identifier (right)` 
+              * Vicolo cieco (non ci sono ulteriori nodi dato che id ha un solo valore)
           * Esci dall'`Identifier (right)`
           * Esci dalla `BinaryExpression (argument)`
       * Esci dal `ReturnStatement (body)`
@@ -1765,3 +1720,5 @@ class Foo {
   }
 }
 ```
+
+> For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.

@@ -1,59 +1,10 @@
-# Babel Plugin Handbuch
+# Babel Plugin Handbook
 
 Dieses Dokument beschreibt das Erstellen von [Babel](https://babeljs.io) [Plugins](https://babeljs.io/docs/advanced/plugins/).
 
-Beim Lesen einer Übersetzung dieses Dokumentes, kann es sein, dass einige Kapitel noch nicht aus dem Englischen übersetzt worden sind. Um bei der Übersetzung mitzuhelfen kann dies mittels Crowdin durchgeführt werden. Für weitere Informationen bitte die [Regeln zur Mitarbeit](/CONTRIBUTING.md) lesen.
-
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
-Namentlich möchten wir [@sebmck](https://github.com/sebmck/), [@hzoo](https://github.com/hzoo), [@jdalton](https://github.com/jdalton),[@abraithwaite](https://github.com/abraithwaite), [@robey](https://github.com/robey) und anderen für die Hilfe an diesem Handbuch danken.
-
-# Node Packaged Manuscript
-
-Dieses Handbuch kann mit npm folgendermaßen installiert werden:
-
-```sh
-$ npm install -g babel-plugin-handbook
-```
-
-Nun gibt es den Befehl `babel-plugin-handbook` Kommando, welches dieses Handbuch im `$PAGER` öffnet. Ansonsten kann dieses Dokument hier weitergelesen werden.
-
-# Übersetzungen
-
-  * [English](/README.md)
-  * [Afrikaans](/translations/af/README.md)
-  * [العربية](/translations/ar/README.md)
-  * [Català](/translations/ca/README.md)
-  * [Čeština](/translations/cs/README.md)
-  * [Danske](/translations/da/README.md)
-  * [Deutsch](/translations/de/README.md)
-  * [ελληνικά](/translations/el/README.md)
-  * [Español](/translations/es-ES/README.md)
-  * [Suomi](/translations/fi/README.md)
-  * [Français](/translations/fr/README.md)
-  * [עִברִית](/translations/he/README.md)
-  * [Magyar](/translations/hu/README.md)
-  * [Italiano](/translations/it/README.md)
-  * [日本語](/translations/ja/README.md)
-  * [한국어](/translations/ko/README.md)
-  * [Norsk](/translations/no/README.md)
-  * [Nederlands](/translations/nl/README.md)
-  * [Português](/translations/pl/README.md)
-  * [Português (Brasil)](/translations/pt-BR/README.md)
-  * [Portugisisk](/translations/pt-PT/README.md)
-  * [Română](/translations/ro/README.md)
-  * [Pусский](/translations/ru/README.md)
-  * [Српски језик (Ћирилица)](/translations/sr/README.md)
-  * [Svenska](/translations/sv-SE/README.md)
-  * [Türk](/translations/tr/README.md)
-  * [Український](/translations/uk/README.md)
-  * [Tiếng Việt](/translations/vi/README.md)
-  * [中文](/translations/zh-Hans/README.md)
-  * [繁體中文](/translations/zh-Hant/README.md)
-
-**[Request another translation](https://github.com/thejameskyle/babel-plugin-handbook/issues/new?title=Translation%20Request:%20[Please%20enter%20language%20here]&body=I%20am%20able%20to%20translate%20this%20language%20[yes/no])**
-
-If you are reading a non-english translation of this document you will find a number of english words that are programming concepts. If these were translated to other languages there would be a lack of consistency and fluency when reading about them. In many cases you will find the literal translation followed by the english term in parenthesis `()`. For example: Abstract Syntax Trees (ASTs).
+This handbook is available in other languages, see the [README](/README.md) for a complete list.
 
 # Table of Contents
 
@@ -117,6 +68,10 @@ Babel ist ein generischer Compiler für JavaScript. Des weiteren ist es eine Sam
 > Statische Analyse ist die Analyse von Code ohne ihn auszuführen. (Analyse von Code mit Ausführung desselben wird als dynamische Analyse bezeichnet). Die statische Analyse kann vielfältige Anwendungen haben. Sie kann für Linting, Kompilieren, Syntax-Highlighting, Codetransformation, Optimierung, Minifikation und vielen anderen Anwendungen verwendet werden.
 
 Babel kann zur erstellung von verschiedenen Arten von Tools verwedet werden um produktiver zu werden und bessere Programme zu schreiben.
+
+> For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.
+
+* * *
 
 # Basics
 
@@ -259,15 +214,15 @@ Babel generiert zusätzliche Eigenschaften für jeden Knoten, welche die Positio
 
 Die Eigenschaften `start`, `end` und `loc` werden zu jedem Knoten hinzugefügt.
 
-## Phasen von Babel
+## Stages of Babel
 
 Die drei grundsätzlichen Phasen von Babel sind **Parsen(parse)**, **Transformieren(transform)** und **Generieren(generate)**.
 
-### Parsen
+### Parse
 
 Die **parse** Phase erhält Source Code als Eingabe und produziert einen AST als Ausgabe. Die Phase wird in zwei Schritte aufgeteilt: [**Lexikalische Analyse**](https://en.wikipedia.org/wiki/Lexical_analysis) und [**Syntaktische Analyse**](https://en.wikipedia.org/wiki/Parsing).
 
-#### Lexikalische Analyse
+#### Lexical Analysis
 
 Lexikalische Analyse nimmt einen Source Code String und wandelt ihn in einen Strom von **Tokens** um.
 
@@ -309,21 +264,21 @@ Jeder `type` hat eine Menge von Eigenschaften welche das Token beschreiben:
 
 Analog zu AST Knoten haben Tokens auch eine `start`, `end` und `loc` Eigenschaft.
 
-#### Syntaktische Analyse
+#### Syntactic Analysis
 
 Syntaktische Analyse wandelt einen Strom von Tokens in einen AST um. Diese Phase verwendet die Informationen welche in den Tokens vorhanden ist und wandelt diese in einen AST um, welcher die Struktur des Codes so darstellt welche einfacher bearbeitet werden kann.
 
-### Transformieren
+### Transform
 
 Die [Transformations](https://en.wikipedia.org/wiki/Program_transformation)-Phase traversiert einen AST und fügt neue Knoten hinzu, ändert vorhandene Knoten ab oder entfernt Knoten. Dies ist der komplexeste Schritt von Babel oder anderen Compilern. Das ist auch die Phase in welcher Plugins eingesetzt weden und ist somit ein großer Bestandteil dieses Handbuches. Deshalb werden wir diese Phase nicht weiter vertiefen.
 
-### Generieren
+### Generate
 
 Die [Code Generierung](https://en.wikipedia.org/wiki/Code_generation_(compiler)) Phase wandelt den finalen AST wieder in einen String um und erzeugt auch [Source Maps](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/).
 
 Die Code Generierung ist ziemlich einfach: Der AST wird mit einer Tiefensuche traversiert. Dabei wird eine Zeichenkette generiert, welche den transformierten Code darstellt.
 
-## Traversierung
+## Traversal
 
 Um einen AST zu transformieren muss der Baum rekursiv [durchlaufen](https://en.wikipedia.org/wiki/Tree_traversal) werden.
 
@@ -1765,3 +1720,5 @@ class Foo {
   }
 }
 ```
+
+> For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.

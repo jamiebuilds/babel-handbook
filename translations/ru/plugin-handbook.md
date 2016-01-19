@@ -1,59 +1,10 @@
-# Руководство по написанию плагинов для Babel
+# Babel Plugin Handbook
 
 В этом документе описано как создавать [плагины](https://babeljs.io/docs/advanced/plugins/) для [Babel](https://babeljs.io).
 
-Если вы читаете это не на английском языке, то вы можете наткнуться на разделы на английском, которые ещё не переведены. Если вы хотите помочь с переводом, то вы должны делать это, используя Crowdin. Прочтите, пожалуйста, [рекомендации](/CONTRIBUTING.md) для подробной информации.
-
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
-Отдельное спасибо [@sebmck](https://github.com/sebmck/), [@hzoo](https://github.com/hzoo), [@jdalton](https://github.com/jdalton), [@abraithwaite](https://github.com/abraithwaite), [@robey](https://github.com/robey) и другим за их невероятную помощь в создании этого руководства.
-
-# Node Packaged Manuscript
-
-Вы можете установить это руководство с помощью npm. Просто выполните:
-
-```sh
-$ npm install -g babel-plugin-handbook
-```
-
-Теперь вам доступна команда `babel-plugin-handbook`, которая открывает этот readme-файл в вашем `$PAGER`. Или же вы можете продолжить читать этот документ, как вы делаете это сейчас.
-
-# Переводы
-
-  * [English](/README.md)
-  * [Afrikaans](/translations/af/README.md)
-  * [العربية](/translations/ar/README.md)
-  * [Català](/translations/ca/README.md)
-  * [Čeština](/translations/cs/README.md)
-  * [Danske](/translations/da/README.md)
-  * [Deutsch](/translations/de/README.md)
-  * [ελληνικά](/translations/el/README.md)
-  * [Español](/translations/es-ES/README.md)
-  * [Suomi](/translations/fi/README.md)
-  * [Français](/translations/fr/README.md)
-  * [עִברִית](/translations/he/README.md)
-  * [Magyar](/translations/hu/README.md)
-  * [Italiano](/translations/it/README.md)
-  * [日本語](/translations/ja/README.md)
-  * [한국어](/translations/ko/README.md)
-  * [Norsk](/translations/no/README.md)
-  * [Nederlands](/translations/nl/README.md)
-  * [Português](/translations/pl/README.md)
-  * [Português (Brasil)](/translations/pt-BR/README.md)
-  * [Portugisisk](/translations/pt-PT/README.md)
-  * [Română](/translations/ro/README.md)
-  * [Русский](/translations/ru/README.md)
-  * [Српски језик (Ћирилица)](/translations/sr/README.md)
-  * [Svenska](/translations/sv-SE/README.md)
-  * [Türk](/translations/tr/README.md)
-  * [Український](/translations/uk/README.md)
-  * [Tiếng Việt](/translations/vi/README.md)
-  * [中文](/translations/zh-Hans/README.md)
-  * [繁體中文](/translations/zh-Hant/README.md)
-
-**[Request another translation](https://github.com/thejameskyle/babel-plugin-handbook/issues/new?title=Translation%20Request:%20[Please%20enter%20language%20here]&body=I%20am%20able%20to%20translate%20this%20language%20[yes/no])**
-
-Если вы читаете этот документ на на английском языке, вы найдёте некоторое количество английских слов, которые являются программистскими терминами. Если бы они были переведены на другие языки это привело бы к отсутствию последовательности и плавности, когда вы читаете о них. Во многих случаях вы найдете дословные переводы с последующим английским термином в скобках `()`. Например: Абстрактные Синтаксические Деревья (ASTs).
+This handbook is available in other languages, see the [README](/README.md) for a complete list.
 
 # Содержание
 
@@ -117,6 +68,10 @@ Babel - это многоцелевой компилятор общего наз
 > Статический анализ - это процесс анализа кода без запуска этого кода. (Анализ кода во время выполнения известен как динамический анализ). Цели синтаксического анализа очень разнообразны. Это может быть использовано для контроля качества кода (linting), компиляции, подсветки синтаксиса, трансформации, оптимизации, минификации и много другого.
 
 Вы можете использовать Babel для создания множества различных инструментов, которые помогут вам стать более продуктивным и писать лучшие программы.
+
+> For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.
+
+* * *
 
 # Базовые концепции
 
@@ -1765,3 +1720,5 @@ class Foo {
   }
 }
 ```
+
+> For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.

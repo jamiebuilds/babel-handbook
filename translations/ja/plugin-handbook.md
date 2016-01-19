@@ -1,65 +1,16 @@
-# babel-plugin-handbook
+# Babel Plugin Handbook
 
-This document covers how to create [Babel](https://babeljs.io) [plugins](https://babeljs.io/docs/advanced/plugins/).
-
-If you are reading a non-english translation of this handbook you may still find english sections that have not yet been translated. If you would like to contribute to one of the translations you must do so through Crowdin. Please read the [contributing guidelines](/CONTRIBUTING.md) for more information.
+このドキュメントでは[Babel](https://babeljs.io)の[プラグイン](https://babeljs.io/docs/advanced/plugins/)を作る方法を解説します。.
 
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
-Special thanks to [@sebmck](https://github.com/sebmck/), [@hzoo](https://github.com/hzoo), [@jdalton](https://github.com/jdalton), [@abraithwaite](https://github.com/abraithwaite), [@robey](https://github.com/robey), and others for their amazing help on this handbook.
+This handbook is available in other languages, see the [README](/README.md) for a complete list.
 
-# Node Packaged Manuscript
+# 目次
 
-You can install this handbook with npm. Just do:
-
-```sh
-$ npm install -g babel-plugin-handbook
-```
-
-Now you will have a `babel-plugin-handbook` command that will open this readme file in your `$PAGER`. Otherwise, you may continue reading this document as you are presently doing.
-
-# Translations
-
-  * [English](/README.md)
-  * [Afrikaans](/translations/af/README.md)
-  * [العربية](/translations/ar/README.md)
-  * [Català](/translations/ca/README.md)
-  * [Čeština](/translations/cs/README.md)
-  * [Danske](/translations/da/README.md)
-  * [Deutsch](/translations/de/README.md)
-  * [ελληνικά](/translations/el/README.md)
-  * [Español](/translations/es-ES/README.md)
-  * [Suomi](/translations/fi/README.md)
-  * [Français](/translations/fr/README.md)
-  * [עִברִית](/translations/he/README.md)
-  * [Magyar](/translations/hu/README.md)
-  * [Italiano](/translations/it/README.md)
-  * [日本語](/translations/ja/README.md)
-  * [한국어](/translations/ko/README.md)
-  * [Norsk](/translations/no/README.md)
-  * [Nederlands](/translations/nl/README.md)
-  * [Português](/translations/pl/README.md)
-  * [Português (Brasil)](/translations/pt-BR/README.md)
-  * [Portugisisk](/translations/pt-PT/README.md)
-  * [Română](/translations/ro/README.md)
-  * [Pусский](/translations/ru/README.md)
-  * [Српски језик (Ћирилица)](/translations/sr/README.md)
-  * [Svenska](/translations/sv-SE/README.md)
-  * [Türk](/translations/tr/README.md)
-  * [Український](/translations/uk/README.md)
-  * [Tiếng Việt](/translations/vi/README.md)
-  * [中文](/translations/zh-Hans/README.md)
-  * [繁體中文](/translations/zh-Hant/README.md)
-
-**[Request another translation](https://github.com/thejameskyle/babel-plugin-handbook/issues/new?title=Translation%20Request:%20[Please%20enter%20language%20here]&body=I%20am%20able%20to%20translate%20this%20language%20[yes/no])**
-
-If you are reading a non-english translation of this document you will find a number of english words that are programming concepts. If these were translated to other languages there would be a lack of consistency and fluency when reading about them. In many cases you will find the literal translation followed by the english term in parenthesis `()`. For example: Abstract Syntax Trees (ASTs).
-
-# Table of Contents
-
-  * [Introduction](#introduction)
-  * [Basics](#basics) 
-      * [ASTs](#asts)
+  * [イントロダクション](#introduction)
+  * [基本](#basics) 
+      * [抽象構文木(ASTs)](#asts)
       * [Stages of Babel](#stages-of-babel)
       * [Parse](#parse) 
           * [Lexical Analysis](#lexical-analysis)
@@ -110,23 +61,27 @@ If you are reading a non-english translation of this document you will find a nu
       * [Optimizing nested visitors](#optimizing-nested-visitors)
       * [Being aware of nested structures](#being-aware-of-nested-structures)
 
-# Introduction
+# イントロダクション
 
-Babel is a generic multi-purpose compiler for JavaScript. More than that it is a collection of modules that can be used for many different forms of static analysis.
+BabelはJavaScriptのための汎用的で多目的に使用できるコンパイラです。また、様々な静的コード解析に利用するためのモジュールのコレクションでもあります。
 
-> Static analysis is the process of analyzing code without executing it. (Analysis of code while executing it is known as dynamic analysis). The purpose of static analysis varies greatly. It can be used for linting, compiling, code highlighting, code transformation, optimization, minification, and much more.
+> 静的コード解析とは、実行すること無くコードの分析を行うプロセスです。 (コードの実行中にそれを分析するのは動的コード解析と呼ばれます。) 静的コード解析の目的は様々です。 Lint、コンパイル、コードハイライト、トランスフォーム、最適化、縮小など、様々な目的で利用することができます。
 
-You can use Babel to build many different types of tools that can help you be more productive and write better programs.
+Babelを利用することで、より生産的で、より良いコードを書くためのツールを作ることができます。
 
-# Basics
+> For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.
 
-Babel is a JavaScript compiler, specifically a source-to-source compiler, often called a "transpiler". This means that you give Babel some JavaScript code, Babel modifies the code, and generates the new code back out.
+* * *
 
-## ASTs
+# 基本
 
-Each of these steps involve creating or working with an [Abstract Syntax Tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree) or AST.
+BabelはJavaScriptのコンパイラ、特にソースからソースへ変換する「トランスパイラ(Transpiler)」と呼ばれる種類のコンパイラです。 つまり、BabelにJavaScriptのコードを与えることで、Babelはコードを変更し新しいコードを生成します。
 
-> Babel uses an AST modified from [ESTree](https://github.com/estree/estree), with the core spec located [here](https://github.com/babel/babel/blob/master/doc/ast/spec.md).
+## 抽象構文木(ASTs)
+
+コードの変換の各ステップでは[抽象構文木(ASTs)](https://en.wikipedia.org/wiki/Abstract_syntax_tree)またはASTを利用します。
+
+> Babelでは[ESTree](https://github.com/estree/estree)を改変したASTを使います。ESTreeの仕様は[ここ](https://github.com/babel/babel/blob/master/doc/ast/spec.md)を参照して下さい。.
 
 ```js
 function square(n) {
@@ -134,9 +89,9 @@ function square(n) {
 }
 ```
 
-> Check out [AST Explorer](http://astexplorer.net/) to get a better sense of the AST nodes. [Here](http://astexplorer.net/#/Z1exs6BWMq) is a link to it with the example code above pasted in.
+> ASTノードについて理解を深めたい場合は[AST Explorer](http://astexplorer.net/)を使ってみてください。 上記のサンプルコードの例は[ここ](http://astexplorer.net/#/Z1exs6BWMq)で確認することができます。
 
-This same program can be represented as a list like this:
+上記のサンプルコードをASTノードとして表すと以下の様になります。
 
 ```md
 - FunctionDeclaration:
@@ -161,7 +116,7 @@ This same program can be represented as a list like this:
                   - name: n
 ```
 
-Or as a JavaScript Object like this:
+またはJavaScriptのオブジェクトして表現すると、以下の様になります。
 
 ```js
 {
@@ -195,7 +150,7 @@ Or as a JavaScript Object like this:
 }
 ```
 
-You'll notice that each level of the AST has a similar structure:
+ASTの各階層は同じような構造をしていることに気付くでしょう。
 
 ```js
 {
@@ -222,11 +177,11 @@ You'll notice that each level of the AST has a similar structure:
 }
 ```
 
-> Note: Some properties have been removed for simplicity.
+> 注) いくつかのプロパティは、単純化のため省略しています。
 
-Each of these are known as a **Node**. An AST can be made up of a single Node, or hundreds if not thousands of Nodes. Together they are able to describe the syntax of a program that can be used for static analysis.
+これらは**ノード(Node)**と呼ばれます。 ASTは単一のノード、または何百、何千のノードから構成することができます。 これらを利用し、静的コード解析に利用するプログラムの文法を説明することができるのです。
 
-Every Node has this interface:
+全てのノードはインターフェイスを持ちます。
 
 ```typescript
 interface Node {
@@ -234,9 +189,9 @@ interface Node {
 }
 ```
 
-The `type` field is a string representing the type of Node the object is (ie. `"FunctionDeclaration"`, `"Identifier"`, or `"BinaryExpression"`). Each type of Node defines an additional set of properties that describe that particular node type.
+`type`フィールドは、オブジェクトのノードの型を表す文字列です(例えば、 `"FunctionDeclaration"`、`"Identifier"`、`"BinaryExpression"`などがあります。) ノードの種類は特定のノードの型を記述するためのプロパティのセットを追加して定義します。
 
-There are additional properties on every Node that Babel generates which describe the position of the Node in the original source code.
+Babelが生成したノードには、元のソースコード上のノードの位置を記述した追加のプロパティがセットされます。
 
 ```js
 {
@@ -257,7 +212,7 @@ There are additional properties on every Node that Babel generates which describ
 }
 ```
 
-These properties `start`, `end`, `loc`, appear in every single Node.
+これらのプロパティには`start`、`end`、`loc`が一つのノードに出現します。
 
 ## Stages of Babel
 
@@ -1765,3 +1720,5 @@ class Foo {
   }
 }
 ```
+
+> For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.

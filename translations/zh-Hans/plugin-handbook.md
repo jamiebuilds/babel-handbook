@@ -1,59 +1,10 @@
-# Babel 插件开发指南
+# Babel Plugin Handbook
 
 这篇文档涵盖了如何创建 [Babel](https://babeljs.io) [插件](https://babeljs.io/docs/advanced/plugins/)等方面的内容。.
 
-如果你正在阅读本手册的非英语版本，你或许会发现一些英文的部分还没有被翻译。 如果你想帮助翻译的话你需要通过 Crowdin 来完成。 请先阅读[贡献指导](/CONTRIBUTING.md)来了解这方面更多的信息。
-
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
-特别感谢 [@sebmck](https://github.com/sebmck/), [@hzoo](https://github.com/hzoo), [@jdalton](https://github.com/jdalton), [@abraithwaite](https://github.com/abraithwaite), [@robey](https://github.com/robey)，及其他人为本手册提供的慷慨帮助。
-
-# Node 脚本化版本（Node Packaged Manuscript）
-
-你可以使用 npm 安装这份指南，方法如下：
-
-```sh
-$ npm install -g babel-plugin-handbook
-```
-
-现在你可以使用 `babel-plugin-handbook` 命令并在 `$PAGER` 中打开这份文档。 此外，你也可以继续阅读这份在线的版本。
-
-# 翻译
-
-  * [English](/README.md)
-  * [Afrikaans](/translations/af/README.md)
-  * [العربية](/translations/ar/README.md)
-  * [Català](/translations/ca/README.md)
-  * [Čeština](/translations/cs/README.md)
-  * [Danske](/translations/da/README.md)
-  * [Deutsch](/translations/de/README.md)
-  * [ελληνικά](/translations/el/README.md)
-  * [Español](/translations/es-ES/README.md)
-  * [Suomi](/translations/fi/README.md)
-  * [Français](/translations/fr/README.md)
-  * [עִברִית](/translations/he/README.md)
-  * [Magyar](/translations/hu/README.md)
-  * [Italiano](/translations/it/README.md)
-  * [日本語](/translations/ja/README.md)
-  * [한국어](/translations/ko/README.md)
-  * [Norsk](/translations/no/README.md)
-  * [Nederlands](/translations/nl/README.md)
-  * [Português](/translations/pl/README.md)
-  * [Português (Brasil)](/translations/pt-BR/README.md)
-  * [Portugisisk](/translations/pt-PT/README.md)
-  * [Română](/translations/ro/README.md)
-  * [Pусский](/translations/ru/README.md)
-  * [Српски језик (Ћирилица)](/translations/sr/README.md)
-  * [Svenska](/translations/sv-SE/README.md)
-  * [Türk](/translations/tr/README.md)
-  * [Український](/translations/uk/README.md)
-  * [Tiếng Việt](/translations/vi/README.md)
-  * [简体中文](/translations/zh-Hans/README.md)
-  * [繁體中文](/translations/zh-Hant/README.md)
-
-**[请求增加新的语种](https://github.com/thejameskyle/babel-plugin-handbook/issues/new?title=Translation%20Request:%20[Please%20enter%20language%20here]&body=I%20am%20able%20to%20translate%20this%20language%20[yes/no])**
-
-如果您正在阅读本手册的非英语翻译版本，你会发现一些英文单词是编程概念。 如果按照字面翻译这些单词会导致在阅读时缺乏一致性和流畅性。 在此情形下，字面翻译会写在原文后面的 `（）` 内。 例如：抽象语法树（ASTs）
+This handbook is available in other languages, see the [README](/README.md) for a complete list.
 
 # 目录
 
@@ -117,6 +68,10 @@ Babel 是一个通用的多功能的 JavaScript 编译器。此外它还拥有�
 > 静态分析是在不需要执行代码的前提下对代码进行分析的处理过程 （执行代码的同时进行代码分析即是动态分析）。 静态分析的目的是多种多样的， 它可用于语法检查，编译，代码高亮，代码转换，优化，压缩等等场景。
 
 你可以使用 Babel 创建多种类型的工具来帮助你更有效率并且写出更好的程序。
+
+> For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.
+
+* * *
 
 # 基础
 
@@ -1765,3 +1720,5 @@ class Foo {
   }
 }
 ```
+
+> For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.

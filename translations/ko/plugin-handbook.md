@@ -1,59 +1,10 @@
-# babel-plugin-handbook
+# Babel Plugin Handbook
 
 이 문서는 [Babel](https://babeljs.io) [플러그인](https://babeljs.io/docs/advanced/plugins/)을 만드는 방법을 설명합니다.
 
-If you are reading a non-english translation of this handbook you may still find english sections that have not yet been translated. (만약 영문 문서가 아닌 번역된 핸드북을 읽고 있다면, 여전히 번역되지 않은 영문 문서 섹션을 찾아 읽을 수 있습니다.) If you would like to contribute to one of the translations you must do so through Crowdin. (만약 다른 언어로 문서를 번역하고 싶다면 Crowdin을 통해 기여해야 합니다.) 자세한 사항은 [기여 가이드](/CONTRIBUTING.md)를 참고하세요.
-
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
-[@sebmck](https://github.com/sebmck/), [@hzoo](https://github.com/hzoo), [@jdalton](https://github.com/jdalton), [@abraithwaite](https://github.com/abraithwaite), [@robey](https://github.com/robey), 와 다른 기여자 분들이 이 핸드북 제작에 큰 도움을 주셨습니다.
-
-# Node로 패키징된 원고
-
-이 핸드북은 npm을 통해 설치할 수 있습니다. 다음 커맨드를 입력하세요:
-
-```sh
-$ npm install -g babel-plugin-handbook
-```
-
-이제 `babel-plugin-handbook` 커맨드를 입력하면 이 readme 파일을 `$PAGER`에서 열 수 있습니다. 아니면, 지금처럼 현재 문서를 계속 읽어도 됩니다.
-
-# 번역 문서
-
-  * [English](/README.md)
-  * [Afrikaans](/translations/af/README.md)
-  * [العربية](/translations/ar/README.md)
-  * [Català](/translations/ca/README.md)
-  * [Čeština](/translations/cs/README.md)
-  * [Danske](/translations/da/README.md)
-  * [Deutsch](/translations/de/README.md)
-  * [ελληνικά](/translations/el/README.md)
-  * [Español](/translations/es-ES/README.md)
-  * [Suomi](/translations/fi/README.md)
-  * [Français](/translations/fr/README.md)
-  * [עִברִית](/translations/he/README.md)
-  * [Magyar](/translations/hu/README.md)
-  * [Italiano](/translations/it/README.md)
-  * [日本語](/translations/ja/README.md)
-  * [한국어](/translations/ko/README.md)
-  * [Norsk](/translations/no/README.md)
-  * [Nederlands](/translations/nl/README.md)
-  * [Português](/translations/pl/README.md)
-  * [Português (Brasil)](/translations/pt-BR/README.md)
-  * [Portugisisk](/translations/pt-PT/README.md)
-  * [Română](/translations/ro/README.md)
-  * [Pусский](/translations/ru/README.md)
-  * [Српски језик (Ћирилица)](/translations/sr/README.md)
-  * [Svenska](/translations/sv-SE/README.md)
-  * [Türk](/translations/tr/README.md)
-  * [Український](/translations/uk/README.md)
-  * [Tiếng Việt](/translations/vi/README.md)
-  * [中文](/translations/zh-Hans/README.md)
-  * [繁體中文](/translations/zh-Hant/README.md)
-
-**[또 다른 번역 요청](https://github.com/thejameskyle/babel-plugin-handbook/issues/new?title=Translation%20Request:%20[Please%20enter%20language%20here]&body=I%20am%20able%20to%20translate%20this%20language%20[yes/no])**
-
-If you are reading a non-english translation of this document you will find a number of english words that are programming concepts. (만약 번역된 문서를 읽고 있다면 몇 가지 프로그래밍 개념상의 영단어들을 찾을 수 있습니다.) If these were translated to other languages there would be a lack of consistency and fluency when reading about them. (이는 문서가 다른 언어로 번역되었기 때문에 문서를 읽을 때 원문에 비해 일관성과 표현이 부족할 수 있습니다.) In many cases you will find the literal translation followed by the english term in parenthesis `()`. (영문 그대로의 문장 또는 단어를 괄호에 그대로 넣은 경우를 많이 볼 수 있습니다.) 예를 들면: 추상 구문 트리 (ASTs).
+This handbook is available in other languages, see the [README](/README.md) for a complete list.
 
 # 목차
 
@@ -117,6 +68,10 @@ Babel is a generic multi-purpose compiler for JavaScript. More than that it is a
 > Static analysis is the process of analyzing code without executing it. (Analysis of code while executing it is known as dynamic analysis). The purpose of static analysis varies greatly. It can be used for linting, compiling, code highlighting, code transformation, optimization, minification, and much more.
 
 You can use Babel to build many different types of tools that can help you be more productive and write better programs.
+
+> For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.
+
+* * *
 
 # 기본
 
@@ -1765,3 +1720,5 @@ class Foo {
   }
 }
 ```
+
+> For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.
