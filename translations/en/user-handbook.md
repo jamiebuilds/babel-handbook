@@ -89,8 +89,8 @@ Many people do too, the ecosystem that has sprung up around Babel is massive and
 very diverse. Throughout this handbook I'll be covering both how built-in Babel
 tools work as well as some useful things from around the community.
 
-> For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle)
-> on Twitter.
+> ***For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle)
+> on Twitter.***
 
 ----
 
@@ -988,5 +988,5 @@ code, try deleting as much code as possible that still causes an issue.
 
 ----
 
-> For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle)
-> on Twitter.
+> ***For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle)
+> on Twitter.***
