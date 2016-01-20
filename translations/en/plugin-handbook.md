@@ -1731,7 +1731,7 @@ It may also be tempting to call `path.traverse` when looking for a particular
 node type.
 
 ```js
-const visitorOne = {
+const nestedVisitor = {
   Identifier(path) {
     // ...
   }
@@ -1739,7 +1739,7 @@ const visitorOne = {
 
 const MyVisitor = {
   FunctionDeclaration(path) {
-    path.get('params').traverse(visitorOne);
+    path.get('params').traverse(nestedVisitor);
   }
 };
 ```
@@ -1784,7 +1784,7 @@ it's better to store the visitor in a variable and pass the same object each
 time.
 
 ```js
-const visitorOne = {
+const nestedVisitor = {
   Identifier(path) {
     // ...
   }
@@ -1792,7 +1792,7 @@ const visitorOne = {
 
 const MyVisitor = {
   FunctionDeclaration(path) {
-    path.traverse(visitorOne);
+    path.traverse(nestedVisitor);
   }
 };
 ```
@@ -1819,7 +1819,7 @@ You can pass it in as state to the `traverse()` method and have access to it on
 `this` in the visitor.
 
 ```js
-const visitorOne = {
+const nestedVisitor = {
   Identifier(path) {
     if (path.node.name === this.exampleState) {
       // ...
@@ -1830,7 +1830,7 @@ const visitorOne = {
 const MyVisitor = {
   FunctionDeclaration(path) {
     var exampleState = path.node.params[0].name;
-    path.traverse(visitorOne, { exampleState });
+    path.traverse(nestedVisitor, { exampleState });
   }
 };
 ```
