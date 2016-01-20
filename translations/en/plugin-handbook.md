@@ -1775,9 +1775,13 @@ const MyVisitor = {
 };
 ```
 
-However, this creates a new visitor object everytime `FunctionDeclaration()` is
-called above, which Babel then needs to explode and validate every single time.
-This can be costly, so it is better to hoist the visitor up.
+However, this creates a new visitor object every time `FunctionDeclaration()` is
+called. That can be costly, because Babel does some processing each time a new
+visitor object is passed in (such as exploding keys containing multiple types,
+performing validation, and adjusting the object structure). Because Babel stores
+flags on visitor objects indicating that it's already performed that processing,
+it's better to store the visitor in a variable and pass the same object each
+time.
 
 ```js
 const visitorOne = {
