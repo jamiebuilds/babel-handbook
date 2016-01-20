@@ -1548,18 +1548,23 @@ plugins.
 
 When writing transformations you'll often want to build up some nodes to insert
 into the AST. As mentioned previously, you can do this using the
-[builder](#builder) methods in the [`babel-types`](#babel-types) package.
+[builder](#builder) methods in the [`babel-types`](#babel-types) package. (Nodes
+are just objects that conform to a certain
+[interface](https://github.com/babel/babel/blob/master/doc/ast/spec.md) and can
+be constructed manually, but builder methods are provided for convenience and to
+provide validation that will help maintain an AST that represents a valid
+program.)
 
-The method name for a builder is simply the name of the node type you want to
-build except with the first letter lowercased. For example if you wanted to
-build a `MemberExpression` you would use `t.memberExpression(...)`.
+The builder method name is the name of the node type, optionally with the first
+letter lowercased. For example, to build a `MemberExpression` call
+`t.MemberExpression()` or `t.memberExpression()`.
 
-The arguments of these builders are decided by the node definition. There's some
-work that's being done to generate easy-to-read documentation on the
-definitions, but for now they can all be found
-[here](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions).
+Each node type has a definition that includes the arguments that can be passed
+to its builder. Until more user-friendly documentation is available, you can
+refer to the [source code for the
+definitions](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions).
 
-A node definition looks like the following:
+A node definition looks like:
 
 ```js
 defineType("MemberExpression", {
@@ -1586,8 +1591,8 @@ defineType("MemberExpression", {
 Here you can see all the information about this particular node type, including
 how to build it, traverse it, and validate it.
 
-By looking at the `builder` property, you can see the 3 arguments that will be
-needed to call the builder method (`t.memberExpression`).
+The `builder` property shows the arguments that can be passed to the builder
+method.
 
 ```js
 builder: ["object", "property", "computed"],
@@ -1636,8 +1641,21 @@ t.memberExpression(
 Which will result in:
 
 ```js
-object.property
+{
+  type: 'MemberExpression',
+  object: {
+    type: 'Identifier',
+    name: 'object'
+  },
+  property: {
+    type: 'Identifier',
+    name: 'property'
+  },
+  computed: false
+}
 ```
+
+(Representing code like `object.property`.)
 
 However, we said that `object` needed to be an `Expression` so why is
 `Identifier` valid?
@@ -1665,17 +1683,37 @@ t.memberExpression(
 Which will result in:
 
 ```js
-member.expression.property
+{
+  type: 'MemberExpression',
+  object: {
+     type: 'MemberExpression',
+     object: {
+       type: 'Identifier',
+       name: 'member'
+     },
+     property: {
+       type: 'Identifier',
+       name: 'expression'
+     },
+     computed: false
+  },
+  property: {
+    type: 'Identifier',
+    name: 'property'
+  },
+  computed: false
+}
 ```
+
+(Representing code like `member.expression.property`.)
 
 It's very unlikely that you will ever memorize the builder method signatures for
 every node type. So you should take some time and understand how they are
 generated from the node definitions.
 
-You can find all of the actual
-[definitions here](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions)
-and you can see them
-[documented here](https://github.com/babel/babel/blob/master/doc/ast/spec.md)
+* [Node definitions source code](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions)
+
+* [Node interface documentation](https://github.com/babel/babel/blob/master/doc/ast/spec.md)
 
 ----
 
