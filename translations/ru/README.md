@@ -1,6 +1,6 @@
 # Babel Handbook
 
-This handbook is divided into two parts:
+Это руководство разделено на две части:
 
   * [User Handbook](user-handbook.md) - How to setup/configure Babel and more.
   * [Plugin Handbook](plugin-handbook.md) - How to create plugins for Babel.

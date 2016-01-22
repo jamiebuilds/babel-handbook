@@ -1,10 +1,10 @@
-# Babel Handbook
+# Babel El Kitabı
 
-This handbook is divided into two parts:
+Bu el kitabı iki bölümden oluşur:
 
-  * [User Handbook](user-handbook.md) - How to setup/configure Babel and more.
-  * [Plugin Handbook](plugin-handbook.md) - How to create plugins for Babel.
+  * [Kullanıcı el kitabı](user-handbook.md) - Kurulum yapılandırılması Babel ve daha fazlası.
+  * [Eklenti el kitabı](plugin-handbook.md) - Babel için nasıl eklenti oluşturulur.
 
-> For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.
+> Gelecek güncellemeler için [@thejameskyle](https://twitter.com/thejameskyle)'i Twitter'dan takip edin.
 
-If you are reading a non-english translation of this handbook you may still find english sections that have not yet been translated. If you would like to contribute to one of the translations you must do so through Crowdin. Please read the [contributing guidelines](/CONTRIBUTING.md) for more information. You will find a number of english words that are programming concepts. If these were translated to other languages there would be a lack of consistency and fluency when reading about them. In many cases you will find the literal translation followed by the english term in parenthesis `()`. For example: Abstract Syntax Trees (ASTs).
+Eğer bu el kitabının İngilizce olmayan bir çevirisini okuyorsanız, halen çevrilmemiş bölümler görebilirsiniz. Eğer bu çevirilerden birine katkıda bulunmak istiyorsanız, bunu Crowdin aracılığıyla yapmalısınız. Lütfen daha fazla bilgi için [katkıda bulunma rehberi](/CONTRIBUTING.md)ne göz atın. Bazı programlama konseptlerinin İngilizce olarak yazıldığını göreceksiniz. If these were translated to other languages there would be a lack of consistency and fluency when reading about them. In many cases you will find the literal translation followed by the english term in parenthesis `()`. For example: Abstract Syntax Trees (ASTs).

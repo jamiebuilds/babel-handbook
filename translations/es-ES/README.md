@@ -1,10 +1,10 @@
-# Babel Handbook
+# Manual de Babel
 
-This handbook is divided into two parts:
+Este manual está dividido en dos partes:
 
-  * [User Handbook](user-handbook.md) - How to setup/configure Babel and more.
-  * [Plugin Handbook](plugin-handbook.md) - How to create plugins for Babel.
+  * [Manual de usuario](user-handbook.md) - Cómo configurar Babel y más.
+  * [Manual de extensiones](plugin-handbook.md) - Cómo crear extensiones para Babel.
 
-> For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.
+> Para futuras actualizaciones, sigue a [@thejameskyle](https://twitter.com/thejameskyle) en Twitter.
 
-Si está leyendo una traducción del Inglés de este manual, aún se pueden encontrar secciones en inglés que todavía no han sido traducidas. Si desea contribuir a una de las traducciones deberá hacerlo a través de Crowdin. Por favor lea el [ directrices para contribuir](/CONTRIBUTING.md) para obtener más información. You will find a number of english words that are programming concepts. If these were translated to other languages there would be a lack of consistency and fluency when reading about them. In many cases you will find the literal translation followed by the english term in parenthesis `()`. For example: Abstract Syntax Trees (ASTs).
+Si estás leyendo una traducción de este manual, es posible que encuentres secciones en inglés que aún no han sido traducidas. Si desea contribuir a una de las traducciones deberá hacerlo a través de Crowdin. Por favor, lee las [directrices para contribuir](/CONTRIBUTING.md) para obtener más información. Encontrarás varias palabras en inglés que se corresponden con conceptos de programación. Si se tradujeran estas palabras a otros idiomas habría una falta de consistencia y fluidez al leer otra información sobre ellas. En muchos casos encontrarás la traducción literal seguida del término en inglés entre paréntesis `()`. Por ejemplo: Árboles de sintaxis abstracta (AST).

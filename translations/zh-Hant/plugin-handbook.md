@@ -1,21 +1,21 @@
-# Babel Plugin Handbook
+# Babel 外掛手冊
 
-This document covers how to create [Babel](https://babeljs.io) [plugins](https://babeljs.io/docs/advanced/plugins/).
+這份文件提共如何使用 [Babel](https://babeljs.io)[外掛](https://babeljs.io/docs/advanced/plugins/).
 
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
-This handbook is available in other languages, see the [README](/README.md) for a complete list.
+手冊提共其它可用語系，可在[閱讀更多](/README.md)找到完整清單
 
-# Table of Contents
+# 目錄
 
-  * [Introduction](#introduction)
-  * [Basics](#basics) 
+  * [簡介](#introduction)
+  * [基本功能](#basics) 
       * [ASTs](#asts)
       * [Stages of Babel](#stages-of-babel)
       * [Parse](#parse) 
           * [Lexical Analysis](#lexical-analysis)
           * [Syntactic Analysis](#syntactic-analysis)
-      * [Transform](#transform)
+      * [轉換](#transform)
       * [Generate](#generate)
       * [Traversal](#traversal)
       * [Visitors](#visitors)
@@ -28,9 +28,9 @@ This handbook is available in other languages, see the [README](/README.md) for 
       * [babylon](#babylon)
       * [babel-traverse](#babel-traverse)
       * [babel-types](#babel-types)
-      * [Definitions](#definitions)
-      * [Builders](#builders)
-      * [Validators](#validators)
+      * [定義](#definitions)
+      * [建置](#builders)
+      * [驗證](#validators)
       * [Converters](#converters)
       * [babel-generator](#babel-generator)
       * [babel-template](#babel-template)
@@ -61,7 +61,7 @@ This handbook is available in other languages, see the [README](/README.md) for 
       * [Optimizing nested visitors](#optimizing-nested-visitors)
       * [Being aware of nested structures](#being-aware-of-nested-structures)
 
-# Introduction
+# 簡介
 
 Babel is a generic multi-purpose compiler for JavaScript. More than that it is a collection of modules that can be used for many different forms of static analysis.
 
@@ -69,19 +69,19 @@ Babel is a generic multi-purpose compiler for JavaScript. More than that it is a
 
 You can use Babel to build many different types of tools that can help you be more productive and write better programs.
 
-> For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.
+> ***更多的最新資訊，請上[@thejameskyle](https://twitter.com/thejameskyle)的Twitter查詢。***
 
 * * *
 
-# Basics
+# 基本功能
 
-Babel is a JavaScript compiler, specifically a source-to-source compiler, often called a "transpiler". This means that you give Babel some JavaScript code, Babel modifies the code, and generates the new code back out.
+Babel是一個JavaScript compiler, 因為是source-to-source而非source-to-binary的compiler，所以通常又稱為"transpiler"。 這表示當你餵給Babel一些JavaScript code，Babel 會將之修改之後，回給你一份修改後的新code。
 
 ## ASTs
 
-Each of these steps involve creating or working with an [Abstract Syntax Tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree) or AST.
+每一個步驟包含[Abstract Syntax Tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree)或AST的建造或是使用
 
-> Babel uses an AST modified from [ESTree](https://github.com/estree/estree), with the core spec located [here](https://github.com/babel/babel/blob/master/doc/ast/spec.md).
+> Babel 在 [ESTree](https://github.com/estree/estree)上使用AST來修改，其主要規範可以在[這裡](https://github.com/babel/babel/blob/master/doc/ast/spec.md)找到。.
 
 ```js
 function square(n) {
@@ -89,9 +89,9 @@ function square(n) {
 }
 ```
 
-> Check out [AST Explorer](http://astexplorer.net/) to get a better sense of the AST nodes. [Here](http://astexplorer.net/#/Z1exs6BWMq) is a link to it with the example code above pasted in.
+> 在 [AST Explorer](http://astexplorer.net/)中可以對AST nodes有更深入的了解， [點我](http://astexplorer.net/#/Z1exs6BWMq)可以連到上述範例代碼的頁面。
 
-This same program can be represented as a list like this:
+像這樣的程式可以代表一份清單：
 
 ```md
 - FunctionDeclaration:
@@ -116,7 +116,7 @@ This same program can be represented as a list like this:
                   - name: n
 ```
 
-Or as a JavaScript Object like this:
+或是像這樣的JS的物件：
 
 ```js
 {
@@ -150,7 +150,7 @@ Or as a JavaScript Object like this:
 }
 ```
 
-You'll notice that each level of the AST has a similar structure:
+你會發現到每一個 AST 的層級有相似的結構：
 
 ```js
 {
@@ -177,11 +177,11 @@ You'll notice that each level of the AST has a similar structure:
 }
 ```
 
-> Note: Some properties have been removed for simplicity.
+> 備註：為了簡單起見，某些屬性已經被移除。
 
-Each of these are known as a **Node**. An AST can be made up of a single Node, or hundreds if not thousands of Nodes. Together they are able to describe the syntax of a program that can be used for static analysis.
+一個AST可以為單個，數百個甚至於千個節點， 而這些都也都被稱為節點 <0>Node</0>。 Together they are able to describe the syntax of a program that can be used for static analysis.
 
-Every Node has this interface:
+每個節點都有這一個的物件：
 
 ```typescript
 interface Node {
@@ -189,7 +189,7 @@ interface Node {
 }
 ```
 
-The `type` field is a string representing the type of Node the object is (ie. `"FunctionDeclaration"`, `"Identifier"`, or `"BinaryExpression"`). Each type of Node defines an additional set of properties that describe that particular node type.
+`類型`是一個文字的型態，代表節點物件的類別(意即 `"FunctionDeclaration"`, `"Identifier"`, or `"BinaryExpression"`). Each type of Node defines an additional set of properties that describe that particular node type.
 
 There are additional properties on every Node that Babel generates which describe the position of the Node in the original source code.
 
@@ -241,7 +241,7 @@ n * n;
 ]
 ```
 
-Each of the `type`s here have a set of properties describing the token:
+在這裡的每個 `類別`都有一組描述其屬性的文字：
 
 ```js
 {
@@ -264,11 +264,11 @@ Each of the `type`s here have a set of properties describing the token:
 
 Like AST nodes they also have a `start`, `end`, and `loc`.
 
-#### Syntactic Analysis
+#### 語意分析
 
 Syntactic Analysis will take a stream of tokens and turn it into an AST representation. Using the information in the tokens, this phase will reformat them as an AST which represents the structure of the code in a way that makes it easier to work with.
 
-### Transform
+### 轉換
 
 The [transform](https://en.wikipedia.org/wiki/Program_transformation) stage takes an AST and traverses through it, adding, updating, and removing nodes as it goes along. This is by far the most complex part of Babel or any compiler. This is where plugins operate and so it will be the subject of most of this handbook. So we won't dive too deep right now.
 
@@ -812,7 +812,7 @@ traverse(ast, {
 });
 ```
 
-### Definitions
+### 定義
 
 Babel Types has definitions for every single type of node, with information on what properties belong where, what values are valid, how to build that node, how the node should be traversed, and aliases of the Node.
 
@@ -837,7 +837,7 @@ defineType("BinaryExpression", {
 });
 ```
 
-### Builders
+### 建置
 
 You'll notice the above definition for `BinaryExpression` has a field for a `builder`.
 
@@ -876,7 +876,7 @@ a * b
 
 Builders will also validate the nodes they are creating and throw descriptive errors if used improperly. Which leads into the next type of method.
 
-### Validators
+### 驗證
 
 The definition for `BinaryExpression` also includes information on the `fields` of a node and how to validate them.
 
@@ -1721,4 +1721,4 @@ class Foo {
 }
 ```
 
-> For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.
+> ***更多的最新資訊，請上[@thejameskyle](https://twitter.com/thejameskyle)的Twitter查詢。***

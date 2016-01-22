@@ -69,7 +69,7 @@ Babel je generički višenamenski kompajler za JavaScript. Sastoji se od kolekci
 
 Uz pomoć Babel-a možete napisati mnoštvo različitih tipova alatki koje mogu da se koriste da povećaju produktivnost i poboljšaju kvalitet pisanog koda.
 
-> For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.
+> ***For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.***
 
 * * *
 
@@ -1721,4 +1721,4 @@ class Foo {
 }
 ```
 
-> For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.
+> ***For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.***

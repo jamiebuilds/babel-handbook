@@ -51,7 +51,7 @@ JavaScript as a language is constantly evolving, with new specs and proposals co
 
 Babel does this by compiling down JavaScript code written with the latest standards into a version that will work everywhere today. This process is known as source-to-source compiling, also known as transpiling.
 
-For example, you could give it can transform the new ES2015 arrow function syntax from this:
+For example, Babel could transform the new ES2015 arrow function syntax from this:
 
 ```js
 const square = n => n * n;
@@ -60,7 +60,7 @@ const square = n => n * n;
 Into the following:
 
 ```js
-var square = function square(n) {
+const square = function square(n) {
   return n * n;
 };
 ```
@@ -73,7 +73,7 @@ Further than that, everything in Babel is simply a plugin and anyone can go out 
 
 Many people do too, the ecosystem that has sprung up around Babel is massive and very diverse. Throughout this handbook I'll be covering both how built-in Babel tools work as well as some useful things from around the community.
 
-> For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.
+> ***Gelecek güncellemeler için [@thejameskyle](https://twitter.com/thejameskyle)'i Twitter'dan takip edin.***
 
 * * *
 
@@ -816,4 +816,4 @@ First, try isolating your problem. It's extremely unlikely that every part of yo
 
 * * *
 
-> For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.
+> ***Gelecek güncellemeler için [@thejameskyle](https://twitter.com/thejameskyle)'i Twitter'dan takip edin.***

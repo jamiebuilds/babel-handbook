@@ -1,107 +1,107 @@
-# Babel User Handbook
+# Manualul de utilizator Babel
 
-This document covers everything you ever wanted to know about using [Babel](https://babeljs.io) and related tooling.
+Acest document conține tot ceea ce ați vrut vreodată să ştiți despre utilizarea [Babel](https://babeljs.io) şi a instrumentelor aferente.
 
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
-This handbook is available in other languages, see the [README](/README.md) for a complete list.
+Acest manual este disponibil și în alte limbi, a se vedea [README](/README.md) pentru o listă completă.
 
 # Cuprins
 
   * [Introducere](#introduction)
-  * [Setting up Babel](#setting-up-babel) 
+  * [Inițializare Babel](#setting-up-babel) 
       * [`babel-cli`](#babel-cli)
-      * [Running Babel CLI from within a project](#running-babel-cli-from-within-a-project)
+      * [Execută Babel CLI (Interfața Liniei de Comandă) în cadrul unui proiect](#running-babel-cli-from-within-a-project)
       * [`babel-register`](#babel-register)
       * [`babel-node`](#babel-node)
       * [`babel-core`](#babel-core)
-  * [Configuring Babel](#configuring-babel) 
+  * [Configurare Babel](#configuring-babel) 
       * [`.babelrc`](#babelrc)
       * [`babel-preset-es2015`](#babel-preset-es2015)
       * [`babel-preset-react`](#babel-preset-react)
       * [`babel-preset-stage-x`](#babel-preset-stage-x)
-  * [Executing Babel-generated code](#executing-babel-generated-code) 
+  * [Execuția codului generat de Babel](#executing-babel-generated-code) 
       * [`babel-polyfill`](#babel-polyfill)
       * [`babel-runtime`](#babel-runtime)
-  * [Configuring Babel (Advanced)](#configuring-babel-advanced) 
-      * [Manually specifying plugins](#manually-specifying-plugins)
-      * [Plugin options](#plugin-options)
-      * [Customizing Babel based on environment](#customizing-babel-based-on-environment)
-      * [Making your own preset](#making-your-own-preset)
-  * [Babel and other tools](#babel-and-other-tools) 
-      * [Static analysis tools](#static-analysis-tools)
-      * [Linting](#linting)
-      * [Code Style](#code-style)
-      * [Documentation](#documentation)
-      * [Frameworks](#frameworks)
+  * [Configurare Babel (Avansată)](#configuring-babel-advanced) 
+      * [Specificarea manuală a plugin-urilor](#manually-specifying-plugins)
+      * [Opțiuni de plugin](#plugin-options)
+      * [Personalizarea Babel în funcție de modul de lucru](#customizing-babel-based-on-environment)
+      * [Crearea unei presetări](#making-your-own-preset)
+  * [Babel şi alte instrumente](#babel-and-other-tools) 
+      * [Instrumente de analiză statică](#static-analysis-tools)
+      * [Verificare cod (Linting)](#linting)
+      * [Stil de cod](#code-style)
+      * [Documentație](#documentation)
+      * [Arhitectură (Framework)](#frameworks)
       * [React](#react)
-      * [Text Editors and IDEs](#text-editors-and-ides)
-  * [Debugging Babel](#debugging-babel)
-  * [Babel Support](#babel-support) 
-      * [Babel Forum](#babel-forum)
-      * [Babel Chat](#babel-chat)
-      * [Babel Issues](#babel-issues)
-      * [Creating an awesome Babel bug report](#creating-an-awesome-babel-bug-report)
+      * [Editoare de text şi IDEs](#text-editors-and-ides)
+  * [Depanare Babel](#debugging-babel)
+  * [Suport Babel](#babel-support) 
+      * [Forum Babel](#babel-forum)
+      * [Discuții Babel](#babel-chat)
+      * [Probleme de Babel](#babel-issues)
+      * [Raportarea unei probleme Babel](#creating-an-awesome-babel-bug-report)
 
 # Introducere
 
-Babel is a generic multi-purpose compiler for JavaScript. Using Babel you can use (and create) the next generation of JavaScript, as well as the next generation of JavaScript tooling.
+Babel este un compilator generic multi-scop pentru JavaScript. Folosind Babel puteţi utiliza (şi crea) următoarea generaţie de JavaScript, precum şi următoarea generaţie de instrumente JavaScript.
 
-JavaScript as a language is constantly evolving, with new specs and proposals coming out with new features all the time. Using Babel will allow you to use many of these features years before they are available everywhere.
+Limbajul JavaScript evoluează în mod constant, iar noile specificații și propuneri vin cu caracteristici noi în mod constant. Babel vă permite să folosiți multe din aceste caracteristici cu mult înainte ca acestea să fie disponibile peste tot.
 
-Babel does this by compiling down JavaScript code written with the latest standards into a version that will work everywhere today. This process is known as source-to-source compiling, also known as transpiling.
+Babel face acest lucru prin compilarea codului JavaScript scris cu cele mai recente standarde într-o versiune care va funcționa peste tot astăzi. Acest proces este cunoscut sub denumirea de compilare sursă-la-sursă, sau "transpiling".
 
-For example, you could give it can transform the new ES2015 arrow function syntax from this:
+De exemplu, Babel ar putea transforma sintaxa ES2015 pentru "funcții săgeată", din acest cod:
 
 ```js
 const square = n => n * n;
 ```
 
-Into the following:
+În acest cod:
 
 ```js
-var square = function square(n) {
+const square = function square(n) {
   return n * n;
 };
 ```
 
-However, Babel can do much more than this as Babel has support for syntax extensions such as the JSX syntax for React and Flow syntax support for static type checking.
+Însă Babel poate face mult mai mult decât atât, deoarece Babel oferă suport pentru extensii de sintaxă precum JSX pentru React sau Flux pentru verificarea statică a tipurilor.
 
-Further than that, everything in Babel is simply a plugin and anyone can go out and create their own plugins using the full power of Babel to do whatever they want.
+Mai mult decât atât, totul în Babel este pur şi simplu un plug-in şi oricine își poate crea propriile plugin-uri folosind întreaga putere a Babel-ului, pentru propriile scopuri.
 
-*Even further* than that, Babel is broken down into a number of core modules that anyone can use to build the next generation of JavaScript tooling.
+*Chiar mai mult* decât atât, Babel este defalcat într-o serie de module de bază pe care oricine o poate utiliza pentru a construi următoarea generaţie de instrumente JavaScript.
 
-Many people do too, the ecosystem that has sprung up around Babel is massive and very diverse. Throughout this handbook I'll be covering both how built-in Babel tools work as well as some useful things from around the community.
+Ecosistemul care a apărut în jurul Babel este masiv și foarte divers. Pe parcursul acestui manual vom acoperi atât instrumentele incluse în Babel, precum şi câteva unelte utile construite de comunitate.
 
-> For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.
+> ***Pentru actualizări, urmăriţi-l pe [@thejameskyle](https://twitter.com/thejameskyle) pe Twitter.***
 
 * * *
 
-# Setting up Babel
+# Inițializare Babel
 
-Since the JavaScript community has no single build tool, framework, platform, etc., Babel has official integrations for all of the major tooling. Everything from Gulp to Browserify, from Ember to Meteor, no matter what your setup looks like there is probably an official integration.
+Deoarece în comunitatea JavaScript există multe unelte de build, framework-uri, platforme, etc., Babel are integrări oficiale cu majoritatea dintre acestea. Totul, de la Gulp la Browserify, de la Ember la Meteor, cu siguranță există o integrare oficială.
 
-For the purposes of this handbook, we're just going to cover the built-in ways of setting up Babel, but you can also visit the interactive [setup page](http://babeljs.io/docs/setup) for all of the integrations.
+Pe parcursul acestui manual, vom acoperi doar modurile predefinite de inițializare Babel, însă puteţi vizita [pagina de configurare](http://babeljs.io/docs/setup) interactivă pentru toate integrările existente.
 
-> **Note:** This guide is going to refer to command line tools like `node` and `npm`. Before continuing any further you should be comfortable with these tools.
+> **Notă:** Acest ghid face referire la instrumente de linie de comandă, cum ar fi `node` şi `npm`. Înainte de a continua ar trebui să fiți confortabili cu aceste instrumente.
 
 ## `babel-cli`
 
-Babel's CLI is a simple way to compile files with Babel from the command line.
+Babel CLI este un mod simplu de a compila fişiere cu Babel din linia de comandă.
 
-Let's first install it globally to learn the basics.
+Haideţi să-l instalăm la nivel global pentru a învăţa elementele de bază.
 
 ```sh
 $ npm install --global babel-cli
 ```
 
-We can compile our first file like so:
+Putem compila primul nostru fişier astfel:
 
 ```sh
 $ babel my-file.js
 ```
 
-This will dump the compiled output directly into your terminal. To write it to a file we'll specify an `--out-file` or `-o`.
+Această comandă va afișa codul compilat direct în terminal. Pentru a-l scrie într-un fişier trebuie să specificăm parametrul `--out-file` sau `-o`.
 
 ```sh
 $ babel example.js --out-file compiled.js
@@ -109,7 +109,7 @@ $ babel example.js --out-file compiled.js
 $ babel example.js -o compiled.js
 ```
 
-If we want to compile a whole directory into a new directory we can do so using `--out-dir` or `-d`.
+Dacă vrem să compilăm un director întreg într-un director nou, putem face asta folosind `--out-dir` sau `-d`.
 
 ```sh
 $ babel src --out-dir lib
@@ -117,11 +117,11 @@ $ babel src --out-dir lib
 $ babel src -d lib
 ```
 
-### Running Babel CLI from within a project
+### Execută Babel CLI (Interfața Liniei de Comandă) în cadrul unui proiect
 
-While you *can* install Babel CLI globally on your machine, it's much better to install it **locally** project by project.
+Deși se *poate* instala Babel CLI și la nivel global pe maşina dvs., este recomandat să-l instalaţi **local**, la nivel de proiect.
 
-There are two primary reasons for this.
+Există două motive principale pentru asta.
 
   1. Different projects on the same machine can depend on different versions of Babel allowing you to update one at a time.
   2. It means you do not have an implicit dependency on the environment you are working in. Making your project far more portable and easier to setup.
@@ -297,7 +297,7 @@ For all of the above methods, `options` refers to http://babeljs.io/docs/usage/o
 
 * * *
 
-# Configuring Babel
+# Configurare Babel
 
 You may have noticed by now that running Babel on its own doesn't seem to do anything other than copy JavaScript files from one location to another.
 
@@ -401,7 +401,7 @@ Then you can add it to your `.babelrc` config.
 
 * * *
 
-# Executing Babel-generated code
+# Execuția codului generat de Babel
 
 So you've compiled your code with Babel, but this is not the end of the story.
 
@@ -504,11 +504,11 @@ Rather than putting the `_classCallCheck` and `_createClass` helpers in every si
 
 * * *
 
-# Configuring Babel (Advanced)
+# Configurare Babel (Avansată)
 
 Most people can get by using Babel with just the built-in presets, but Babel exposes much finer-grained power than that.
 
-## Manually specifying plugins
+## Specificarea manuală a plugin-urilor
 
 Babel presets are simply collections of pre-configured plugins, if you want to do something differently you manually specify plugins. This works almost exactly the same way as presets.
 
@@ -534,7 +534,7 @@ For a full list of official plugins see the [Babel Plugins page](http://babeljs.
 
 Also take a look at all the plugins that have been [built by the community](https://www.npmjs.com/search?q=babel-plugin). If you would like to learn how to write your own plugin read the [Babel Plugin Handbook](plugin-handbook.md).
 
-## Plugin options
+## Opțiuni de plugin
 
 Many plugins also have options to configure them to behave differently. For example, many transforms have a "loose" mode which drops some spec behavior in favor of simpler and more performant generated code.
 
@@ -551,7 +551,7 @@ To add options to a plugin, simply make the following change:
 
 > I'll be working on updates to the plugin documentation to detail every option in the coming weeks. [Follow me for updates](https://twitter.com/thejameskyle).
 
-## Customizing Babel based on environment
+## Personalizarea Babel în funcție de modul de lucru
 
 Babel plugins solve many different tasks. Many of them are development tools that can help you debugging your code or integrate with tools. There are also a lot of plugins that are meant for optimizing your code in production.
 
@@ -594,7 +594,7 @@ $ [COMMAND]
 > 
 > **Tip:** If you want your command to work across unix and windows platforms then use [`cross-env`](https://www.npmjs.com/package/cross-env).
 
-## Making your own preset
+## Crearea unei presetări
 
 Manually specifying plugins? Plugin options? Environment-based settings? All this configuration might seem like a ton of repetition for all of your projects.
 
@@ -649,15 +649,15 @@ Then simply publish this to npm and you can use it like you would any preset.
 
 * * *
 
-# Babel and other tools
+# Babel şi alte instrumente
 
 Babel is pretty straight forward to setup once you get the hang of it, but it can be rather difficult navigating how to set it up with other tools. However, we try to work closely with other projects in order to make the experience as easy as possible.
 
-## Static analysis tools
+## Instrumente de analiză statică
 
 Newer standards bring a lot of new syntax to the language and static analysis tools are just starting to take advantage of it.
 
-### Linting
+### Verificare cod (Linting)
 
 One of the most popular tools for linting is [ESLint](http://eslint.org), because of this we maintain an offical [`babel-eslint`](https://github.com/babel/babel-eslint) integration.
 
@@ -703,7 +703,7 @@ $ npm run lint
 
 For more information consult the [`babel-eslint`](https://github.com/babel/babel-eslint) or [`eslint`](http://eslint.org) documentation.
 
-### Code Style
+### Stil de cod
 
 JSCS is an extremely popular tool for taking linting a step further into checking the style of the code itself. A core maintainer of both the Babel and JSCS projects ([@hzoo](https://github.com/hzoo)) maintains an official integration with JSCS.
 
@@ -729,13 +729,13 @@ For more information consult the [`babel-jscs`](https://github.com/jscs-dev/babe
 > [WIP]
 -->
 
-### Documentation
+### Documentație
 
 Using Babel, ES2015, and Flow you can infer a lot about your code. Using [documentation.js](http://documentation.js.org) you can generate detailed API documentation very easily.
 
 Documentation.js uses Babel behind the scenes to support all of the latest syntax including Flow annotations in order to declare the types in your code.
 
-## Frameworks
+## Arhitectură (Framework)
 
 All of the major JavaScript frameworks are now focused on aligning their APIs around the future of the language. Because of this, there has been a lot of work going into the tooling.
 
@@ -755,7 +755,7 @@ Most notably the [`babel-plugin-react-transform`](https://github.com/gaearon/bab
 > [WIP]
 -->
 
-## Text Editors and IDEs
+## Editoare de text şi IDEs
 
 Introducing ES2015, JSX, and Flow syntax with Babel can be helpful, but if your text editor doesn't support it then it can be a really bad experience. For this reason you will want to setup your text editor or IDE with a Babel plugin.
 
@@ -772,7 +772,7 @@ Introducing ES2015, JSX, and Flow syntax with Babel can be helpful, but if your 
 
 * * *
 
-# Babel Support
+# Suport Babel
 
 Babel has a very large and quickly growing community, as we grow we want to ensure that people have all the resources they need to be successful. So we provide a number of different channels for getting support.
 
@@ -780,11 +780,11 @@ Remember that across all of these communities we enforce a [Code of Conduct](htt
 
 We are also looking to grow a self-supporting community, for people who stick around and support others. If you find someone asking a question you know the answer to, take a few minutes and help them out. Try your best to be kind and understanding when doing so.
 
-## Babel Forum
+## Forum Babel
 
 [Discourse](http://www.discourse.org) has provided us with a hosted version of their forum software for free (and we love them for it!). If forums are your thing please stop by [discuss.babeljs.io](https://discuss.babeljs.io).
 
-## Babel Chat
+## Discuții Babel
 
 Everyone loves [Slack](https://slack.com). If you're looking for immediate support from the community then come chat with us at [slack.babeljs.io](https://slack.babeljs.io).
 
@@ -794,7 +794,7 @@ Everyone loves [Slack](https://slack.com). If you're looking for immediate suppo
 > [WIP]
 -->
 
-## Babel Issues
+## Probleme de Babel
 
 Babel uses the awesome issue tracker provided by [Phabricator](http://phabricator.org) an open source software development platform that makes GitHub issues a nightmare of the past.
 
@@ -806,7 +806,7 @@ If you want to open a new issue:
   * [Login](https://phabricator.babeljs.io/auth/start/) or [Create an account](https://phabricator.babeljs.io/auth/register/) (You can also login using GitHub, Facebook, Twitter, Google, etc.)
   * [Create a new bug report](https://phabricator.babeljs.io/maniphest/task/create/?projects=PHID-PROJ-2ufzspoyuk4udiwfnzls#R) or [request a new feature](https://phabricator.babeljs.io/maniphest/task/create/?projects=PHID-PROJ-dfaevtocl5zgjtstjijd#R)
 
-### Creating an awesome Babel bug report
+### Raportarea unei probleme Babel
 
 Babel issues can sometimes be very difficult to debug remotely, so we need all the help we can get. Spending a few more minutes crafting a really nice bug report can help get your problem solved significantly faster.
 
@@ -816,4 +816,4 @@ First, try isolating your problem. It's extremely unlikely that every part of yo
 
 * * *
 
-> For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.
+> ***Pentru actualizări, urmăriţi-l pe [@thejameskyle](https://twitter.com/thejameskyle) pe Twitter.***

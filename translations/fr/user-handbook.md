@@ -1,10 +1,10 @@
-# Babel User Handbook
+# Manuel utilisateur de Babel
 
-This document covers everything you ever wanted to know about using [Babel](https://babeljs.io) and related tooling.
+Ce document couvre tout ce que vous avez toujours voulu savoir sur l'utilisation de [Babel](https://babeljs.io) et des outils associés.
 
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
-This handbook is available in other languages, see the [README](/README.md) for a complete list.
+Ce manuel est disponible dans d'autres langues, voir le [README](/README.md) pour une liste complète.
 
 # Sommaire
 
@@ -51,7 +51,7 @@ JavaScript as a language is constantly evolving, with new specs and proposals co
 
 Babel does this by compiling down JavaScript code written with the latest standards into a version that will work everywhere today. This process is known as source-to-source compiling, also known as transpiling.
 
-For example, you could give it can transform the new ES2015 arrow function syntax from this:
+For example, Babel could transform the new ES2015 arrow function syntax from this:
 
 ```js
 const square = n => n * n;
@@ -60,7 +60,7 @@ const square = n => n * n;
 Into the following:
 
 ```js
-var square = function square(n) {
+const square = function square(n) {
   return n * n;
 };
 ```
@@ -73,7 +73,7 @@ Further than that, everything in Babel is simply a plugin and anyone can go out 
 
 Many people do too, the ecosystem that has sprung up around Babel is massive and very diverse. Throughout this handbook I'll be covering both how built-in Babel tools work as well as some useful things from around the community.
 
-> For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.
+> ***Pour les prochaines mises à jour, suivez [@thejameskyle](https://twitter.com/thejameskyle) sur Twitter.***
 
 * * *
 
@@ -816,4 +816,4 @@ First, try isolating your problem. It's extremely unlikely that every part of yo
 
 * * *
 
-> For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.
+> ***Pour les prochaines mises à jour, suivez [@thejameskyle](https://twitter.com/thejameskyle) sur Twitter.***

@@ -69,7 +69,7 @@ BabelはJavaScriptのための汎用的で多目的に使用できるコンパ�
 
 Babelを利用することで、より生産的で、より良いコードを書くためのツールを作ることができます。
 
-> For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.
+> ***For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.***
 
 * * *
 
@@ -1721,4 +1721,4 @@ class Foo {
 }
 ```
 
-> For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.
+> ***For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.***

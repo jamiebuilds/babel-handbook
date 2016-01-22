@@ -1,10 +1,10 @@
-# Babel Plugin Handbook
+# Babel 插件手册
 
 这篇文档涵盖了如何创建 [Babel](https://babeljs.io) [插件](https://babeljs.io/docs/advanced/plugins/)等方面的内容。.
 
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
-This handbook is available in other languages, see the [README](/README.md) for a complete list.
+这本手册提供了多种语言的版本，查看 [自述文件](/README.md) 里的完整列表。
 
 # 目录
 
@@ -69,7 +69,7 @@ Babel 是一个通用的多功能的 JavaScript 编译器。此外它还拥有�
 
 你可以使用 Babel 创建多种类型的工具来帮助你更有效率并且写出更好的程序。
 
-> For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.
+> ***在 Twitter 上关注 [@thejameskyle](https://twitter.com/thejameskyle)，第一时间获取更新。***
 
 * * *
 
@@ -1721,4 +1721,4 @@ class Foo {
 }
 ```
 
-> For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.
+> ***在 Twitter 上关注 [@thejameskyle](https://twitter.com/thejameskyle)，第一时间获取更新。***

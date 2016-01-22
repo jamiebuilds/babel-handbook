@@ -1,22 +1,22 @@
 # Babel Plugin Handbook
 
-Este documento cubre cómo crear [plugins](https://babeljs.io) para [Babel](https://babeljs.io/docs/advanced/plugins/).
+Este documento cubre cómo crear [plugins](https://babeljs.io/docs/advanced/plugins/) para [Babel](https://babeljs.io).
 
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
-This handbook is available in other languages, see the [README](/README.md) for a complete list.
+Este manual está disponible en otros idiomas, mira el archivo [README](/README.md) para ver la lista completa.
 
-# Table of Contents
+# Tabla de contenido
 
-  * [Introduction](#introduction)
-  * [Basics](#basics) 
-      * [ASTs](#asts)
-      * [Stages of Babel](#stages-of-babel)
-      * [Parse](#parse) 
-          * [Lexical Analysis](#lexical-analysis)
-          * [Syntactic Analysis](#syntactic-analysis)
+  * [Introducción](#introduction)
+  * [Conceptos básicos](#basics) 
+      * [Árboles de sintaxis abstracta (AST)](#asts)
+      * [Etapas de Babel](#stages-of-babel)
+      * [Análisis](#parse) 
+          * [Análisis léxico](#lexical-analysis)
+          * [Análisis sintáctico](#syntactic-analysis)
       * [Transform](#transform)
-      * [Generate](#generate)
+      * [Síntesis](#generate)
       * [Traversal](#traversal)
       * [Visitors](#visitors)
       * [Paths](#paths) 
@@ -28,13 +28,13 @@ This handbook is available in other languages, see the [README](/README.md) for 
       * [babylon](#babylon)
       * [babel-traverse](#babel-traverse)
       * [babel-types](#babel-types)
-      * [Definitions](#definitions)
+      * [Definiciones](#definitions)
       * [Builders](#builders)
       * [Validators](#validators)
       * [Converters](#converters)
       * [babel-generator](#babel-generator)
       * [babel-template](#babel-template)
-  * [Writing your first Babel Plugin](#writing-your-first-babel-plugin)
+  * [Escribiendo tu primer plugin para Babel](#writing-your-first-babel-plugin)
   * [Transformation Operations](#transformation-operations) 
       * [Visiting](#visiting)
       * [Check if a node is a certain type](#check-if-a-node-is-a-certain-type)
@@ -61,27 +61,27 @@ This handbook is available in other languages, see the [README](/README.md) for 
       * [Optimizing nested visitors](#optimizing-nested-visitors)
       * [Being aware of nested structures](#being-aware-of-nested-structures)
 
-# Introduction
+# Introducción
 
-Babel is a generic multi-purpose compiler for JavaScript. More than that it is a collection of modules that can be used for many different forms of static analysis.
+Babel es un compilador multi propósito para Javascript. Más que eso es una colección de módulos que pueden ser usados en diferentes formas de análisis estático.
 
-> Static analysis is the process of analyzing code without executing it. (Analysis of code while executing it is known as dynamic analysis). The purpose of static analysis varies greatly. It can be used for linting, compiling, code highlighting, code transformation, optimization, minification, and much more.
+> Análisis estático es el proceso de analizar código sin ejecutarlo. (Análisis de código durante la ejecución se conoce como análisis dinámico). El propósito del análisis estático varía enormemente. Puede ser utilizado para compilar, resaltar ó transformar código. También en procesos de linting, optimización ó minificación, entre muchos otros.
 
-You can use Babel to build many different types of tools that can help you be more productive and write better programs.
+Babel puede ser usado para construir diferentes tipos de herramientas, las cuales que nos pueden ayudar a ser más productivos y escribir mejores programas.
 
-> For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.
+> ***Para futuras actualizaciones, sigue a [@thejameskyle](https://twitter.com/thejameskyle) en Twitter.***
 
 * * *
 
-# Basics
+# Conceptos básicos
 
-Babel is a JavaScript compiler, specifically a source-to-source compiler, often called a "transpiler". This means that you give Babel some JavaScript code, Babel modifies the code, and generates the new code back out.
+Babel es un compilador de JavaScript, específicamente un compilador de fuente a fuente, a menudo llamado "transpiler". Esto significa le entregas a Babel código en JavaScript, Babel lo modifica y devuelve el código nuevo creado en Javascript.
 
 ## ASTs
 
-Each of these steps involve creating or working with an [Abstract Syntax Tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree) or AST.
+Cada uno de estos pasos implican crear o trabajar con un [Árbol de sintaxis abstracta](https://en.wikipedia.org/wiki/Abstract_syntax_tree) ó AST por sus siglas en inglés.
 
-> Babel uses an AST modified from [ESTree](https://github.com/estree/estree), with the core spec located [here](https://github.com/babel/babel/blob/master/doc/ast/spec.md).
+> Babel utiliza un AST modificado desde [Estree alberga centro](https://github.com/estree/estree), las especificaciones bases se encuentran [aquí](https://github.com/babel/babel/blob/master/doc/ast/spec.md).
 
 ```js
 function square(n) {
@@ -89,9 +89,9 @@ function square(n) {
 }
 ```
 
-> Check out [AST Explorer](http://astexplorer.net/) to get a better sense of the AST nodes. [Here](http://astexplorer.net/#/Z1exs6BWMq) is a link to it with the example code above pasted in.
+> Si deseas tener una mejor idea de los nodos AST, visita [AST Explorer](http://astexplorer.net/). [Aquí](http://astexplorer.net/#/Z1exs6BWMq) hay un enlace que contiene el código del ejemplo anterior.
 
-This same program can be represented as a list like this:
+Este mismo programa se puede representar en una lista como esta:
 
 ```md
 - FunctionDeclaration:
@@ -116,7 +116,7 @@ This same program can be represented as a list like this:
                   - name: n
 ```
 
-Or as a JavaScript Object like this:
+O como un objeto de JavaScript:
 
 ```js
 {
@@ -150,7 +150,7 @@ Or as a JavaScript Object like this:
 }
 ```
 
-You'll notice that each level of the AST has a similar structure:
+Te darás cuenta de que cada nivel del AST tiene una estructura similar:
 
 ```js
 {
@@ -177,11 +177,11 @@ You'll notice that each level of the AST has a similar structure:
 }
 ```
 
-> Note: Some properties have been removed for simplicity.
+> Nota: Algunas propiedades se han eliminado por simplicidad.
 
-Each of these are known as a **Node**. An AST can be made up of a single Node, or hundreds if not thousands of Nodes. Together they are able to describe the syntax of a program that can be used for static analysis.
+Cada uno de estos se conocen como un **Nodo**. Un AST puede ser formado por un sólo nodo, ó cientos si no miles de nodos. Juntos tienen la capacidad de describir la sintaxis de un programa que puede utilizarse para análisis estático.
 
-Every Node has this interface:
+Cada nodo tiene esta interfaz:
 
 ```typescript
 interface Node {
@@ -189,9 +189,9 @@ interface Node {
 }
 ```
 
-The `type` field is a string representing the type of Node the object is (ie. `"FunctionDeclaration"`, `"Identifier"`, or `"BinaryExpression"`). Each type of Node defines an additional set of properties that describe that particular node type.
+El campo `tipo` es una cadena que representa que tipo de nodo es el objeto. Por ejemplo: `"FunctionDeclaration"`, `"Identifier"`, or `"BinaryExpression"`). Cada tipo de nodo define un conjunto adicional de propiedades que describen ese tipo de nodo en particular.
 
-There are additional properties on every Node that Babel generates which describe the position of the Node in the original source code.
+Hay propiedades adicionales en cada nodo que Babel genera para describir la posición del nodo en el código fuente original.
 
 ```js
 {
@@ -212,21 +212,21 @@ There are additional properties on every Node that Babel generates which describ
 }
 ```
 
-These properties `start`, `end`, `loc`, appear in every single Node.
+Estas propiedades ` start `, `end`, `loc`, aparecen en cada uno de los nodos.
 
-## Stages of Babel
+## Etapas de Babel
 
-The three primary stages of Babel are **parse**, **transform**, **generate**.
+Las tres etapas principales de Babel son **analizar**, **transformar**, **generar**.
 
-### Parse
+### Analizar
 
-The **parse** stage, takes code and outputs an AST. There are two phases of parsing in Babel: [**Lexical Analysis**](https://en.wikipedia.org/wiki/Lexical_analysis) and [**Syntactic Analysis**](https://en.wikipedia.org/wiki/Parsing).
+La etapa de **análisis**, recibe código a la entrada y entrega un AST a la salida. Hay dos fases de análisis en Babel: [**Análisis léxico**](https://en.wikipedia.org/wiki/Lexical_analysis) y [**Análisis sintáctico**](https://en.wikipedia.org/wiki/Parsing).
 
-#### Lexical Analysis
+#### Análisis léxico
 
-Lexical Analysis will take a string of code and turn it into a stream of **tokens**.
+El análisis léxico recibe una cadena de código y lo convierte en una secuencia de **tokens**.
 
-You can think of tokens as a flat array of language syntax pieces.
+Podemos pensar los tokens como una matriz plana, en la cual cada elemento representa una parte de sintaxis del lenguaje.
 
 ```js
 n * n;
@@ -241,7 +241,7 @@ n * n;
 ]
 ```
 
-Each of the `type`s here have a set of properties describing the token:
+Aquí cada uno de los `tipo`s tienen un conjunto de propiedades que describen el token:
 
 ```js
 {
@@ -262,27 +262,27 @@ Each of the `type`s here have a set of properties describing the token:
 }
 ```
 
-Like AST nodes they also have a `start`, `end`, and `loc`.
+Así como los nodos AST, estos también tienen `start`, `end` y `loc`.
 
-#### Syntactic Analysis
+#### Análisis sintáctico
 
-Syntactic Analysis will take a stream of tokens and turn it into an AST representation. Using the information in the tokens, this phase will reformat them as an AST which represents the structure of the code in a way that makes it easier to work with.
+El análisis sintáctico recibe una secuencia de tokens y lo convierten en una representación de AST. Usando la información de los tokens, esta fase les cambia el formato y los representa en un AST. El cual representa la estructura del código de una manera más sencilla para trabajar.
 
-### Transform
+### Transformar
 
-The [transform](https://en.wikipedia.org/wiki/Program_transformation) stage takes an AST and traverses through it, adding, updating, and removing nodes as it goes along. This is by far the most complex part of Babel or any compiler. This is where plugins operate and so it will be the subject of most of this handbook. So we won't dive too deep right now.
+La etapa de [transformación](https://en.wikipedia.org/wiki/Program_transformation) toma un AST y cruza a través de él, agregando, actualizando y quitando nodos a medida que va avanzando. Esta es, por lejos, la parte más compleja de Babel o cualquier otro compilador. Aquí es donde los plugins operan, así que este será el tema pricncipal de este manual. Por ahora no lo analizaremos en detalle.
 
-### Generate
+### Generar
 
-The [code generation](https://en.wikipedia.org/wiki/Code_generation_(compiler)) stage takes the final AST and turns in back into a string of code, also creating [source maps](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/).
+La etapa de [generación de código](https://en.wikipedia.org/wiki/Code_generation_(compiler)) toma el AST final y lo convierte nuevamente en una cadena de código, creando además [mapas de fuente](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/).
 
-Code generation is pretty simple: you traverse through the AST depth-first, building a string that represents the transformed code.
+Generar el código es bastante simple: se recorre a través del AST, empezando en lo más profundo, construyendo una cadena que representa el código transformado.
 
-## Traversal
+## Recorrido
 
-When you want to transform an AST you have to [traverse the tree](https://en.wikipedia.org/wiki/Tree_traversal) recursively.
+Cuando se desea transformar un AST es necesario [recorrer el árbol](https://en.wikipedia.org/wiki/Tree_traversal) de manera recursiva.
 
-Say we have the type `FunctionDeclaration`. It has a few properties: `id`, `params`, and `body`. Each of them have nested nodes.
+Digamos que tenemos el tipo `FunctionDeclaration`. Este tiene unas propiedades: `id`, `params` y `body`. Cada propiedad tiene nodos anidados.
 
 ```js
 {
@@ -316,21 +316,21 @@ Say we have the type `FunctionDeclaration`. It has a few properties: `id`, `para
 }
 ```
 
-So we start at the `FunctionDeclaration` and we know its internal properties so we visit each of them and their children in order.
+Así que empezamos en `FunctionDeclaration`. Sabemos sus propiedades internas, entonces visitamos ordenadamente cada una de ellas y sus respectivos hijos.
 
-Next we go to `id` which is an `Identifier`. `Identifier`s don't have any child node properties so we move on.
+A continuación vamos a `id` que es un ` Identifier`. Los ` Identifier`s no tienen nodos hijos en sus propiedades por lo tanto continuamos el recorrido.
 
-After that is `params` which is an array of nodes so we visit each of them. In this case it's a single node which is also an `Identifier` so we move on.
+Después encontramos ` params ` que es una arreglo de nodos así que visitamos cada uno de ellos. En este caso es sólo un nodo que es también un `Identifier`, entonces seguimos.
 
-Then we hit `body` which is a `BlockStatement` with a property `body` that is an array of Nodes so we go to each of them.
+Entonces encontramos `body` que es un `BlockStatement` con una propiedad `body` que es un arreglo, por lo tanto vamos a cada uno de ellos.
 
-The only item here is a `ReturnStatement` node which has an `argument`, we go to the `argument` and find a `BinaryExpression`.
+Aquí el único elemento es el nodo `ReturnStatement` que tiene un `argument`. Vamos a `argument` y encontramos una `BinaryExpression`.
 
-The `BinaryExpression` has an `operator`, a `left`, and a `right`. The operator isn't a node, just a value, so we don't go to it, and instead just visit `left` and `right`.
+La `BinaryExpression` tiene tres propiedades ` operator`, `left` y `right`. El operador no es un nodo, es sólo un valor, entonces no lo visitamos. En cambio, vistamos `left` y `right`.
 
-This traversal process happens throughout the Babel transform stage.
+Este proceso de recorrido, en Babel, pasa a lo largo de la etapa de transformación.
 
-### Visitors
+### Visitantes
 
 When we talk about "going" to a node, we actually mean we are **visiting** them. The reason we use that term is because there is this concept of a [**visitor**](https://en.wikipedia.org/wiki/Visitor_pattern).
 
@@ -812,7 +812,7 @@ traverse(ast, {
 });
 ```
 
-### Definitions
+### Definiciones
 
 Babel Types has definitions for every single type of node, with information on what properties belong where, what values are valid, how to build that node, how the node should be traversed, and aliases of the Node.
 
@@ -988,7 +988,7 @@ console.log(generate(ast).code);
 var myModule = require("my-module");
 ```
 
-# Writing your first Babel Plugin
+# Escribiendo tu primer plugin para Babel
 
 Now that you're familiar with all the basics of Babel, let's tie it together with the plugin API.
 
@@ -1721,4 +1721,4 @@ class Foo {
 }
 ```
 
-> For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.
+> ***Para futuras actualizaciones, sigue a [@thejameskyle](https://twitter.com/thejameskyle) en Twitter.***

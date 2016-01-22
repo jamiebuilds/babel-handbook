@@ -69,7 +69,7 @@ Babel est un compilateur multi-purpose générique pour JavaScript. Plus que cel
 
 Vous pouvez utiliser Babel pour construire différents types d'outils qui peuvent vous aider à être plus productifs et d'écrire de bonnes programmes.
 
-> For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.
+> ***Pour les prochaines mises à jour, suivez [@thejameskyle](https://twitter.com/thejameskyle) sur Twitter.***
 
 * * *
 
@@ -1721,4 +1721,4 @@ class Foo {
 }
 ```
 
-> For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.
+> ***Pour les prochaines mises à jour, suivez [@thejameskyle](https://twitter.com/thejameskyle) sur Twitter.***

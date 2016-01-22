@@ -69,7 +69,7 @@ Babel - это многоцелевой компилятор общего наз
 
 Вы можете использовать Babel для создания множества различных инструментов, которые помогут вам стать более продуктивным и писать лучшие программы.
 
-> For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.
+> ***For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.***
 
 * * *
 
@@ -1721,4 +1721,4 @@ class Foo {
 }
 ```
 
-> For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.
+> ***For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.***

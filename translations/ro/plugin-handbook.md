@@ -1,10 +1,10 @@
-# Babel Plugin Handbook
+# Manualul pentru Plugin-uri Babel
 
 Acest document descrie cum se pot crea [plugin-uri](https://babeljs.io/docs/advanced/plugins/) pentru [Babel](https://babeljs.io).
 
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
-This handbook is available in other languages, see the [README](/README.md) for a complete list.
+Acest manual este disponibil și în alte limbi, a se vedea [README](/README.md) pentru o listă completă.
 
 # Cuprins
 
@@ -69,7 +69,7 @@ Babel este un compilator generic multi-scop pentru JavaScript. Mai mult decât a
 
 Puteți utiliza Babel pentru a construi diverse tipuri de instrumente care vă pot ajuta să fiți mai productivi și pentru a scrie programe mai bune.
 
-> For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.
+> ***Pentru actualizări, urmăriţi-l pe [@thejameskyle](https://twitter.com/thejameskyle) pe Twitter.***
 
 * * *
 
@@ -992,7 +992,7 @@ var myModule = require("my-module");
 
 Acum că sunteţi familiarizați cu toate elementele de bază din Babel, haideţi să le utilizăm împreună cu API-ul pentru plugin-uri.
 
-Start off with a `function` that gets passed the current [`babel`](https://github.com/babel/babel/tree/master/packages/babel-core) object.
+Începe cu o `funcţie` care primește obiectul [`babel`](https://github.com/babel/babel/tree/master/packages/babel-core) curent.
 
 ```js
 export default function(babel) {
@@ -1721,4 +1721,4 @@ class Foo {
 }
 ```
 
-> For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.
+> ***Pentru actualizări, urmăriţi-l pe [@thejameskyle](https://twitter.com/thejameskyle) pe Twitter.***

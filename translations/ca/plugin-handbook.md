@@ -28,48 +28,48 @@ This handbook is available in other languages, see the [README](/README.md) for 
       * [babylon](#babylon)
       * [babel-traverse](#babel-traverse)
       * [babel-types](#babel-types)
-      * [Definitions](#definitions)
+      * [Definicions](#definitions)
       * [Builders](#builders)
-      * [Validators](#validators)
-      * [Converters](#converters)
+      * [Validadors](#validators)
+      * [Convertidors](#converters)
       * [babel-generator](#babel-generator)
       * [babel-template](#babel-template)
-  * [Writing your first Babel Plugin](#writing-your-first-babel-plugin)
-  * [Transformation Operations](#transformation-operations) 
+  * [Escriure el primer Plugin de Babel](#writing-your-first-babel-plugin)
+  * [Operacions de transformació](#transformation-operations) 
       * [Visiting](#visiting)
-      * [Check if a node is a certain type](#check-if-a-node-is-a-certain-type)
-      * [Check if an identifier is referenced](#check-if-an-identifier-is-referenced)
-      * [Manipulation](#manipulation)
-      * [Replacing a node](#replacing-a-node)
-      * [Replacing a node with multiple nodes](#replacing-a-node-with-multiple-nodes)
-      * [Replacing a node with a source string](#replacing-a-node-with-a-source-string)
+      * [Comprovar si un node és d'un cert tipus](#check-if-a-node-is-a-certain-type)
+      * [Comprovar si es fa referència un identificador](#check-if-an-identifier-is-referenced)
+      * [Manipulació](#manipulation)
+      * [Reemplaçar un node](#replacing-a-node)
+      * [Reemplaçar un node amb diversos nodes](#replacing-a-node-with-multiple-nodes)
+      * [Reemplaçar un node amb un string de codi](#replacing-a-node-with-a-source-string)
       * [Inserting a sibling node](#inserting-a-sibling-node)
-      * [Removing a node](#removing-a-node)
-      * [Replacing a parent](#replacing-a-parent)
-      * [Removing a parent](#removing-a-parent)
-      * [Scope](#scope)
+      * [Eliminar un node](#removing-a-node)
+      * [Reemplaçar un pare](#replacing-a-parent)
+      * [Eliminar un pare](#removing-a-parent)
+      * [Àmbit d'aplicació](#scope)
       * [Checking if a local variable is bound](#checking-if-a-local-variable-is-bound)
-      * [Generating a UID](#generating-a-uid)
+      * [Generar un UID](#generating-a-uid)
       * [Pushing a variable declaration to a parent scope](#pushing-a-variable-declaration-to-a-parent-scope)
       * [Rename a binding and its references](#rename-a-binding-and-its-references)
-  * [Plugin Options](#plugin-options)
+  * [Opcions de plugin](#plugin-options)
   * [Building Nodes](#building-nodes)
-  * [Best Practices](#best-practices) 
-      * [Avoid traversing the AST as much as possible](#avoid-traversing-the-ast-as-much-as-possible)
+  * [Millors pràctiques](#best-practices) 
+      * [Evitar travessar l'AST tant com sigui possible](#avoid-traversing-the-ast-as-much-as-possible)
       * [Merge visitors whenever possible](#merge-visitors-whenever-possible)
       * [Do not traverse when manual lookup will do](#do-not-traverse-when-manual-lookup-will-do)
       * [Optimizing nested visitors](#optimizing-nested-visitors)
       * [Being aware of nested structures](#being-aware-of-nested-structures)
 
-# Introduction
+# Introducció
 
-Babel is a generic multi-purpose compiler for JavaScript. More than that it is a collection of modules that can be used for many different forms of static analysis.
+Babel és un compilador genèric polivalent per a JavaScript. Més que això, és una col·lecció de mòduls que poden ser utilitzats per moltes formes diferents d'anàlisi estàtic.
 
-> Static analysis is the process of analyzing code without executing it. (Analysis of code while executing it is known as dynamic analysis). The purpose of static analysis varies greatly. It can be used for linting, compiling, code highlighting, code transformation, optimization, minification, and much more.
+> L'anàlisi estàtic és el procés d'analitzar el codi sense executar-lo. (anàlisi de codi i executar-lo s'en diu anàlisi dinàmic). The purpose of static analysis varies greatly. It can be used for linting, compiling, code highlighting, code transformation, optimization, minification, and much more.
 
 You can use Babel to build many different types of tools that can help you be more productive and write better programs.
 
-> For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.
+> ***For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.***
 
 * * *
 
@@ -812,7 +812,7 @@ traverse(ast, {
 });
 ```
 
-### Definitions
+### Definicions
 
 Babel Types has definitions for every single type of node, with information on what properties belong where, what values are valid, how to build that node, how the node should be traversed, and aliases of the Node.
 
@@ -876,7 +876,7 @@ a * b
 
 Builders will also validate the nodes they are creating and throw descriptive errors if used improperly. Which leads into the next type of method.
 
-### Validators
+### Validadors
 
 The definition for `BinaryExpression` also includes information on the `fields` of a node and how to validate them.
 
@@ -914,7 +914,7 @@ t.assertBinaryExpression(maybeBinaryExpressionNode, { operator: "*" });
 // Error: Expected type "BinaryExpression" with option { "operator": "*" }
 ```
 
-### Converters
+### Convertidors
 
 > [WIP]
 
@@ -988,7 +988,7 @@ console.log(generate(ast).code);
 var myModule = require("my-module");
 ```
 
-# Writing your first Babel Plugin
+# Escriure el primer Plugin de Babel
 
 Now that you're familiar with all the basics of Babel, let's tie it together with the plugin API.
 
@@ -1113,11 +1113,11 @@ Awesome! Our very first Babel plugin.
 
 * * *
 
-# Transformation Operations
+# Operacions de transformació
 
 ## Visiting
 
-### Check if a node is a certain type
+### Comprovar si un node és d'un cert tipus
 
 If you want to check what the type of a node is, the preferred way to do so is:
 
@@ -1153,7 +1153,7 @@ BinaryExpression(path) {
 }
 ```
 
-### Check if an identifier is referenced
+### Comprovar si es fa referència un identificador
 
 ```js
 Identifier(path) {
@@ -1173,9 +1173,9 @@ Identifier(path) {
 }
 ```
 
-## Manipulation
+## Manipulació
 
-### Replacing a node
+### Reemplaçar un node
 
 ```js
 BinaryExpression(path) {
@@ -1192,7 +1192,7 @@ BinaryExpression(path) {
   }
 ```
 
-### Replacing a node with multiple nodes
+### Reemplaçar un node amb diversos nodes
 
 ```js
 ReturnStatement(path) {
@@ -1215,7 +1215,7 @@ ReturnStatement(path) {
 
 > **Note:** When replacing an expression with multiple nodes, they must be statements. This is because Babel uses heuristics extensively when replacing nodes which means that you can do some pretty crazy transformations that would be extremely verbose otherwise.
 
-### Replacing a node with a source string
+### Reemplaçar un node amb un string de codi
 
 ```js
 FunctionDeclaration(path) {
@@ -1254,7 +1254,7 @@ FunctionDeclaration(path) {
 
 > **Note:** This should always be a statement or an array of statements. This uses the same heuristics mentioned in [Replacing a node with multiple nodes](#replacing-a-node-with-multiple-nodes).
 
-### Removing a node
+### Eliminar un node
 
 ```js
 FunctionDeclaration(path) {
@@ -1268,7 +1268,7 @@ FunctionDeclaration(path) {
 - }
 ```
 
-### Replacing a parent
+### Reemplaçar un pare
 
 ```js
 BinaryExpression(path) {
@@ -1285,7 +1285,7 @@ BinaryExpression(path) {
   }
 ```
 
-### Removing a parent
+### Eliminar un pare
 
 ```js
 BinaryExpression(path) {
@@ -1299,7 +1299,7 @@ BinaryExpression(path) {
   }
 ```
 
-## Scope
+## Àmbit d'aplicació
 
 ### Checking if a local variable is bound
 
@@ -1323,7 +1323,7 @@ FunctionDeclaration(path) {
 }
 ```
 
-### Generating a UID
+### Generar un UID
 
 This will generate an identifier that doesn't collide with any locally defined variables.
 
@@ -1390,7 +1390,7 @@ FunctionDeclaration(path) {
 
 * * *
 
-# Plugin Options
+# Opcions de plugin
 
 If you would like to let your users customize the behavior of your Babel plugin you can accept plugin specific options which users can specify like this:
 
@@ -1535,11 +1535,11 @@ You can find all of the actual [definitions here](https://github.com/babel/babel
 
 * * *
 
-# Best Practices
+# Millors pràctiques
 
 > I'll be working on this section over the coming weeks.
 
-## Avoid traversing the AST as much as possible
+## Evitar travessar l'AST tant com sigui possible
 
 Traversing the AST is expensive, and it's easy to accidentally traverse the AST more than necessary. This could be thousands if not tens of thousands of extra operations.
 
@@ -1721,4 +1721,4 @@ class Foo {
 }
 ```
 
-> For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.
+> ***For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.***

@@ -4,11 +4,11 @@ Dieses Dokument beschreibt das Erstellen von [Babel](https://babeljs.io) [Plugin
 
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
-This handbook is available in other languages, see the [README](/README.md) for a complete list.
+Das Handbuch ist in verschiedenen Sprachen verfügbar. Eine vollständige Liste findest du im [README](/README.md).
 
 # Table of Contents
 
-  * [Introduction](#introduction)
+  * [Einführung](#introduction)
   * [Basics](#basics) 
       * [ASTs](#asts)
       * [Stages of Babel](#stages-of-babel)
@@ -61,7 +61,7 @@ This handbook is available in other languages, see the [README](/README.md) for 
       * [Optimizing nested visitors](#optimizing-nested-visitors)
       * [Being aware of nested structures](#being-aware-of-nested-structures)
 
-# Introduction
+# Einführung
 
 Babel ist ein generischer Compiler für JavaScript. Des weiteren ist es eine Sammlung von Modulen, welche für vielfältige Arten von statischer Analyse benutzt werden können.
 
@@ -69,7 +69,7 @@ Babel ist ein generischer Compiler für JavaScript. Des weiteren ist es eine Sam
 
 Babel kann zur erstellung von verschiedenen Arten von Tools verwedet werden um produktiver zu werden und bessere Programme zu schreiben.
 
-> For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.
+> ***For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.***
 
 * * *
 
@@ -282,7 +282,7 @@ Die Code Generierung ist ziemlich einfach: Der AST wird mit einer Tiefensuche tr
 
 Um einen AST zu transformieren muss der Baum rekursiv [durchlaufen](https://en.wikipedia.org/wiki/Tree_traversal) werden.
 
-Say we have the type `FunctionDeclaration`. It has a few properties: `id`, `params`, and `body`. Each of them have nested nodes.
+Angenommen, wir haben den Typ `FunctionDeclaration`. Er hat folgende Eigenschaften: `Id`, `Params` und `Körper`. Jede diese Eigenschaften hat verschachtelte Knoten.
 
 ```js
 {
@@ -1721,4 +1721,4 @@ class Foo {
 }
 ```
 
-> For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.
+> ***For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.***

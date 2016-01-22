@@ -69,7 +69,7 @@ Babel adalah compiler JavaScript umum yang multifungsi. Selebihnya, Babel adalah
 
 Anda dapat menggunakan Babel untuk membangun beberapa tipe perkakas yang dapat membantu anda semakun produktif dan menulis program lebih baik.
 
-> For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.
+> ***For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.***
 
 * * *
 
@@ -1721,4 +1721,4 @@ class Foo {
 }
 ```
 
-> For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.
+> ***For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.***
