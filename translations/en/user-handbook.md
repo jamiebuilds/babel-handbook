@@ -832,7 +832,7 @@ checking the style of the code itself. A core maintainer of both the Babel and
 JSCS projects ([@hzoo](https://github.com/hzoo)) maintains an official
 integration with JSCS.
 
-Even better, this integration now lives within JSCS itself under the `--exnext`
+Even better, this integration now lives within JSCS itself under the `--esnext`
 option. So integrating Babel is as easy as:
 
 ```
