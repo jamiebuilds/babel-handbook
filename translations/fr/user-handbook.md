@@ -9,7 +9,7 @@ Ce manuel est disponible dans d'autres langues, voir le [README](/README.md) pou
 # Sommaire
 
   * [Introduction](#introduction)
-  * [Setting up Babel](#setting-up-babel) 
+  * [Mise en place de Babel](#setting-up-babel) 
       * [`babel-cli`](#babel-cli)
       * [Running Babel CLI from within a project](#running-babel-cli-from-within-a-project)
       * [`babel-register`](#babel-register)
@@ -45,39 +45,39 @@ Ce manuel est disponible dans d'autres langues, voir le [README](/README.md) pou
 
 # Introduction
 
-Babel is a generic multi-purpose compiler for JavaScript. Using Babel you can use (and create) the next generation of JavaScript, as well as the next generation of JavaScript tooling.
+Babel est un compilateur générique et multi-usage pour JavaScript. L'utilisation de Babel, vous permet d'utiliser (et de créer) la prochaine génération de JavaScript, aussi bien que la prochaine génération des outils JavaScript.
 
-JavaScript as a language is constantly evolving, with new specs and proposals coming out with new features all the time. Using Babel will allow you to use many of these features years before they are available everywhere.
+JavaScript est un langage en constante évolution, avec sans cesse de nouvelles spécifications, propositions et fonctionnalités. L'usage de Babel vous permettra d'utiliser un grand nombre de ces fonctionnalités des années avant qu'elles ne soient disponibles partout.
 
-Babel does this by compiling down JavaScript code written with the latest standards into a version that will work everywhere today. This process is known as source-to-source compiling, also known as transpiling.
+Babel fait cela en compilant le code JavaScript écrit avec le dernier standard dans une version fonctionnant partout aujourd'hui. Ce processus est connu comme de la compilation de source à source, aussi connu sous le nom de transpilation.
 
-For example, Babel could transform the new ES2015 arrow function syntax from this:
+Par exemple, Babel pourrait transformer la syntaxe de la nouvelle fonction fléchée, de ceci:
 
 ```js
 const square = n => n * n;
 ```
 
-Into the following:
+En cela:
 
 ```js
 const square = function square(n) {
-  return n * n;
+   return n * n;
 };
 ```
 
-However, Babel can do much more than this as Babel has support for syntax extensions such as the JSX syntax for React and Flow syntax support for static type checking.
+Cependant, Babel peut faire beaucoup plus, comme le support des extensions de syntaxe telles que JSX pour React et le support de Flow pour la vérification de type statique.
 
-Further than that, everything in Babel is simply a plugin and anyone can go out and create their own plugins using the full power of Babel to do whatever they want.
+De plus, dans Babel tout est composé de module, et n'importe qui peut créer le sien en utilisant toute la puissance de Babel pour en faire ce qu'il souhaite.
 
-*Even further* than that, Babel is broken down into a number of core modules that anyone can use to build the next generation of JavaScript tooling.
+*Bien plus encore*, Babel est décomposé en un certain nombre de modules de base que n'importe qui peut utiliser pour construire la prochaine génération d'outils pour JavaScript.
 
-Many people do too, the ecosystem that has sprung up around Babel is massive and very diverse. Throughout this handbook I'll be covering both how built-in Babel tools work as well as some useful things from around the community.
+Beaucoup de gens l'ont déjà fait, et l'écosystème qui a surgi autour de Babel est massif et très diversifiée. Tout au long de ce guide, que je vais couvrir ces deux aspects, comment les outils intégrés de Babel fonctionnent ainsi que des choses utiles provenant de la communauté.
 
 > ***Pour les prochaines mises à jour, suivez [@thejameskyle](https://twitter.com/thejameskyle) sur Twitter.***
 
 * * *
 
-# Setting up Babel
+# Mise en place de Babel
 
 Since the JavaScript community has no single build tool, framework, platform, etc., Babel has official integrations for all of the major tooling. Everything from Gulp to Browserify, from Ember to Meteor, no matter what your setup looks like there is probably an official integration.
 

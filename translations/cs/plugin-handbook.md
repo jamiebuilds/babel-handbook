@@ -1,85 +1,85 @@
-# Babel Plugin Handbook
+# Příručka pro pluginy Babelu
 
-This document covers how to create [Babel](https://babeljs.io) [plugins](https://babeljs.io/docs/advanced/plugins/).
+Tento dokument popisuje, jak vytvořit [Babel](https://babeljs.io) [pluginy](https://babeljs.io/docs/advanced/plugins/).
 
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
-This handbook is available in other languages, see the [README](/README.md) for a complete list.
+Tato příručka je k dispozici i v dalších jazycích, úplný seznam naleznete v [souboru README](/README.md).
 
-# Table of Contents
+# Obsah
 
-  * [Introduction](#introduction)
-  * [Basics](#basics) 
-      * [ASTs](#asts)
-      * [Stages of Babel](#stages-of-babel)
-      * [Parse](#parse) 
-          * [Lexical Analysis](#lexical-analysis)
-          * [Syntactic Analysis](#syntactic-analysis)
-      * [Transform](#transform)
-      * [Generate](#generate)
-      * [Traversal](#traversal)
-      * [Visitors](#visitors)
-      * [Paths](#paths) 
-          * [Paths in Visitors](#paths-in-visitors)
-      * [State](#state)
-      * [Scopes](#scopes) 
-          * [Bindings](#bindings)
+  * [Úvod](#introduction)
+  * [Základy](#basics) 
+      * [AST](#asts)
+      * [Fáze Babelu](#stages-of-babel)
+      * [Analýza](#parse) 
+          * [Lexikální analýza](#lexical-analysis)
+          * [Syntaktická analýza](#syntactic-analysis)
+      * [Transformace](#transform)
+      * [Generování](#generate)
+      * [Průchod](#traversal)
+      * [Inspektoři](#visitors)
+      * [Cesty](#paths) 
+          * [Cesty v inspektorech](#paths-in-visitors)
+      * [Stav](#state)
+      * [Rozsahy](#scopes) 
+          * [Vazby](#bindings)
   * [API](#api) 
       * [babylon](#babylon)
       * [babel-traverse](#babel-traverse)
       * [babel-types](#babel-types)
-      * [Definitions](#definitions)
+      * [Definice](#definitions)
       * [Builders](#builders)
-      * [Validators](#validators)
+      * [Validátory](#validators)
       * [Converters](#converters)
       * [babel-generator](#babel-generator)
       * [babel-template](#babel-template)
-  * [Writing your first Babel Plugin](#writing-your-first-babel-plugin)
-  * [Transformation Operations](#transformation-operations) 
-      * [Visiting](#visiting)
-      * [Check if a node is a certain type](#check-if-a-node-is-a-certain-type)
-      * [Check if an identifier is referenced](#check-if-an-identifier-is-referenced)
-      * [Manipulation](#manipulation)
-      * [Replacing a node](#replacing-a-node)
-      * [Replacing a node with multiple nodes](#replacing-a-node-with-multiple-nodes)
+  * [Psaní prvního pluginu pro Babel](#writing-your-first-babel-plugin)
+  * [Transformační operace](#transformation-operations) 
+      * [Inspekce](#visiting)
+      * [Kontrola, zda uzel je určitého typu](#check-if-a-node-is-a-certain-type)
+      * [Kontrola, zda je identifikátor referencován](#check-if-an-identifier-is-referenced)
+      * [Manipulace](#manipulation)
+      * [Nahrazení uzlu](#replacing-a-node)
+      * [Nahrazení uzlu více uzly](#replacing-a-node-with-multiple-nodes)
       * [Replacing a node with a source string](#replacing-a-node-with-a-source-string)
-      * [Inserting a sibling node](#inserting-a-sibling-node)
-      * [Removing a node](#removing-a-node)
-      * [Replacing a parent](#replacing-a-parent)
-      * [Removing a parent](#removing-a-parent)
-      * [Scope](#scope)
-      * [Checking if a local variable is bound](#checking-if-a-local-variable-is-bound)
-      * [Generating a UID](#generating-a-uid)
-      * [Pushing a variable declaration to a parent scope](#pushing-a-variable-declaration-to-a-parent-scope)
+      * [Vložení uzlu na stejnou úroveň](#inserting-a-sibling-node)
+      * [Odebrání uzlu](#removing-a-node)
+      * [Náhrada předka](#replacing-a-parent)
+      * [Odstranění předka](#removing-a-parent)
+      * [Rozsah](#scope)
+      * [Kontrola, zda je lokální proměnná vázána](#checking-if-a-local-variable-is-bound)
+      * [Generování UID](#generating-a-uid)
+      * [Strčení deklarace proměnné do nadřazeného rozsahu](#pushing-a-variable-declaration-to-a-parent-scope)
       * [Rename a binding and its references](#rename-a-binding-and-its-references)
   * [Plugin Options](#plugin-options)
   * [Building Nodes](#building-nodes)
-  * [Best Practices](#best-practices) 
-      * [Avoid traversing the AST as much as possible](#avoid-traversing-the-ast-as-much-as-possible)
-      * [Merge visitors whenever possible](#merge-visitors-whenever-possible)
+  * [Osvědčené postupy](#best-practices) 
+      * [Vyhněte se co nejvíce procházení AST](#avoid-traversing-the-ast-as-much-as-possible)
+      * [Slučujte inspektory kdykoli je to možné](#merge-visitors-whenever-possible)
       * [Do not traverse when manual lookup will do](#do-not-traverse-when-manual-lookup-will-do)
-      * [Optimizing nested visitors](#optimizing-nested-visitors)
-      * [Being aware of nested structures](#being-aware-of-nested-structures)
+      * [Optimalizace vnořených inspektorů](#optimizing-nested-visitors)
+      * [Uvědomte si vnořené struktury](#being-aware-of-nested-structures)
 
-# Introduction
+# Úvod
 
-Babel is a generic multi-purpose compiler for JavaScript. More than that it is a collection of modules that can be used for many different forms of static analysis.
+Babel je obecný víceúčelový kompilátor pro JavaScript. Navíc je to kolekce modulů, které mohou být použity pro mnoho různých forem statické analýzy.
 
-> Static analysis is the process of analyzing code without executing it. (Analysis of code while executing it is known as dynamic analysis). The purpose of static analysis varies greatly. It can be used for linting, compiling, code highlighting, code transformation, optimization, minification, and much more.
+> Statická analýza je proces analýzy kódu bez jeho spuštění. (Analýza kódu s jeho spuštěním se nazývá Dynamická analýza). Účel statické analýzy může být různý. Používá se pro kontrolu, kompilaci, zvýrazňování, transformaci, optimalizaci, minimalizaci kódu a mnoho dalšího.
 
-You can use Babel to build many different types of tools that can help you be more productive and write better programs.
+Babel můžete použít k vybudování mnoha různých typů nástrojů, které vám pomohou být produktivnější a psát lepší programy.
 
-> ***For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.***
+> ***Aktualizace sledujte na Twitteru: [@thejameskyle](https://twitter.com/thejameskyle).***
 
 * * *
 
-# Basics
+# Základy
 
-Babel is a JavaScript compiler, specifically a source-to-source compiler, often called a "transpiler". This means that you give Babel some JavaScript code, Babel modifies the code, and generates the new code back out.
+Babel je kompilátor JavaScriptu, který kompiluje ze zdrojového kódu na zdrojový kód, často nazývaný "transpiler". To znamená, že Babelu předáte kód v JavaScriptu, Babel ho upraví a generuje nový kód zpět.
 
-## ASTs
+## AST
 
-Each of these steps involve creating or working with an [Abstract Syntax Tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree) or AST.
+Každý z těchto kroků obsahuje vytváření a práci s [Abstraktním syntaktickým stromem](https://en.wikipedia.org/wiki/Abstract_syntax_tree) nebo-li AST.
 
 > Babel uses an AST modified from [ESTree](https://github.com/estree/estree), with the core spec located [here](https://github.com/babel/babel/blob/master/doc/ast/spec.md).
 
@@ -214,15 +214,15 @@ There are additional properties on every Node that Babel generates which describ
 
 These properties `start`, `end`, `loc`, appear in every single Node.
 
-## Stages of Babel
+## Fáze Babelu
 
 The three primary stages of Babel are **parse**, **transform**, **generate**.
 
-### Parse
+### Analýza
 
 The **parse** stage, takes code and outputs an AST. There are two phases of parsing in Babel: [**Lexical Analysis**](https://en.wikipedia.org/wiki/Lexical_analysis) and [**Syntactic Analysis**](https://en.wikipedia.org/wiki/Parsing).
 
-#### Lexical Analysis
+#### Lexikální analýza
 
 Lexical Analysis will take a string of code and turn it into a stream of **tokens**.
 
@@ -264,21 +264,21 @@ Each of the `type`s here have a set of properties describing the token:
 
 Like AST nodes they also have a `start`, `end`, and `loc`.
 
-#### Syntactic Analysis
+#### Syntaktická analýza
 
 Syntactic Analysis will take a stream of tokens and turn it into an AST representation. Using the information in the tokens, this phase will reformat them as an AST which represents the structure of the code in a way that makes it easier to work with.
 
-### Transform
+### Transformace
 
 The [transform](https://en.wikipedia.org/wiki/Program_transformation) stage takes an AST and traverses through it, adding, updating, and removing nodes as it goes along. This is by far the most complex part of Babel or any compiler. This is where plugins operate and so it will be the subject of most of this handbook. So we won't dive too deep right now.
 
-### Generate
+### Generování
 
 The [code generation](https://en.wikipedia.org/wiki/Code_generation_(compiler)) stage takes the final AST and turns in back into a string of code, also creating [source maps](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/).
 
 Code generation is pretty simple: you traverse through the AST depth-first, building a string that represents the transformed code.
 
-## Traversal
+## Průchod
 
 When you want to transform an AST you have to [traverse the tree](https://en.wikipedia.org/wiki/Tree_traversal) recursively.
 
@@ -330,7 +330,7 @@ The `BinaryExpression` has an `operator`, a `left`, and a `right`. The operator 
 
 This traversal process happens throughout the Babel transform stage.
 
-### Visitors
+### Inspektoři
 
 When we talk about "going" to a node, we actually mean we are **visiting** them. The reason we use that term is because there is this concept of a [**visitor**](https://en.wikipedia.org/wiki/Visitor_pattern).
 
@@ -418,7 +418,7 @@ const MyVisitor = {
 };
 ```
 
-### Paths
+### Cesty
 
 An AST generally has many Nodes, but how do Nodes relate to one another? We could have one giant mutable object that you manipulate and have full access to, or we can simplify this with **Paths**.
 
@@ -485,7 +485,7 @@ As well as tons and tons of methods related to adding, updating, moving, and rem
 
 In a sense, paths are a **reactive** representation of a node's position in the tree and all sorts of information about the node. Whenever you call a method that modifies the tree, this information is updated. Babel manages all of this for you to make working with nodes easy and as stateless as possible.
 
-#### Paths in Visitors
+#### Cesty v inspektorech
 
 When you have a visitor that has a `Identifier()` method, you're actually visiting the path instead of the node. This way you are mostly working with the reactive representation of a node instead of the node itself.
 
@@ -507,7 +507,7 @@ Visiting: b
 Visiting: c
 ```
 
-### State
+### Stav
 
 State is the enemy of AST transformation. State will bite you over and over again and your assumptions about state will almost always be proven wrong by some syntax that you didn't consider.
 
@@ -572,7 +572,7 @@ const MyVisitor = {
 
 Of course, this is a contrived example but it demonstrates how to eliminate global state from your visitors.
 
-### Scopes
+### Rozsahy
 
 Next let's introduce the concept of a [**scope**](https://en.wikipedia.org/wiki/Scope_(computer_science)). JavaScript has [lexical scoping](https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scoping_vs._dynamic_scoping), which is a tree structure where blocks create new scope.
 
@@ -646,7 +646,7 @@ When you create a new scope you do so by giving it a path and a parent scope. Th
 
 Once that's done, there's all sorts of methods you can use on scopes. We'll get into those later though.
 
-#### Bindings
+#### Vazby
 
 References all belong to a particular scope; this relationship is known as a **binding**.
 
@@ -812,7 +812,7 @@ traverse(ast, {
 });
 ```
 
-### Definitions
+### Definice
 
 Babel Types has definitions for every single type of node, with information on what properties belong where, what values are valid, how to build that node, how the node should be traversed, and aliases of the Node.
 
@@ -876,7 +876,7 @@ a * b
 
 Builders will also validate the nodes they are creating and throw descriptive errors if used improperly. Which leads into the next type of method.
 
-### Validators
+### Validátory
 
 The definition for `BinaryExpression` also includes information on the `fields` of a node and how to validate them.
 
@@ -988,7 +988,7 @@ console.log(generate(ast).code);
 var myModule = require("my-module");
 ```
 
-# Writing your first Babel Plugin
+# Psaní prvního pluginu pro Babel
 
 Now that you're familiar with all the basics of Babel, let's tie it together with the plugin API.
 
@@ -1113,11 +1113,11 @@ Awesome! Our very first Babel plugin.
 
 * * *
 
-# Transformation Operations
+# Transformační operace
 
-## Visiting
+## Inspekce
 
-### Check if a node is a certain type
+### Kontrola, zda uzel je určitého typu
 
 If you want to check what the type of a node is, the preferred way to do so is:
 
@@ -1153,7 +1153,7 @@ BinaryExpression(path) {
 }
 ```
 
-### Check if an identifier is referenced
+### Kontrola, zda je identifikátor referencován
 
 ```js
 Identifier(path) {
@@ -1173,9 +1173,9 @@ Identifier(path) {
 }
 ```
 
-## Manipulation
+## Manipulace
 
-### Replacing a node
+### Nahrazení uzlu
 
 ```js
 BinaryExpression(path) {
@@ -1192,7 +1192,7 @@ BinaryExpression(path) {
   }
 ```
 
-### Replacing a node with multiple nodes
+### Nahrazení uzlu více uzly
 
 ```js
 ReturnStatement(path) {
@@ -1235,7 +1235,7 @@ FunctionDeclaration(path) {
 
 > **Note:** It's not recommended to use this API unless you're dealing with dynamic source strings, otherwise it's more efficient to parse the code outside of the visitor.
 
-### Inserting a sibling node
+### Vložení uzlu na stejnou úroveň
 
 ```js
 FunctionDeclaration(path) {
@@ -1254,7 +1254,7 @@ FunctionDeclaration(path) {
 
 > **Note:** This should always be a statement or an array of statements. This uses the same heuristics mentioned in [Replacing a node with multiple nodes](#replacing-a-node-with-multiple-nodes).
 
-### Removing a node
+### Odebrání uzlu
 
 ```js
 FunctionDeclaration(path) {
@@ -1268,7 +1268,7 @@ FunctionDeclaration(path) {
 - }
 ```
 
-### Replacing a parent
+### Náhrada předka
 
 ```js
 BinaryExpression(path) {
@@ -1285,7 +1285,7 @@ BinaryExpression(path) {
   }
 ```
 
-### Removing a parent
+### Odstranění předka
 
 ```js
 BinaryExpression(path) {
@@ -1299,9 +1299,9 @@ BinaryExpression(path) {
   }
 ```
 
-## Scope
+## Rozsah
 
-### Checking if a local variable is bound
+### Kontrola, zda je lokální proměnná vázána
 
 ```js
 FunctionDeclaration(path) {
@@ -1323,7 +1323,7 @@ FunctionDeclaration(path) {
 }
 ```
 
-### Generating a UID
+### Generování UID
 
 This will generate an identifier that doesn't collide with any locally defined variables.
 
@@ -1336,7 +1336,7 @@ FunctionDeclaration(path) {
 }
 ```
 
-### Pushing a variable declaration to a parent scope
+### Strčení deklarace proměnné do nadřazeného rozsahu
 
 Sometimes you may want to push a `VariableDeclaration` so you can assign to it.
 
@@ -1535,17 +1535,17 @@ You can find all of the actual [definitions here](https://github.com/babel/babel
 
 * * *
 
-# Best Practices
+# Osvědčené postupy
 
 > I'll be working on this section over the coming weeks.
 
-## Avoid traversing the AST as much as possible
+## Vyhněte se co nejvíce procházení AST
 
 Traversing the AST is expensive, and it's easy to accidentally traverse the AST more than necessary. This could be thousands if not tens of thousands of extra operations.
 
 Babel optimizes this as much as possible, merging visitors together if it can in order to do everything in a single traversal.
 
-### Merge visitors whenever possible
+### Slučujte inspektory kdykoli je to možné
 
 When writing visitors, it may be tempting to call `path.traverse` in multiple places where they are logically necessary.
 
@@ -1606,7 +1606,7 @@ const MyVisitor = {
 };
 ```
 
-## Optimizing nested visitors
+## Optimalizace vnořených inspektorů
 
 When you are nesting visitors, it might make sense to write them nested in your code.
 
@@ -1675,7 +1675,7 @@ const MyVisitor = {
 };
 ```
 
-## Being aware of nested structures
+## Uvědomte si vnořené struktury
 
 Sometimes when thinking about a given transform, you might forget that the given structure can be nested.
 
@@ -1721,4 +1721,4 @@ class Foo {
 }
 ```
 
-> ***For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.***
+> ***Aktualizace sledujte na Twitteru: [@thejameskyle](https://twitter.com/thejameskyle).***

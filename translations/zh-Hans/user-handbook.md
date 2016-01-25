@@ -67,7 +67,7 @@ const square = function square(n) {
 
 不过 Babel 的用途并不止于此，它支持语法扩展，能支持像 React 所用的 JSX 语法，同时还支持用于静态类型检查的流式语法（Flow Syntax）。
 
-更重要的是，Babel 的一切都是简单的插件，谁都可以创建自己的插件，利用巴贝尔的全部威力去做任何事情。
+更重要的是，Babel 的一切都是简单的插件，谁都可以创建自己的插件，利用 Babel 的全部威力去做任何事情。
 
 *再进一步*，Babel 自身被分解成了数个核心模块，任何人都可以利用它们来创建下一代的 JavaScript 工具。
 
@@ -293,7 +293,7 @@ babel.transformFromAst(ast, code, options);
 // => { code, map, ast }
 ```
 
-对于上述所有方法，`options` 值得都是 http://babeljs.io/docs/usage/options/
+对于上述所有方法，`options` 指的都是 http://babeljs.io/docs/usage/options/
 
 * * *
 
@@ -320,7 +320,7 @@ babel.transformFromAst(ast, code, options);
 
 这个文件就是用来让 Babel 做你要它做的事情的配置文件。
 
-> **注意：**尽管你也可以用用其他方式给 Babel 传递选项，但 `.babelrc` 文件是约定也是最好的方式。
+> **注意：**尽管你也可以用其他方式给 Babel 传递选项，但 `.babelrc` 文件是约定也是最好的方式。
 
 ## `babel-preset-es2015`
 
@@ -739,11 +739,11 @@ Documentation.js 使用 Babel 来支持所有最新的语法，包括用于在�
 
 所有主流的 JavaScript 框架都正在努力调整他们的 APIs 向这门语言的未来看齐。有鉴于此，配套工具方面已经做出了大量的工作。
 
-除了使用 Babel 以为，框架更有条件去扩展 Babel 来帮助他们提升用户体验。
+除了使用 Babel 以外，框架更有条件去扩展 Babel 来帮助他们提升用户体验。
 
 ### React
 
-React 已经大幅改变了他们的 API 以适应 ES2015 的类语法（[此处了解更新的 API](http://babeljs.io/blog/2015/06/07/react-on-es6-plus/)）。 再者，React 依赖 Babel 来编译它的 JSX 语法，并弃用了它自己的工具来支持 Babel。 你可以按照[上述说明](#babel-preset-react)来安装 `babel-preset-react` 包来开始。.
+React 已经大幅改变了他们的 API 以适应 ES2015 的类语法（[此处了解更新的 API](http://babeljs.io/blog/2015/06/07/react-on-es6-plus/)）。 再者，React 依赖 Babel 来编译它的 JSX 语法，并弃用了它自己的工具来支持 Babel。 你可以按照[上述说明](#babel-preset-react)安装 `babel-preset-react` 包来开始。.
 
 React 社区采用 Babel 并围绕它来运行，现在社区已经创建了[大量的转换器（transforms）](https://www.npmjs.com/search?q=babel-plugin+react)。.
 

@@ -4,11 +4,11 @@ This document covers everything you ever wanted to know about using [Babel](http
 
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
-This handbook is available in other languages, see the [README](/README.md) for a complete list.
+Tato příručka je k dispozici i v dalších jazycích, úplný seznam naleznete v [souboru README](/README.md).
 
-# Table of Contents
+# Obsah
 
-  * [Introduction](#introduction)
+  * [Úvod](#introduction)
   * [Setting up Babel](#setting-up-babel) 
       * [`babel-cli`](#babel-cli)
       * [Running Babel CLI from within a project](#running-babel-cli-from-within-a-project)
@@ -43,7 +43,7 @@ This handbook is available in other languages, see the [README](/README.md) for 
       * [Babel Issues](#babel-issues)
       * [Creating an awesome Babel bug report](#creating-an-awesome-babel-bug-report)
 
-# Introduction
+# Úvod
 
 Babel is a generic multi-purpose compiler for JavaScript. Using Babel you can use (and create) the next generation of JavaScript, as well as the next generation of JavaScript tooling.
 
@@ -73,7 +73,7 @@ Further than that, everything in Babel is simply a plugin and anyone can go out 
 
 Many people do too, the ecosystem that has sprung up around Babel is massive and very diverse. Throughout this handbook I'll be covering both how built-in Babel tools work as well as some useful things from around the community.
 
-> ***For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.***
+> ***Aktualizace sledujte na Twitteru: [@thejameskyle](https://twitter.com/thejameskyle).***
 
 * * *
 
@@ -816,4 +816,4 @@ First, try isolating your problem. It's extremely unlikely that every part of yo
 
 * * *
 
-> ***For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.***
+> ***Aktualizace sledujte na Twitteru: [@thejameskyle](https://twitter.com/thejameskyle).***

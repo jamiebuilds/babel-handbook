@@ -1,10 +1,10 @@
-# Babel Handbook
+# Babel příručka
 
-This handbook is divided into two parts:
+Tato příručka je rozdělena do dvou částí:
 
-  * [User Handbook](user-handbook.md) - How to setup/configure Babel and more.
-  * [Plugin Handbook](plugin-handbook.md) - How to create plugins for Babel.
+  * [Uživatelská příručka](user-handbook.md) - Jak nainstalovat/konfigurovat Babel a další.
+  * [Plugin příručka](plugin-handbook.md) - Jak vytvářet pluginy pro Babel.
 
-> For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.
+> Aktualizace sledujte na Twitteru: [@thejameskyle](https://twitter.com/thejameskyle).
 
-If you are reading a non-english translation of this handbook you may still find english sections that have not yet been translated. If you would like to contribute to one of the translations you must do so through Crowdin. Please read the [contributing guidelines](/CONTRIBUTING.md) for more information. You will find a number of english words that are programming concepts. If these were translated to other languages there would be a lack of consistency and fluency when reading about them. In many cases you will find the literal translation followed by the english term in parenthesis `()`. For example: Abstract Syntax Trees (ASTs).
+Pokud čtete neanglický překlad této příručky, stále můžete najít anglické části, které nebyly dosud přeloženy. Pokud byste chtěli přispět k jednomu z překladů musíte tak učinit prostřednictvím Crowdin. Přečtěte si prosím [pokyny pro přispívání](/CONTRIBUTING.md) pro další informace. Některé anglické výrazy vyjadřují programovací koncepty. Pokud by tyto výrazy byly přeloženy do jiných jazyků, vznikla by nekonzistence a čtení o nich by ztatilo plynulost. V mnoha případech najdete doslovný překlad, který následuje anglický výraz v závorkách `()`. Například: abstraktní syntaktické stromy (AST).
