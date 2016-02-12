@@ -1,10 +1,10 @@
-# Babel Handbook
+# Babelhandbok
 
-This handbook is divided into two parts:
+Denna handbok är indelad i två delar:
 
-  * [User Handbook](user-handbook.md) - How to setup/configure Babel and more.
-  * [Plugin Handbook](plugin-handbook.md) - How to create plugins for Babel.
+  * [Användarhandbok](user-handbook.md) - installation/konfigurering av Babel och mycket mer.
+  * [Pluginhandbok](plugin-handbook.md) - hur man skapar plugins för Babel.
 
-> For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.
+> För framtida uppdateringar, följ [@thejameskyle](https://twitter.com/thejameskyle) på Twitter.
 
-If you are reading a non-english translation of this handbook you may still find english sections that have not yet been translated. If you would like to contribute to one of the translations you must do so through Crowdin. Please read the [contributing guidelines](/CONTRIBUTING.md) for more information. You will find a number of english words that are programming concepts. If these were translated to other languages there would be a lack of consistency and fluency when reading about them. In many cases you will find the literal translation followed by the english term in parenthesis `()`. For example: Abstract Syntax Trees (ASTs).
+Om du läser en icke-engelsk översättning av denna handbok kan du fortfarande hitta sektioner som ännu inte har översatts. Om du vill bidra till en av översättningarna måste du göra det genom Crowdin. Läs den [riktlinjerna för att bidra](/CONTRIBUTING.md) för mer information. Här hittar du ett antal engelska ord som är programmeringsbegrepp. Om dessa översattes till andra språk skulle det finnas en brist på konsekvens och flyt när man läser om dem. I många fall hittar du den bokstavliga översättningen följt av den engelska termen i parentes `()`. Till exempel: abstrakt syntaxträd (ASTs).

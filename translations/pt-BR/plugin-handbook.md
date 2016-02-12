@@ -8,60 +8,60 @@ Este manual está disponível em outros idiomas, consulte o [arquivo Leia-me](/R
 
 # Tabela de Conteúdos
 
-  * [Introdução](#introduction)
-  * [Noções básicas](#basics) 
-      * [ASTs](#asts)
-      * [Estágios do Babel](#stages-of-babel)
-      * [Parse](#parse) 
-          * [Análise léxica](#lexical-analysis)
-          * [Análise sintática](#syntactic-analysis)
-      * [Transform](#transform)
-      * [Generate](#generate)
-      * [Traversal](#traversal)
-      * [Visitors](#visitors)
-      * [Paths](#paths) 
-          * [Paths in Visitors](#paths-in-visitors)
-      * [State](#state)
-      * [Scopes](#scopes) 
-          * [Bindings](#bindings)
-  * [API](#api) 
-      * [babylon](#babylon)
-      * [babel-traverse](#babel-traverse)
-      * [babel-types](#babel-types)
-      * [Definições](#definitions)
-      * [Construtores](#builders)
-      * [Validadores](#validators)
-      * [Conversores](#converters)
-      * [babel-generator](#babel-generator)
-      * [babel-template](#babel-template)
-  * [Escrevendo seu primeiro Plugin do Babel](#writing-your-first-babel-plugin)
-  * [Operações de transformação](#transformation-operations) 
-      * [Visitando](#visiting)
-      * [Verificar se um nó é um certo tipo](#check-if-a-node-is-a-certain-type)
-      * [Verifique se um identificador é referenciado](#check-if-an-identifier-is-referenced)
-      * [Manipulação](#manipulation)
-      * [Substituindo um nó](#replacing-a-node)
-      * [Substituindo um nó com vários nós](#replacing-a-node-with-multiple-nodes)
-      * [Substituindo um nó com uma string](#replacing-a-node-with-a-source-string)
-      * [Inserir um nó irmão](#inserting-a-sibling-node)
-      * [Remoção de um nó](#removing-a-node)
-      * [Substituindo um pai](#replacing-a-parent)
-      * [Removendo um pai](#removing-a-parent)
-      * [Escopo](#scope)
-      * [Verificando se uma variável local está vinculada](#checking-if-a-local-variable-is-bound)
-      * [Gerando um UID](#generating-a-uid)
-      * [Empurrando uma declaração de variável para um escopo de pai](#pushing-a-variable-declaration-to-a-parent-scope)
-      * [Renomear um binding e suas referências](#rename-a-binding-and-its-references)
-  * [Opções do plugin](#plugin-options)
-  * [Construindo nós](#building-nodes)
-  * [Melhores práticas](#best-practices) 
-      * [Evitar cruzar o máximo possível o AST](#avoid-traversing-the-ast-as-much-as-possible)
-      * [Mesclar os visitantes sempre que possível](#merge-visitors-whenever-possible)
-      * [Não cruzar quando farão pesquisa manual](#do-not-traverse-when-manual-lookup-will-do)
-      * [Otimizando os visitantes aninhados](#optimizing-nested-visitors)
-      * [Estando ciente das estruturas aninhadas](#being-aware-of-nested-structures)
+  * [Introdução](#toc-introduction)
+  * [Noções básicas](#toc-basics) 
+      * [ASTs](#toc-asts)
+      * [Estágios do Babel](#toc-stages-of-babel)
+      * [Parse](#toc-parse) 
+          * [Análise léxica](#toc-lexical-analysis)
+          * [Análise sintática](#toc-syntactic-analysis)
+      * [Transform](#toc-transform)
+      * [Generate](#toc-generate)
+      * [Traversal](#toc-traversal)
+      * [Visitors](#toc-visitors)
+      * [Paths](#toc-paths) 
+          * [Paths in Visitors](#toc-paths-in-visitors)
+      * [State](#toc-state)
+      * [Scopes](#toc-scopes) 
+          * [Bindings](#toc-bindings)
+  * [API](#toc-api) 
+      * [babylon](#toc-babylon)
+      * [babel-traverse](#toc-babel-traverse)
+      * [babel-types](#toc-babel-types)
+      * [Definições](#toc-definitions)
+      * [Construtores](#toc-builders)
+      * [Validadores](#toc-validators)
+      * [Conversores](#toc-converters)
+      * [babel-generator](#toc-babel-generator)
+      * [babel-template](#toc-babel-template)
+  * [Escrevendo seu primeiro Plugin do Babel](#toc-writing-your-first-babel-plugin)
+  * [Operações de transformação](#toc-transformation-operations) 
+      * [Visitando](#toc-visiting)
+      * [Verificar se um nó é um certo tipo](#toc-check-if-a-node-is-a-certain-type)
+      * [Verifique se um identificador é referenciado](#toc-check-if-an-identifier-is-referenced)
+      * [Manipulação](#toc-manipulation)
+      * [Substituindo um nó](#toc-replacing-a-node)
+      * [Substituindo um nó com vários nós](#toc-replacing-a-node-with-multiple-nodes)
+      * [Substituindo um nó com uma string](#toc-replacing-a-node-with-a-source-string)
+      * [Inserir um nó irmão](#toc-inserting-a-sibling-node)
+      * [Remoção de um nó](#toc-removing-a-node)
+      * [Substituindo um pai](#toc-replacing-a-parent)
+      * [Removendo um pai](#toc-removing-a-parent)
+      * [Escopo](#toc-scope)
+      * [Verificando se uma variável local está vinculada](#toc-checking-if-a-local-variable-is-bound)
+      * [Gerando um UID](#toc-generating-a-uid)
+      * [Empurrando uma declaração de variável para um escopo de pai](#toc-pushing-a-variable-declaration-to-a-parent-scope)
+      * [Renomear um binding e suas referências](#toc-rename-a-binding-and-its-references)
+  * [Opções do plugin](#toc-plugin-options)
+  * [Construindo nós](#toc-building-nodes)
+  * [Melhores práticas](#toc-best-practices) 
+      * [Evitar cruzar o máximo possível o AST](#toc-avoid-traversing-the-ast-as-much-as-possible)
+      * [Mesclar os visitantes sempre que possível](#toc-merge-visitors-whenever-possible)
+      * [Não cruzar quando farão pesquisa manual](#toc-do-not-traverse-when-manual-lookup-will-do)
+      * [Otimizando os visitantes aninhados](#toc-optimizing-nested-visitors)
+      * [Estando ciente das estruturas aninhadas](#toc-being-aware-of-nested-structures)
 
-# Introdução
+# <a id="toc-introduction"></a>Introdução
 
 Babel é um compilador genérico de múltiplos propósito para JavaScript. Mais do que isso, é uma coleção de módulos que podem ser usados de muitas formas diferentes de análise estática.
 
@@ -73,11 +73,11 @@ Você pode usar Babel para construir vários tipos de ferramentas que podem ajud
 
 * * *
 
-# Noções básicas
+# <a id="toc-basics"></a>Noções básicas
 
 Babel é um compilador JavaScript, especificamente um compilador de código para código, muitas vezes chamado de "transpiler". Isto significa que você dá ao Babel algum código JavaScript, ele modifica o código e gera um novo código de volta.
 
-## ASTs
+## <a id="toc-asts"></a>ASTs
 
 Cada um destes passos envolvem criação ou trabalho com uma [Árvore de Sintaxe Abstrata](https://en.wikipedia.org/wiki/Abstract_syntax_tree) ou AST.
 
@@ -116,7 +116,7 @@ Este mesmo programa pode ser representado como uma lista assim:
                   - name: n
 ```
 
-Or as a JavaScript Object like this:
+Ou como um JSON como este:
 
 ```js
 {
@@ -150,7 +150,7 @@ Or as a JavaScript Object like this:
 }
 ```
 
-You'll notice that each level of the AST has a similar structure:
+Você observará que cada nível da AST tem uma estrutura semelhante:
 
 ```js
 {
@@ -177,11 +177,11 @@ You'll notice that each level of the AST has a similar structure:
 }
 ```
 
-> Note: Some properties have been removed for simplicity.
+> Nota: Algumas propriedades foram removidas para manter a simplicidade.
 
-Each of these are known as a **Node**. An AST can be made up of a single Node, or hundreds if not thousands of Nodes. Together they are able to describe the syntax of a program that can be used for static analysis.
+Cada um deles são conhecidos como um **nó**. Um AST pode ser composta por um único nó, ou centenas, senão milhares de nós. Juntos, eles são capazes de descrever a sintaxe de um programa que pode ser usado para análise estática.
 
-Every Node has this interface:
+Cada nó tem esta interface:
 
 ```typescript
 interface Node {
@@ -189,9 +189,9 @@ interface Node {
 }
 ```
 
-The `type` field is a string representing the type of Node the object is (ie. `"FunctionDeclaration"`, `"Identifier"`, or `"BinaryExpression"`). Each type of Node defines an additional set of properties that describe that particular node type.
+O `tipo` de campo é uma seqüência de caracteres que representa o tipo do nó do objeto (ex. `"FunctionDeclaration"`, `"Identifier"` ou `"BinaryExpression"`). Cada tipo de nó define um conjunto adicional de propriedades que descrevem o tipo de nó específico.
 
-There are additional properties on every Node that Babel generates which describe the position of the Node in the original source code.
+Existem propriedades adicionais em cada nó que Babel gera que descrevem a posição do nó no código-fonte original.
 
 ```js
 {
@@ -212,21 +212,21 @@ There are additional properties on every Node that Babel generates which describ
 }
 ```
 
-These properties `start`, `end`, `loc`, appear in every single Node.
+Estas propriedades `start`, `end`, `loc`, aparecem em cada nó.
 
-## Estágios do Babel
+## <a id="toc-stages-of-babel"></a>Estágios do Babel
 
-The three primary stages of Babel are **parse**, **transform**, **generate**.
+Os três estágios primários de Babel são **parse**, **transform**, **generate**.
 
-### Parse
+### <a id="toc-parse"></a>Parse
 
-The **parse** stage, takes code and outputs an AST. There are two phases of parsing in Babel: [**Lexical Analysis**](https://en.wikipedia.org/wiki/Lexical_analysis) and [**Syntactic Analysis**](https://en.wikipedia.org/wiki/Parsing).
+O estágio de **parse**, paga o código e produz um AST. Existem duas fases de análise de Babel: [**Análise léxica**](https://en.wikipedia.org/wiki/Lexical_analysis) e [**Análise sintática**](https://en.wikipedia.org/wiki/Parsing).
 
-#### Análise léxica
+#### <a id="toc-lexical-analysis"></a>Análise léxica
 
-Lexical Analysis will take a string of code and turn it into a stream of **tokens**.
+Análise lexical pega uma sequência de caracteres de código e o transforma em um fluxo de **tokens**.
 
-You can think of tokens as a flat array of language syntax pieces.
+Você pode pensar nos tokens como uma matriz plana de pedaços de sintaxe de linguagem.
 
 ```js
 n * n;
@@ -236,12 +236,11 @@ n * n;
 [
   { type: { ... }, value: "n", start: 0, end: 1, loc: { ... } },
   { type: { ... }, value: "*", start: 2, end: 3, loc: { ... } },
-  { type: { ... }, value: "n", start: 4, end: 5, loc: { ... } },
-  ...
+  { type: { ... }, value: "n", start: 4, end: 5, loc: { ... } },   ...
 ]
 ```
 
-Each of the `type`s here have a set of properties describing the token:
+Cada um dos `tipos` tem um conjunto de propriedades que descrevem o token:
 
 ```js
 {
@@ -262,27 +261,27 @@ Each of the `type`s here have a set of properties describing the token:
 }
 ```
 
-Like AST nodes they also have a `start`, `end`, and `loc`.
+Como nós de AST também têm um `start`, `end` e `loc`.
 
-#### Análise sintática
+#### <a id="toc-syntactic-analysis"></a>Análise sintática
 
-Syntactic Analysis will take a stream of tokens and turn it into an AST representation. Using the information in the tokens, this phase will reformat them as an AST which represents the structure of the code in a way that makes it easier to work with.
+Análise sintática irá levar a um fluxo de tokens e transformá-lo em uma representação de AST. Usando as informações de tokens, esta fase será reformatá-los como um AST que representa a estrutura do código de uma forma que torna mais fácil trabalhar.
 
-### Transform
+### <a id="toc-transform"></a>Transform
 
-The [transform](https://en.wikipedia.org/wiki/Program_transformation) stage takes an AST and traverses through it, adding, updating, and removing nodes as it goes along. This is by far the most complex part of Babel or any compiler. This is where plugins operate and so it will be the subject of most of this handbook. So we won't dive too deep right now.
+O estágio de [transform](https://en.wikipedia.org/wiki/Program_transformation) atravessa um AST, adicionando, atualizando e removendo os nós junto. Esta é de longe a parte mais complexa de Babel ou qualquer compilador. Isto é onde operam os plugins e então será o assunto principal deste manual. Então não mergulharemos tão profundamente agora.
 
-### Generate
+### <a id="toc-generate"></a>Generate
 
-The [code generation](https://en.wikipedia.org/wiki/Code_generation_(compiler)) stage takes the final AST and turns in back into a string of code, also creating [source maps](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/).
+O estágio de [geração de código](https://en.wikipedia.org/wiki/Code_generation_(compiler)) leva a AST final e transforma de volta em uma seqüência de caracteres do código, criando também [mapa da fonte](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/).
 
-Code generation is pretty simple: you traverse through the AST depth-first, building a string that represents the transformed code.
+Geração de código é muito simples: você percorre através da AST primeiro, e constroi uma sequência de caracteres que representa o código transformado.
 
-## Traversal
+## <a id="toc-traversal"></a>Traversal
 
-When you want to transform an AST you have to [traverse the tree](https://en.wikipedia.org/wiki/Tree_traversal) recursively.
+Quando você deseja transformar um AST... você tem que [percorrer (traverse) a árvore](https://en.wikipedia.org/wiki/Tree_traversal) recursivamente.
 
-Say we have the type `FunctionDeclaration`. It has a few properties: `id`, `params`, and `body`. Each of them have nested nodes.
+Digamos que temos um nó do tipo `FunctionDeclaration`. Ele tem algumas propriedades como: `id`, `params` e `body`. Cada um deles possui seus próprios nós aninhados.
 
 ```js
 {
@@ -316,23 +315,23 @@ Say we have the type `FunctionDeclaration`. It has a few properties: `id`, `para
 }
 ```
 
-So we start at the `FunctionDeclaration` and we know its internal properties so we visit each of them and their children in order.
+Então começamos no nó `FunctionDeclaration` e sabemos suas propriedades internas, logo, podemos visitar cada uma delas e seus filhos na sequência.
 
-Next we go to `id` which is an `Identifier`. `Identifier`s don't have any child node properties so we move on.
+Depois vamos para o `id`, que é um `Identifier`.`Identifier` e não tem quaisquer propriedades do nó filho então podemos continuar.
 
-After that is `params` which is an array of nodes so we visit each of them. In this case it's a single node which is also an `Identifier` so we move on.
+Depois disso temos a propriedade `params`, que é uma matriz de nós. Nós os percorreremos, visitando cada um deles. Neste caso `params` possui um único nó, que é também um <0>Identifier</0>, então podemos continuar.
 
-Then we hit `body` which is a `BlockStatement` with a property `body` that is an array of Nodes so we go to each of them.
+Então encontramos o `body` que é um `BlockStatement` com uma propriedade `body` que é uma matriz de nós, então nós vamos a cada um deles.
 
-The only item here is a `ReturnStatement` node which has an `argument`, we go to the `argument` and find a `BinaryExpression`.
+O único item que aqui é um nó `ReturnStatement` que tem um `argument`, nós vamos para o `argument` e encontramos um `BinaryExpression`.
 
-The `BinaryExpression` has an `operator`, a `left`, and a `right`. The operator isn't a node, just a value, so we don't go to it, and instead just visit `left` and `right`.
+O `BinaryExpression` tem uma propriedade `operator`, uma `left` e uma `right`. O operador não é um nó, apenas um valor, então não vamos até ele. Em vez disso, apenas visitamos as propriedades `left` e `right`.
 
-This traversal process happens throughout the Babel transform stage.
+Este processo de percorrer (traverse) acontece durante toda a fase de transformação de Babel.
 
-### Visitors
+### <a id="toc-visitors"></a>Visitors
 
-When we talk about "going" to a node, we actually mean we are **visiting** them. The reason we use that term is because there is this concept of a [**visitor**](https://en.wikipedia.org/wiki/Visitor_pattern).
+Quando falamos sobre "ir" para um nó, na verdade queremos dizer que estamos **visitando** eles. A razão pela qual nós usamos esse termo está ligada ao conceito do design pattern [**visitor**](https://en.wikipedia.org/wiki/Visitor_pattern), usado frequentemente.
 
 Visitors are a pattern used in AST traversal across languages. Simply put they are an object with methods defined for accepting particular node types in a tree. That's a bit abstract so let's look at an example.
 
@@ -418,7 +417,7 @@ const MyVisitor = {
 };
 ```
 
-### Paths
+### <a id="toc-paths"></a>Paths
 
 An AST generally has many Nodes, but how do Nodes relate to one another? We could have one giant mutable object that you manipulate and have full access to, or we can simplify this with **Paths**.
 
@@ -485,7 +484,7 @@ As well as tons and tons of methods related to adding, updating, moving, and rem
 
 In a sense, paths are a **reactive** representation of a node's position in the tree and all sorts of information about the node. Whenever you call a method that modifies the tree, this information is updated. Babel manages all of this for you to make working with nodes easy and as stateless as possible.
 
-#### Paths in Visitors
+#### <a id="toc-paths-in-visitors"></a>Paths in Visitors
 
 When you have a visitor that has a `Identifier()` method, you're actually visiting the path instead of the node. This way you are mostly working with the reactive representation of a node instead of the node itself.
 
@@ -507,7 +506,7 @@ Visiting: b
 Visiting: c
 ```
 
-### State
+### <a id="toc-state"></a>State
 
 State is the enemy of AST transformation. State will bite you over and over again and your assumptions about state will almost always be proven wrong by some syntax that you didn't consider.
 
@@ -572,7 +571,7 @@ const MyVisitor = {
 
 Of course, this is a contrived example but it demonstrates how to eliminate global state from your visitors.
 
-### Scopes
+### <a id="toc-scopes"></a>Scopes
 
 Next let's introduce the concept of a [**scope**](https://en.wikipedia.org/wiki/Scope_(computer_science)). JavaScript has [lexical scoping](https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scoping_vs._dynamic_scoping), which is a tree structure where blocks create new scope.
 
@@ -646,7 +645,7 @@ When you create a new scope you do so by giving it a path and a parent scope. Th
 
 Once that's done, there's all sorts of methods you can use on scopes. We'll get into those later though.
 
-#### Bindings
+#### <a id="toc-bindings"></a>Bindings
 
 References all belong to a particular scope; this relationship is known as a **binding**.
 
@@ -699,13 +698,13 @@ function scopeOne() {
 
 * * *
 
-# API
+# <a id="toc-api"></a>API
 
 Babel is actually a collection of modules. In this section we'll walk through the major ones, explaining what they do and how to use them.
 
 > Note: This is not a replacement for detailed API documentation which will be available elsewhere shortly.
 
-## [`babylon`](https://github.com/babel/babel/tree/master/packages/babylon)
+## <a id="toc-babylon"></a>[`babylon`](https://github.com/babel/babel/tree/master/packages/babylon)
 
 Babylon is Babel's parser. Started as a fork of Acorn, it's fast, simple to use, has plugin-based architecture for non-standard features (as well as future standards).
 
@@ -753,7 +752,7 @@ Since Babylon is built with a plugin-based architecture, there is also a `plugin
 
 To see a full list of plugins, see the [Babylon README](https://github.com/babel/babel/blob/master/packages/babylon/README.md#plugins).
 
-## [`babel-traverse`](https://github.com/babel/babel/tree/master/packages/babel-traverse)
+## <a id="toc-babel-traverse"></a>[`babel-traverse`](https://github.com/babel/babel/tree/master/packages/babel-traverse)
 
 The Babel Traverse module maintains the overall tree state, and is responsible for replacing, removing, and adding nodes.
 
@@ -787,7 +786,7 @@ traverse(ast, {
 });
 ```
 
-## [`babel-types`](https://github.com/babel/babel/tree/master/packages/babel-types)
+## <a id="toc-babel-types"></a>[`babel-types`](https://github.com/babel/babel/tree/master/packages/babel-types)
 
 Babel Types is a Lodash-esque utility library for AST nodes. It contains methods for building, validating, and converting AST nodes. It's useful for cleaning up AST logic with well thought out utility methods.
 
@@ -812,7 +811,7 @@ traverse(ast, {
 });
 ```
 
-### Definições
+### <a id="toc-definitions"></a>Definições
 
 Babel Types has definitions for every single type of node, with information on what properties belong where, what values are valid, how to build that node, how the node should be traversed, and aliases of the Node.
 
@@ -837,7 +836,7 @@ defineType("BinaryExpression", {
 });
 ```
 
-### Construtores
+### <a id="toc-builders"></a>Construtores
 
 You'll notice the above definition for `BinaryExpression` has a field for a `builder`.
 
@@ -876,7 +875,7 @@ a * b
 
 Builders will also validate the nodes they are creating and throw descriptive errors if used improperly. Which leads into the next type of method.
 
-### Validadores
+### <a id="toc-validators"></a>Validadores
 
 The definition for `BinaryExpression` also includes information on the `fields` of a node and how to validate them.
 
@@ -914,11 +913,11 @@ t.assertBinaryExpression(maybeBinaryExpressionNode, { operator: "*" });
 // Error: Expected type "BinaryExpression" with option { "operator": "*" }
 ```
 
-### Conversores
+### <a id="toc-converters"></a>Conversores
 
 > [WIP]
 
-## [`babel-generator`](https://github.com/babel/babel/tree/master/packages/babel-generator)
+## <a id="toc-babel-generator"></a>[`babel-generator`](https://github.com/babel/babel/tree/master/packages/babel-generator)
 
 Babel Generator is the code generator for Babel. It takes an AST and turns it into code with sourcemaps.
 
@@ -959,7 +958,7 @@ generate(ast, {
 }, code);
 ```
 
-## [`babel-template`](https://github.com/babel/babel/tree/master/packages/babel-template)
+## <a id="toc-babel-template"></a>[`babel-template`](https://github.com/babel/babel/tree/master/packages/babel-template)
 
 Babel Template is another tiny but incredibly useful module. It allows you to write strings of code with placeholders that you can use instead of manually building up a massive AST.
 
@@ -988,7 +987,7 @@ console.log(generate(ast).code);
 var myModule = require("my-module");
 ```
 
-# Escrevendo seu primeiro Plugin do Babel
+# <a id="toc-writing-your-first-babel-plugin"></a>Escrevendo seu primeiro Plugin do Babel
 
 Now that you're familiar with all the basics of Babel, let's tie it together with the plugin API.
 
@@ -1113,11 +1112,11 @@ Awesome! Our very first Babel plugin.
 
 * * *
 
-# Operações de transformação
+# <a id="toc-transformation-operations"></a>Operações de transformação
 
-## Visitando
+## <a id="toc-visiting"></a>Visitando
 
-### Verificar se um nó é um certo tipo
+### <a id="toc-check-if-a-node-is-a-certain-type"></a>Verificar se um nó é um certo tipo
 
 If you want to check what the type of a node is, the preferred way to do so is:
 
@@ -1153,7 +1152,7 @@ BinaryExpression(path) {
 }
 ```
 
-### Verifique se um identificador é referenciado
+### <a id="toc-check-if-an-identifier-is-referenced"></a>Verifique se um identificador é referenciado
 
 ```js
 Identifier(path) {
@@ -1173,9 +1172,9 @@ Identifier(path) {
 }
 ```
 
-## Manipulação
+## <a id="toc-manipulation"></a>Manipulação
 
-### Substituindo um nó
+### <a id="toc-replacing-a-node"></a>Substituindo um nó
 
 ```js
 BinaryExpression(path) {
@@ -1192,7 +1191,7 @@ BinaryExpression(path) {
   }
 ```
 
-### Substituindo um nó com vários nós
+### <a id="toc-replacing-a-node-with-multiple-nodes"></a>Substituindo um nó com vários nós
 
 ```js
 ReturnStatement(path) {
@@ -1215,7 +1214,7 @@ ReturnStatement(path) {
 
 > **Note:** When replacing an expression with multiple nodes, they must be statements. This is because Babel uses heuristics extensively when replacing nodes which means that you can do some pretty crazy transformations that would be extremely verbose otherwise.
 
-### Substituindo um nó com uma string
+### <a id="toc-replacing-a-node-with-a-source-string"></a>Substituindo um nó com uma string
 
 ```js
 FunctionDeclaration(path) {
@@ -1235,7 +1234,7 @@ FunctionDeclaration(path) {
 
 > **Note:** It's not recommended to use this API unless you're dealing with dynamic source strings, otherwise it's more efficient to parse the code outside of the visitor.
 
-### Inserir um nó irmão
+### <a id="toc-inserting-a-sibling-node"></a>Inserir um nó irmão
 
 ```js
 FunctionDeclaration(path) {
@@ -1254,7 +1253,7 @@ FunctionDeclaration(path) {
 
 > **Note:** This should always be a statement or an array of statements. This uses the same heuristics mentioned in [Replacing a node with multiple nodes](#replacing-a-node-with-multiple-nodes).
 
-### Remoção de um nó
+### <a id="toc-removing-a-node"></a>Remoção de um nó
 
 ```js
 FunctionDeclaration(path) {
@@ -1268,7 +1267,7 @@ FunctionDeclaration(path) {
 - }
 ```
 
-### Substituindo um pai
+### <a id="toc-replacing-a-parent"></a>Substituindo um pai
 
 ```js
 BinaryExpression(path) {
@@ -1285,7 +1284,7 @@ BinaryExpression(path) {
   }
 ```
 
-### Removendo um pai
+### <a id="toc-removing-a-parent"></a>Removendo um pai
 
 ```js
 BinaryExpression(path) {
@@ -1299,9 +1298,9 @@ BinaryExpression(path) {
   }
 ```
 
-## Escopo
+## <a id="toc-scope"></a>Escopo
 
-### Verificando se uma variável local está vinculada
+### <a id="toc-checking-if-a-local-variable-is-bound"></a>Verificando se uma variável local está vinculada
 
 ```js
 FunctionDeclaration(path) {
@@ -1323,7 +1322,7 @@ FunctionDeclaration(path) {
 }
 ```
 
-### Gerando um UID
+### <a id="toc-generating-a-uid"></a>Gerando um UID
 
 This will generate an identifier that doesn't collide with any locally defined variables.
 
@@ -1336,7 +1335,7 @@ FunctionDeclaration(path) {
 }
 ```
 
-### Empurrando uma declaração de variável para um escopo de pai
+### <a id="toc-pushing-a-variable-declaration-to-a-parent-scope"></a>Empurrando uma declaração de variável para um escopo de pai
 
 Sometimes you may want to push a `VariableDeclaration` so you can assign to it.
 
@@ -1356,7 +1355,7 @@ FunctionDeclaration(path) {
 + };
 ```
 
-### Renomear um binding e suas referências
+### <a id="toc-rename-a-binding-and-its-references"></a>Renomear um binding e suas referências
 
 ```js
 FunctionDeclaration(path) {
@@ -1390,7 +1389,7 @@ FunctionDeclaration(path) {
 
 * * *
 
-# Opções do plugin
+# <a id="toc-plugin-options"></a>Opções do plugin
 
 If you would like to let your users customize the behavior of your Babel plugin you can accept plugin specific options which users can specify like this:
 
@@ -1424,7 +1423,7 @@ These options are plugin-specific and you cannot access options from other plugi
 
 * * *
 
-# Construindo nós
+# <a id="toc-building-nodes"></a>Construindo nós
 
 When writing transformations you'll often want to build up some nodes to insert into the AST. As mentioned previously, you can do this using the [builder](#builder) methods in the [`babel-types`](#babel-types) package.
 
@@ -1535,17 +1534,17 @@ You can find all of the actual [definitions here](https://github.com/babel/babel
 
 * * *
 
-# Melhores práticas
+# <a id="toc-best-practices"></a>Melhores práticas
 
 > I'll be working on this section over the coming weeks.
 
-## Evitar cruzar o máximo possível o AST
+## <a id="toc-avoid-traversing-the-ast-as-much-as-possible"></a>Evitar cruzar o máximo possível o AST
 
 Traversing the AST is expensive, and it's easy to accidentally traverse the AST more than necessary. This could be thousands if not tens of thousands of extra operations.
 
 Babel optimizes this as much as possible, merging visitors together if it can in order to do everything in a single traversal.
 
-### Mesclar os visitantes sempre que possível
+### <a id="toc-merge-visitors-whenever-possible"></a>Mesclar os visitantes sempre que possível
 
 When writing visitors, it may be tempting to call `path.traverse` in multiple places where they are logically necessary.
 
@@ -1576,7 +1575,7 @@ path.traverse({
 });
 ```
 
-### Não cruzar quando farão pesquisa manual
+### <a id="toc-do-not-traverse-when-manual-lookup-will-do"></a>Não cruzar quando farão pesquisa manual
 
 It may also be tempting to call `path.traverse` when looking for a particular node type.
 
@@ -1606,7 +1605,7 @@ const MyVisitor = {
 };
 ```
 
-## Otimizando os visitantes aninhados
+## <a id="toc-optimizing-nested-visitors"></a>Otimizando os visitantes aninhados
 
 When you are nesting visitors, it might make sense to write them nested in your code.
 
@@ -1675,7 +1674,7 @@ const MyVisitor = {
 };
 ```
 
-## Estando ciente das estruturas aninhadas
+## <a id="toc-being-aware-of-nested-structures"></a>Estando ciente das estruturas aninhadas
 
 Sometimes when thinking about a given transform, you might forget that the given structure can be nested.
 

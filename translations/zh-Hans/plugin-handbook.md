@@ -8,60 +8,60 @@
 
 # 目录
 
-  * [介绍](#introduction)
-  * [基础](#basics) 
-      * [抽象语法树（ASTs）](#asts)
-      * [Babel 的处理步骤](#stages-of-babel)
-      * [解析](#parse) 
-          * [词法分析](#lexical-analysis)
-          * [语法分析](#syntactic-analysis)
-      * [转换](#transform)
-      * [生成](#generate)
-      * [遍历](#traversal)
-      * [Visitors（访问者）](#visitors)
-      * [Paths（路径）](#paths) 
-          * [Paths in Visitors（存在于访问者中的路径）](#paths-in-visitors)
-      * [State（状态）](#state)
-      * [Scopes（作用域）](#scopes) 
-          * [Bindings（绑定）](#bindings)
-  * [API](#api) 
-      * [babylon](#babylon)
-      * [babel-traverse](#babel-traverse)
-      * [babel-types](#babel-types)
-      * [Definitions（定义）](#definitions)
-      * [Builders（构建器）](#builders)
-      * [Validators（验证器）](#validators)
-      * [Converters（变换器）](#converters)
-      * [babel-generator](#babel-generator)
-      * [babel-template](#babel-template)
-  * [编写你的第一个 Babel 插件](#writing-your-first-babel-plugin)
-  * [转换操作](#transformation-operations) 
-      * [访问](#visiting)
-      * [检查节点是否为某种特定类型](#check-if-a-node-is-a-certain-type)
-      * [检查标识符是否正在被引用着](#check-if-an-identifier-is-referenced)
-      * [处理](#manipulation)
-      * [替换节点](#replacing-a-node)
-      * [用多个节点替换一个节点](#replacing-a-node-with-multiple-nodes)
-      * [用字符串源码替换节点](#replacing-a-node-with-a-source-string)
-      * [插入同级节点](#inserting-a-sibling-node)
-      * [移除节点](#removing-a-node)
-      * [替换父节点](#replacing-a-parent)
-      * [移除父节点](#removing-a-parent)
-      * [Scope（作用域）](#scope)
-      * [检查本地变量是否有绑定](#checking-if-a-local-variable-is-bound)
-      * [生成唯一标识符（UID）](#generating-a-uid)
-      * [提升变量声明至父级作用域](#pushing-a-variable-declaration-to-a-parent-scope)
-      * [重命名绑定及其引用](#rename-a-binding-and-its-references)
-  * [插件选项](#plugin-options)
-  * [构建节点](#building-nodes)
-  * [最佳实践](#best-practices) 
-      * [尽量避免遍历抽象语法树（AST）](#avoid-traversing-the-ast-as-much-as-possible)
-      * [及时合并访问者对象](#merge-visitors-whenever-possible)
-      * [可以手动查找就不要遍历](#do-not-traverse-when-manual-lookup-will-do)
-      * [优化嵌套的访问者对象](#optimizing-nested-visitors)
-      * [留意嵌套结构](#being-aware-of-nested-structures)
+  * [介绍](#toc-introduction)
+  * [基础](#toc-basics) 
+      * [抽象语法树（ASTs）](#toc-asts)
+      * [Babel 的处理步骤](#toc-stages-of-babel)
+      * [解析](#toc-parse) 
+          * [词法分析](#toc-lexical-analysis)
+          * [语法分析](#toc-syntactic-analysis)
+      * [转换](#toc-transform)
+      * [生成](#toc-generate)
+      * [遍历](#toc-traversal)
+      * [Visitors（访问者）](#toc-visitors)
+      * [Paths（路径）](#toc-paths) 
+          * [Paths in Visitors（存在于访问者中的路径）](#toc-paths-in-visitors)
+      * [State（状态）](#toc-state)
+      * [Scopes（作用域）](#toc-scopes) 
+          * [Bindings（绑定）](#toc-bindings)
+  * [API](#toc-api) 
+      * [babylon](#toc-babylon)
+      * [babel-traverse](#toc-babel-traverse)
+      * [babel-types](#toc-babel-types)
+      * [Definitions（定义）](#toc-definitions)
+      * [Builders（构建器）](#toc-builders)
+      * [Validators（验证器）](#toc-validators)
+      * [Converters（变换器）](#toc-converters)
+      * [babel-generator](#toc-babel-generator)
+      * [babel-template](#toc-babel-template)
+  * [编写你的第一个 Babel 插件](#toc-writing-your-first-babel-plugin)
+  * [转换操作](#toc-transformation-operations) 
+      * [访问](#toc-visiting)
+      * [检查节点是否为某种特定类型](#toc-check-if-a-node-is-a-certain-type)
+      * [检查标识符是否正在被引用着](#toc-check-if-an-identifier-is-referenced)
+      * [处理](#toc-manipulation)
+      * [替换节点](#toc-replacing-a-node)
+      * [用多个节点替换一个节点](#toc-replacing-a-node-with-multiple-nodes)
+      * [用字符串源码替换节点](#toc-replacing-a-node-with-a-source-string)
+      * [插入同级节点](#toc-inserting-a-sibling-node)
+      * [移除节点](#toc-removing-a-node)
+      * [替换父节点](#toc-replacing-a-parent)
+      * [移除父节点](#toc-removing-a-parent)
+      * [Scope（作用域）](#toc-scope)
+      * [检查本地变量是否有绑定](#toc-checking-if-a-local-variable-is-bound)
+      * [生成唯一标识符（UID）](#toc-generating-a-uid)
+      * [提升变量声明至父级作用域](#toc-pushing-a-variable-declaration-to-a-parent-scope)
+      * [重命名绑定及其引用](#toc-rename-a-binding-and-its-references)
+  * [插件选项](#toc-plugin-options)
+  * [构建节点](#toc-building-nodes)
+  * [最佳实践](#toc-best-practices) 
+      * [尽量避免遍历抽象语法树（AST）](#toc-avoid-traversing-the-ast-as-much-as-possible)
+      * [及时合并访问者对象](#toc-merge-visitors-whenever-possible)
+      * [可以手动查找就不要遍历](#toc-do-not-traverse-when-manual-lookup-will-do)
+      * [优化嵌套的访问者对象](#toc-optimizing-nested-visitors)
+      * [留意嵌套结构](#toc-being-aware-of-nested-structures)
 
-# 介绍
+# <a id="toc-introduction"></a>介绍
 
 Babel 是一个通用的多功能的 JavaScript 编译器。此外它还拥有众多模块可用于不同形式的静态分析。
 
@@ -73,11 +73,11 @@ Babel 是一个通用的多功能的 JavaScript 编译器。此外它还拥有�
 
 * * *
 
-# 基础
+# <a id="toc-basics"></a>基础
 
 Babel 是 JavaScript 编译器，更确切地说是源码到源码的编译器，通常也叫做“转换编译器（transpiler）”。 意思是说你为 Babel 提供一些 JavaScript 代码，Babel 更改这些代码，然后返回给你新生成的代码。
 
-## 抽象语法树（ASTs）
+## <a id="toc-asts"></a>抽象语法树（ASTs）
 
 这个处理过程中的每一步都涉及到创建或是操作[抽象语法树](https://en.wikipedia.org/wiki/Abstract_syntax_tree)，亦称 AST。
 
@@ -214,15 +214,15 @@ Babel 还为每个节点额外生成了一些属性，用于描述该节点在�
 
 每一个节点都会有 `start`，`end`，`loc` 这几个属性。
 
-## Babel 的处理步骤
+## <a id="toc-stages-of-babel"></a>Babel 的处理步骤
 
 Babel 的三个主要处理步骤分别是： **解析（parse）**，**转换（transform）**，**生成（generate）**。.
 
-### 解析
+### <a id="toc-parse"></a>解析
 
 **解析**步骤接收代码并输出 AST。 这个步骤分为两个阶段：[**词法分析（Lexical Analysis） **](https://en.wikipedia.org/wiki/Lexical_analysis)和 [**语法分析（Syntactic Analysis）**](https://en.wikipedia.org/wiki/Parsing)。.
 
-#### 词法分析
+#### <a id="toc-lexical-analysis"></a>词法分析
 
 词法分析阶段把字符串形式的代码转换为 **令牌（tokens）** 流。.
 
@@ -264,21 +264,21 @@ n * n;
 
 和 AST 节点一样它们也有 `start`，`end`，`loc` 属性。.
 
-#### 语法分析
+#### <a id="toc-syntactic-analysis"></a>语法分析
 
 语法分析阶段会把一个令牌流转换成 AST 的形式。 这个阶段会使用令牌中的信息把它们转换成一个 AST 的表述结构，这样更易于后续的操作。
 
-### 转换
+### <a id="toc-transform"></a>转换
 
 [转换](https://en.wikipedia.org/wiki/Program_transformation)步骤接收 AST 并对其进行遍历，在此过程中对节点进行添加、更新及移除等操作。 这是 Babel 或是其他编译器中最复杂的过程 同时也是插件将要介入工作的部分，这将是本手册的主要内容， 因此让我们慢慢来。
 
-### 生成
+### <a id="toc-generate"></a>生成
 
 [代码生成](https://en.wikipedia.org/wiki/Code_generation_(compiler))步骤把最终（经过一系列转换之后）的 AST转换成字符串形式的代码，同时创建[源码映射（source maps）](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/)。.
 
 代码生成其实很简单：深度优先遍历整个 AST，然后构建可以表示转换后代码的字符串。
 
-## 遍历
+## <a id="toc-traversal"></a>遍历
 
 想要转换 AST 你需要进行递归的[树形遍历](https://en.wikipedia.org/wiki/Tree_traversal)。
 
@@ -330,7 +330,7 @@ n * n;
 
 Babel 的转换步骤全都是这样的遍历过程。
 
-### Visitors（访问者）
+### <a id="toc-visitors"></a>Visitors（访问者）
 
 当我们谈及“进入”一个节点，实际上是说我们在**访问**它们， 之所以使用这样的术语是因为有一个[**访问者模式（visitor）**](https://en.wikipedia.org/wiki/Visitor_pattern)的概念。.
 
@@ -418,7 +418,7 @@ const MyVisitor = {
 };
 ```
 
-### Paths（路径）
+### <a id="toc-paths"></a>Paths（路径）
 
 AST 通常会有许多节点，那么节点直接如何相互关联？ 我们可以用一个巨大的可变对象让你来操作以及完全访问（节点的关系），或者我们可以用**Paths（路径）**来简化这件事情。.
 
@@ -485,7 +485,7 @@ AST 通常会有许多节点，那么节点直接如何相互关联？ 我们可
 
 可以这么说，路径是对于节点在树中的位置以及其他各种信息的**响应式**表述。 当你调用一个方法更改了树的时候，这些信息也会更新。 Babel 帮你管理着这一切从而让你能更轻松的操作节点并且尽量保证无状态化。（译注：意即尽可能少的让你来维护状态）
 
-#### Paths in Visitors（存在于访问者中的路径）
+#### <a id="toc-paths-in-visitors"></a>Paths in Visitors（存在于访问者中的路径）
 
 当你有一个拥有 `Identifier()` 方法的访问者时，你实际上是在访问路径而不是节点。 如此一来你可以操作节点的响应式表述（译注：即路径）而不是节点本身。
 
@@ -507,7 +507,7 @@ Visiting: b
 Visiting: c
 ```
 
-### State（状态）
+### <a id="toc-state"></a>State（状态）
 
 状态是 AST 转换的敌人。状态会不停的找你麻烦，你对状态的预估到最后几乎总是错的，因为你无法预先考虑到所有的语法。
 
@@ -572,7 +572,7 @@ const MyVisitor = {
 
 当然，这只是一个刻意捏造的例子，不过它演示了如何从访问者中消除全局状态。
 
-### Scopes（作用域）
+### <a id="toc-scopes"></a>Scopes（作用域）
 
 接下来让我们引入[**作用域（scope）**](https://en.wikipedia.org/wiki/Scope_(computer_science))的概念。 JavaScript 拥有[词法作用域](https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scoping_vs._dynamic_scoping)，代码块创建新的作用域并形成一个树状结构。
 
@@ -646,7 +646,7 @@ function scopeOne() {
 
 这些做好之后，你将拥有许多用于作用域上的方法。我们稍后再讲这些。
 
-#### Bindings（绑定）
+#### <a id="toc-bindings"></a>Bindings（绑定）
 
 引用从属于特定的作用域；这种关系被称作：**绑定（binding）**。.
 
@@ -699,13 +699,13 @@ function scopeOne() {
 
 * * *
 
-# API
+# <a id="toc-api"></a>API
 
 Babel 实际上是一系列的模块。本节我们将探索一些主要的模块，解释它们是做什么的以及如何使用它们。
 
 > 注意：本节内容不是详细的 API 文档的替代品，正式的 API 文档将很快提供出来。
 
-## [`babylon`](https://github.com/babel/babel/tree/master/packages/babylon)
+## <a id="toc-babylon"></a>[`babylon`](https://github.com/babel/babel/tree/master/packages/babylon)
 
 Babylon 是 Babel 的解析器。最初是 Acorn 的一份 fork，它非常快，易于使用，并且针对非标准特性（以及那些未来的标准特性）设计了一个基于插件的架构。
 
@@ -753,7 +753,7 @@ babylon.parse(code, {
 
 可以在 [Babylon README](https://github.com/babel/babel/blob/master/packages/babylon/README.md#plugins) 查看所有插件的列表。.
 
-## [`babel-traverse`](https://github.com/babel/babel/tree/master/packages/babel-traverse)
+## <a id="toc-babel-traverse"></a>[`babel-traverse`](https://github.com/babel/babel/tree/master/packages/babel-traverse)
 
 Babel Tranverse（遍历）模块维护了整棵树的状态，并且负责替换、移除和添加节点。
 
@@ -787,7 +787,7 @@ traverse(ast, {
 });
 ```
 
-## [`babel-types`](https://github.com/babel/babel/tree/master/packages/babel-types)
+## <a id="toc-babel-types"></a>[`babel-types`](https://github.com/babel/babel/tree/master/packages/babel-types)
 
 Babel Types（类型）模块是一个用于 AST 节点的 Lodash 式工具库。 译注：Lodash 是一个 JavaScript 函数工具库，提供了基于函数式编程风格的众多工具函数）它包含了构造、验证以及变换 AST 节点的方法。 其设计周到的工具方法有助于编写清晰简单的 AST 逻辑。
 
@@ -812,7 +812,7 @@ traverse(ast, {
 });
 ```
 
-### Definitions（定义）
+### <a id="toc-definitions"></a>Definitions（定义）
 
 Babel Types模块拥有每一个单一类型节点的定义，包括有哪些属性分别属于哪里，哪些值是合法的，如何构建该节点，该节点应该如何去遍历，以及节点的别名等信息。
 
@@ -837,7 +837,7 @@ defineType("BinaryExpression", {
 });
 ```
 
-### Builders（构建器）
+### <a id="toc-builders"></a>Builders（构建器）
 
 你会注意到上面的 `BinaryExpression` 定义有一个 `builder` 字段。.
 
@@ -876,7 +876,7 @@ a * b
 
 构建器还会验证自身创建的节点，并在错误使用的情形下抛出描述性的错误。这就引出了接下来的一种方法。
 
-### Validators（验证器）
+### <a id="toc-validators"></a>Validators（验证器）
 
 `BinaryExpression` 的定义还包含了节点的 `fields` 字段信息并且指示了如何验证它们。
 
@@ -914,11 +914,11 @@ t.assertBinaryExpression(maybeBinaryExpressionNode, { operator: "*" });
 // Error: Expected type "BinaryExpression" with option { "operator": "*" }
 ```
 
-### Converters（变换器）
+### <a id="toc-converters"></a>Converters（变换器）
 
 > [WIP]
 
-## [`babel-generator`](https://github.com/babel/babel/tree/master/packages/babel-generator)
+## <a id="toc-babel-generator"></a>[`babel-generator`](https://github.com/babel/babel/tree/master/packages/babel-generator)
 
 Babel Generator模块是 Babel 的代码生成器。它将 AST 输出为代码并包括源码映射（sourcemaps）。
 
@@ -959,7 +959,7 @@ generate(ast, {
 }, code);
 ```
 
-## [`babel-template`](https://github.com/babel/babel/tree/master/packages/babel-template)
+## <a id="toc-babel-template"></a>[`babel-template`](https://github.com/babel/babel/tree/master/packages/babel-template)
 
 Babel Template模块是一个很小但却非常有用的模块。它能让你编写带有占位符的字符串形式的代码，你可以用此来替代大量的手工构建的 AST。
 
@@ -988,7 +988,7 @@ console.log(generate(ast).code);
 var myModule = require("my-module");
 ```
 
-# 编写你的第一个 Babel 插件
+# <a id="toc-writing-your-first-babel-plugin"></a>编写你的第一个 Babel 插件
 
 现在你已经熟悉了 Babel 的所有基础知识了，让我们把这些知识和插件的 API融合在一起来编写第一个 Babel 插件吧。
 
@@ -1113,11 +1113,11 @@ sebmck === dork;
 
 * * *
 
-# 转换操作
+# <a id="toc-transformation-operations"></a>转换操作
 
-## 访问
+## <a id="toc-visiting"></a>访问
 
-### 检查节点是否为某种特定类型
+### <a id="toc-check-if-a-node-is-a-certain-type"></a>检查节点是否为某种特定类型
 
 要检查节点的类型是什么，比较好的方法是：
 
@@ -1153,7 +1153,7 @@ BinaryExpression(path) {
 }
 ```
 
-### 检查标识符是否正在被引用着
+### <a id="toc-check-if-an-identifier-is-referenced"></a>检查标识符是否正在被引用着
 
 ```js
 Identifier(path) {
@@ -1173,9 +1173,9 @@ Identifier(path) {
 }
 ```
 
-## 处理
+## <a id="toc-manipulation"></a>处理
 
-### 替换节点
+### <a id="toc-replacing-a-node"></a>替换节点
 
 ```js
 BinaryExpression(path) {
@@ -1192,7 +1192,7 @@ BinaryExpression(path) {
   }
 ```
 
-### 用多个节点替换一个节点
+### <a id="toc-replacing-a-node-with-multiple-nodes"></a>用多个节点替换一个节点
 
 ```js
 ReturnStatement(path) {
@@ -1215,7 +1215,7 @@ ReturnStatement(path) {
 
 > **注意：** 当用多个节点替换表达式时，这些节点必须是声明（statements）。 这是因为当节点替换发生时，Babel 极广泛地使用了启发式的算法，这意味着如果使用了非声明的代码会产生非常冗长的、疯狂的转换动作。
 
-### 用字符串源码替换节点
+### <a id="toc-replacing-a-node-with-a-source-string"></a>用字符串源码替换节点
 
 ```js
 FunctionDeclaration(path) {
@@ -1235,7 +1235,7 @@ FunctionDeclaration(path) {
 
 > **注意：** 除非你要处理动态的源码字符串，否则不推荐使用这个 API，反之在访问者外部解析代码会更有效率。
 
-### 插入同级节点
+### <a id="toc-inserting-a-sibling-node"></a>插入同级节点
 
 ```js
 FunctionDeclaration(path) {
@@ -1254,7 +1254,7 @@ FunctionDeclaration(path) {
 
 > **注意：** 这里同样应该使用声明或者一个声明数组。 因为使用了在[用多个节点替换一个节点](#replacing-a-node-with-multiple-nodes)一节提到的启发式算法。.
 
-### 移除节点
+### <a id="toc-removing-a-node"></a>移除节点
 
 ```js
 FunctionDeclaration(path) {
@@ -1268,7 +1268,7 @@ FunctionDeclaration(path) {
 - }
 ```
 
-### 替换父节点
+### <a id="toc-replacing-a-parent"></a>替换父节点
 
 ```js
 BinaryExpression(path) {
@@ -1285,7 +1285,7 @@ BinaryExpression(path) {
   }
 ```
 
-### 移除父节点
+### <a id="toc-removing-a-parent"></a>移除父节点
 
 ```js
 BinaryExpression(path) {
@@ -1299,9 +1299,9 @@ BinaryExpression(path) {
   }
 ```
 
-## Scope（作用域）
+## <a id="toc-scope"></a>Scope（作用域）
 
-### 检查本地变量是否有绑定
+### <a id="toc-checking-if-a-local-variable-is-bound"></a>检查本地变量是否有绑定
 
 ```js
 FunctionDeclaration(path) {
@@ -1323,7 +1323,7 @@ FunctionDeclaration(path) {
 }
 ```
 
-### 生成唯一标识符（UID）
+### <a id="toc-generating-a-uid"></a>生成唯一标识符（UID）
 
 这会生成一个不会和任何本地定义的变量冲突的标识符。
 
@@ -1336,7 +1336,7 @@ FunctionDeclaration(path) {
 }
 ```
 
-### 提升变量声明至父级作用域
+### <a id="toc-pushing-a-variable-declaration-to-a-parent-scope"></a>提升变量声明至父级作用域
 
 有时你会需要提升一个 `VariableDeclaration` 以便可以给它赋值。
 
@@ -1356,7 +1356,7 @@ FunctionDeclaration(path) {
 + };
 ```
 
-### 重命名绑定及其引用
+### <a id="toc-rename-a-binding-and-its-references"></a>重命名绑定及其引用
 
 ```js
 FunctionDeclaration(path) {
@@ -1390,7 +1390,7 @@ FunctionDeclaration(path) {
 
 * * *
 
-# 插件选项
+# <a id="toc-plugin-options"></a>插件选项
 
 若你希望让你的用户自定义 Babel 插件的行为，你可以接收指定的选项：
 
@@ -1424,7 +1424,7 @@ export default function({ types: t }) {
 
 * * *
 
-# 构建节点
+# <a id="toc-building-nodes"></a>构建节点
 
 当编写转换动作时你会时常需要构建一些节点然后把它们插入到 AST 中。 正如之前提到的，你可以使用 [babel-types](#builder) 模块里的 [`Builders（构建器）`](#babel-types) 方法。
 
@@ -1535,17 +1535,17 @@ member.expression.property
 
 * * *
 
-# 最佳实践
+# <a id="toc-best-practices"></a>最佳实践
 
 > I'll be working on this section over the coming weeks.
 
-## 尽量避免遍历抽象语法树（AST）
+## <a id="toc-avoid-traversing-the-ast-as-much-as-possible"></a>尽量避免遍历抽象语法树（AST）
 
 遍历 AST 的代价很昂贵，并且很容易做出非必要的遍历，可能是数以千计甚或上万次的多余操作。
 
 Babel 尽可能的对此做出了优化，方法是如果合并多个访问者能够在单次遍历做完所有事情的话那就合并它们。
 
-### 及时合并访问者对象
+### <a id="toc-merge-visitors-whenever-possible"></a>及时合并访问者对象
 
 当编写访问者时，若逻辑上必要的话，它会试图在多处调用 `path.traverse`。
 
@@ -1576,7 +1576,7 @@ path.traverse({
 });
 ```
 
-### 可以手动查找就不要遍历
+### <a id="toc-do-not-traverse-when-manual-lookup-will-do"></a>可以手动查找就不要遍历
 
 访问者也会尝试在查找一个特定节点类型时调用 `path.traverse`。
 
@@ -1606,7 +1606,7 @@ const MyVisitor = {
 };
 ```
 
-## 优化嵌套的访问者对象
+## <a id="toc-optimizing-nested-visitors"></a>优化嵌套的访问者对象
 
 当你嵌套访问者时，直接把它们嵌套式的写进代码里看起来很合理。
 
@@ -1675,7 +1675,7 @@ const MyVisitor = {
 };
 ```
 
-## 留意嵌套结构
+## <a id="toc-being-aware-of-nested-structures"></a>留意嵌套结构
 
 有时候在考虑一些转换时，你可能会忘记某些结构是可以嵌套的。
 

@@ -8,60 +8,60 @@ Acest manual este disponibil și în alte limbi, a se vedea [README](/README.md)
 
 # Cuprins
 
-  * [Introducere](#introduction)
-  * [Concepte de bază](#basics) 
-      * [ASTs](#asts)
-      * [Etapele Babel](#stages-of-babel)
-      * [Analiză](#parse) 
-          * [Analiză Lexicală](#lexical-analysis)
-          * [Analiză Sintactică](#syntactic-analysis)
-      * [Transformare](#transform)
-      * [Generare](#generate)
-      * [Traversare](#traversal)
-      * [Vizitatori (Visitors)](#visitors)
-      * [Trasee (Paths)](#paths) 
-          * [Trasee în Vizitatori (Paths in Visitors)](#paths-in-visitors)
-      * [Stare](#state)
-      * [Domenii (Scopes)](#scopes) 
-          * [Legături (Bindings)](#bindings)
-  * [API](#api) 
-      * [babylon](#babylon)
-      * [babel-traverse](#babel-traverse)
-      * [babel-types](#babel-types)
-      * [Definiții](#definitions)
-      * [Constructori](#builders)
-      * [Validatori](#validators)
-      * [Convertori](#converters)
-      * [babel-generator](#babel-generator)
-      * [babel-template](#babel-template)
-  * [Scrierea primului Plugin Babel](#writing-your-first-babel-plugin)
-  * [Operații de Transformare](#transformation-operations) 
-      * [Vizitare (Visiting)](#visiting)
-      * [Verificare dacă un nod este de un anumit tip](#check-if-a-node-is-a-certain-type)
-      * [Verificare dacă un identificator are referință](#check-if-an-identifier-is-referenced)
-      * [Manipulare](#manipulation)
-      * [Înlocuirea unui nod](#replacing-a-node)
-      * [Înlocuirea unui nod cu mai multe noduri](#replacing-a-node-with-multiple-nodes)
-      * [Înlocuirea unui nod cu un șir de caractere sursă](#replacing-a-node-with-a-source-string)
-      * [Inserarea unui nod pe același nivel](#inserting-a-sibling-node)
-      * [Ștergerea unui nod](#removing-a-node)
-      * [Înlocuirea unui părinte](#replacing-a-parent)
-      * [Ștergerea unui părinte](#removing-a-parent)
-      * [Domeniu (Scope)](#scope)
-      * [Verificare dacă o variabilă locală este legată](#checking-if-a-local-variable-is-bound)
-      * [Generarea unui UID](#generating-a-uid)
-      * [Mutarea unei declarații de variabilă într-un domeniu părinte](#pushing-a-variable-declaration-to-a-parent-scope)
-      * [Redenumirea unei legături și a referințelor sale](#rename-a-binding-and-its-references)
-  * [Opțiuni de plugin](#plugin-options)
-  * [Construirea nodurilor](#building-nodes)
-  * [Practici preferate](#best-practices) 
-      * [Evitați traversarea AST pe cât posibil](#avoid-traversing-the-ast-as-much-as-possible)
-      * [Îmbinarea vizitatorilor ori de câte ori este posibil](#merge-visitors-whenever-possible)
-      * [Evitați traversarea când o căutare manuală este suficientă](#do-not-traverse-when-manual-lookup-will-do)
-      * [Optimizarea vizitatorilor imbricați](#optimizing-nested-visitors)
-      * [Atenție la structuri imbricate](#being-aware-of-nested-structures)
+  * [Introducere](#toc-introduction)
+  * [Concepte de bază](#toc-basics) 
+      * [ASTs](#toc-asts)
+      * [Etapele Babel](#toc-stages-of-babel)
+      * [Analiză](#toc-parse) 
+          * [Analiză Lexicală](#toc-lexical-analysis)
+          * [Analiză Sintactică](#toc-syntactic-analysis)
+      * [Transformare](#toc-transform)
+      * [Generare](#toc-generate)
+      * [Traversare](#toc-traversal)
+      * [Vizitatori (Visitors)](#toc-visitors)
+      * [Trasee (Paths)](#toc-paths) 
+          * [Trasee în Vizitatori (Paths in Visitors)](#toc-paths-in-visitors)
+      * [Stare](#toc-state)
+      * [Domenii (Scopes)](#toc-scopes) 
+          * [Legături (Bindings)](#toc-bindings)
+  * [API](#toc-api) 
+      * [babylon](#toc-babylon)
+      * [babel-traverse](#toc-babel-traverse)
+      * [babel-types](#toc-babel-types)
+      * [Definiții](#toc-definitions)
+      * [Constructori](#toc-builders)
+      * [Validatori](#toc-validators)
+      * [Convertori](#toc-converters)
+      * [babel-generator](#toc-babel-generator)
+      * [babel-template](#toc-babel-template)
+  * [Scrierea primului Plugin Babel](#toc-writing-your-first-babel-plugin)
+  * [Operații de Transformare](#toc-transformation-operations) 
+      * [Vizitare (Visiting)](#toc-visiting)
+      * [Verificare dacă un nod este de un anumit tip](#toc-check-if-a-node-is-a-certain-type)
+      * [Verificare dacă un identificator are referință](#toc-check-if-an-identifier-is-referenced)
+      * [Manipulare](#toc-manipulation)
+      * [Înlocuirea unui nod](#toc-replacing-a-node)
+      * [Înlocuirea unui nod cu mai multe noduri](#toc-replacing-a-node-with-multiple-nodes)
+      * [Înlocuirea unui nod cu un șir de caractere sursă](#toc-replacing-a-node-with-a-source-string)
+      * [Inserarea unui nod pe același nivel](#toc-inserting-a-sibling-node)
+      * [Ștergerea unui nod](#toc-removing-a-node)
+      * [Înlocuirea unui părinte](#toc-replacing-a-parent)
+      * [Ștergerea unui părinte](#toc-removing-a-parent)
+      * [Domeniu (Scope)](#toc-scope)
+      * [Verificare dacă o variabilă locală este legată](#toc-checking-if-a-local-variable-is-bound)
+      * [Generarea unui UID](#toc-generating-a-uid)
+      * [Mutarea unei declarații de variabilă într-un domeniu părinte](#toc-pushing-a-variable-declaration-to-a-parent-scope)
+      * [Redenumirea unei legături și a referințelor sale](#toc-rename-a-binding-and-its-references)
+  * [Opțiuni de plugin](#toc-plugin-options)
+  * [Construirea nodurilor](#toc-building-nodes)
+  * [Practici preferate](#toc-best-practices) 
+      * [Evitați traversarea AST pe cât posibil](#toc-avoid-traversing-the-ast-as-much-as-possible)
+      * [Îmbinarea vizitatorilor ori de câte ori este posibil](#toc-merge-visitors-whenever-possible)
+      * [Evitați traversarea când o căutare manuală este suficientă](#toc-do-not-traverse-when-manual-lookup-will-do)
+      * [Optimizarea vizitatorilor imbricați](#toc-optimizing-nested-visitors)
+      * [Atenție la structuri imbricate](#toc-being-aware-of-nested-structures)
 
-# Introducere
+# <a id="toc-introduction"></a>Introducere
 
 Babel este un compilator generic multi-scop pentru JavaScript. Mai mult decât atât, este o colecție de module care pot fi utilizate pentru diverse tipuri de analiză statică.
 
@@ -73,11 +73,11 @@ Puteți utiliza Babel pentru a construi diverse tipuri de instrumente care vă p
 
 * * *
 
-# Concepte de bază
+# <a id="toc-basics"></a>Concepte de bază
 
 Babel este un compilator de JavaScript, mai exact un compilator sursă-la-sursă, deseori numit un "transpiler". Asta înseamnă că dacă îi pasezi cod JavaScript, Babel modifică codul, și generează cod nou.
 
-## ASTs
+## <a id="toc-asts"></a>ASTs
 
 Fiecare dintre acești pași implică crearea sau lucrul cu un [Arbore Abstract de Sintaxă](https://en.wikipedia.org/wiki/Abstract_syntax_tree) sau AST.
 
@@ -214,15 +214,15 @@ Există proprietăţi suplimentare pe fiecare Nod, generate de Babel, care descr
 
 Aceste proprietăţi `start`, `end`, `loc`, apar în fiecare Nod.
 
-## Etapele Babel
+## <a id="toc-stages-of-babel"></a>Etapele Babel
 
 Cele trei etape principale ale Babel sunt **analiză**, **transformare**, **generare**.
 
-### Analiză
+### <a id="toc-parse"></a>Analiză
 
 Etapa de **analiză**, primeste codul şi produce AST-ul. Există două faze ale analizei în Babel: [**Analiza lexicală**](https://en.wikipedia.org/wiki/Lexical_analysis) şi [**Analiza sintactică**](https://en.wikipedia.org/wiki/Parsing).
 
-#### Analiză Lexicală
+#### <a id="toc-lexical-analysis"></a>Analiză Lexicală
 
 Analiza lexicală primeste un şir de cod şi-l transformă într-un flux de simboluri (**tokens**).
 
@@ -264,21 +264,21 @@ Fiecare `type` are un set de proprietăţi care descrie token-ul:
 
 La fel ca nodurile AST, acestea conțin `start`, `end`, și `loc`.
 
-#### Analiză Sintactică
+#### <a id="toc-syntactic-analysis"></a>Analiză Sintactică
 
 Analiza sintactică primește un flux de token-uri şi-l transformă într-o reprezentare AST. Folosind informaţiile din token-uri, această fază le va reformata ca un AST care reprezintă structura codului într-un mod care este mai uşor de utilizat.
 
-### Transformare
+### <a id="toc-transform"></a>Transformare
 
 Etapa de [Transformare](https://en.wikipedia.org/wiki/Program_transformation) primește un AST pe care-l traversează, adăugă, actualizează şi sterge noduri. Această etapă este de departe cea mai complexă din Babel sau din orice alt compilator. Acesta este locul în care plugin-urile acționează de fapt, aşadar va fi subiectul majorității capitolelor din acest manual. Nu vom intra prea adânc în detalii pentru moment.
 
-### Generare
+### <a id="toc-generate"></a>Generare
 
 Etapa de [generare de cod](https://en.wikipedia.org/wiki/Code_generation_(compiler)) primește AST-ul final şi-l transformă înapoi într-un şir de cod, creând şi [source maps](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/).
 
 Generarea de cod este destul de simplă: se traversează AST-ul și se construiește un şir de caractere care reprezintă codul transformat.
 
-## Traversare
+## <a id="toc-traversal"></a>Traversare
 
 Atunci când doriţi să transformați un AST trebuie să-l [traversați](https://en.wikipedia.org/wiki/Tree_traversal) recursiv.
 
@@ -330,7 +330,7 @@ Singurul element de aici este un nod `ReturnStatement`, care are un `argument`, 
 
 Acest proces de traversare se întâmplă de-a lungul etapei de transformare Babel.
 
-### Vizitatori (Visitors)
+### <a id="toc-visitors"></a>Vizitatori (Visitors)
 
 Atunci când vorbim despre "a merge" la un nod, ne referim de fapt la a-l **vizita**. Motivul pentru care vom folosi acest termen este pentru că există acest concept de [**vizitator**](https://en.wikipedia.org/wiki/Visitor_pattern).
 
@@ -418,7 +418,7 @@ const MyVisitor = {
 };
 ```
 
-### Trasee (Paths)
+### <a id="toc-paths"></a>Trasee (Paths)
 
 AST o are în general multe Noduri, dar cum se relaționează ele unul la altul? Am putea avea un singur obiect mutabil gigant, care să-l manipulăm şi să avem acces deplin la el, sau putem simplifica acest lucru cu Trasee (**Paths**).
 
@@ -485,7 +485,7 @@ Precum şi foarte multe metode legate de adăugarea, actualizarea, mutarea, şi 
 
 Într-un anumit sens, traseele sunt o reprezentare **reactivă** a poziţiei unui nod în arbore şi multe alte informatii despre nod. Ori de câte ori apelați o metodă care modifică arborele, această informaţie este actualizată. Babel gestionează toate acestea pentru a face lucrul cu noduri cât mai ușor posibil.
 
-#### Trasee în Vizitatori (Paths in Visitors)
+#### <a id="toc-paths-in-visitors"></a>Trasee în Vizitatori (Paths in Visitors)
 
 Când aveţi un vizitator care are o metodă `Identifier()`, de fapt se vizitează traseul, nu nodul. În acest fel se lucrează cu reprezentarea reactivă a nodului, nu cu nodul în sine.
 
@@ -507,7 +507,7 @@ Visiting: b
 Visiting: c
 ```
 
-### Stare
+### <a id="toc-state"></a>Stare
 
 Starea este duşmanul transformării AST-ului. Starea îți va crea mari probleme şi ipotezele tale despre stare vor fi aproape întotdeauna greşite, din cauza unei sintaxe care nu ai luat-o în considerare.
 
@@ -572,7 +572,7 @@ const MyVisitor = {
 
 Desigur, acesta este un exemplu teoretic, însă demonstrează cum să eliminăm starea globală din vizitatori.
 
-### Domenii (Scopes)
+### <a id="toc-scopes"></a>Domenii (Scopes)
 
 În continuare vom introduce conceptul de [**domeniu**](https://en.wikipedia.org/wiki/Scope_(computer_science)). JavaScript utilizează [domeniu lexical](https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scoping_vs._dynamic_scoping), care este o structură de arbore, în care fiecare bloc crează un nou domeniu.
 
@@ -646,7 +646,7 @@ Crearea unui domeniu nou implică pasarea unui traseu şi a unui domeniu părint
 
 Odată ce am făcut acest lucru, există tot felul de metode ce le putem utiliza pe domenii. Însă le vom examina mai târziu.
 
-#### Legături (Bindings)
+#### <a id="toc-bindings"></a>Legături (Bindings)
 
 Toate referinţele aparţin unui anumit domeniu; această relaţie este cunoscută sub denumirea de **legătură**.
 
@@ -699,13 +699,13 @@ function scopeOne() {
 
 * * *
 
-# API
+# <a id="toc-api"></a>API
 
 Babel este de fapt o colecţie de module. În această secţiune vom trece prin cele mai importante, explicând la ce ajută şi cum se utilizează.
 
 > Notă: Acest document nu este un înlocuitor pentru documentaţia detaliată a API-ului, care va fi disponibilă în altă parte în scurt timp.
 
-## [`babylon`](https://github.com/babel/babel/tree/master/packages/babylon)
+## <a id="toc-babylon"></a>[`babylon`](https://github.com/babel/babel/tree/master/packages/babylon)
 
 Babylon este analizorul din Babel. A început ca o bifurcație din Acorn, este rapid, simplu de utilizat, are o arhitectură bazată pe plugin-uri pentru caracteristici neconvenţionale (precum şi viitoarele standarde).
 
@@ -753,7 +753,7 @@ Din moment ce Babylon este construit cu o arhitectură bazată pe plugin-uri, ex
 
 Pentru a vedea o listă completă de plugin-uri, examinați [Babylon README](https://github.com/babel/babel/blob/master/packages/babylon/README.md#plugins).
 
-## [`babel-traverse`](https://github.com/babel/babel/tree/master/packages/babel-traverse)
+## <a id="toc-babel-traverse"></a>[`babel-traverse`](https://github.com/babel/babel/tree/master/packages/babel-traverse)
 
 Modulul de Traversare Babel conține starea generală a arborelui, şi este responsabil pentru înlocuirea, ștergerea şi adăugarea de noduri.
 
@@ -787,7 +787,7 @@ traverse(ast, {
 });
 ```
 
-## [`babel-types`](https://github.com/babel/babel/tree/master/packages/babel-types)
+## <a id="toc-babel-types"></a>[`babel-types`](https://github.com/babel/babel/tree/master/packages/babel-types)
 
 Babel Types este o librărie de utilitare, similară cu Lodash, pentru nodurile AST. Conține metode pentru construirea, validarea şi conversia nodurilor AST. Este util pentru curățarea logicii AST cu metode utilitare bine gândite.
 
@@ -812,7 +812,7 @@ traverse(ast, {
 });
 ```
 
-### Definiții
+### <a id="toc-definitions"></a>Definiții
 
 Babel Types conține definiţii pentru fiecare tip de nod, și informaţii cu privire la ce proprietăţile aparţin cui, ce valori sunt valide, cum se construiește un nod, cum ar trebui traversat nodul şi pseudonime ale nodului.
 
@@ -837,7 +837,7 @@ defineType("BinaryExpression", {
 });
 ```
 
-### Constructori
+### <a id="toc-builders"></a>Constructori
 
 Veţi observa mai sus că definiţia pentru `BinaryExpression` are un câmp `builder`.
 
@@ -876,7 +876,7 @@ a * b
 
 Constructorii, de asemenea, vor valida nodurile pe care le crează şi aruncă erori descriptive dacă sunt folosiți necorespunzător. Ceea ce ne conduce la următorul tip de metodă.
 
-### Validatori
+### <a id="toc-validators"></a>Validatori
 
 Definiția pentru `BinaryExpression` include informații privind cămpurile (`fields`) nodului şi cum să le validăm.
 
@@ -914,11 +914,11 @@ t.assertBinaryExpression(maybeBinaryExpressionNode, { operator: "*" });
 // Error: Expected type "BinaryExpression" with option { "operator": "*" }
 ```
 
-### Convertori
+### <a id="toc-converters"></a>Convertori
 
 > [WIP] în lucru
 
-## [`babel-generator`](https://github.com/babel/babel/tree/master/packages/babel-generator)
+## <a id="toc-babel-generator"></a>[`babel-generator`](https://github.com/babel/babel/tree/master/packages/babel-generator)
 
 Babel Generator este generatorul de cod pentru Babel. Primește un AST şi îl transformă în cod cu sourcemaps.
 
@@ -959,7 +959,7 @@ generate(ast, {
 }, code);
 ```
 
-## [`babel-template`](https://github.com/babel/babel/tree/master/packages/babel-template)
+## <a id="toc-babel-template"></a>[`babel-template`](https://github.com/babel/babel/tree/master/packages/babel-template)
 
 Babel Template este un alt modul micuț dar incredibil de util. Vă permite să scrieți şiruri de cod cu substituenţi care îi puteţi folosi în loc să construiți manual un AST uriaș.
 
@@ -988,7 +988,7 @@ console.log(generate(ast).code);
 var myModule = require("my-module");
 ```
 
-# Scrierea primului Plugin Babel
+# <a id="toc-writing-your-first-babel-plugin"></a>Scrierea primului Plugin Babel
 
 Acum că sunteţi familiarizați cu toate elementele de bază din Babel, haideţi să le utilizăm împreună cu API-ul pentru plugin-uri.
 
@@ -1113,11 +1113,11 @@ Super mișto! Primul nostru plugin pentru Babel.
 
 * * *
 
-# Operații de Transformare
+# <a id="toc-transformation-operations"></a>Operații de Transformare
 
-## Vizitare (Visiting)
+## <a id="toc-visiting"></a>Vizitare (Visiting)
 
-### Verificare dacă un nod este de un anumit tip
+### <a id="toc-check-if-a-node-is-a-certain-type"></a>Verificare dacă un nod este de un anumit tip
 
 Dacă doriţi să verificaţi de ce tip este un anumit nod, modul preferat de a face acest lucru este:
 
@@ -1153,7 +1153,7 @@ BinaryExpression(path) {
 }
 ```
 
-### Verificare dacă un identificator are referință
+### <a id="toc-check-if-an-identifier-is-referenced"></a>Verificare dacă un identificator are referință
 
 ```js
 Identifier(path) {
@@ -1173,9 +1173,9 @@ Identifier(path) {
 }
 ```
 
-## Manipulare
+## <a id="toc-manipulation"></a>Manipulare
 
-### Înlocuirea unui nod
+### <a id="toc-replacing-a-node"></a>Înlocuirea unui nod
 
 ```js
 BinaryExpression(path) {
@@ -1192,7 +1192,7 @@ BinaryExpression(path) {
   }
 ```
 
-### Înlocuirea unui nod cu mai multe noduri
+### <a id="toc-replacing-a-node-with-multiple-nodes"></a>Înlocuirea unui nod cu mai multe noduri
 
 ```js
 ReturnStatement(path) {
@@ -1215,7 +1215,7 @@ ReturnStatement(path) {
 
 > **Notă:** Când se înlocuieşte o expresie cu mai multe noduri, acestea trebuie să fie declaraţii. Acest lucru este necesar deoarece Babel utilizează euristică pe scară largă la înlocuirea nodurilor, ceea ce înseamnă că puteţi face unele transformări destul de complexe, care altfel ar fi extrem de detaliate.
 
-### Înlocuirea unui nod cu un șir de caractere sursă
+### <a id="toc-replacing-a-node-with-a-source-string"></a>Înlocuirea unui nod cu un șir de caractere sursă
 
 ```js
 FunctionDeclaration(path) {
@@ -1235,7 +1235,7 @@ FunctionDeclaration(path) {
 
 > **Notă:** Nu este recomandat să utilizaţi acest API dacă nu aveți de a face cu șiruri de caractere sursă dinamice, altfel este mult mai eficient pentru a analiza codul în afara vizitatorului.
 
-### Inserarea unui nod pe același nivel
+### <a id="toc-inserting-a-sibling-node"></a>Inserarea unui nod pe același nivel
 
 ```js
 FunctionDeclaration(path) {
@@ -1254,7 +1254,7 @@ FunctionDeclaration(path) {
 
 > **Notă:** Acesta ar trebui să fie întotdeauna o declaraţie sau o serie de declaraţii. Aceasta utilizează aceleaşi euristici menţionate în [Înlocuirea unui nod cu mai multe noduri](#replacing-a-node-with-multiple-nodes).
 
-### Ștergerea unui nod
+### <a id="toc-removing-a-node"></a>Ștergerea unui nod
 
 ```js
 FunctionDeclaration(path) {
@@ -1268,7 +1268,7 @@ FunctionDeclaration(path) {
 - }
 ```
 
-### Înlocuirea unui părinte
+### <a id="toc-replacing-a-parent"></a>Înlocuirea unui părinte
 
 ```js
 BinaryExpression(path) {
@@ -1285,7 +1285,7 @@ BinaryExpression(path) {
   }
 ```
 
-### Ștergerea unui părinte
+### <a id="toc-removing-a-parent"></a>Ștergerea unui părinte
 
 ```js
 BinaryExpression(path) {
@@ -1299,9 +1299,9 @@ BinaryExpression(path) {
   }
 ```
 
-## Domeniu (Scope)
+## <a id="toc-scope"></a>Domeniu (Scope)
 
-### Verificare dacă o variabilă locală este legată
+### <a id="toc-checking-if-a-local-variable-is-bound"></a>Verificare dacă o variabilă locală este legată
 
 ```js
 FunctionDeclaration(path) {
@@ -1323,7 +1323,7 @@ FunctionDeclaration(path) {
 }
 ```
 
-### Generarea unui UID
+### <a id="toc-generating-a-uid"></a>Generarea unui UID
 
 Următorul cod va genera un identificator care nu se ciocnește cu nicio variabilă definită local.
 
@@ -1336,7 +1336,7 @@ FunctionDeclaration(path) {
 }
 ```
 
-### Mutarea unei declarații de variabilă într-un domeniu părinte
+### <a id="toc-pushing-a-variable-declaration-to-a-parent-scope"></a>Mutarea unei declarații de variabilă într-un domeniu părinte
 
 Uneori, poate doriţi să mutați un `VariableDeclaration`, pentru a-i putea asocia o valoare.
 
@@ -1356,7 +1356,7 @@ FunctionDeclaration(path) {
 + };
 ```
 
-### Redenumirea unei legături și a referințelor sale
+### <a id="toc-rename-a-binding-and-its-references"></a>Redenumirea unei legături și a referințelor sale
 
 ```js
 FunctionDeclaration(path) {
@@ -1390,7 +1390,7 @@ FunctionDeclaration(path) {
 
 * * *
 
-# Opțiuni de plugin
+# <a id="toc-plugin-options"></a>Opțiuni de plugin
 
 Dacă doriţi să lăsați utilizatorii să particularizeze comportamentul plugin-ul vostru Babel, puteţi accepta opţiuni de plugin specifice, pe care utilizatorii le pot specifica în felul următor:
 
@@ -1424,7 +1424,7 @@ Aceste opţiuni sunt specifice plugin-ului şi nu puteţi accesa opţiuni din al
 
 * * *
 
-# Construirea nodurilor
+# <a id="toc-building-nodes"></a>Construirea nodurilor
 
 Când scrieţi transformări veţi dori adesea să construiți unele noduri pentru a le insera în AST. Aşa cum am menţionat anterior, puteţi face acest lucru folosind metodele constructor ([builder](#builder)) din pachetul [`babel-types`](#babel-types).
 
@@ -1535,17 +1535,17 @@ Puteţi găsi toate [definiţiile aici](https://github.com/babel/babel/tree/mast
 
 * * *
 
-# Practici preferate
+# <a id="toc-best-practices"></a>Practici preferate
 
 > Voi lucra la această secţiune în următoarele săptămâni.
 
-## Evitați traversarea AST pe cât posibil
+## <a id="toc-avoid-traversing-the-ast-as-much-as-possible"></a>Evitați traversarea AST pe cât posibil
 
 Traversarea AST este scumpă, şi este uşor să traversați accidental AST mai mult decât este necesar. Acest lucru ar putea însemna mii daca nu zeci de mii de operaţiuni suplimentare.
 
 Babel optimizează acest lucru cât mai mult posibil, prin îmbinarea vizitatorilor împreună, dacă este posibil, pentru a face totul într-o singură traversare.
 
-### Îmbinarea vizitatorilor ori de câte ori este posibil
+### <a id="toc-merge-visitors-whenever-possible"></a>Îmbinarea vizitatorilor ori de câte ori este posibil
 
 Când scrieţi vizitatori, poate fi tentant să apelați `path.traverse` în mai multe locuri unde sunt necesare în mod logic.
 
@@ -1576,7 +1576,7 @@ path.traverse({
 });
 ```
 
-### Evitați traversarea când o căutare manuală este suficientă
+### <a id="toc-do-not-traverse-when-manual-lookup-will-do"></a>Evitați traversarea când o căutare manuală este suficientă
 
 De asemenea, poate fi tentant să apelați `path.traverse` atunci când căutați un anumit tip de nod.
 
@@ -1606,7 +1606,7 @@ const MyVisitor = {
 };
 ```
 
-## Optimizarea vizitatorilor imbricați
+## <a id="toc-optimizing-nested-visitors"></a>Optimizarea vizitatorilor imbricați
 
 Atunci când aveți vizitatori imbricați, ar putea face mai mult sens să-i scrieți imbricat și în codul dumneavoastră.
 
@@ -1675,7 +1675,7 @@ const MyVisitor = {
 };
 ```
 
-## Atenție la structuri imbricate
+## <a id="toc-being-aware-of-nested-structures"></a>Atenție la structuri imbricate
 
 Uneori când ne gândim la o transformare, am putea uita că structura poate fi imbricată.
 

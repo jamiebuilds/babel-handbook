@@ -1,10 +1,10 @@
-# Babel Handbook
+# Εγχειρίδιο Babel
 
-This handbook is divided into two parts:
+Αυτό το εγχειρίδιο χωρίζεται σε δύο μέρη:
 
-  * [User Handbook](user-handbook.md) - How to setup/configure Babel and more.
-  * [Plugin Handbook](plugin-handbook.md) - How to create plugins for Babel.
+  * [Εγχειρίδιο Χρήστη](user-handbook.md) - Πως να ρυθμίσετε το Babel και πολλά άλλα.
+  * [Εγχειρίδιο Βυσμάτος (Plugin)](plugin-handbook.md) - Πως να δημιουργήσετε βύσματα (plugins) για το Babel.
 
-> For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.
+> Για μελλοντικές ενημερώσεις ακολουθήστε τον [@thejameskyle](https://twitter.com/thejameskyle) στο Twitter.
 
-If you are reading a non-english translation of this handbook you may still find english sections that have not yet been translated. If you would like to contribute to one of the translations you must do so through Crowdin. Please read the [contributing guidelines](/CONTRIBUTING.md) for more information. You will find a number of english words that are programming concepts. If these were translated to other languages there would be a lack of consistency and fluency when reading about them. In many cases you will find the literal translation followed by the english term in parenthesis `()`. For example: Abstract Syntax Trees (ASTs).
+Εαν διαβάζετε μια μη-αγγλική μετάφραση του παρόντος εγχειριδίου ίσως να βρείτε τμήματα του κειμένου στα αγγλικά, τα οποία δεν έχουν μεταφραστεί ακόμη. Αν θα θέλατε να συνεισφέρετε σε μια ή περισσότερες μεταφράσεις θα πρέπει να το κάνετε μέσω του Crowdin. Για περισσότερες πληροφορίες παρακαλώ διαβάστε τις [κατευθυντήριες γραμμές συνεισφοράς](/CONTRIBUTING.md). Θα βρείτε έναν αριθμό από αγγλικές λέξεις οι οποίες είναι προγραμματιστικές έννοιες. Αν μεταφραστούν σε άλλες γλώσσες θα υπάρξει ελλειψη συνέπειας και ευχέρειας κατά την ανάγνωση τους. Σε πολλές περιπτώσεις θα βρείτε την κυριολεκτική μετάφραση τους να ακολουθείτε από ένα αγγλικό όρο μέσα σε παρένθεση `()`. Για πάραδειγμα: Αφηρημένη Δενδροειδείς Σύνταξη (ΑΣΔ).

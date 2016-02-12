@@ -8,60 +8,60 @@ This handbook is available in other languages, see the [README](/README.md) for 
 
 # Sadržaj
 
-  * [Uvod](#introduction)
-  * [Osnove](#basics) 
-      * [AST strukture](#asts)
-      * [Stanja pri kompajliranja (Stages of Babel)](#stages-of-babel)
-      * [Parsiranje](#parse) 
-          * [Leksička analiza (Lexical Analysis)](#lexical-analysis)
-          * [Analiza sintakse (Syntactic Analysis)](#syntactic-analysis)
-      * [Transformisanje (Transform)](#transform)
-      * [Generisanje (Generate)](#generate)
-      * [Prolazak (Traversal)](#traversal)
-      * [Posetioci (Visitors)](#visitors)
-      * [Putanje (paths)](#paths) 
-          * [Putanje u "posetiocima"](#paths-in-visitors)
-      * [Stanje (state)](#state)
-      * [Domeni (scopes)](#scopes) 
-          * [Vezivanje (bindings)](#bindings)
-  * [API](#api) 
-      * [babylon](#babylon)
-      * [babel-traverse](#babel-traverse)
-      * [babel-types](#babel-types)
-      * [Defincije](#definitions)
-      * [Gradioci (Builders)](#builders)
-      * [Validatori](#validators)
-      * [Konvertori](#converters)
-      * [babel-generator](#babel-generator)
-      * [babel-template](#babel-template)
-  * [Kreiranje vašeg prvog Babel plugina](#writing-your-first-babel-plugin)
-  * [Operacije transformisanja](#transformation-operations) 
-      * [Posećivanje (visiting)](#visiting)
-      * [Proverite da li je čvor određenog tipa](#check-if-a-node-is-a-certain-type)
-      * [Proverite da li neko referencira identifikator](#check-if-an-identifier-is-referenced)
-      * [Manipulacija](#manipulation)
-      * [Zamena čvora](#replacing-a-node)
-      * [Zamenjivanje čvora sa više čvorova](#replacing-a-node-with-multiple-nodes)
-      * [Zamenjivanje čvorova sa stringom koda](#replacing-a-node-with-a-source-string)
-      * [Umetanje susednih čvorova](#inserting-a-sibling-node)
-      * [Uklanjanje čvora](#removing-a-node)
-      * [Zamena nadčvora (parent)](#replacing-a-parent)
-      * [Uklanjanje nadčvora (parent)](#removing-a-parent)
-      * [Domen](#scope)
-      * [Proveravanje da li je lokalna promenljiva "vezana" (bounded)](#checking-if-a-local-variable-is-bound)
-      * [Generisanje UID-a](#generating-a-uid)
-      * [Pomeranje deklaracije promenljive na naddomen (parent scope)](#pushing-a-variable-declaration-to-a-parent-scope)
-      * [Promena imena "vezivanja" i njegovih referenci](#rename-a-binding-and-its-references)
-  * [Plagin opcije](#plugin-options)
-  * [Kreiranje čvorova](#building-nodes)
-  * [Praktični saveti](#best-practices) 
-      * [Izbegavajte prolazak kroz AST što je više moguće](#avoid-traversing-the-ast-as-much-as-possible)
-      * [Spajanje "posetioca" kad je to moguće](#merge-visitors-whenever-possible)
-      * [Izbegavajte prolaske kada može da se upotrebi ručno prolaženje (kroz čvorove)](#do-not-traverse-when-manual-lookup-will-do)
-      * [Optimizacija ugnežđenih "posetioca"](#optimizing-nested-visitors)
-      * [Obratite pažnju na ugnežđene strukture](#being-aware-of-nested-structures)
+  * [Uvod](#toc-introduction)
+  * [Osnove](#toc-basics) 
+      * [AST strukture](#toc-asts)
+      * [Stanja pri kompajliranja (Stages of Babel)](#toc-stages-of-babel)
+      * [Parsiranje](#toc-parse) 
+          * [Leksička analiza (Lexical Analysis)](#toc-lexical-analysis)
+          * [Analiza sintakse (Syntactic Analysis)](#toc-syntactic-analysis)
+      * [Transformisanje (Transform)](#toc-transform)
+      * [Generisanje (Generate)](#toc-generate)
+      * [Prolazak (Traversal)](#toc-traversal)
+      * [Posetioci (Visitors)](#toc-visitors)
+      * [Putanje (paths)](#toc-paths) 
+          * [Putanje u "posetiocima"](#toc-paths-in-visitors)
+      * [Stanje (state)](#toc-state)
+      * [Domeni (scopes)](#toc-scopes) 
+          * [Vezivanje (bindings)](#toc-bindings)
+  * [API](#toc-api) 
+      * [babylon](#toc-babylon)
+      * [babel-traverse](#toc-babel-traverse)
+      * [babel-types](#toc-babel-types)
+      * [Defincije](#toc-definitions)
+      * [Gradioci (Builders)](#toc-builders)
+      * [Validatori](#toc-validators)
+      * [Konvertori](#toc-converters)
+      * [babel-generator](#toc-babel-generator)
+      * [babel-template](#toc-babel-template)
+  * [Kreiranje vašeg prvog Babel plugina](#toc-writing-your-first-babel-plugin)
+  * [Operacije transformisanja](#toc-transformation-operations) 
+      * [Posećivanje (visiting)](#toc-visiting)
+      * [Proverite da li je čvor određenog tipa](#toc-check-if-a-node-is-a-certain-type)
+      * [Proverite da li neko referencira identifikator](#toc-check-if-an-identifier-is-referenced)
+      * [Manipulacija](#toc-manipulation)
+      * [Zamena čvora](#toc-replacing-a-node)
+      * [Zamenjivanje čvora sa više čvorova](#toc-replacing-a-node-with-multiple-nodes)
+      * [Zamenjivanje čvorova sa stringom koda](#toc-replacing-a-node-with-a-source-string)
+      * [Umetanje susednih čvorova](#toc-inserting-a-sibling-node)
+      * [Uklanjanje čvora](#toc-removing-a-node)
+      * [Zamena nadčvora (parent)](#toc-replacing-a-parent)
+      * [Uklanjanje nadčvora (parent)](#toc-removing-a-parent)
+      * [Domen](#toc-scope)
+      * [Proveravanje da li je lokalna promenljiva "vezana" (bounded)](#toc-checking-if-a-local-variable-is-bound)
+      * [Generisanje UID-a](#toc-generating-a-uid)
+      * [Pomeranje deklaracije promenljive na naddomen (parent scope)](#toc-pushing-a-variable-declaration-to-a-parent-scope)
+      * [Promena imena "vezivanja" i njegovih referenci](#toc-rename-a-binding-and-its-references)
+  * [Plagin opcije](#toc-plugin-options)
+  * [Kreiranje čvorova](#toc-building-nodes)
+  * [Praktični saveti](#toc-best-practices) 
+      * [Izbegavajte prolazak kroz AST što je više moguće](#toc-avoid-traversing-the-ast-as-much-as-possible)
+      * [Spajanje "posetioca" kad je to moguće](#toc-merge-visitors-whenever-possible)
+      * [Izbegavajte prolaske kada može da se upotrebi ručno prolaženje (kroz čvorove)](#toc-do-not-traverse-when-manual-lookup-will-do)
+      * [Optimizacija ugnežđenih "posetioca"](#toc-optimizing-nested-visitors)
+      * [Obratite pažnju na ugnežđene strukture](#toc-being-aware-of-nested-structures)
 
-# Uvod
+# <a id="toc-introduction"></a>Uvod
 
 Babel je generički višenamenski kompajler za JavaScript. Sastoji se od kolekcije modula koji se mogu koristiti u različitim vidovima statičke analize koda.
 
@@ -73,11 +73,11 @@ Uz pomoć Babel-a možete napisati mnoštvo različitih tipova alatki koje mogu 
 
 * * *
 
-# Osnove
+# <a id="toc-basics"></a>Osnove
 
 Babel je JavaScript kompajler, tačnije kompajler iz koda u kod, što se najčešće naziva "transpiler". Drugim rečima, Babel može da modifikuje i da generiše potpuno novi kod na osnovu vašeg koda.
 
-## AST strukture
+## <a id="toc-asts"></a>AST strukture
 
 Svaki od koraka pri kompajliranju uključuje kreiranje ili korišćenje apstraktnog sintaksnog stabla [Abstract Syntax Tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree) tj. AST.
 
@@ -214,15 +214,15 @@ Za svaki čvor koji je generisan Babelom koriste se dodatni podaci koji sadrže 
 
 Polja (properties) `start`, `end`, `loc` se mogu naći u svakom pojedinačnom čvoru.
 
-## Stanja pri kompajliranja (Stages of Babel)
+## <a id="toc-stages-of-babel"></a>Stanja pri kompajliranja (Stages of Babel)
 
 Tri osnovna stanja kroz koje Babel prolazi su **parsiranje**, **transformisanje**, **generisanje**.
 
-### Parsiranje
+### <a id="toc-parse"></a>Parsiranje
 
 U fazi **parsiranja**, kod se pretvara u AST strukturu. Parsiranje čine dve faze: [**Leksička analiza**](https://en.wikipedia.org/wiki/Lexical_analysis) (Lexical Analysis) i [**Analiza sintakse**](https://en.wikipedia.org/wiki/Parsing) (Syntactic Analysis).
 
-#### Leksička analiza (Lexical Analysis)
+#### <a id="toc-lexical-analysis"></a>Leksička analiza (Lexical Analysis)
 
 U leksičkoj analizi delić koda se pretvara u niz **tokena**.
 
@@ -264,21 +264,21 @@ U svakom `tipu` imamo skup polja (properties) koje opisuju dati token:
 
 Kao i u elementima AST strukture i ovde imamo polja `start`, `end`, and `loc`.
 
-#### Analiza sintakse (Syntactic Analysis)
+#### <a id="toc-syntactic-analysis"></a>Analiza sintakse (Syntactic Analysis)
 
 Analiza sintakse koristi niz tokena i pretvara ih u AST formu. U ovoj fazi tokeni su, na osnovu informacija koje nose, restruktuirani u formu AST-a. Ovakva reprezentacija strukture koda je daleko jednostavnija za dalje procesiranje.
 
-### Transformisanje (Transform)
+### <a id="toc-transform"></a>Transformisanje (Transform)
 
 U stanju [transformisanja](https://en.wikipedia.org/wiki/Program_transformation) Babel prolazi kroz čvorove AST strukture i pri tom kreira nove, briše ili modifikuje postojeće čvorove. Ovo je daleko najsloženiji deo kroz koji prolazi bilo Babel bilo koji drugi kompajler. Plaginovi svoje procese obavljaju u ovom stanju pa će ovo stanje biti glavna tema u većem delu ovog priručnika. Zbog toga nećemo ulaziti duboko u detalje za sad.
 
-### Generisanje (Generate)
+### <a id="toc-generate"></a>Generisanje (Generate)
 
 Stanje [generisanje koda](https://en.wikipedia.org/wiki/Code_generation_(compiler)) koristi AST generisan u prethodnom stanju i na osnovu njega generiše kod i kreira [mapu koda](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/) (source map).
 
 Generisanje koda je prilično jednostavan proces: prolazi se kroz AST strukturu i ispišu stringovi koji predstavljaju transformisani kod.
 
-## Prolazak (Traversal)
+## <a id="toc-traversal"></a>Prolazak (Traversal)
 
 Pri transformaciji AST strukture potrebno je rekurzivno [proći kroz stablo](https://en.wikipedia.org/wiki/Tree_traversal) kojim je predstavljen.
 
@@ -330,7 +330,7 @@ Struktura `BinaryExpression` ima polja `operator`, a `left`, i a `right`. Polje 
 
 Opisani proces prolaska se desava u stanju transformisanja (transform stage).
 
-### Posetioci (Visitors)
+### <a id="toc-visitors"></a>Posetioci (Visitors)
 
 Kada govorimo o "prolasku" kroz čvor, zapravo mislimo na njihovo **podsećivanje**. Ovaj termin se korisiti zato što postoji koncept [**visitora**](https://en.wikipedia.org/wiki/Visitor_pattern) (visitor).
 
@@ -418,7 +418,7 @@ const MyVisitor = {
 };
 ```
 
-### Putanje (paths)
+### <a id="toc-paths"></a>Putanje (paths)
 
 Generalno, AST se sastoji od više čvorova. Postavlja se pitanje kako su oni međusobno povezani? Možemo da imamo jeda ogroman promenljivi objekat sa kojim manipulišemo i imati potpun pristup ka svakom njegovom delu ili možemo da pojednostavimo ovo manipulisanje korišćenjem **putanja**.
 
@@ -485,7 +485,7 @@ Kasnije ćemo razmotriti veliki broj metoda vezanih za dodavanje, modifikovanje,
 
 Na neki način, "putanje" su **reaktivne** reprezentacije položaja čvorova unutar stabla kao i različite informacije o čvoru. Pozivanjem metoda koje modifikuju stablo se ažuriraju informacije o njegovoj strukturi. Sve ovo vam omogućava Babel kako bi korišćenje čvorova bilo što olakšano i nezavisno od stanja u kojima se nalaze.
 
-#### Putanje u "posetiocima"
+#### <a id="toc-paths-in-visitors"></a>Putanje u "posetiocima"
 
 Kad imamo "posetioca" koji ima `Identifier()` metod, u stanju smo da radimo sa putanjom umesto sa čvorom. Na ovaj način možemo da koristimo reaktivnu reprezentaciju čvora umesto samog čvora.
 
@@ -507,7 +507,7 @@ Visiting: b
 Visiting: c
 ```
 
-### Stanje (state)
+### <a id="toc-state"></a>Stanje (state)
 
 Stanje je neprijatelj AST transformacija. Stanje će vas uvek napadati i vaše pretpostavke o stanju će skoro uvek biti pogrešne tako što će se pojavljivati sintakse koda koje niste očekivali.
 
@@ -572,7 +572,7 @@ const MyVisitor = {
 
 Iako je ovo specifičan primer, on demonstira kako da izbegnemo korišćenje globalog stanja u vašem "posetiocu".
 
-### Domeni (scopes)
+### <a id="toc-scopes"></a>Domeni (scopes)
 
 Uvedimo sad koncept [**domena**](https://en.wikipedia.org/wiki/Scope_(computer_science)) (scope). JavaScript koristi [leksički domen](https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scoping_vs._dynamic_scoping) (lexical scoping) - strukturu stabla u kojoj svaki blok koda kreira novi domen.
 
@@ -646,7 +646,7 @@ Novi domen kreiramo tako da mu dodeljujemo putanju i nadređeni domen (parent sc
 
 Nakon toka, na domen možemo da primenumo veliko broj metoda. Njih ćemo razmotriti kasnije.
 
-#### Vezivanje (bindings)
+#### <a id="toc-bindings"></a>Vezivanje (bindings)
 
 Reference pripadaju određenom domenu; ovu relaciju nazivamo **vezivanje** (binding).
 
@@ -699,13 +699,13 @@ function scopeOne() {
 
 * * *
 
-# API
+# <a id="toc-api"></a>API
 
 Babel u osnovi čini kolekciju modula. U ovom odeljku ćemo pomenuti one koji su najbitniji, objašnjavajući šta oni rade i kako se koriste.
 
 > Napomena: Ovaj dokument ne zamenjuje detaljnu API dokumentaciju koja će uskoro biti dostupna na drugom mestu.
 
-## [`babylon`](https://github.com/babel/babel/tree/master/packages/babylon)
+## <a id="toc-babylon"></a>[`babylon`](https://github.com/babel/babel/tree/master/packages/babylon)
 
 Babylon je parser koji se koristi u Babelu. Ovaj modul je nastao kao "ogranak" (fork) projekta Acorn, veoma je brz, jednostavan za korišćenje, ima arhitekturu "plugina" koja je upotrebljiva za nestandardne potrebe (kao i za buduće standarde).
 
@@ -753,7 +753,7 @@ Kako se Babylon sagrađen na arhitekturi baziranoj na plaginovima, postoji `plug
 
 Kompletna lista plaginova je data u [Babylon README](https://github.com/babel/babel/blob/master/packages/babylon/README.md#plugins).
 
-## [`babel-traverse`](https://github.com/babel/babel/tree/master/packages/babel-traverse)
+## <a id="toc-babel-traverse"></a>[`babel-traverse`](https://github.com/babel/babel/tree/master/packages/babel-traverse)
 
 Babel Traverse modul procesira ukupno stanje stabla i odgovoran je za zamene, uklanjanja i dodavanje čvorova.
 
@@ -787,7 +787,7 @@ traverse(ast, {
 });
 ```
 
-## [`babel-types`](https://github.com/babel/babel/tree/master/packages/babel-types)
+## <a id="toc-babel-types"></a>[`babel-types`](https://github.com/babel/babel/tree/master/packages/babel-types)
 
 Babel Types podseća na Loadas biblioteku primenjenu na AST čvorove. Biblioteka sadrži metode za kreiranje, validaciju i konverziju AST čvorova. Korisna je za pročišćavanje logike u AST strukturi korišćenjem dobro osmišljenih pomoćnih metoda.
 
@@ -812,7 +812,7 @@ traverse(ast, {
 });
 ```
 
-### Defincije
+### <a id="toc-definitions"></a>Defincije
 
 Babel Types sadrži definicije za svaki pojedinačni tip čvora, sa informacija koje se strukture podataka koriste u njima, koje su validne vrednosti unutar strukture, kako se kreiraju određeni čvorovi, kako se prolazi kroz čvorove i koji su alijasi (aliases) za čvorove.
 
@@ -837,7 +837,7 @@ defineType("BinaryExpression", {
 });
 ```
 
-### Gradioci (Builders)
+### <a id="toc-builders"></a>Gradioci (Builders)
 
 Primetićete da gornja definicija `BinaryExpression` ima polje `builder`.
 
@@ -876,7 +876,7 @@ a * b
 
 "Gradioci", takođe, validiraju čvorove koje kreiraju i bacaju greške sa opisom ako nisu korišćeni na pravi način. Ovo nas vodi u sledeći tip metoda.
 
-### Validatori
+### <a id="toc-validators"></a>Validatori
 
 Definicija `BinaryExpression`, takođe, uključuje informacije o `poljima` čvora i kako se validiraju.
 
@@ -914,11 +914,11 @@ t.assertBinaryExpression(maybeBinaryExpressionNode, { operator: "*" });
 // Error: Expected type "BinaryExpression" with option { "operator": "*" }
 ```
 
-### Konvertori
+### <a id="toc-converters"></a>Konvertori
 
 > [WIP]
 
-## [`babel-generator`](https://github.com/babel/babel/tree/master/packages/babel-generator)
+## <a id="toc-babel-generator"></a>[`babel-generator`](https://github.com/babel/babel/tree/master/packages/babel-generator)
 
 Babel Generator je generator koda u okviru Babela. Njegova uloga je da pretvori AST strukturu u kod sa mapama koda (sourcemaps).
 
@@ -959,7 +959,7 @@ generate(ast, {
 }, code);
 ```
 
-## [`babel-template`](https://github.com/babel/babel/tree/master/packages/babel-template)
+## <a id="toc-babel-template"></a>[`babel-template`](https://github.com/babel/babel/tree/master/packages/babel-template)
 
 Babel Template je sledeći mali, ali izuzetno koristan modul. On omogućava pisanje stringova koda sa "mestima za zamene" (placeholders) koje možemo koristiti umesto ručnog kreiranja ogromne AST strukture.
 
@@ -988,7 +988,7 @@ console.log(generate(ast).code);
 var myModule = require("my-module");
 ```
 
-# Kreiranje vašeg prvog Babel plugina
+# <a id="toc-writing-your-first-babel-plugin"></a>Kreiranje vašeg prvog Babel plugina
 
 Nakon što smo se upoznali sa osnova Babela, pokušajmo da stečeno znanje iskoristimu u radu sa plugin API-ijem.
 
@@ -1113,11 +1113,11 @@ Neviđeno! Naš prvi Babel plagin.
 
 * * *
 
-# Operacije transformisanja
+# <a id="toc-transformation-operations"></a>Operacije transformisanja
 
-## Posećivanje (visiting)
+## <a id="toc-visiting"></a>Posećivanje (visiting)
 
-### Proverite da li je čvor određenog tipa
+### <a id="toc-check-if-a-node-is-a-certain-type"></a>Proverite da li je čvor određenog tipa
 
 Ako želite da proverite koga je tipa dati čvor, najbolji način da to uradite je:
 
@@ -1153,7 +1153,7 @@ BinaryExpression(path) {
 }
 ```
 
-### Proverite da li neko referencira identifikator
+### <a id="toc-check-if-an-identifier-is-referenced"></a>Proverite da li neko referencira identifikator
 
 ```js
 Identifier(path) {
@@ -1173,9 +1173,9 @@ Identifier(path) {
 }
 ```
 
-## Manipulacija
+## <a id="toc-manipulation"></a>Manipulacija
 
-### Zamena čvora
+### <a id="toc-replacing-a-node"></a>Zamena čvora
 
 ```js
 BinaryExpression(path) {
@@ -1192,7 +1192,7 @@ BinaryExpression(path) {
   }
 ```
 
-### Zamenjivanje čvora sa više čvorova
+### <a id="toc-replacing-a-node-with-multiple-nodes"></a>Zamenjivanje čvora sa više čvorova
 
 ```js
 ReturnStatement(path) {
@@ -1215,7 +1215,7 @@ ReturnStatement(path) {
 
 > **Napomena:** Kad zamenjujete izraz sa više čvorovan, oni moraju biti izrazi (statements). Razlog za ovo je što Babel intenzivno koristi heuristiku kada zamenjuje čvorove, što znači da možete da uradite prilično neobične transformacije koje bi u suprotnom tražile jako veliko broj linija koda.
 
-### Zamenjivanje čvorova sa stringom koda
+### <a id="toc-replacing-a-node-with-a-source-string"></a>Zamenjivanje čvorova sa stringom koda
 
 ```js
 FunctionDeclaration(path) {
@@ -1235,7 +1235,7 @@ FunctionDeclaration(path) {
 
 > **Napomena:** Nije preporučljivo koristit ovaj API ukoliko ne radite sa izvorom dinamičkih stringova. U suprotnom, mnogo je efikasnije da se kod parsira izvan "posetioca".
 
-### Umetanje susednih čvorova
+### <a id="toc-inserting-a-sibling-node"></a>Umetanje susednih čvorova
 
 ```js
 FunctionDeclaration(path) {
@@ -1254,7 +1254,7 @@ FunctionDeclaration(path) {
 
 > **Napomena:** Ovo uvek treba da bude izraz ili niz izraza. Ovde se koristi ista heuristika kao i u [Zamenjivanje čvora sa više čvorova](#replacing-a-node-with-multiple-nodes).
 
-### Uklanjanje čvora
+### <a id="toc-removing-a-node"></a>Uklanjanje čvora
 
 ```js
 FunctionDeclaration(path) {
@@ -1268,7 +1268,7 @@ FunctionDeclaration(path) {
 - }
 ```
 
-### Zamena nadčvora (parent)
+### <a id="toc-replacing-a-parent"></a>Zamena nadčvora (parent)
 
 ```js
 BinaryExpression(path) {
@@ -1285,7 +1285,7 @@ BinaryExpression(path) {
   }
 ```
 
-### Uklanjanje nadčvora (parent)
+### <a id="toc-removing-a-parent"></a>Uklanjanje nadčvora (parent)
 
 ```js
 BinaryExpression(path) {
@@ -1299,9 +1299,9 @@ BinaryExpression(path) {
   }
 ```
 
-## Domen
+## <a id="toc-scope"></a>Domen
 
-### Proveravanje da li je lokalna promenljiva "vezana" (bounded)
+### <a id="toc-checking-if-a-local-variable-is-bound"></a>Proveravanje da li je lokalna promenljiva "vezana" (bounded)
 
 ```js
 FunctionDeclaration(path) {
@@ -1323,7 +1323,7 @@ FunctionDeclaration(path) {
 }
 ```
 
-### Generisanje UID-a
+### <a id="toc-generating-a-uid"></a>Generisanje UID-a
 
 Ovo će da generiše identifikator koji se ne sudara sa identifikatorom ni jedne lokalno definisane promenljive.
 
@@ -1336,7 +1336,7 @@ FunctionDeclaration(path) {
 }
 ```
 
-### Pomeranje deklaracije promenljive na naddomen (parent scope)
+### <a id="toc-pushing-a-variable-declaration-to-a-parent-scope"></a>Pomeranje deklaracije promenljive na naddomen (parent scope)
 
 Ponekad je potrebno da pomerite `VariableDeclaration` tako da datoj promenljivoj možete da pridružite vrednost.
 
@@ -1356,7 +1356,7 @@ FunctionDeclaration(path) {
 + };
 ```
 
-### Promena imena "vezivanja" i njegovih referenci
+### <a id="toc-rename-a-binding-and-its-references"></a>Promena imena "vezivanja" i njegovih referenci
 
 ```js
 FunctionDeclaration(path) {
@@ -1390,7 +1390,7 @@ FunctionDeclaration(path) {
 
 * * *
 
-# Plagin opcije
+# <a id="toc-plugin-options"></a>Plagin opcije
 
 Ako želite da omogućite vašim korisnicima da menjaju ponašanje vaših Babel plaginova možete da prihvatite posebne opcije plagina koje korisnik može da specificira na sledeći način:
 
@@ -1424,7 +1424,7 @@ Ove opcije su dodeljene samo pojedinačnim plaginovima i nije im moguće pristup
 
 * * *
 
-# Kreiranje čvorova
+# <a id="toc-building-nodes"></a>Kreiranje čvorova
 
 Pri pisanju transformacija često je potrebno da dodamo nove čvorove u AST stablo. Kao što je prethodno rečeno, ovo je moguće izvesti korišćenjem metoda [gradioca](#builder) (builders) definisanih u [`babel-types`](#babel-types) paketu.
 
@@ -1535,17 +1535,17 @@ Definicije čvorova možete da nađete [ovde](https://github.com/babel/babel/tre
 
 * * *
 
-# Praktični saveti
+# <a id="toc-best-practices"></a>Praktični saveti
 
 > O toku sledećih sedmica ću proširiti sadržaj ovog odeljka.
 
-## Izbegavajte prolazak kroz AST što je više moguće
+## <a id="toc-avoid-traversing-the-ast-as-much-as-possible"></a>Izbegavajte prolazak kroz AST što je više moguće
 
 Prolaženje kroz AST je veoma skupa operacija, i lako se dešava da slučajno prolazite kroz AST više nego što je pogrebno. To dovodi do izvršavanja hiljade ako ne i desetine hiljada dodatnih operacija.
 
 Babel ovo optimizuje koliko god može, spajajući "posetioce" zajedno kad je to moguće u cilju da se ceo posao završi u samo jednom prolasku.
 
-### Spajanje "posetioca" kad je to moguće
+### <a id="toc-merge-visitors-whenever-possible"></a>Spajanje "posetioca" kad je to moguće
 
 Kad pišemo posetioce, može biti pogodno da se `path.traverse` poziva na više mesta gde to logika problema nalaže.
 
@@ -1576,7 +1576,7 @@ path.traverse({
 });
 ```
 
-### Izbegavajte prolaske kada može da se upotrebi ručno prolaženje (kroz čvorove)
+### <a id="toc-do-not-traverse-when-manual-lookup-will-do"></a>Izbegavajte prolaske kada može da se upotrebi ručno prolaženje (kroz čvorove)
 
 Kada tražimo koga je tipa određeni čvor, može doći do pozivanja metoda `path.traverse`.
 
@@ -1606,7 +1606,7 @@ const MyVisitor = {
 };
 ```
 
-## Optimizacija ugnežđenih "posetioca"
+## <a id="toc-optimizing-nested-visitors"></a>Optimizacija ugnežđenih "posetioca"
 
 Kada je potrebno da koristite ugnežđene "posetioce", ima smisla da ih napišete ugnežđeno u vašem kodu.
 
@@ -1675,7 +1675,7 @@ const MyVisitor = {
 };
 ```
 
-## Obratite pažnju na ugnežđene strukture
+## <a id="toc-being-aware-of-nested-structures"></a>Obratite pažnju na ugnežđene strukture
 
 Ponekad kad razmišljamo o datim transformacijama, možemo da zaboravimo da date strukture mogu biti ugnežđene.
 
