@@ -275,7 +275,7 @@ $ npm install --save-dev babel-cli
 > the [Running Babel CLI from within a project](#running-babel-cli--from-within-a-project)
 > section above.
 
-Then replace whereever you are running `node` with `babel-node`.
+Then replace wherever you are running `node` with `babel-node`.
 
 If you are using npm `scripts` you can simply do:
 
@@ -649,7 +649,7 @@ Babel plugins solve many different tasks. Many of them are development tools
 that can help you debugging your code or integrate with tools. There are also
 a lot of plugins that are meant for optimizing your code in production.
 
-For this reason it is common to want Babel configuration based on the
+For this reason, it is common to want Babel configuration based on the
 environment. You can do this easily with your `.babelrc` file.
 
 ```diff
@@ -699,7 +699,7 @@ $ [COMMAND]
 Manually specifying plugins? Plugin options? Environment-based settings? All
 this configuration might seem like a ton of repetition for all of your projects.
 
-For this reason we encourage the community to create their own presets. This
+For this reason, we encourage the community to create their own presets. This
 could be a preset for the specific
 [node version](https://github.com/leebenson/babel-preset-node5) you are running,
 or maybe a preset for your
@@ -774,7 +774,7 @@ tools are just starting to take advantage of it.
 ### <a id="toc-linting"></a>Linting
 
 One of the most popular tools for linting is [ESLint](http://eslint.org),
-because of this we maintain an offical
+because of this we maintain an official
 [`babel-eslint`](https://github.com/babel/babel-eslint) integration.
 
 First install `eslint` and `babel-eslint`.
