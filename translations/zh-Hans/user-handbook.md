@@ -228,7 +228,7 @@ $ npm install --save-dev babel-cli
 
 > **注意：**如果你不清楚为什么要安装在本地，请阅读上面[在项目内运行 Babel CLI](#running-babel-cli--from-within-a-project) 的部分。
 
-然后在所有用 `node` 运行代码的地方用 `babel-node` 来替代。.
+然后用 `babel-node` 来替代 `node` 运行所有的代码 。.
 
 如果用 npm `scripts` 的话只需要这样做：
 
@@ -659,7 +659,7 @@ module.exports = {
 
 ### <a id="toc-linting"></a>语法检查（Linting）
 
-[ESLint](http://eslint.org) 是最流行的语法检查工具之一，因此我们维护了一个官方集成 [`babel-eslint`](https://github.com/babel/babel-eslint)。
+[ESLint](http://eslint.org) 是最流行的语法检查工具之一，因此我们维护了一个官方的 [`babel-eslint`](https://github.com/babel/babel-eslint) 整合软件包。
 
 首先安装 `eslint` 和 `babel-eslint`。.
 

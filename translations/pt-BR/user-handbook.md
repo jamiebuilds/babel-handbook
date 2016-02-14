@@ -228,7 +228,7 @@ npm install --save-dev babel-cli
 
 > **Note:** If you are wondering why we are installing this locally, please read the [Running Babel CLI from within a project](#running-babel-cli--from-within-a-project) section above.
 
-Then replace whereever you are running `node` with `babel-node`.
+Then replace wherever you are running `node` with `babel-node`.
 
 If you are using npm `scripts` you can simply do:
 
@@ -555,7 +555,7 @@ To add options to a plugin, simply make the following change:
 
 Babel plugins solve many different tasks. Many of them are development tools that can help you debugging your code or integrate with tools. There are also a lot of plugins that are meant for optimizing your code in production.
 
-For this reason it is common to want Babel configuration based on the environment. You can do this easily with your `.babelrc` file.
+For this reason, it is common to want Babel configuration based on the environment. You can do this easily with your `.babelrc` file.
 
 ```diff
   {
@@ -598,7 +598,7 @@ $ [COMMAND]
 
 Manually specifying plugins? Plugin options? Environment-based settings? All this configuration might seem like a ton of repetition for all of your projects.
 
-For this reason we encourage the community to create their own presets. This could be a preset for the specific [node version](https://github.com/leebenson/babel-preset-node5) you are running, or maybe a preset for your [entire](https://github.com/cloudflare/babel-preset-cf) [company](https://github.com/airbnb/babel-preset-airbnb).
+For this reason, we encourage the community to create their own presets. This could be a preset for the specific [node version](https://github.com/leebenson/babel-preset-node5) you are running, or maybe a preset for your [entire](https://github.com/cloudflare/babel-preset-cf) [company](https://github.com/airbnb/babel-preset-airbnb).
 
 It's easy to create a preset. Say you have this `.babelrc` file:
 
@@ -659,7 +659,7 @@ Newer standards bring a lot of new syntax to the language and static analysis to
 
 ### <a id="toc-linting"></a>Linting
 
-One of the most popular tools for linting is [ESLint](http://eslint.org), because of this we maintain an offical [`babel-eslint`](https://github.com/babel/babel-eslint) integration.
+One of the most popular tools for linting is [ESLint](http://eslint.org), because of this we maintain an official [`babel-eslint`](https://github.com/babel/babel-eslint) integration.
 
 First install `eslint` and `babel-eslint`.
 
