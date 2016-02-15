@@ -1,15 +1,15 @@
-# Babel User Handbook
+# Manuale utente di Babel
 
 This document covers everything you ever wanted to know about using [Babel](https://babeljs.io) and related tooling.
 
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
-This handbook is available in other languages, see the [README](/README.md) for a complete list.
+Questo manuale è disponibile in altre lingue, vedere il [README](/README.md) per un elenco completo.
 
 # Sommario
 
   * [Introduzione](#toc-introduction)
-  * [Setting up Babel](#toc-setting-up-babel) 
+  * [Installazione di Babel](#toc-setting-up-babel) 
       * [`babel-cli`](#toc-babel-cli)
       * [Running Babel CLI from within a project](#toc-running-babel-cli-from-within-a-project)
       * [`babel-register`](#toc-babel-register)
@@ -73,11 +73,11 @@ Further than that, everything in Babel is simply a plugin and anyone can go out 
 
 Many people do too, the ecosystem that has sprung up around Babel is massive and very diverse. Throughout this handbook I'll be covering both how built-in Babel tools work as well as some useful things from around the community.
 
-> ***For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.***
+> ***Per aggiornamenti futuri, segui [@thejameskyle](https://twitter.com/thejameskyle) su Twitter.***
 
 * * *
 
-# <a id="toc-setting-up-babel"></a>Setting up Babel
+# <a id="toc-setting-up-babel"></a>Installazione di Babel
 
 Since the JavaScript community has no single build tool, framework, platform, etc., Babel has official integrations for all of the major tooling. Everything from Gulp to Browserify, from Ember to Meteor, no matter what your setup looks like there is probably an official integration.
 
@@ -816,4 +816,4 @@ First, try isolating your problem. It's extremely unlikely that every part of yo
 
 * * *
 
-> ***For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.***
+> ***Per aggiornamenti futuri, segui [@thejameskyle](https://twitter.com/thejameskyle) su Twitter.***

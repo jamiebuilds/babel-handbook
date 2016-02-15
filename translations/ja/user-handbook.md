@@ -47,17 +47,17 @@ This handbook is available in other languages, see the [README](/README.md) for 
 
 BabelはJavaScriptのための包括的な多目的コンパイラです。Babelを利用すると、あなたは次世代のJavaScriptを体験するだけではなく、次世代JavaScript用ツールを利用（または作成）することが出来ます。
 
-JavaScript as a language is constantly evolving, with new specs and proposals coming out with new features all the time. Using Babel will allow you to use many of these features years before they are available everywhere.
+Javascripは常に新しい標準規格や提案などによって新機能が実装され続けており、常に進化している言語です。 Babelを使うことによって旧環境でも最新の機能を使えるようになります。
 
-Babel does this by compiling down JavaScript code written with the latest standards into a version that will work everywhere today. This process is known as source-to-source compiling, also known as transpiling.
+これを実現するためにBabelは最新の規格で書かれたJavascriptを、現在標準的に対応されているバージョンにコンパイルします。 このコンパイルは、source-to-sourceコンパイル、もしくはトランスパイルと呼ばれます。
 
-For example, Babel could transform the new ES2015 arrow function syntax from this:
+例えば、Babelは新しいES2015規格のアロー関数シンタックスをこれ：
 
 ```js
 const square = n => n * n;
 ```
 
-Into the following:
+から以下のコードに変換します：
 
 ```js
 const square = function square(n) {
