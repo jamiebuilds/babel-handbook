@@ -228,7 +228,7 @@ $ npm install --save-dev babel-cli
 
 > **Notă:** Dacă vă întrebaţi de ce instalăm acest pachet la nivel local, vă rugăm să citiţi secţiunea [Execută Babel CLI (Interfața Liniei de Comandă) în cadrul unui proiect](#running-babel-cli--from-within-a-project) de mai sus.
 
-Then replace wherever you are running `node` with `babel-node`.
+Apoi ori de câte ori executaţi `node` înlocuiți cu `babel-node`.
 
 Dacă utilizaţi npm `scripts`, puteţi face pur şi simplu:
 
@@ -555,7 +555,7 @@ Pentru a adăuga opţiuni unui plug-in, faceți următoarea modificare:
 
 Plugin-urile Babel rezolvă multe sarcini diferite. Multe dintre ele sunt instrumente de dezvoltare, care pot ajuta depanarea codului sau integrarea cu diverse alte instrumente. Există, de asemenea, o mulţime de plugin-uri care sunt destinate optimizării codului în producţie.
 
-For this reason, it is common to want Babel configuration based on the environment. You can do this easily with your `.babelrc` file.
+Din acest motiv este uzuală configurarea Babel în funcție de mediu de lucru. Puteţi face acest lucru cu uşurinţă din fişierul `.babelrc`.
 
 ```diff
   {
@@ -598,7 +598,7 @@ $ [COMMAND]
 
 Specificarea manuală a plugin-urilor? Opţiuni ale plugin-urilor? Setãri în funcție de mediu? Toate aceste configurări pot implica multă repetiţie în diferite proiecte.
 
-For this reason, we encourage the community to create their own presets. Aceasta ar putea fi o presetare pentru [versiunea Node](https://github.com/leebenson/babel-preset-node5) specifică pe care o utilzați, sau o presetare pentru [întreaga](https://github.com/cloudflare/babel-preset-cf) [companie](https://github.com/airbnb/babel-preset-airbnb).
+Din acest motiv este de preferat crearea propriilor presetări. Aceasta ar putea fi o presetare pentru [versiunea Node](https://github.com/leebenson/babel-preset-node5) specifică pe care o utilzați, sau o presetare pentru [întreaga](https://github.com/cloudflare/babel-preset-cf) [companie](https://github.com/airbnb/babel-preset-airbnb).
 
 Pentru a crea o presetare este simplu. Să zicem că avem următorul fișier `.babelrc`:
 
@@ -659,7 +659,7 @@ Standardele mai noi aduc o mulţime de sintaxe noi limbajului şi instrumentele 
 
 ### <a id="toc-linting"></a>Verificare cod (Linting)
 
-One of the most popular tools for linting is [ESLint](http://eslint.org), because of this we maintain an official [`babel-eslint`](https://github.com/babel/babel-eslint) integration.
+Una dintre cele mai populare instrumente pentru linting este [ESLint](http://eslint.org), din acest motiv întreținem o integrare oficială [`babel-eslint`](https://github.com/babel/babel-eslint).
 
 Pentru început instalați `eslint` şi `babel-eslint`.
 

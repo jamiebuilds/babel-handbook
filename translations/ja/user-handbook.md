@@ -1,6 +1,6 @@
 # Babel User Handbook
 
-このドキュメントはあなたが知りたい[Babel](https://babeljs.io)やその関連ツールを使った、その全てをカバーしています。
+このドキュメントはあなたが知りたい[Babel](https://babeljs.io)やその関連ツールの使い方をカバーします。
 
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
@@ -65,13 +65,13 @@ const square = function square(n) {
 };
 ```
 
-However, Babel can do much more than this as Babel has support for syntax extensions such as the JSX syntax for React and Flow syntax support for static type checking.
+しかし、それだけではありませんBabelは様々な文法に対応しており、ReactのJSXシンタックスやFlowの静的型付けにも対応しています。
 
-Further than that, everything in Babel is simply a plugin and anyone can go out and create their own plugins using the full power of Babel to do whatever they want.
+さらに、Babelの全てはプラグインになっており、誰でも自由にBabelをフル活用したプラグインを開発できます。
 
-*Even further* than that, Babel is broken down into a number of core modules that anyone can use to build the next generation of JavaScript tooling.
+*さらにさらに*、Babelは何個かのコアモジュールに分割されており、次世代のJavascriptツール開発に使えます。
 
-Many people do too, the ecosystem that has sprung up around Babel is massive and very diverse. Throughout this handbook I'll be covering both how built-in Babel tools work as well as some useful things from around the community.
+Babelの開発者コミュニティは広く大きく、上記のリソースをフル活用しています。 このハンドブックの中ではBabelの組み込みツールの使い方と、開発者コミュニティによって作られた便利なツールも取りあげていきます。
 
 > ***最新の情報を受け取るには、Twitterで[@thejameskyle](https://twitter.com/thejameskyle)をフォローしてください。***
 
