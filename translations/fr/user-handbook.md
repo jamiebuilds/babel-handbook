@@ -15,31 +15,31 @@ Ce manuel est disponible dans d'autres langues, voir le [README](/README.md) pou
       * [`babel-register`](#toc-babel-register)
       * [`babel-node`](#toc-babel-node)
       * [`babel-core`](#toc-babel-core)
-  * [Configuring Babel](#toc-configuring-babel) 
+  * [Configuration de Babel](#toc-configuring-babel) 
       * [`.babelrc`](#toc-babelrc)
       * [`babel-preset-es2015`](#toc-babel-preset-es2015)
       * [`babel-preset-react`](#toc-babel-preset-react)
       * [`babel-preset-stage-x`](#toc-babel-preset-stage-x)
-  * [Executing Babel-generated code](#toc-executing-babel-generated-code) 
+  * [Exécution de code généré par Babel](#toc-executing-babel-generated-code) 
       * [`babel-polyfill`](#toc-babel-polyfill)
       * [`babel-runtime`](#toc-babel-runtime)
-  * [Configuring Babel (Advanced)](#toc-configuring-babel-advanced) 
-      * [Manually specifying plugins](#toc-manually-specifying-plugins)
-      * [Plugin options](#toc-plugin-options)
-      * [Customizing Babel based on environment](#toc-customizing-babel-based-on-environment)
-      * [Making your own preset](#toc-making-your-own-preset)
-  * [Babel and other tools](#toc-babel-and-other-tools) 
-      * [Static analysis tools](#toc-static-analysis-tools)
+  * [Configuration de Babel (Avancé)](#toc-configuring-babel-advanced) 
+      * [Spécification manuelle des plugins](#toc-manually-specifying-plugins)
+      * [Options du Plugin](#toc-plugin-options)
+      * [Personnalisation de Babel basé sur l'environnement](#toc-customizing-babel-based-on-environment)
+      * [Faire votre propre preset](#toc-making-your-own-preset)
+  * [Babel et les autres outils](#toc-babel-and-other-tools) 
+      * [Outils d'analyse statique](#toc-static-analysis-tools)
       * [Linting](#toc-linting)
       * [Code Style](#toc-code-style)
       * [Documentation](#toc-documentation)
       * [Frameworks](#toc-frameworks)
       * [React](#toc-react)
-      * [Text Editors and IDEs](#toc-text-editors-and-ides)
-  * [Debugging Babel](#toc-debugging-babel)
+      * [IDEs et les éditeurs de texte](#toc-text-editors-and-ides)
+  * [Débogage de Babel](#toc-debugging-babel)
   * [Babel Support](#toc-babel-support) 
-      * [Babel Forum](#toc-babel-forum)
-      * [Babel Chat](#toc-babel-chat)
+      * [Forum Babel](#toc-babel-forum)
+      * [Babel tchat](#toc-babel-chat)
       * [Babel Issues](#toc-babel-issues)
       * [Creating an awesome Babel bug report](#toc-creating-an-awesome-babel-bug-report)
 
@@ -297,7 +297,7 @@ For all of the above methods, `options` refers to http://babeljs.io/docs/usage/o
 
 * * *
 
-# <a id="toc-configuring-babel"></a>Configuring Babel
+# <a id="toc-configuring-babel"></a>Configuration de Babel
 
 You may have noticed by now that running Babel on its own doesn't seem to do anything other than copy JavaScript files from one location to another.
 
@@ -401,7 +401,7 @@ Then you can add it to your `.babelrc` config.
 
 * * *
 
-# <a id="toc-executing-babel-generated-code"></a>Executing Babel-generated code
+# <a id="toc-executing-babel-generated-code"></a>Exécution de code généré par Babel
 
 So you've compiled your code with Babel, but this is not the end of the story.
 
@@ -504,11 +504,11 @@ Rather than putting the `_classCallCheck` and `_createClass` helpers in every si
 
 * * *
 
-# <a id="toc-configuring-babel-advanced"></a>Configuring Babel (Advanced)
+# <a id="toc-configuring-babel-advanced"></a>Configuration de Babel (Avancé)
 
 Most people can get by using Babel with just the built-in presets, but Babel exposes much finer-grained power than that.
 
-## <a id="toc-manually-specifying-plugins"></a>Manually specifying plugins
+## <a id="toc-manually-specifying-plugins"></a>Spécification manuelle des plugins
 
 Babel presets are simply collections of pre-configured plugins, if you want to do something differently you manually specify plugins. This works almost exactly the same way as presets.
 
@@ -534,7 +534,7 @@ For a full list of official plugins see the [Babel Plugins page](http://babeljs.
 
 Also take a look at all the plugins that have been [built by the community](https://www.npmjs.com/search?q=babel-plugin). If you would like to learn how to write your own plugin read the [Babel Plugin Handbook](plugin-handbook.md).
 
-## <a id="toc-plugin-options"></a>Plugin options
+## <a id="toc-plugin-options"></a>Options du Plugin
 
 Many plugins also have options to configure them to behave differently. For example, many transforms have a "loose" mode which drops some spec behavior in favor of simpler and more performant generated code.
 
@@ -551,7 +551,7 @@ To add options to a plugin, simply make the following change:
 
 > I'll be working on updates to the plugin documentation to detail every option in the coming weeks. [Follow me for updates](https://twitter.com/thejameskyle).
 
-## <a id="toc-customizing-babel-based-on-environment"></a>Customizing Babel based on environment
+## <a id="toc-customizing-babel-based-on-environment"></a>Personnalisation de Babel basé sur l'environnement
 
 Babel plugins solve many different tasks. Many of them are development tools that can help you debugging your code or integrate with tools. There are also a lot of plugins that are meant for optimizing your code in production.
 
@@ -594,7 +594,7 @@ $ [COMMAND]
 > 
 > **Tip:** If you want your command to work across unix and windows platforms then use [`cross-env`](https://www.npmjs.com/package/cross-env).
 
-## <a id="toc-making-your-own-preset"></a>Making your own preset
+## <a id="toc-making-your-own-preset"></a>Faire votre propre preset
 
 Manually specifying plugins? Plugin options? Environment-based settings? All this configuration might seem like a ton of repetition for all of your projects.
 
@@ -649,11 +649,11 @@ Then simply publish this to npm and you can use it like you would any preset.
 
 * * *
 
-# <a id="toc-babel-and-other-tools"></a>Babel and other tools
+# <a id="toc-babel-and-other-tools"></a>Babel et les autres outils
 
 Babel is pretty straight forward to setup once you get the hang of it, but it can be rather difficult navigating how to set it up with other tools. However, we try to work closely with other projects in order to make the experience as easy as possible.
 
-## <a id="toc-static-analysis-tools"></a>Static analysis tools
+## <a id="toc-static-analysis-tools"></a>Outils d'analyse statique
 
 Newer standards bring a lot of new syntax to the language and static analysis tools are just starting to take advantage of it.
 
@@ -755,7 +755,7 @@ Most notably the [`babel-plugin-react-transform`](https://github.com/gaearon/bab
 > [WIP]
 -->
 
-## <a id="toc-text-editors-and-ides"></a>Text Editors and IDEs
+## <a id="toc-text-editors-and-ides"></a>IDEs et les éditeurs de texte
 
 Introducing ES2015, JSX, and Flow syntax with Babel can be helpful, but if your text editor doesn't support it then it can be a really bad experience. For this reason you will want to setup your text editor or IDE with a Babel plugin.
 
@@ -780,11 +780,11 @@ Remember that across all of these communities we enforce a [Code of Conduct](htt
 
 We are also looking to grow a self-supporting community, for people who stick around and support others. If you find someone asking a question you know the answer to, take a few minutes and help them out. Try your best to be kind and understanding when doing so.
 
-## <a id="toc-babel-forum"></a>Babel Forum
+## <a id="toc-babel-forum"></a>Forum Babel
 
 [Discourse](http://www.discourse.org) has provided us with a hosted version of their forum software for free (and we love them for it!). If forums are your thing please stop by [discuss.babeljs.io](https://discuss.babeljs.io).
 
-## <a id="toc-babel-chat"></a>Babel Chat
+## <a id="toc-babel-chat"></a>Babel tchat
 
 Everyone loves [Slack](https://slack.com). If you're looking for immediate support from the community then come chat with us at [slack.babeljs.io](https://slack.babeljs.io).
 

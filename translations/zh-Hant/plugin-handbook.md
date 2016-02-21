@@ -1608,7 +1608,7 @@ const MyVisitor = {
 
 ## <a id="toc-optimizing-nested-visitors"></a>優化巢狀的尋訪
 
-When you are nesting visitors, it might make sense to write them nested in your code.
+當你是在尋訪巢狀結構，較有意義的方式是以巢狀模式寫在代碼中
 
 ```js
 const MyVisitor = {

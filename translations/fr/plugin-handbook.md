@@ -4,7 +4,7 @@ Ce présent document décrit les méthodes de création des [plugins](https://ba
 
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
-This handbook is available in other languages, see the [README](/README.md) for a complete list.
+Ce manuel est disponible dans d'autres langues, consulter le [README](/README.md) pour obtenir la liste complète.
 
 # Sommaire
 
@@ -20,7 +20,7 @@ This handbook is available in other languages, see the [README](/README.md) for 
       * [Traversal](#toc-traversal)
       * [Visiteurs](#toc-visitors)
       * [Chemins d'accès](#toc-paths) 
-          * [Paths in Visitors](#toc-paths-in-visitors)
+          * [Chemins d'accès des visiteurs](#toc-paths-in-visitors)
       * [Etat](#toc-state)
       * [Scopes](#toc-scopes) 
           * [Liaisons](#toc-bindings)
@@ -181,7 +181,7 @@ Vous remarquerez que chaque niveau de l'AST a une structure similaire :
 
 Chacun de ces paramètre est connu sous le nom d'un **Nœud**. L'AST peut être composé d'un seul nœud, de centaines ou même de milliers de nœuds. Ensemble, ils sont capables de décrire la syntaxe d'un programme qui peut être utilisé pour l'analyse statique.
 
-Every Node has this interface:
+Chaque Nœud a cette interface :
 
 ```typescript
 interface Node {
@@ -485,7 +485,7 @@ As well as tons and tons of methods related to adding, updating, moving, and rem
 
 In a sense, paths are a **reactive** representation of a node's position in the tree and all sorts of information about the node. Whenever you call a method that modifies the tree, this information is updated. Babel manages all of this for you to make working with nodes easy and as stateless as possible.
 
-#### <a id="toc-paths-in-visitors"></a>Paths in Visitors
+#### <a id="toc-paths-in-visitors"></a>Chemins d'accès des visiteurs
 
 When you have a visitor that has a `Identifier()` method, you're actually visiting the path instead of the node. This way you are mostly working with the reactive representation of a node instead of the node itself.
 

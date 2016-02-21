@@ -20,10 +20,10 @@ Este manual está disponível em outros idiomas, consulte o [arquivo Leia-me](/R
       * [`babel-preset-es2015`](#toc-babel-preset-es2015)
       * [`babel-preset-react`](#toc-babel-preset-react)
       * [`babel-preset-stage-x`](#toc-babel-preset-stage-x)
-  * [Executing Babel-generated code](#toc-executing-babel-generated-code) 
+  * [Executando o código gerado pelo Babel](#toc-executing-babel-generated-code) 
       * [`babel-polyfill`](#toc-babel-polyfill)
       * [`babel-runtime`](#toc-babel-runtime)
-  * [Configuring Babel (Advanced)](#toc-configuring-babel-advanced) 
+  * [Configurando Babel (Avançado)](#toc-configuring-babel-advanced) 
       * [Manually specifying plugins](#toc-manually-specifying-plugins)
       * [Plugin options](#toc-plugin-options)
       * [Customizing Babel based on environment](#toc-customizing-babel-based-on-environment)
@@ -401,7 +401,7 @@ Then you can add it to your `.babelrc` config.
 
 * * *
 
-# <a id="toc-executing-babel-generated-code"></a>Executing Babel-generated code
+# <a id="toc-executing-babel-generated-code"></a>Executando o código gerado pelo Babel
 
 So you've compiled your code with Babel, but this is not the end of the story.
 
@@ -504,7 +504,7 @@ Rather than putting the `_classCallCheck` and `_createClass` helpers in every si
 
 * * *
 
-# <a id="toc-configuring-babel-advanced"></a>Configuring Babel (Advanced)
+# <a id="toc-configuring-babel-advanced"></a>Configurando Babel (Avançado)
 
 Most people can get by using Babel with just the built-in presets, but Babel exposes much finer-grained power than that.
 
