@@ -81,7 +81,7 @@ Babel je kompilátor JavaScriptu, který kompiluje ze zdrojového kódu na zdroj
 
 Každý z těchto kroků obsahuje vytváření a práci s [Abstraktním syntaktickým stromem](https://en.wikipedia.org/wiki/Abstract_syntax_tree) nebo-li AST.
 
-> Babel uses an AST modified from [ESTree](https://github.com/estree/estree), with the core spec located [here](https://github.com/babel/babel/blob/master/doc/ast/spec.md).
+> Babel používá AST modifikovaný od [ESTree](https://github.com/estree/estree), jehož specifikace se nachází [zde](https://github.com/babel/babel/blob/master/doc/ast/spec.md).
 
 ```js
 function square(n) {
@@ -89,9 +89,9 @@ function square(n) {
 }
 ```
 
-> Check out [AST Explorer](http://astexplorer.net/) to get a better sense of the AST nodes. [Here](http://astexplorer.net/#/Z1exs6BWMq) is a link to it with the example code above pasted in.
+> Podívejte se na [AST Explorer](http://astexplorer.net/) pro získání lepšího přehledu o AST uzlech. [Zde](http://astexplorer.net/#/Z1exs6BWMq) je na něj odkaz s výše uvedeným příkladem kódu.
 
-This same program can be represented as a list like this:
+Stejný program může být reprezentován jako seznam takto:
 
 ```md
 - FunctionDeclaration:
@@ -116,7 +116,7 @@ This same program can be represented as a list like this:
                   - name: n
 ```
 
-Or as a JavaScript Object like this:
+Nebo jako objekt JavaScriptu takto:
 
 ```js
 {
@@ -150,7 +150,7 @@ Or as a JavaScript Object like this:
 }
 ```
 
-You'll notice that each level of the AST has a similar structure:
+Všimněte si, že každá úroveň AST má podobnou strukturu:
 
 ```js
 {
@@ -177,9 +177,9 @@ You'll notice that each level of the AST has a similar structure:
 }
 ```
 
-> Note: Some properties have been removed for simplicity.
+> Poznámka: Některé vlastnosti byly pro jednoduchost odstraněny.
 
-Each of these are known as a **Node**. An AST can be made up of a single Node, or hundreds if not thousands of Nodes. Together they are able to describe the syntax of a program that can be used for static analysis.
+Každý z nich je známý jako **uzel**. An AST can be made up of a single Node, or hundreds if not thousands of Nodes. Together they are able to describe the syntax of a program that can be used for static analysis.
 
 Every Node has this interface:
 
