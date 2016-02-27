@@ -24,15 +24,15 @@ Ten podręcznik jest dostępny w innych językach, zobacz [plik README](/README.
       * [`babel-polyfill`](#toc-babel-polyfill)
       * [`babel-runtime`](#toc-babel-runtime)
   * [Konfigurowanie Babel (Zaawansowane)](#toc-configuring-babel-advanced) 
-      * [Manually specifying plugins](#toc-manually-specifying-plugins)
+      * [Ręczny wybór wtyczek](#toc-manually-specifying-plugins)
       * [Plugin options](#toc-plugin-options)
-      * [Customizing Babel based on environment](#toc-customizing-babel-based-on-environment)
-      * [Making your own preset](#toc-making-your-own-preset)
+      * [Dostosowywanie Babel w oparciu o środowisko](#toc-customizing-babel-based-on-environment)
+      * [Tworzenie własnych ustawień](#toc-making-your-own-preset)
   * [Babel i inne narzędzia](#toc-babel-and-other-tools) 
-      * [Static analysis tools](#toc-static-analysis-tools)
+      * [Narzędzia analizy statycznej](#toc-static-analysis-tools)
       * [Linting](#toc-linting)
-      * [Code Style](#toc-code-style)
-      * [Documentation](#toc-documentation)
+      * [Styl kodu](#toc-code-style)
+      * [Dokumentacja](#toc-documentation)
       * [Frameworks](#toc-frameworks)
       * [React](#toc-react)
       * [Text Editors and IDEs](#toc-text-editors-and-ides)
@@ -508,7 +508,7 @@ Rather than putting the `_classCallCheck` and `_createClass` helpers in every si
 
 Most people can get by using Babel with just the built-in presets, but Babel exposes much finer-grained power than that.
 
-## <a id="toc-manually-specifying-plugins"></a>Manually specifying plugins
+## <a id="toc-manually-specifying-plugins"></a>Ręczny wybór wtyczek
 
 Babel presets are simply collections of pre-configured plugins, if you want to do something differently you manually specify plugins. This works almost exactly the same way as presets.
 
@@ -551,7 +551,7 @@ To add options to a plugin, simply make the following change:
 
 > I'll be working on updates to the plugin documentation to detail every option in the coming weeks. [Follow me for updates](https://twitter.com/thejameskyle).
 
-## <a id="toc-customizing-babel-based-on-environment"></a>Customizing Babel based on environment
+## <a id="toc-customizing-babel-based-on-environment"></a>Dostosowywanie Babel w oparciu o środowisko
 
 Babel plugins solve many different tasks. Many of them are development tools that can help you debugging your code or integrate with tools. There are also a lot of plugins that are meant for optimizing your code in production.
 
@@ -594,7 +594,7 @@ $ [COMMAND]
 > 
 > **Tip:** If you want your command to work across unix and windows platforms then use [`cross-env`](https://www.npmjs.com/package/cross-env).
 
-## <a id="toc-making-your-own-preset"></a>Making your own preset
+## <a id="toc-making-your-own-preset"></a>Tworzenie własnych ustawień
 
 Manually specifying plugins? Plugin options? Environment-based settings? All this configuration might seem like a ton of repetition for all of your projects.
 
@@ -653,7 +653,7 @@ Then simply publish this to npm and you can use it like you would any preset.
 
 Babel is pretty straight forward to setup once you get the hang of it, but it can be rather difficult navigating how to set it up with other tools. However, we try to work closely with other projects in order to make the experience as easy as possible.
 
-## <a id="toc-static-analysis-tools"></a>Static analysis tools
+## <a id="toc-static-analysis-tools"></a>Narzędzia analizy statycznej
 
 Newer standards bring a lot of new syntax to the language and static analysis tools are just starting to take advantage of it.
 
@@ -703,7 +703,7 @@ $ npm run lint
 
 For more information consult the [`babel-eslint`](https://github.com/babel/babel-eslint) or [`eslint`](http://eslint.org) documentation.
 
-### <a id="toc-code-style"></a>Code Style
+### <a id="toc-code-style"></a>Styl kodu
 
 JSCS is an extremely popular tool for taking linting a step further into checking the style of the code itself. A core maintainer of both the Babel and JSCS projects ([@hzoo](https://github.com/hzoo)) maintains an official integration with JSCS.
 
@@ -729,7 +729,7 @@ For more information consult the [`babel-jscs`](https://github.com/jscs-dev/babe
 > [WIP]
 -->
 
-### <a id="toc-documentation"></a>Documentation
+### <a id="toc-documentation"></a>Dokumentacja
 
 Using Babel, ES2015, and Flow you can infer a lot about your code. Using [documentation.js](http://documentation.js.org) you can generate detailed API documentation very easily.
 
