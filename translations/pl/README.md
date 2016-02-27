@@ -1,10 +1,10 @@
-# Babel Handbook
+# Babel Podręcznik
 
-This handbook is divided into two parts:
+Ten podręcznik jest podzielony na dwie części:
 
-  * [User Handbook](user-handbook.md) - How to setup/configure Babel and more.
-  * [Plugin Handbook](plugin-handbook.md) - How to create plugins for Babel.
+  * [Podręcznik Użytkownika](user-handbook.md) - Jak zainstalować/skonfigurować Babel i podobne.
+  * [Podręcznik o Wtyczkach](plugin-handbook.md) - Jak stworzyć wtyczki dla Babel.
 
-> For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.
+> Po więcej informacji, śledź [@thejameskyle](https://twitter.com/thejameskyle) na Twitterze.
 
-If you are reading a non-english translation of this handbook you may still find english sections that have not yet been translated. If you would like to contribute to one of the translations you must do so through Crowdin. Please read the [contributing guidelines](/CONTRIBUTING.md) for more information. You will find a number of english words that are programming concepts. If these were translated to other languages there would be a lack of consistency and fluency when reading about them. In many cases you will find the literal translation followed by the english term in parenthesis `()`. For example: Abstract Syntax Trees (ASTs).
+Jeśli czytasz tłumaczenie tego podręcznika, nadal możesz znaleźć fragmenty po angielsku, które nie były jeszcze przetłumaczone. Jeśli chcesz przyłączyć się do tłumaczenia, musisz zrobić do przez platformę Crowdin. Przeczytaj proszę [wytyczne o współpracy](/CONTRIBUTING.md) po więcej informacji. Znajdziesz tutaj wiele angielskich słów, które są pojęciami w programowaniu. Jeśli były by one przetłumaczone na inny język, wystąpił by brak konsekwencji i zrozumieniu przy czytaniu o nich. W wielu przypadkach, znajdziesz dosłowne tłumaczenie i następujące po nim angielskie wyrażenie w nawiasach `()`. Na przykład: drzewo składniowe (ASTs).

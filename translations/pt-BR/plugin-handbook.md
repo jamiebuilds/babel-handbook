@@ -333,7 +333,7 @@ Este processo de percorrer (traverse) acontece durante toda a fase de transforma
 
 Quando falamos sobre "ir" para um nó, na verdade queremos dizer que estamos **visitando** eles. A razão pela qual nós usamos esse termo está ligada ao conceito do design pattern [**visitor**](https://en.wikipedia.org/wiki/Visitor_pattern), usado frequentemente.
 
-Visitors are a pattern used in AST traversal across languages. Simply put they are an object with methods defined for accepting particular node types in a tree. That's a bit abstract so let's look at an example.
+Visitors é um padrão usando pela AST para percorrer a linguagem. Simplificando, eles são um objeto com métodos definidos para aceitar tipos específicos de nó em uma árvore. Isso é um pouco abstrato, então vamos ver um exemplo.
 
 ```js
 const MyVisitor = {
@@ -343,11 +343,11 @@ const MyVisitor = {
 };
 ```
 
-> **Note:** `Identifier() { ... }` is shorthand for `Identifier: { enter() { ... } }`.
+> **Nota:** `Identifier() { ... }` é uma abreviação para `Identifier: {enter() { ... }}`.
 
-This is a basic visitor that when used during a traversal will call the `Identifier()` method for every `Identifier` in the tree.
+Esta é uma visita básica que quando usado durante um percurso irá chamar o método `Identifier()` para cada `Identifier` na árvore.
 
-So with this code the `Identifier()` method will be called four times with each `Identifier` (including `square`).
+Então com esse código o método `Identifier()` será chamado quatro vezes, um para cada `Identifier` (incluindo a função `square`).
 
 ```js
 function square(n) {
@@ -362,9 +362,9 @@ Called!
 Called!
 ```
 
-These calls are all on node **enter**. However there is also the possibility of calling a visitor method when on **exit**.
+Essas chamadas acontecem no nó de **entrada**. No entanto, há também a possibilidade de chamar um método visitante quando estiver no nó de **saída**.
 
-Imagine we have this tree structure:
+Imagine que temos esta estrutura de árvore:
 
 ```js
 - FunctionDeclaration
@@ -377,9 +377,9 @@ Imagine we have this tree structure:
         - Identifier (right)
 ```
 
-As we traverse down each branch of the tree we eventually hit dead ends where we need to traverse back up the tree to get to the next node. Going down the tree we **enter** each node, then going back up we **exit** each node.
+Enquanto percorrermos cada ramo da árvore, eventualmente atingimos becos sem saída, onde precisamos voltar para a árvore anterior para obter o próximo nó. Percorrendo a árvore podemos temos os nós de **entrada**, e voltando um nível acima, temos os nós de **saída** de cada nó.
 
-Let's *walk* through what this process looks like for the above tree.
+Vamos *caminhar* através deste processo, utilizando a árvore acima.
 
   * Enter `FunctionDeclaration` 
       * Enter `Identifier (id)`
@@ -402,7 +402,7 @@ Let's *walk* through what this process looks like for the above tree.
       * Exit `BlockStatement (body)`
   * Exit `FunctionDeclaration`
 
-So when creating a visitor you have two opportunities to visit a node.
+Então, quando criamos um visitante, temos duas oportunidades para visitar um nó.
 
 ```js
 const MyVisitor = {
@@ -419,11 +419,11 @@ const MyVisitor = {
 
 ### <a id="toc-paths"></a>Paths
 
-An AST generally has many Nodes, but how do Nodes relate to one another? We could have one giant mutable object that you manipulate and have full access to, or we can simplify this with **Paths**.
+Um AST geralmente tem muitos nós, mas como os nós se relacionam um com o outro? Podemos ter um enorme objeto, mutável, no qual você pode manipular e ter total acesso, ou, podemos simplificar isso com os **Paths**.
 
-A **Path** is an object representation of the link between two nodes.
+Um **Path**, é um objeto que representa a ligação entre dois nós.
 
-For example if we take the following node and its child:
+Por exemplo, se tomarmos o seguinte nó e seu filho:
 
 ```js
 {
@@ -436,7 +436,7 @@ For example if we take the following node and its child:
 }
 ```
 
-And represent the child `Identifier` as a path, it looks something like this:
+E representar o `Indentifier` do nó filho como um caminho, parece algo como isto:
 
 ```js
 {
@@ -452,7 +452,7 @@ And represent the child `Identifier` as a path, it looks something like this:
 }
 ```
 
-It also has additional metadata about the path:
+Ele também tem metadados adicionais sobre o caminho:
 
 ```js
 {
@@ -480,13 +480,13 @@ It also has additional metadata about the path:
 }
 ```
 
-As well as tons and tons of methods related to adding, updating, moving, and removing nodes, but we'll get into those later.
+Bem como toneladas e toneladas de métodos relacionados para adicionar, atualizar, mover e remover nós, mas nós vamos ver isso mais tarde.
 
-In a sense, paths are a **reactive** representation of a node's position in the tree and all sorts of information about the node. Whenever you call a method that modifies the tree, this information is updated. Babel manages all of this for you to make working with nodes easy and as stateless as possible.
+Em determinado momento, os Paths são como uma representação **reativa** da posição do nó na árvore e todas as informações sobre o mesmo. Sempre que você chamar um método que modifica a árvore, esta informação é atualizada. Babel gerencia tudo isso para tornar o trabalho com árvores e nós o mais simples e fácil possível.
 
 #### <a id="toc-paths-in-visitors"></a>Paths in Visitors
 
-When you have a visitor that has a `Identifier()` method, you're actually visiting the path instead of the node. This way you are mostly working with the reactive representation of a node instead of the node itself.
+Quando você tem um visitante que tem um método `Identifier()`, você na verdade está visitando o caminho em vez do nó. Desta forma, você está trabalhando, principalmente, com a representação reativa de um nó em vez do próprio nó.
 
 ```js
 const MyVisitor = {
@@ -508,9 +508,9 @@ Visiting: c
 
 ### <a id="toc-state"></a>State
 
-State is the enemy of AST transformation. State will bite you over and over again and your assumptions about state will almost always be proven wrong by some syntax that you didn't consider.
+Estado (global e local) são os inimigos da AST. Eles irão pregar tanta peça em você, que você vai acabar vendo que seus conhecimentos sobre estado estarão errados devido a alguma sintaxe que você não considerava.
 
-Take the following code:
+Veja o seguinte código:
 
 ```js
 function square(n) {
@@ -518,7 +518,7 @@ function square(n) {
 }
 ```
 
-Let's write a quick hacky visitor that will rename `n` to `x`.
+Vamos escrever um Visitor que vai renomear `n` para `x`.
 
 ```js
 let paramName;
@@ -538,7 +538,7 @@ const MyVisitor = {
 };
 ```
 
-This might work for the above code, but we can easily break that by doing this:
+Isto pode funcionar para o código acima, mas podemos facilmente quebra-lo:
 
 ```js
 function square(n) {
@@ -547,7 +547,7 @@ function square(n) {
 n;
 ```
 
-The better way to deal with this is recursion. So let's make like a Christopher Nolan film and put a visitor inside of a visitor.
+A melhor maneira de lidar com isso é usando recursão. Então vamos fazer como um filme de Christopher Nolan, e colocar um Visitor dentro de um Visitor.
 
 ```js
 const updateParamNameVisitor = {
@@ -569,11 +569,11 @@ const MyVisitor = {
 };
 ```
 
-Of course, this is a contrived example but it demonstrates how to eliminate global state from your visitors.
+Este é um exemplo forçado mas, ele demonstra como eliminar o estado global de seus Visitors.
 
 ### <a id="toc-scopes"></a>Scopes
 
-Next let's introduce the concept of a [**scope**](https://en.wikipedia.org/wiki/Scope_(computer_science)). JavaScript has [lexical scoping](https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scoping_vs._dynamic_scoping), which is a tree structure where blocks create new scope.
+Agora, vamos introduzir o conceito de [**escopos**](https://en.wikipedia.org/wiki/Scope_(computer_science)). JavaScript tem [escopo léxico](https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scoping_vs._dynamic_scoping), que é uma estrutura de árvore onde blocos criam novos escopos.
 
 ```js
 // global scope
@@ -587,7 +587,7 @@ function scopeOne() {
 }
 ```
 
-Whenever you create a reference in JavaScript, whether that be by a variable, function, class, param, import, label, etc., it belongs to the current scope.
+Sempre que você criar uma referência em JavaScript, quer seja por uma variável, função, classe, param, importação, etc., ele pertence ao escopo atual.
 
 ```js
 var global = "I am in the global scope";
@@ -601,7 +601,7 @@ function scopeOne() {
 }
 ```
 
-Code within a deeper scope may use a reference from a higher scope.
+Código dentro de um escopo mais profundo pode usar uma referência do escopo superior.
 
 ```js
 function scopeOne() {
@@ -613,7 +613,7 @@ function scopeOne() {
 }
 ```
 
-A lower scope might also create a reference of the same name without modifying it.
+Um escopo inferior também pode criar uma referência de mesmo nome, sem modificá-lo.
 
 ```js
 function scopeOne() {
@@ -625,11 +625,11 @@ function scopeOne() {
 }
 ```
 
-When writing a transform, we want to be wary of scope. We need to make sure we don't break existing code while modifying different parts of it.
+Ao escrever uma transformação, queremos ter cuidado com escopos. Precisamos ter certeza de que não estamos quebrando o código existente ao modificar diferentes partes dele.
 
-We may want to add new references and make sure they don't collide with existing ones. Or maybe we just want to find where a variable is referenced. We want to be able to track these references within a given scope.
+Nós podemos adicionar novas referências e ter a certeza de que elas não colidem com as já existentes. Ou talvez nós podemos encontrar onde uma variável é referenciada. Queremos rastrear essas referências dentro de um determinado escopo.
 
-A scope can be represented as:
+Um escopo pode ser representado como:
 
 ```js
 {
@@ -641,13 +641,13 @@ A scope can be represented as:
 }
 ```
 
-When you create a new scope you do so by giving it a path and a parent scope. Then during the traversal process it collects all the references ("bindings") within that scope.
+Ao criar um novo escopo, você também está criando um Path e um escopo pai para ele. Então, durante o processo de travessia da árvore, nós recolhemos todas as referências ("bindings") dentro desse escopo.
 
-Once that's done, there's all sorts of methods you can use on scopes. We'll get into those later though.
+Depois disso, há vários tipos de métodos que você pode usar dentro desse escopo. Nós vamos chegar lá mais para frente.
 
 #### <a id="toc-bindings"></a>Bindings
 
-References all belong to a particular scope; this relationship is known as a **binding**.
+Todas as referências pertencem a um determinado escopo; Essa relação é conhecida como **binding**.
 
 ```js
 function scopeOnce() {
@@ -661,7 +661,7 @@ function scopeOnce() {
 }
 ```
 
-A single binding looks like this:
+Um único binding, é parecido com:
 
 ```js
 {
@@ -679,9 +679,9 @@ A single binding looks like this:
 }
 ```
 
-With this information you can find all the references to a binding, see what type of binding it is (parameter, declaration, etc.), lookup what scope it belongs to, or get a copy of its identifier. You can even tell if it's constant and if not, see what paths are causing it to be non-constant.
+Com essas informações, você pode encontrar todas as referências de um binding e ver que tipo de binding ele é (parâmetro, declaração, etc.), verificar qual escopo ele pertence ou obter uma cópia do seu Identifier. Você pode até dizer se ele é constante ou não, e verificar quais Paths estão causando o problema de não ser constante.
 
-Being able to tell if a binding is constant is useful for many purposes, the largest of which is minification.
+Ser capaz de dizer se um binding é constante é útil para muitas coisas, uma das mais importantes, é a minificação.
 
 ```js
 function scopeOne() {
@@ -700,9 +700,9 @@ function scopeOne() {
 
 # <a id="toc-api"></a>API
 
-Babel is actually a collection of modules. In this section we'll walk through the major ones, explaining what they do and how to use them.
+Babel é na verdade uma coleção de módulos. Nesta seção veremos os mais famosos deles, explicando o que eles fazem e como usá-los.
 
-> Note: This is not a replacement for detailed API documentation which will be available elsewhere shortly.
+> Nota: Este não é um substituto para a documentação da API, que será mais detalhada, e que estarão disponível em outro lugar em breve.
 
 ## <a id="toc-babylon"></a>[`babylon`](https://github.com/babel/babel/tree/master/packages/babylon)
 
