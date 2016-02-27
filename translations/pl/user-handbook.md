@@ -1,17 +1,17 @@
 # Podręcznik Użytkownika Babel
 
-This document covers everything you ever wanted to know about using [Babel](https://babeljs.io) and related tooling.
+Ten dokument obejmuje wszystko co chcesz wiedzieć o używaniu [Babel ](https://babeljs.io) i powiązanych narzędziach.
 
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
-This handbook is available in other languages, see the [README](/README.md) for a complete list.
+Ten podręcznik jest dostępny w innych językach, zobacz [plik README](/README.md) po pełną listę.
 
-# Table of Contents
+# Spis treści
 
-  * [Introduction](#toc-introduction)
-  * [Setting up Babel](#toc-setting-up-babel) 
+  * [Wprowadzenie](#toc-introduction)
+  * [Konfiguracja Babel](#toc-setting-up-babel) 
       * [`babel-cli`](#toc-babel-cli)
-      * [Running Babel CLI from within a project](#toc-running-babel-cli-from-within-a-project)
+      * [Uruchomienie Babel CLI z poziomu projektu](#toc-running-babel-cli-from-within-a-project)
       * [`babel-register`](#toc-babel-register)
       * [`babel-node`](#toc-babel-node)
       * [`babel-core`](#toc-babel-core)
@@ -77,7 +77,7 @@ Many people do too, the ecosystem that has sprung up around Babel is massive and
 
 * * *
 
-# <a id="toc-setting-up-babel"></a>Setting up Babel
+# <a id="toc-setting-up-babel"></a>Konfiguracja Babel
 
 Since the JavaScript community has no single build tool, framework, platform, etc., Babel has official integrations for all of the major tooling. Everything from Gulp to Browserify, from Ember to Meteor, no matter what your setup looks like there is probably an official integration.
 
@@ -117,7 +117,7 @@ $ babel src --out-dir lib
 $ babel src -d lib
 ```
 
-### <a id="toc-running-babel-cli-from-within-a-project"></a>Running Babel CLI from within a project
+### <a id="toc-running-babel-cli-from-within-a-project"></a>Uruchomienie Babel CLI z poziomu projektu
 
 While you *can* install Babel CLI globally on your machine, it's much better to install it **locally** project by project.
 
