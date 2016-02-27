@@ -45,9 +45,9 @@ Ten podręcznik jest dostępny w innych językach, zobacz [plik README](/README.
 
 # <a id="toc-introduction"></a>Wprowadzenie
 
-Babel is a generic multi-purpose compiler for JavaScript. Using Babel you can use (and create) the next generation of JavaScript, as well as the next generation of JavaScript tooling.
+Babel jest ogólnym wielo-zadaniowym kompilatorem dla JavaScriptu. Korzystając z Babel możesz używać (i tworzyć) w oparciu o przyszłe wydania JavaScriptu, a także wykorzystując nowe narzędzia.
 
-JavaScript as a language is constantly evolving, with new specs and proposals coming out with new features all the time. Using Babel will allow you to use many of these features years before they are available everywhere.
+JavaScript jako język stale się rozwija, wychodząc z nową specyfikacją, propozycjami i nowymi możliwościami cały czas. Korzystając z Babel masz możliwość używać nowych funkcjonalności, lata przez ich ogólną dostępnością.
 
 Babel does this by compiling down JavaScript code written with the latest standards into a version that will work everywhere today. This process is known as source-to-source compiling, also known as transpiling.
 
