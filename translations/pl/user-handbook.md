@@ -9,26 +9,26 @@ Ten podręcznik jest dostępny w innych językach, zobacz [plik README](/README.
 # Spis treści
 
   * [Wprowadzenie](#toc-introduction)
-  * [Konfiguracja Babel](#toc-setting-up-babel) 
+  * [Instalacja Babel](#toc-setting-up-babel) 
       * [`babel-cli`](#toc-babel-cli)
       * [Uruchomienie Babel CLI z poziomu projektu](#toc-running-babel-cli-from-within-a-project)
       * [`babel-register`](#toc-babel-register)
       * [`babel-node`](#toc-babel-node)
       * [`babel-core`](#toc-babel-core)
-  * [Configuring Babel](#toc-configuring-babel) 
+  * [Konfigurowanie Babel](#toc-configuring-babel) 
       * [`.babelrc`](#toc-babelrc)
       * [`babel-preset-es2015`](#toc-babel-preset-es2015)
       * [`babel-preset-react`](#toc-babel-preset-react)
       * [`babel-preset-stage-x`](#toc-babel-preset-stage-x)
-  * [Executing Babel-generated code](#toc-executing-babel-generated-code) 
+  * [Wykonywanie kodu wygenerowanego przez Babel](#toc-executing-babel-generated-code) 
       * [`babel-polyfill`](#toc-babel-polyfill)
       * [`babel-runtime`](#toc-babel-runtime)
-  * [Configuring Babel (Advanced)](#toc-configuring-babel-advanced) 
+  * [Konfigurowanie Babel (Zaawansowane)](#toc-configuring-babel-advanced) 
       * [Manually specifying plugins](#toc-manually-specifying-plugins)
       * [Plugin options](#toc-plugin-options)
       * [Customizing Babel based on environment](#toc-customizing-babel-based-on-environment)
       * [Making your own preset](#toc-making-your-own-preset)
-  * [Babel and other tools](#toc-babel-and-other-tools) 
+  * [Babel i inne narzędzia](#toc-babel-and-other-tools) 
       * [Static analysis tools](#toc-static-analysis-tools)
       * [Linting](#toc-linting)
       * [Code Style](#toc-code-style)
@@ -36,14 +36,14 @@ Ten podręcznik jest dostępny w innych językach, zobacz [plik README](/README.
       * [Frameworks](#toc-frameworks)
       * [React](#toc-react)
       * [Text Editors and IDEs](#toc-text-editors-and-ides)
-  * [Debugging Babel](#toc-debugging-babel)
-  * [Babel Support](#toc-babel-support) 
-      * [Babel Forum](#toc-babel-forum)
-      * [Babel Chat](#toc-babel-chat)
-      * [Babel Issues](#toc-babel-issues)
-      * [Creating an awesome Babel bug report](#toc-creating-an-awesome-babel-bug-report)
+  * [Debugowanie Babel](#toc-debugging-babel)
+  * [Wsparcie Babel](#toc-babel-support) 
+      * [Forum Babel](#toc-babel-forum)
+      * [Czat Babel](#toc-babel-chat)
+      * [Błędy Babel](#toc-babel-issues)
+      * [Tworzenie dobrego raportu o błędzie](#toc-creating-an-awesome-babel-bug-report)
 
-# <a id="toc-introduction"></a>Introduction
+# <a id="toc-introduction"></a>Wprowadzenie
 
 Babel is a generic multi-purpose compiler for JavaScript. Using Babel you can use (and create) the next generation of JavaScript, as well as the next generation of JavaScript tooling.
 
@@ -77,7 +77,7 @@ Many people do too, the ecosystem that has sprung up around Babel is massive and
 
 * * *
 
-# <a id="toc-setting-up-babel"></a>Konfiguracja Babel
+# <a id="toc-setting-up-babel"></a>Instalacja Babel
 
 Since the JavaScript community has no single build tool, framework, platform, etc., Babel has official integrations for all of the major tooling. Everything from Gulp to Browserify, from Ember to Meteor, no matter what your setup looks like there is probably an official integration.
 
@@ -297,7 +297,7 @@ For all of the above methods, `options` refers to http://babeljs.io/docs/usage/o
 
 * * *
 
-# <a id="toc-configuring-babel"></a>Configuring Babel
+# <a id="toc-configuring-babel"></a>Konfigurowanie Babel
 
 You may have noticed by now that running Babel on its own doesn't seem to do anything other than copy JavaScript files from one location to another.
 
@@ -401,7 +401,7 @@ Then you can add it to your `.babelrc` config.
 
 * * *
 
-# <a id="toc-executing-babel-generated-code"></a>Executing Babel-generated code
+# <a id="toc-executing-babel-generated-code"></a>Wykonywanie kodu wygenerowanego przez Babel
 
 So you've compiled your code with Babel, but this is not the end of the story.
 
@@ -504,7 +504,7 @@ Rather than putting the `_classCallCheck` and `_createClass` helpers in every si
 
 * * *
 
-# <a id="toc-configuring-babel-advanced"></a>Configuring Babel (Advanced)
+# <a id="toc-configuring-babel-advanced"></a>Konfigurowanie Babel (Zaawansowane)
 
 Most people can get by using Babel with just the built-in presets, but Babel exposes much finer-grained power than that.
 
@@ -649,7 +649,7 @@ Then simply publish this to npm and you can use it like you would any preset.
 
 * * *
 
-# <a id="toc-babel-and-other-tools"></a>Babel and other tools
+# <a id="toc-babel-and-other-tools"></a>Babel i inne narzędzia
 
 Babel is pretty straight forward to setup once you get the hang of it, but it can be rather difficult navigating how to set it up with other tools. However, we try to work closely with other projects in order to make the experience as easy as possible.
 
@@ -772,7 +772,7 @@ Introducing ES2015, JSX, and Flow syntax with Babel can be helpful, but if your 
 
 * * *
 
-# <a id="toc-babel-support"></a>Babel Support
+# <a id="toc-babel-support"></a>Wsparcie Babel
 
 Babel has a very large and quickly growing community, as we grow we want to ensure that people have all the resources they need to be successful. So we provide a number of different channels for getting support.
 
@@ -780,11 +780,11 @@ Remember that across all of these communities we enforce a [Code of Conduct](htt
 
 We are also looking to grow a self-supporting community, for people who stick around and support others. If you find someone asking a question you know the answer to, take a few minutes and help them out. Try your best to be kind and understanding when doing so.
 
-## <a id="toc-babel-forum"></a>Babel Forum
+## <a id="toc-babel-forum"></a>Forum Babel
 
 [Discourse](http://www.discourse.org) has provided us with a hosted version of their forum software for free (and we love them for it!). If forums are your thing please stop by [discuss.babeljs.io](https://discuss.babeljs.io).
 
-## <a id="toc-babel-chat"></a>Babel Chat
+## <a id="toc-babel-chat"></a>Czat Babel
 
 Everyone loves [Slack](https://slack.com). If you're looking for immediate support from the community then come chat with us at [slack.babeljs.io](https://slack.babeljs.io).
 
@@ -794,7 +794,7 @@ Everyone loves [Slack](https://slack.com). If you're looking for immediate suppo
 > [WIP]
 -->
 
-## <a id="toc-babel-issues"></a>Babel Issues
+## <a id="toc-babel-issues"></a>Błędy Babel
 
 Babel uses the awesome issue tracker provided by [Phabricator](http://phabricator.org) an open source software development platform that makes GitHub issues a nightmare of the past.
 
@@ -806,7 +806,7 @@ If you want to open a new issue:
   * [Login](https://phabricator.babeljs.io/auth/start/) or [Create an account](https://phabricator.babeljs.io/auth/register/) (You can also login using GitHub, Facebook, Twitter, Google, etc.)
   * [Create a new bug report](https://phabricator.babeljs.io/maniphest/task/create/?projects=PHID-PROJ-2ufzspoyuk4udiwfnzls#R) or [request a new feature](https://phabricator.babeljs.io/maniphest/task/create/?projects=PHID-PROJ-dfaevtocl5zgjtstjijd#R)
 
-### <a id="toc-creating-an-awesome-babel-bug-report"></a>Creating an awesome Babel bug report
+### <a id="toc-creating-an-awesome-babel-bug-report"></a>Tworzenie dobrego raportu o błędzie
 
 Babel issues can sometimes be very difficult to debug remotely, so we need all the help we can get. Spending a few more minutes crafting a really nice bug report can help get your problem solved significantly faster.
 
