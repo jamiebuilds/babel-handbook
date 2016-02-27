@@ -25,7 +25,7 @@ Ten podręcznik jest dostępny w innych językach, zobacz [plik README](/README.
       * [`babel-runtime`](#toc-babel-runtime)
   * [Konfigurowanie Babel (Zaawansowane)](#toc-configuring-babel-advanced) 
       * [Ręczny wybór wtyczek](#toc-manually-specifying-plugins)
-      * [Plugin options](#toc-plugin-options)
+      * [Opcje wtyczek](#toc-plugin-options)
       * [Dostosowywanie Babel w oparciu o środowisko](#toc-customizing-babel-based-on-environment)
       * [Tworzenie własnych ustawień](#toc-making-your-own-preset)
   * [Babel i inne narzędzia](#toc-babel-and-other-tools) 
@@ -33,9 +33,9 @@ Ten podręcznik jest dostępny w innych językach, zobacz [plik README](/README.
       * [Linting](#toc-linting)
       * [Styl kodu](#toc-code-style)
       * [Dokumentacja](#toc-documentation)
-      * [Frameworks](#toc-frameworks)
+      * [Frameworki](#toc-frameworks)
       * [React](#toc-react)
-      * [Text Editors and IDEs](#toc-text-editors-and-ides)
+      * [Edytory tekstu i IDE](#toc-text-editors-and-ides)
   * [Debugowanie Babel](#toc-debugging-babel)
   * [Wsparcie Babel](#toc-babel-support) 
       * [Forum Babel](#toc-babel-forum)
@@ -534,7 +534,7 @@ For a full list of official plugins see the [Babel Plugins page](http://babeljs.
 
 Also take a look at all the plugins that have been [built by the community](https://www.npmjs.com/search?q=babel-plugin). If you would like to learn how to write your own plugin read the [Babel Plugin Handbook](plugin-handbook.md).
 
-## <a id="toc-plugin-options"></a>Plugin options
+## <a id="toc-plugin-options"></a>Opcje wtyczek
 
 Many plugins also have options to configure them to behave differently. For example, many transforms have a "loose" mode which drops some spec behavior in favor of simpler and more performant generated code.
 
@@ -735,7 +735,7 @@ Using Babel, ES2015, and Flow you can infer a lot about your code. Using [docume
 
 Documentation.js uses Babel behind the scenes to support all of the latest syntax including Flow annotations in order to declare the types in your code.
 
-## <a id="toc-frameworks"></a>Frameworks
+## <a id="toc-frameworks"></a>Frameworki
 
 All of the major JavaScript frameworks are now focused on aligning their APIs around the future of the language. Because of this, there has been a lot of work going into the tooling.
 
@@ -755,7 +755,7 @@ Most notably the [`babel-plugin-react-transform`](https://github.com/gaearon/bab
 > [WIP]
 -->
 
-## <a id="toc-text-editors-and-ides"></a>Text Editors and IDEs
+## <a id="toc-text-editors-and-ides"></a>Edytory tekstu i IDE
 
 Introducing ES2015, JSX, and Flow syntax with Babel can be helpful, but if your text editor doesn't support it then it can be a really bad experience. For this reason you will want to setup your text editor or IDE with a Babel plugin.
 
