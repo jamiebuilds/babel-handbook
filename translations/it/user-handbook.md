@@ -1,6 +1,7 @@
 # Manuale utente di Babel
 
-This document covers everything you ever wanted to know about using [Babel](https://babeljs.io) and related tooling.
+Questo documento spiega tutto ciò che devi sapere a riguardo dell'utilizzo di [Babel](https://babeljs.io) ed i suoi strumenti relazionati.
+**Attenzione: La traduzione è incompleta - contribuisci a tradurla!**
 
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
@@ -11,53 +12,53 @@ Questo manuale è disponibile in altre lingue, vedere il [README](/README.md) pe
   * [Introduzione](#toc-introduction)
   * [Installazione di Babel](#toc-setting-up-babel) 
       * [`babel-cli`](#toc-babel-cli)
-      * [Running Babel CLI from within a project](#toc-running-babel-cli-from-within-a-project)
+      * [Eseguire Babel da una CLI all'interno di un progetto](#toc-running-babel-cli-from-within-a-project)
       * [`babel-register`](#toc-babel-register)
       * [`babel-node`](#toc-babel-node)
       * [`babel-core`](#toc-babel-core)
-  * [Configuring Babel](#toc-configuring-babel) 
+  * [Configurare Babel](#toc-configuring-babel) 
       * [`.babelrc`](#toc-babelrc)
       * [`babel-preset-es2015`](#toc-babel-preset-es2015)
       * [`babel-preset-react`](#toc-babel-preset-react)
       * [`babel-preset-stage-x`](#toc-babel-preset-stage-x)
-  * [Executing Babel-generated code](#toc-executing-babel-generated-code) 
+  * [Eseguire del codice generato da Babel](#toc-executing-babel-generated-code) 
       * [`babel-polyfill`](#toc-babel-polyfill)
       * [`babel-runtime`](#toc-babel-runtime)
-  * [Configuring Babel (Advanced)](#toc-configuring-babel-advanced) 
-      * [Manually specifying plugins](#toc-manually-specifying-plugins)
-      * [Plugin options](#toc-plugin-options)
-      * [Customizing Babel based on environment](#toc-customizing-babel-based-on-environment)
-      * [Making your own preset](#toc-making-your-own-preset)
-  * [Babel and other tools](#toc-babel-and-other-tools) 
-      * [Static analysis tools](#toc-static-analysis-tools)
+  * [Configurare Babel (Avanzato)](#toc-configuring-babel-advanced) 
+      * [Specificare manualmente dei plugins](#toc-manually-specifying-plugins)
+      * [Opzioni dei plugin](#toc-plugin-options)
+      * [Personalizzare Babel in base all'ambiente](#toc-customizing-babel-based-on-environment)
+      * [Creare il proprio preset](#toc-making-your-own-preset)
+  * [Babel ed altri strumenti](#toc-babel-and-other-tools) 
+      * [Strumenti di analisi statica](#toc-static-analysis-tools)
       * [Linting](#toc-linting)
-      * [Code Style](#toc-code-style)
-      * [Documentation](#toc-documentation)
+      * [Stile del codice](#toc-code-style)
+      * [Documentazione](#toc-documentation)
       * [Frameworks](#toc-frameworks)
       * [React](#toc-react)
-      * [Text Editors and IDEs](#toc-text-editors-and-ides)
+      * [Text Editors ed IDEs](#toc-text-editors-and-ides)
   * [Debugging Babel](#toc-debugging-babel)
-  * [Babel Support](#toc-babel-support) 
-      * [Babel Forum](#toc-babel-forum)
-      * [Babel Chat](#toc-babel-chat)
-      * [Babel Issues](#toc-babel-issues)
-      * [Creating an awesome Babel bug report](#toc-creating-an-awesome-babel-bug-report)
+  * [Supporto Babel](#toc-babel-support) 
+      * [Forum di Babel](#toc-babel-forum)
+      * [Chat di Babel](#toc-babel-chat)
+      * [Problemi di Babel](#toc-babel-issues)
+      * [Creare un fantastico bug report per Babel](#toc-creating-an-awesome-babel-bug-report)
 
 # <a id="toc-introduction"></a>Introduzione
 
 Babel è un compilatore multifunzione per JavaScript. Utilizzando Babel è possibile utilizzare (e creare) la prossima generazione di JavaScript, così come la prossima generazione di strumenti JavaScript.
 
-JavaScript as a language is constantly evolving, with new specs and proposals coming out with new features all the time. Using Babel will allow you to use many of these features years before they are available everywhere.
+JavaScript come linguaggio è in continua evoluzione, con nuove specifiche e proposte che escono con nuove funzionalità in ogni momento. Utilizzare Babel ti permetterà di usare molte di queste funzionalità anni prima che diventino disponibili ovunque.
 
-Babel does this by compiling down JavaScript code written with the latest standards into a version that will work everywhere today. This process is known as source-to-source compiling, also known as transpiling.
+Babel fa in modo di compilare il codice JavaScript scritto con gli ultimi standards in una versione che funziona ovunque oggi. Questo processo è conosciuto come compilazione sorgente a sorgente, anche conosciuto come transpilazione.
 
-For example, Babel could transform the new ES2015 arrow function syntax from this:
+Per esempio, Babel può trasformare la nuova funzionalità delle funzioni a freccia di ES2015 da questo:
 
 ```js
 const square = n => n * n;
 ```
 
-Into the following:
+A questo:
 
 ```js
 const square = function square(n) {
@@ -65,13 +66,13 @@ const square = function square(n) {
 };
 ```
 
-However, Babel can do much more than this as Babel has support for syntax extensions such as the JSX syntax for React and Flow syntax support for static type checking.
+Ad ogni modo, Babel può fare molto di più di questo in quanto Babel ha il supporto per le estensioni di sintassi come la sintassi JSX per React ed il supporto per la sintassi Flow utilizzata per il controllo dei tipi statici.
 
-Further than that, everything in Babel is simply a plugin and anyone can go out and create their own plugins using the full power of Babel to do whatever they want.
+In più, in Babel tutto è semplicemente un plugin e chiunque può creare i propri plugins sfruttando tutta la potenza di Babel per poter fare ciò che vuole.
 
-*Even further* than that, Babel is broken down into a number of core modules that anyone can use to build the next generation of JavaScript tooling.
+*Addiritura* Babel è diviso in un numero di moduli principali che chiunque può utilizzare per creare la prossima generazione degli strumenti per Javascript.
 
-Many people do too, the ecosystem that has sprung up around Babel is massive and very diverse. Throughout this handbook I'll be covering both how built-in Babel tools work as well as some useful things from around the community.
+Molte persone lo fanno pure: l'ecosistema che ha fatto spiccare Babel è gigantesco e svariato. Mediante questo manuale spiegerò sia come funzionano gli strumenti integrati in Babel come pure delle cose utili provenienti dalla community.
 
 > ***Per aggiornamenti futuri, segui [@thejameskyle](https://twitter.com/thejameskyle) su Twitter.***
 
