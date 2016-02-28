@@ -879,7 +879,7 @@ that improve their users' experience.
 ### <a id="toc-react"></a>React
 
 React has dramatically changed their API to align with ES2015 classes
-([Read about the updated API here](http://babeljs.io/blog/2015/06/07/react-on-es6-plus/)).
+([Read about the updated API here](https://babeljs.io/blog/2015/06/07/react-on-es6-plus)).
 Even further, React relies on Babel to compile it's JSX syntax, deprecating it's
 own custom tooling in favor of Babel. You can start by setting up the
 `babel-preset-react` package following the
