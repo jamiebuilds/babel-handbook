@@ -706,15 +706,15 @@ Babel é na verdade uma coleção de módulos. Nesta seção veremos os mais fam
 
 ## <a id="toc-babylon"></a>[`babylon`](https://github.com/babel/babel/tree/master/packages/babylon)
 
-Babylon is Babel's parser. Started as a fork of Acorn, it's fast, simple to use, has plugin-based architecture for non-standard features (as well as future standards).
+Babylon é um analisador sintático para o Babel. Começou como um fork do Acorn, é rápido, simples de usar e tem uma arquitetura baseada em plugins para recursos que não são padrões (assim como propostas futuras).
 
-First, let's install it.
+Primeiro, vamos instalá-lo.
 
 ```sh
 $ npm install --save babylon
 ```
 
-Let's start by simply parsing a string of code:
+Vamos começar por analisar uma simples seqüência de código:
 
 ```js
 import * as babylon from "babylon";
@@ -735,7 +735,7 @@ babylon.parse(code);
 // }
 ```
 
-We can also pass options to `parse()` like so:
+Nós também podemos passar opções para o `parse()` da seguinte maneira:
 
 ```js
 babylon.parse(code, {
@@ -744,25 +744,25 @@ babylon.parse(code, {
 });
 ```
 
-`sourceType` can either be `"module"` or `"script"` which is the mode that Babylon should parse in. `"module"` will parse in strict mode and allow module declarations, `"script"` will not.
+`sourceType` pode ser um `"module"` ou `"script"`, que é o modo que o Babylon deve analisar o código. `"module"` vai analisar no modo estrito e permitir as declarações de módulos, já o modo `"script"` não.
 
-> **Note:** `sourceType` defaults to `"script"` and will error when it finds `import` or `export`. Pass `sourceType: "module"` to get rid of these errors.
+> **Nota:** `sourceType` tem como padrão o modo `"script"` e retorna um erro quando ele encontra declarações `import` ou `export`. Use `sourceType: "module"` para se livrar desses erros.
 
-Since Babylon is built with a plugin-based architecture, there is also a `plugins` option which will enable the internal plugins. Note that Babylon has not yet opened this API to external plugins, although may do so in the future.
+Desde que Babylon é construído com uma arquitetura baseada em plugins, há também uma opção de `plugins` que permitirá o uso dos plugins internos. Nota, Babylon ainda não abriu essa API para plugins externos, embora, no futuro, possa fazê-lo.
 
-To see a full list of plugins, see the [Babylon README](https://github.com/babel/babel/blob/master/packages/babylon/README.md#plugins).
+Para ver uma lista completa de plugins, consulte o [Leia-me do Babylon](https://github.com/babel/babel/blob/master/packages/babylon/README.md#plugins).
 
 ## <a id="toc-babel-traverse"></a>[`babel-traverse`](https://github.com/babel/babel/tree/master/packages/babel-traverse)
 
-The Babel Traverse module maintains the overall tree state, and is responsible for replacing, removing, and adding nodes.
+O módulo babel-traverse, mantém o estado geral da árvore, e é responsável pela substituição, remoção e adição de nós.
 
-Install it by running:
+Instale executando:
 
 ```sh
 $ npm install --save babel-traverse
 ```
 
-We can use it alongside Babylon to traverse and update nodes:
+Podemos usá-lo ao lado do Babylon para percorrer e atualizar os nós:
 
 ```js
 import * as babylon from "babylon";
@@ -788,15 +788,15 @@ traverse(ast, {
 
 ## <a id="toc-babel-types"></a>[`babel-types`](https://github.com/babel/babel/tree/master/packages/babel-types)
 
-Babel Types is a Lodash-esque utility library for AST nodes. It contains methods for building, validating, and converting AST nodes. It's useful for cleaning up AST logic with well thought out utility methods.
+babel-types é uma biblioteca de utilitários, ao estilo Lodash, para nós de AST. Ele contém métodos para a construção, validação e conversão de nós de AST. Tendo foco em limpar a lógica em uma AST, utilizando-se de métodos bem definidos.
 
-You can install it by running:
+Você pode instalá-lo executando:
 
 ```sh
 $ npm install --save babel-types
 ```
 
-Then start using it:
+E então, comece a usar:
 
 ```js
 import traverse from "babel-traverse";
@@ -813,9 +813,9 @@ traverse(ast, {
 
 ### <a id="toc-definitions"></a>Definições
 
-Babel Types has definitions for every single type of node, with information on what properties belong where, what values are valid, how to build that node, how the node should be traversed, and aliases of the Node.
+babel-types tem definições para cada tipo único de nó, com informações como: aonde pertencem cada propriedades, quais valores são válidos, como foi construído aquele nó, como o nó deve ser percorrido e pseudônimos daquele nó.
 
-A single node type definition looks like this:
+Uma definição de tipo de nó, é parecido com este:
 
 ```js
 defineType("BinaryExpression", {
@@ -838,19 +838,19 @@ defineType("BinaryExpression", {
 
 ### <a id="toc-builders"></a>Construtores
 
-You'll notice the above definition for `BinaryExpression` has a field for a `builder`.
+Você vai notar que a definição acima para `BinaryExpression` tem um campo para um `builder`.
 
 ```js
 builder: ["operator", "left", "right"]
 ```
 
-This is because each node type gets a builder method, which when used looks like this:
+Isso porque, cada tipo de nó tem um método construtor, que, quando usado, é parecido com este:
 
 ```js
 t.binaryExpression("*", t.identifier("a"), t.identifier("b"));
 ```
 
-Which creates an AST like this:
+Que cria um AST como este:
 
 ```js
 {
@@ -867,17 +867,17 @@ Which creates an AST like this:
 }
 ```
 
-Which when printed looks like this:
+Que, quando impresso, é parecido com este:
 
 ```js
 a * b
 ```
 
-Builders will also validate the nodes they are creating and throw descriptive errors if used improperly. Which leads into the next type of method.
+Construtores também irão validar os nós que eles estão criando e lançaram erros descritivos se usados incorretamente. O que leva para o próximo tipo de método.
 
 ### <a id="toc-validators"></a>Validadores
 
-The definition for `BinaryExpression` also includes information on the `fields` of a node and how to validate them.
+A definição para `BinaryExpression` também inclui informações sobre os `fields` de um nó e como validá-los.
 
 ```js
 fields: {
@@ -893,19 +893,19 @@ fields: {
 }
 ```
 
-This is used to create two types of validating methods. The first of which is `isX`.
+Isso é usado para criar dois tipos de validação de métodos. A primeira das quais é `isX`.
 
 ```js
 t.isBinaryExpression(maybeBinaryExpressionNode);
 ```
 
-This tests to make sure that the node is a binary expression, but you can also pass a second parameter to ensure that the node contains certain properties and values.
+Esse teste serve para se certificar de que o nó é uma expressão binária, mas você também pode passar um segundo parâmetro para garantir que o nó contém certas propriedades e valores.
 
 ```js
 t.isBinaryExpression(maybeBinaryExpressionNode, { operator: "*" });
 ```
 
-There is also the more, *ehem*, assertive version of these methods, which will throw errors instead of returning `true` or `false`.
+Há também a versão assertiva desses métodos, o *ehem*, que irá gerar erros em vez de retornar `true` ou `false`.
 
 ```js
 t.assertBinaryExpression(maybeBinaryExpressionNode);
@@ -919,15 +919,15 @@ t.assertBinaryExpression(maybeBinaryExpressionNode, { operator: "*" });
 
 ## <a id="toc-babel-generator"></a>[`babel-generator`](https://github.com/babel/babel/tree/master/packages/babel-generator)
 
-Babel Generator is the code generator for Babel. It takes an AST and turns it into code with sourcemaps.
+babel-generator é o gerador de código para o Babel. Leva uma AST e a transforma em código com sourcemaps.
 
-Run the following to install it:
+Execute os seguintes passos para instalá-lo:
 
 ```sh
 $ npm install --save babel-generator
 ```
 
-Then use it
+Em seguida, para usá-lo:
 
 ```js
 import * as babylon from "babylon";
@@ -946,7 +946,7 @@ generate(ast, null, code);
 // }
 ```
 
-You can also pass options to `generate()`.
+Você também pode passar opções para a função `generate()`.
 
 ```js
 generate(ast, {
@@ -960,7 +960,7 @@ generate(ast, {
 
 ## <a id="toc-babel-template"></a>[`babel-template`](https://github.com/babel/babel/tree/master/packages/babel-template)
 
-Babel Template is another tiny but incredibly useful module. It allows you to write strings of code with placeholders that you can use instead of manually building up a massive AST.
+babel-template é outro módulo minúsculo, mas incrivelmente útil. Ele permite que você grave seqüências de caracteres de código com espaços reservados, para que você possa usá-los ao invés de, manualmente, acumular uma enorme AST.
 
 ```sh
 $ npm install --save babel-template
@@ -989,9 +989,9 @@ var myModule = require("my-module");
 
 # <a id="toc-writing-your-first-babel-plugin"></a>Escrevendo seu primeiro Plugin do Babel
 
-Now that you're familiar with all the basics of Babel, let's tie it together with the plugin API.
+Agora que você está familiarizado com o básico do Babel, vamos usar tudo o que aprendemos até aqui para criar nosso primeiro plugin.
 
-Start off with a `function` that gets passed the current [`babel`](https://github.com/babel/babel/tree/master/packages/babel-core) object.
+Vamos começar com uma `função` que recebe um objeto do tipo [`babel`](https://github.com/babel/babel/tree/master/packages/babel-core).
 
 ```js
 export default function(babel) {
@@ -999,7 +999,7 @@ export default function(babel) {
 }
 ```
 
-Since you'll be using it so often, you'll likely want to grab just `babel.types` like so:
+Como você irá usar isso muitas vezes, você provavelmente vai querer acessar apenas o `babel.types`, podemos fazê-lo da seguinte forma:
 
 ```js
 export default function({ types: t }) {
@@ -1007,7 +1007,7 @@ export default function({ types: t }) {
 }
 ```
 
-Then you return an object with a property `visitor` which is the primary visitor for the plugin.
+Então, você pode retornar um objeto com uma propriedade `visitor`, que é o principal visitante para o plugin.
 
 ```js
 export default function({ types: t }) {
@@ -1019,13 +1019,13 @@ export default function({ types: t }) {
 };
 ```
 
-Let's write a quick plugin to show off how it works. Here's our source code:
+Vamos criar um plugin bem simples para ver como isso funciona, veja o seguinte código:
 
 ```js
 foo === bar;
 ```
 
-Or in AST form:
+Ou na forma de uma AST:
 
 ```js
 {
@@ -1042,7 +1042,7 @@ Or in AST form:
 }
 ```
 
-We'll start off by adding a `BinaryExpression` visitor method.
+Vamos começar adicionando um método de visitante ao `BinaryExpression`.
 
 ```js
 export default function({ types: t }) {
@@ -1056,7 +1056,7 @@ export default function({ types: t }) {
 }
 ```
 
-Then let's narrow it down to just `BinaryExpression`s that are using the `===` operator.
+E então, vamos reduzi-lo à expressão `BinaryExpression`, que serão usadas com o operador de `=`.
 
 ```js
 visitor: {
@@ -1070,7 +1070,7 @@ visitor: {
 }
 ```
 
-Now let's replace the `left` property with a new identifier:
+Agora vamos substituir a propriedade `left` com um novo identificador:
 
 ```js
 BinaryExpression(path) {
@@ -1083,13 +1083,13 @@ BinaryExpression(path) {
 }
 ```
 
-Already if we run this plugin we would get:
+Se utilizarmos o plugin agora, teríamos:
 
 ```js
 sebmck === bar;
 ```
 
-Now let's just replace the `right` property.
+Agora vamos substituir apenas a propriedade da `direita`.
 
 ```js
 BinaryExpression(path) {
@@ -1102,13 +1102,13 @@ BinaryExpression(path) {
 }
 ```
 
-And now for our final result:
+E agora, nosso resultado final:
 
 ```js
 sebmck === dork;
 ```
 
-Awesome! Our very first Babel plugin.
+Incrível! Criamos nosso primeiro plugin para o Babel.
 
 * * *
 
@@ -1118,7 +1118,7 @@ Awesome! Our very first Babel plugin.
 
 ### <a id="toc-check-if-a-node-is-a-certain-type"></a>Verificar se um nó é um certo tipo
 
-If you want to check what the type of a node is, the preferred way to do so is:
+Se você deseja verificar qual é o tipo de um nó, a melhor maneira de fazê-lo é:
 
 ```js
 BinaryExpression(path) {
@@ -1128,7 +1128,7 @@ BinaryExpression(path) {
 }
 ```
 
-You can also do a shallow check for properties on that node:
+Você também pode fazer uma verificação superficial das propriedades desse nó:
 
 ```js
 BinaryExpression(path) {
@@ -1138,7 +1138,7 @@ BinaryExpression(path) {
 }
 ```
 
-This is functionally equivalent to:
+Isso é funcionalmente equivalente à:
 
 ```js
 BinaryExpression(path) {
@@ -1162,7 +1162,7 @@ Identifier(path) {
 }
 ```
 
-Alternatively:
+Alternativa:
 
 ```js
 Identifier(path) {
@@ -1212,7 +1212,7 @@ ReturnStatement(path) {
   }
 ```
 
-> **Note:** When replacing an expression with multiple nodes, they must be statements. This is because Babel uses heuristics extensively when replacing nodes which means that you can do some pretty crazy transformations that would be extremely verbose otherwise.
+> **Nota:** Quando você substituir uma expressão com vários nós, eles devem ser declarações. Isso ocorre porque o Babel usa a heurística das declarações para simplificar as transformações malucas que você venha há criar. De outro modo, elas seriam extremamente verbosas e complicadas.
 
 ### <a id="toc-replacing-a-node-with-a-source-string"></a>Substituindo um nó com uma string
 
@@ -1232,7 +1232,7 @@ FunctionDeclaration(path) {
   }
 ```
 
-> **Note:** It's not recommended to use this API unless you're dealing with dynamic source strings, otherwise it's more efficient to parse the code outside of the visitor.
+> **Nota:** Não é recomendado usar esta API, a menos que você esteja lidando com seqüências de caracteres de forma dinâmica, caso contrário, é mais eficiente analisar o código fora o visitante.
 
 ### <a id="toc-inserting-a-sibling-node"></a>Inserir um nó irmão
 
@@ -1251,7 +1251,7 @@ FunctionDeclaration(path) {
 + "A little high, little low.";
 ```
 
-> **Note:** This should always be a statement or an array of statements. This uses the same heuristics mentioned in [Replacing a node with multiple nodes](#replacing-a-node-with-multiple-nodes).
+> **Nota:** Isso deve sempre uma declaração ou uma matriz de declarações. Ele usa a mesma heurística mencionada na [substituição de um nó com vários nós](#replacing-a-node-with-multiple-nodes).
 
 ### <a id="toc-removing-a-node"></a>Remoção de um nó
 
@@ -1310,9 +1310,9 @@ FunctionDeclaration(path) {
 }
 ```
 
-This will walk up the scope tree and check for that particular binding.
+Isto irá percorrer até a árvore do escopo e verificar se existe essa ligação específica.
 
-You can also check if a scope has its **own** binding:
+Você também pode verificar se um escopo tem sua **própria** ligação:
 
 ```js
 FunctionDeclaration(path) {
@@ -1324,7 +1324,7 @@ FunctionDeclaration(path) {
 
 ### <a id="toc-generating-a-uid"></a>Gerando um UID
 
-This will generate an identifier that doesn't collide with any locally defined variables.
+Isso irá gerar um identificador único, garantido que não irá colidir com qualquer variáveis definidas localmente.
 
 ```js
 FunctionDeclaration(path) {
@@ -1337,7 +1337,7 @@ FunctionDeclaration(path) {
 
 ### <a id="toc-pushing-a-variable-declaration-to-a-parent-scope"></a>Empurrando uma declaração de variável para um escopo de pai
 
-Sometimes you may want to push a `VariableDeclaration` so you can assign to it.
+Às vezes você pode querer adicionar uma `VariableDeclaration`, então você pode atribuir a ele:
 
 ```js
 FunctionDeclaration(path) {
@@ -1371,7 +1371,7 @@ FunctionDeclaration(path) {
   }
 ```
 
-Alternatively, you can rename a binding to a generated unique identifier:
+Como alternativa, você pode renomear uma ligação para um identificador único já gerado:
 
 ```js
 FunctionDeclaration(path) {
@@ -1391,7 +1391,7 @@ FunctionDeclaration(path) {
 
 # <a id="toc-plugin-options"></a>Opções do plugin
 
-If you would like to let your users customize the behavior of your Babel plugin you can accept plugin specific options which users can specify like this:
+Se você gostaria de permitir que os usuários personalizem o comportamento do seu plugin do Babel, você pode aceitar opções específicas, através do:
 
 ```js
 {
@@ -1404,7 +1404,7 @@ If you would like to let your users customize the behavior of your Babel plugin 
 }
 ```
 
-These options then get passed into plugin visitors through the `state` object:
+Essas opções serão passadas para o visitors do seu plugin através do objeto `state`:
 
 ```js
 export default function({ types: t }) {
@@ -1419,19 +1419,19 @@ export default function({ types: t }) {
 }
 ```
 
-These options are plugin-specific and you cannot access options from other plugins.
+Essas opções são específicas do seu plugin, e você não pode acessar as opções de outros plugins.
 
 * * *
 
 # <a id="toc-building-nodes"></a>Construindo nós
 
-When writing transformations you'll often want to build up some nodes to insert into the AST. As mentioned previously, you can do this using the [builder](#builder) methods in the [`babel-types`](#babel-types) package.
+Ao escrever suas transformações, você muitas vezes vai querer construir alguns nós para inserir em uma AST. Como mencionado anteriormente, você pode fazer isso usando o método [builder](#builder) do pacote [`babel-types`](#babel-types).
 
-The method name for a builder is simply the name of the node type you want to build except with the first letter lowercased. For example if you wanted to build a `MemberExpression` you would use `t.memberExpression(...)`.
+O nome do método para um builder é simplesmente o nome do tipo de nó que você deseja compilar, exceto pela primeira letra minúscula. Por exemplo, se você quiser construir um `MemberExpression` você usaria `t.memberExpression(...)`.
 
-The arguments of these builders are decided by the node definition. There's some work that's being done to generate easy-to-read documentation on the definitions, but for now they can all be found [here](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions).
+Os argumentos destes construtores são decididos pela definição do nó. Estamos trabalhando para melhorar e facilitar a documentação em torno das definições, mas para agora, todos podem ser encontrados [aqui](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions).
 
-A node definition looks like the following:
+Uma definição de nó tem a seguinte aparência:
 
 ```js
 defineType("MemberExpression", {
@@ -1455,17 +1455,17 @@ defineType("MemberExpression", {
 });
 ```
 
-Here you can see all the information about this particular node type, including how to build it, traverse it, and validate it.
+Aqui você pode ver todas as informações sobre este tipo de nó, inclusive sobre como construí-lo, atravessá-lo e validá-lo.
 
-By looking at the `builder` property, you can see the 3 arguments that will be needed to call the builder method (`t.memberExpression`).
+Examinando a propriedade do `builder`, você pode ver os 3 argumentos que serão necessárias para chamar o método builder (`t.memberExpression`).
 
 ```js
 builder: ["object", "property", "computed"],
 ```
 
-> Note that sometimes there are more properties that you can customize on the node than the `builder` array contains. This is to keep the builder from having too many arguments. In these cases you need to set the properties manually. An example of this is [`ClassMethod`](https://github.com/babel/babel/blob/bbd14f88c4eea88fa584dd877759dd6b900bf35e/packages/babel-types/src/definitions/es2015.js#L238-L276).
+> Observe que, às vezes, há mais propriedades que você pode personalizar no nó, do que a matriz de opções do `builder` contém. Isso é para manter o builder simples, sem muitos argumentos. Nesse caso, você precisa definir as propriedades manualmente. Um exemplo disso é o [`ClassMethod`](https://github.com/babel/babel/blob/bbd14f88c4eea88fa584dd877759dd6b900bf35e/packages/babel-types/src/definitions/es2015.js#L238-L276).
 
-You can see the validation for the builder arguments with the `fields` object.
+Você pode ver a validação para os argumentos do builder com o objeto `fields`.
 
 ```js
 fields: {
@@ -1484,9 +1484,9 @@ fields: {
 }
 ```
 
-You can see that `object` needs to be an `Expression`, `property` either needs to be an `Expression` or an `Identifier` depending on if the member expression is `computed` or not and `computed` is simply a boolean that defaults to `false`.
+Você pode ver que o `object` precisa ser uma `expression`, `property` que também devem ser uma `expression` ou um `Identifier`, dependendo se a expressão é `computed` ou não, e `computed` é simplesmente um booleano, tendo como valor padrão `false`.
 
-So we can construct a `MemberExpression` by doing the following:
+Então nós podemos construir um `MemberExpression` da seguinte maneira:
 
 ```js
 t.memberExpression(
@@ -1496,21 +1496,21 @@ t.memberExpression(
 );
 ```
 
-Which will result in:
+Que irá resultar em:
 
 ```js
 object.property
 ```
 
-However, we said that `object` needed to be an `Expression` so why is `Identifier` valid?
+No entanto, dissemos que `object` precisar para ser uma `expression`, então porque `Identifier` é válido?
 
-Well if we look at the definition of `Identifier` we can see that it has an `aliases` property which states that it is also an expression.
+Bem, se olharmos para a definição do `Identifier`, podemos ver que tem uma propriedade `aliases`, que afirma que ele também é uma expressão.
 
 ```js
 aliases: ["Expression", "LVal"],
 ```
 
-So since `MemberExpression` is a type of `Expression`, we could set it as the `object` of another `MemberExpression`:
+Então, `MemberExpression` é um tipo de `expression`, nós poderíamos defini-lo como o `object` de outro `MemberExpression`:
 
 ```js
 t.memberExpression(
@@ -1522,21 +1522,21 @@ t.memberExpression(
 )
 ```
 
-Which will result in:
+Que irá resultar em:
 
 ```js
 member.expression.property
 ```
 
-It's very unlikely that you will ever memorize the builder method signatures for every node type. So you should take some time and understand how they are generated from the node definitions.
+É muito improvável que memorize as assinaturas de métodos construtores para cada tipo de nó. Então você deve levar algum tempo e entender como eles são gerados a partir das definições de nó.
 
-You can find all of the actual [definitions here](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions) and you can see them [documented here](https://github.com/babel/babel/blob/master/doc/ast/spec.md)
+Você pode encontrar todas as reais [definições aqui](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions) e você pode vê-los [documentados aqui](https://github.com/babel/babel/blob/master/doc/ast/spec.md)
 
 * * *
 
 # <a id="toc-best-practices"></a>Melhores práticas
 
-> I'll be working on this section over the coming weeks.
+> Eu vou estar trabalhando nesta seção nas próximas semanas.
 
 ## <a id="toc-avoid-traversing-the-ast-as-much-as-possible"></a>Evitar cruzar o máximo possível o AST
 

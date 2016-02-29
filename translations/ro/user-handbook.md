@@ -743,7 +743,7 @@ Framework-urile au posibilitatea nu doar să folosească Babel, ci chiar să-l e
 
 ### <a id="toc-react"></a>React
 
-React şi-a schimbat dramatic API-ul pentru a se alinia cu clasele ES2015 ([Citiți despre actualizarea API-ului aici](http://babeljs.io/blog/2015/06/07/react-on-es6-plus/)). Mai mult de atât, React se bazează pe Babel pentru a compila sintaxa JSX, renunțând la propriul instrument în favoarea Babel. Puteţi începe prin setarea pachetului `babel-preset-react` urmând [instrucţiunile de mai sus](#babel-preset-react).
+React şi-a schimbat dramatic API-ul pentru a se alinia cu clasele ES2015 ([Citiți despre actualizarea API-ului aici](https://babeljs.io/blog/2015/06/07/react-on-es6-plus)). Mai mult de atât, React se bazează pe Babel pentru a compila sintaxa JSX, renunțând la propriul instrument în favoarea Babel. Puteţi începe prin setarea pachetului `babel-preset-react` urmând [instrucţiunile de mai sus](#babel-preset-react).
 
 Comunitatea React a luat Babel şi l-au folosit intens. Există acum o multitudine de transformări [construite de comunitate](https://www.npmjs.com/search?q=babel-plugin+react).
 

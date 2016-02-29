@@ -49,18 +49,18 @@ Babel jest ogólnym wielo-zadaniowym kompilatorem dla JavaScriptu. Korzystając 
 
 JavaScript jako język stale się rozwija, wychodząc z nową specyfikacją, propozycjami i nowymi możliwościami cały czas. Korzystając z Babel masz możliwość używać nowych funkcjonalności, lata przez ich ogólną dostępnością.
 
-Babel does this by compiling down JavaScript code written with the latest standards into a version that will work everywhere today. This process is known as source-to-source compiling, also known as transpiling.
+Babel robi to poprzez kompilowanie kodu JavaScript, napisanego zgodnie z najnowszymi standardami do wersji która będzie działać wszędzie dzisiaj. Ten proces znany jest jako kopmilowanie źródło-do-źródła, znane jako transpiling.
 
-For example, Babel could transform the new ES2015 arrow function syntax from this:
+Na przykład Babel może przekształcić nową składnię funkcji ES2015 z takiej:
 
 ```js
-const square = n => n * n;
+const kwadrat= n => n * n;
 ```
 
-Into the following:
+Do następującej:
 
 ```js
-const square = function square(n) {
+const kwadrat= function kwadrat(n) {
   return n * n;
 };
 ```
@@ -743,7 +743,7 @@ Frameworks have the opportunity not just to use Babel but to extend it in ways t
 
 ### <a id="toc-react"></a>React
 
-React has dramatically changed their API to align with ES2015 classes ([Read about the updated API here](http://babeljs.io/blog/2015/06/07/react-on-es6-plus/)). Even further, React relies on Babel to compile it's JSX syntax, deprecating it's own custom tooling in favor of Babel. You can start by setting up the `babel-preset-react` package following the [instructions above](#babel-preset-react).
+React has dramatically changed their API to align with ES2015 classes ([Read about the updated API here](https://babeljs.io/blog/2015/06/07/react-on-es6-plus)). Even further, React relies on Babel to compile it's JSX syntax, deprecating it's own custom tooling in favor of Babel. You can start by setting up the `babel-preset-react` package following the [instructions above](#babel-preset-react).
 
 The React community took Babel and ran with it. There are now a number of transforms [built by the community](https://www.npmjs.com/search?q=babel-plugin+react).
 
