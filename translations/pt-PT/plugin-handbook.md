@@ -9,9 +9,9 @@ Este manual está disponível noutras línguas. Uma lista completa de todas as t
 # Índice
 
   * [Introdução](#toc-introduction)
-  * [Basics](#toc-basics) 
+  * [Noções básicas](#toc-basics) 
       * [ASTs](#toc-asts)
-      * [Stages of Babel](#toc-stages-of-babel)
+      * [Estágios de Babel](#toc-stages-of-babel)
       * [Parse](#toc-parse) 
           * [Lexical Analysis](#toc-lexical-analysis)
           * [Syntactic Analysis](#toc-syntactic-analysis)
@@ -21,20 +21,20 @@ Este manual está disponível noutras línguas. Uma lista completa de todas as t
       * [Visitors](#toc-visitors)
       * [Paths](#toc-paths) 
           * [Paths in Visitors](#toc-paths-in-visitors)
-      * [State](#toc-state)
-      * [Scopes](#toc-scopes) 
+      * [Estado](#toc-state)
+      * [Âmbitos](#toc-scopes) 
           * [Bindings](#toc-bindings)
   * [API](#toc-api) 
       * [babylon](#toc-babylon)
       * [babel-traverse](#toc-babel-traverse)
       * [babel-types](#toc-babel-types)
-      * [Definitions](#toc-definitions)
+      * [Definições](#toc-definitions)
       * [Builders](#toc-builders)
       * [Validators](#toc-validators)
       * [Converters](#toc-converters)
       * [babel-generator](#toc-babel-generator)
       * [babel-template](#toc-babel-template)
-  * [Writing your first Babel Plugin](#toc-writing-your-first-babel-plugin)
+  * [Construir o teu primeiro plugin de Babel](#toc-writing-your-first-babel-plugin)
   * [Transformation Operations](#toc-transformation-operations) 
       * [Visiting](#toc-visiting)
       * [Check if a node is a certain type](#toc-check-if-a-node-is-a-certain-type)
@@ -63,17 +63,17 @@ Este manual está disponível noutras línguas. Uma lista completa de todas as t
 
 # <a id="toc-introduction"></a>Introdução
 
-Babel is a generic multi-purpose compiler for JavaScript. More than that it is a collection of modules that can be used for many different forms of static analysis.
+Babel é um compilador de múltiplos propósito genérico para JavaScript. Mais do que isso é uma coleção de módulos que podem ser usados de muitas formas diferentes de análise estática.
 
-> Static analysis is the process of analyzing code without executing it. (Analysis of code while executing it is known as dynamic analysis). The purpose of static analysis varies greatly. It can be used for linting, compiling, code highlighting, code transformation, optimization, minification, and much more.
+> Análise estática é o processo de análisar código sem o executar. (Análise de código durante a sua execução é conhecido como análise dinâmica). O objectivo da análise estática varia muito. It can be used for linting, compiling, code highlighting, code transformation, optimization, minification, and much more.
 
-You can use Babel to build many different types of tools that can help you be more productive and write better programs.
+Babel pode ser usado para construir vários tipos de ferramentas que podem ajudá-lo a ser mais produtivo e escrever programas melhores.
 
 > ***Para futuras atualizações, siga [@thejameskyle](https://twitter.com/thejameskyle) no Twitter.***
 
 * * *
 
-# <a id="toc-basics"></a>Basics
+# <a id="toc-basics"></a>Noções básicas
 
 Babel is a JavaScript compiler, specifically a source-to-source compiler, often called a "transpiler". This means that you give Babel some JavaScript code, Babel modifies the code, and generates the new code back out.
 
@@ -214,7 +214,7 @@ There are additional properties on every Node that Babel generates which describ
 
 These properties `start`, `end`, `loc`, appear in every single Node.
 
-## <a id="toc-stages-of-babel"></a>Stages of Babel
+## <a id="toc-stages-of-babel"></a>Estágios de Babel
 
 The three primary stages of Babel are **parse**, **transform**, **generate**.
 
@@ -507,7 +507,7 @@ Visiting: b
 Visiting: c
 ```
 
-### <a id="toc-state"></a>State
+### <a id="toc-state"></a>Estado
 
 State is the enemy of AST transformation. State will bite you over and over again and your assumptions about state will almost always be proven wrong by some syntax that you didn't consider.
 
@@ -572,7 +572,7 @@ const MyVisitor = {
 
 Of course, this is a contrived example but it demonstrates how to eliminate global state from your visitors.
 
-### <a id="toc-scopes"></a>Scopes
+### <a id="toc-scopes"></a>Âmbitos
 
 Next let's introduce the concept of a [**scope**](https://en.wikipedia.org/wiki/Scope_(computer_science)). JavaScript has [lexical scoping](https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scoping_vs._dynamic_scoping), which is a tree structure where blocks create new scope.
 
@@ -812,7 +812,7 @@ traverse(ast, {
 });
 ```
 
-### <a id="toc-definitions"></a>Definitions
+### <a id="toc-definitions"></a>Definições
 
 Babel Types has definitions for every single type of node, with information on what properties belong where, what values are valid, how to build that node, how the node should be traversed, and aliases of the Node.
 
@@ -988,7 +988,7 @@ console.log(generate(ast).code);
 var myModule = require("my-module");
 ```
 
-# <a id="toc-writing-your-first-babel-plugin"></a>Writing your first Babel Plugin
+# <a id="toc-writing-your-first-babel-plugin"></a>Construir o teu primeiro plugin de Babel
 
 Now that you're familiar with all the basics of Babel, let's tie it together with the plugin API.
 

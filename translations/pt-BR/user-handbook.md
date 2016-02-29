@@ -743,7 +743,7 @@ Os frameworks têm a oportunidade não apenas de usar o Babel, mas também de ex
 
 ### <a id="toc-react"></a>React
 
-React has dramatically changed their API to align with ES2015 classes ([Read about the updated API here](https://babeljs.io/blog/2015/06/07/react-on-es6-plus)). E ainda mais, React usa o Babel para compilar sua sintaxe JSX. Eles pararam de usar o compilador que eles criaram em favor do Babel. Você pode começar installando os pacotes `babel-preset-react`, seguindo as [instruções acima](#babel-preset-react).
+React mudou drasticamente sua API para alinhar com o sistema de class do ES2015 ([Leia mais sobre a atualização da API aqui](https://babeljs.io/blog/2015/06/07/react-on-es6-plus)). E ainda mais, React usa o Babel para compilar sua sintaxe JSX. Eles pararam de usar o compilador que eles criaram em favor do Babel. Você pode começar installando os pacotes `babel-preset-react`, seguindo as [instruções acima](#babel-preset-react).
 
 A comunidade do React abraçou o Babel como parte de seu ecossistema, e hoje, cria ferramentas em cima disso. Há uma série de [pacotes de transformações criados pela comunidade](https://www.npmjs.com/search?q=babel-plugin+react).
 
