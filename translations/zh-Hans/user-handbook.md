@@ -743,7 +743,7 @@ Documentation.js 使用 Babel 来支持所有最新的语法，包括用于在�
 
 ### <a id="toc-react"></a>React
 
-React 已经大幅改变了他们的 API 以适应 ES2015 的类语法（[此处了解更新的 API](https://babeljs.io/blog/2015/06/07/react-on-es6-plus)）。 Even further, React relies on Babel to compile it's JSX syntax, deprecating it's own custom tooling in favor of Babel. 你可以按照[上述说明](#babel-preset-react)安装 `babel-preset-react` 包来开始。.
+React 已经大幅改变了他们的 API 以适应 ES2015 的类语法（[此处了解更新的 API](https://babeljs.io/blog/2015/06/07/react-on-es6-plus)）。 特别是 React 现在依赖 Babel 编译它的 JSX 语法且弃用了它原有的自定义工具。 你可以按照[上述说明](#babel-preset-react)安装 `babel-preset-react` 包来开始。.
 
 React 社区采用 Babel 并围绕它来运行，现在社区已经创建了[大量的转换器（transforms）](https://www.npmjs.com/search?q=babel-plugin+react)。.
 
