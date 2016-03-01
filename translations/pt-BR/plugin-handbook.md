@@ -1540,13 +1540,13 @@ Você pode encontrar todas as reais [definições aqui](https://github.com/babel
 
 ## <a id="toc-avoid-traversing-the-ast-as-much-as-possible"></a>Evitar cruzar o máximo possível o AST
 
-Traversing the AST is expensive, and it's easy to accidentally traverse the AST more than necessary. This could be thousands if not tens of thousands of extra operations.
+Atravessar a AST é caro, e é acidentalmente fácil atravessa-la mais do que necessário. Isto pode custar milhares de operações extras.
 
-Babel optimizes this as much as possible, merging visitors together if it can in order to do everything in a single traversal.
+Babel otimiza isso o tanto quanto possível, unindo visitors, quando possível, para fazer tudo em uma única passagem.
 
 ### <a id="toc-merge-visitors-whenever-possible"></a>Mesclar os visitantes sempre que possível
 
-When writing visitors, it may be tempting to call `path.traverse` in multiple places where they are logically necessary.
+Ao escrever os visitors, pode ser fácil chamar `path.traverse` em vários lugares onde eles são logicamente necessários.
 
 ```js
 path.traverse({
@@ -1562,7 +1562,7 @@ path.traverse({
 });
 ```
 
-However, it is far better to write these as a single visitor that only gets run once. Otherwise you are traversing the same tree multiple times for no reason.
+No entanto, é muito melhor escrever isso em um único visitor, caso contrário, você estará atravessando a mesma Ast várias vezes, sem motivo.
 
 ```js
 path.traverse({
@@ -1577,7 +1577,7 @@ path.traverse({
 
 ### <a id="toc-do-not-traverse-when-manual-lookup-will-do"></a>Não cruzar quando farão pesquisa manual
 
-It may also be tempting to call `path.traverse` when looking for a particular node type.
+Também pode ser chamar `path.traverse` quando você procura por um tipo de nó específico.
 
 ```js
 const visitorOne = {
@@ -1593,7 +1593,7 @@ const MyVisitor = {
 };
 ```
 
-However, if you are looking for something specific and shallow, there is a good chance you can manually lookup the nodes you need without performing a costly traversal.
+No entanto, se você estiver procurando por algo específico e superficial, há uma boa chance de você poder, manualmente, pesquisar os nós que você precisa sem executar uma passagem completa.
 
 ```js
 const MyVisitor = {
@@ -1607,7 +1607,7 @@ const MyVisitor = {
 
 ## <a id="toc-optimizing-nested-visitors"></a>Otimizando os visitantes aninhados
 
-When you are nesting visitors, it might make sense to write them nested in your code.
+Quando você está aninhando visitors, pode fazer sentido escrevê-los aninhado-os em seu código.
 
 ```js
 const MyVisitor = {
@@ -1621,7 +1621,7 @@ const MyVisitor = {
 };
 ```
 
-However, this creates a new visitor object everytime `FunctionDeclaration()` is called above, which Babel then needs to explode and validate every single time. This can be costly, so it is better to hoist the visitor up.
+No entanto, isso cria um novo objeto visitor sempre que `FunctionDeclaration()` é chamada, e então, o Babel precisa executa-lo e valida-lo toda vez. Isto pode ser caro, então é melhor armazenar o visitante em um escopo superior.
 
 ```js
 const visitorOne = {
@@ -1637,7 +1637,7 @@ const MyVisitor = {
 };
 ```
 
-If you need some state within the nested visitor, like so:
+Se você precisa de algum estado dentro do visitor aninhado, faça da seguinte forma:
 
 ```js
 const MyVisitor = {
@@ -1655,7 +1655,7 @@ const MyVisitor = {
 };
 ```
 
-You can pass it in as state to the `traverse()` method and have access to it on `this` in the visitor.
+Você pode passá-lo em como parâmetro para o método `traverse()` e ter acesso a ele através do `this` no objeto visitor.
 
 ```js
 const visitorOne = {
@@ -1676,9 +1676,9 @@ const MyVisitor = {
 
 ## <a id="toc-being-aware-of-nested-structures"></a>Estando ciente das estruturas aninhadas
 
-Sometimes when thinking about a given transform, you might forget that the given structure can be nested.
+As vezes, quando pensamos em uma determinada transformação, podemos esquecer que a estrutura de dados fornecida, pode ser aninhada.
 
-For example, imagine we want to lookup the `constructor` `ClassMethod` from the `Foo` `ClassDeclaration`.
+Por exemplo, imagine que vamos consultar o `constructor` `ClassMethod` da `classe declarada` `Foo`.
 
 ```js
 class Foo {
@@ -1706,7 +1706,7 @@ const MyVisitor = {
 }
 ```
 
-We are ignoring the fact that classes can be nested and using the traversal above we will hit a nested `constructor` as well:
+Nós estão ignorando o fato de que as classes podem ser aninhadas e com o código acima, vamos acabar encontrando um `construtor` aninhado, veja:
 
 ```js
 class Foo {
