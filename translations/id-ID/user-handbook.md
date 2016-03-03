@@ -1,47 +1,47 @@
 # Babel User Handbook
 
-This document covers everything you ever wanted to know about using [Babel](https://babeljs.io) and related tooling.
+Dokumen ini mencakup semua yang ingin Anda tahu tentang menggunakan [Babel](https://babeljs.io) dan terkait tooling.
 
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
-This handbook is available in other languages, see the [README](/README.md) for a complete list.
+Buku pedoman ini tersedia dalam bahasa lain, lihat [README](/README.md) untuk daftar lengkap.
 
 # Daftar Isi
 
   * [Pengenalan](#toc-introduction)
-  * [Setting up Babel](#toc-setting-up-babel) 
+  * [Mempersiapkan Babel](#toc-setting-up-babel) 
       * [`babel-cli`](#toc-babel-cli)
-      * [Running Babel CLI from within a project](#toc-running-babel-cli-from-within-a-project)
+      * [Menjalankan Babel CLI dalam sebuah proyek](#toc-running-babel-cli-from-within-a-project)
       * [`babel-register`](#toc-babel-register)
       * [`babel-node`](#toc-babel-node)
       * [`babel-core`](#toc-babel-core)
-  * [Configuring Babel](#toc-configuring-babel) 
+  * [Mengkonfigurasi Babel](#toc-configuring-babel) 
       * [`.babelrc`](#toc-babelrc)
       * [`babel-preset-es2015`](#toc-babel-preset-es2015)
       * [`babel-preset-react`](#toc-babel-preset-react)
       * [`babel-preset-stage-x`](#toc-babel-preset-stage-x)
-  * [Executing Babel-generated code](#toc-executing-babel-generated-code) 
+  * [Mengeksekusi kode yang dihasilkan Babel](#toc-executing-babel-generated-code) 
       * [`babel-polyfill`](#toc-babel-polyfill)
       * [`babel-runtime`](#toc-babel-runtime)
-  * [Configuring Babel (Advanced)](#toc-configuring-babel-advanced) 
-      * [Manually specifying plugins](#toc-manually-specifying-plugins)
-      * [Plugin options](#toc-plugin-options)
-      * [Customizing Babel based on environment](#toc-customizing-babel-based-on-environment)
-      * [Making your own preset](#toc-making-your-own-preset)
-  * [Babel and other tools](#toc-babel-and-other-tools) 
-      * [Static analysis tools](#toc-static-analysis-tools)
+  * [Mengkonfigurasi Babel (lanjutan)](#toc-configuring-babel-advanced) 
+      * [Menentukan plugin secara manual](#toc-manually-specifying-plugins)
+      * [Pilihan plugin](#toc-plugin-options)
+      * [Menyesuaikan Babel berdasarkan lingkungan](#toc-customizing-babel-based-on-environment)
+      * [Membuat preset Anda sendiri](#toc-making-your-own-preset)
+  * [Babel dan alat lainnya](#toc-babel-and-other-tools) 
+      * [Alat analisis statis](#toc-static-analysis-tools)
       * [Linting](#toc-linting)
       * [Code Style](#toc-code-style)
-      * [Documentation](#toc-documentation)
+      * [Dokumentasi](#toc-documentation)
       * [Frameworks](#toc-frameworks)
       * [React](#toc-react)
-      * [Text Editors and IDEs](#toc-text-editors-and-ides)
+      * [Teks editor dan IDE](#toc-text-editors-and-ides)
   * [Debugging Babel](#toc-debugging-babel)
-  * [Babel Support](#toc-babel-support) 
+  * [Dukungan Babel](#toc-babel-support) 
       * [Babel Forum](#toc-babel-forum)
       * [Babel Chat](#toc-babel-chat)
       * [Babel Issues](#toc-babel-issues)
-      * [Creating an awesome Babel bug report](#toc-creating-an-awesome-babel-bug-report)
+      * [Membuat laporan bug Babel yang mengagumkan](#toc-creating-an-awesome-babel-bug-report)
 
 # <a id="toc-introduction"></a>Pengenalan
 
@@ -73,11 +73,11 @@ Further than that, everything in Babel is simply a plugin and anyone can go out 
 
 Many people do too, the ecosystem that has sprung up around Babel is massive and very diverse. Throughout this handbook I'll be covering both how built-in Babel tools work as well as some useful things from around the community.
 
-> ***For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.***
+> ***Untuk pembaruan terbaru, ikuti [@thejameskyle](https://twitter.com/thejameskyle) di Twitter.***
 
 * * *
 
-# <a id="toc-setting-up-babel"></a>Setting up Babel
+# <a id="toc-setting-up-babel"></a>Mempersiapkan Babel
 
 Since the JavaScript community has no single build tool, framework, platform, etc., Babel has official integrations for all of the major tooling. Everything from Gulp to Browserify, from Ember to Meteor, no matter what your setup looks like there is probably an official integration.
 
@@ -117,7 +117,7 @@ $ babel src --out-dir lib
 $ babel src -d lib
 ```
 
-### <a id="toc-running-babel-cli-from-within-a-project"></a>Running Babel CLI from within a project
+### <a id="toc-running-babel-cli-from-within-a-project"></a>Menjalankan Babel CLI dalam sebuah proyek
 
 While you *can* install Babel CLI globally on your machine, it's much better to install it **locally** project by project.
 
@@ -297,7 +297,7 @@ For all of the above methods, `options` refers to http://babeljs.io/docs/usage/o
 
 * * *
 
-# <a id="toc-configuring-babel"></a>Configuring Babel
+# <a id="toc-configuring-babel"></a>Mengkonfigurasi Babel
 
 You may have noticed by now that running Babel on its own doesn't seem to do anything other than copy JavaScript files from one location to another.
 
@@ -401,7 +401,7 @@ Then you can add it to your `.babelrc` config.
 
 * * *
 
-# <a id="toc-executing-babel-generated-code"></a>Executing Babel-generated code
+# <a id="toc-executing-babel-generated-code"></a>Mengeksekusi kode yang dihasilkan Babel
 
 So you've compiled your code with Babel, but this is not the end of the story.
 
@@ -504,11 +504,11 @@ Rather than putting the `_classCallCheck` and `_createClass` helpers in every si
 
 * * *
 
-# <a id="toc-configuring-babel-advanced"></a>Configuring Babel (Advanced)
+# <a id="toc-configuring-babel-advanced"></a>Mengkonfigurasi Babel (lanjutan)
 
 Most people can get by using Babel with just the built-in presets, but Babel exposes much finer-grained power than that.
 
-## <a id="toc-manually-specifying-plugins"></a>Manually specifying plugins
+## <a id="toc-manually-specifying-plugins"></a>Menentukan plugin secara manual
 
 Babel presets are simply collections of pre-configured plugins, if you want to do something differently you manually specify plugins. This works almost exactly the same way as presets.
 
@@ -534,7 +534,7 @@ For a full list of official plugins see the [Babel Plugins page](http://babeljs.
 
 Also take a look at all the plugins that have been [built by the community](https://www.npmjs.com/search?q=babel-plugin). If you would like to learn how to write your own plugin read the [Babel Plugin Handbook](plugin-handbook.md).
 
-## <a id="toc-plugin-options"></a>Plugin options
+## <a id="toc-plugin-options"></a>Pilihan plugin
 
 Many plugins also have options to configure them to behave differently. For example, many transforms have a "loose" mode which drops some spec behavior in favor of simpler and more performant generated code.
 
@@ -551,7 +551,7 @@ To add options to a plugin, simply make the following change:
 
 > I'll be working on updates to the plugin documentation to detail every option in the coming weeks. [Follow me for updates](https://twitter.com/thejameskyle).
 
-## <a id="toc-customizing-babel-based-on-environment"></a>Customizing Babel based on environment
+## <a id="toc-customizing-babel-based-on-environment"></a>Menyesuaikan Babel berdasarkan lingkungan
 
 Babel plugins solve many different tasks. Many of them are development tools that can help you debugging your code or integrate with tools. There are also a lot of plugins that are meant for optimizing your code in production.
 
@@ -594,7 +594,7 @@ $ [COMMAND]
 > 
 > **Tip:** If you want your command to work across unix and windows platforms then use [`cross-env`](https://www.npmjs.com/package/cross-env).
 
-## <a id="toc-making-your-own-preset"></a>Making your own preset
+## <a id="toc-making-your-own-preset"></a>Membuat preset Anda sendiri
 
 Manually specifying plugins? Plugin options? Environment-based settings? All this configuration might seem like a ton of repetition for all of your projects.
 
@@ -649,11 +649,11 @@ Then simply publish this to npm and you can use it like you would any preset.
 
 * * *
 
-# <a id="toc-babel-and-other-tools"></a>Babel and other tools
+# <a id="toc-babel-and-other-tools"></a>Babel dan alat lainnya
 
 Babel is pretty straight forward to setup once you get the hang of it, but it can be rather difficult navigating how to set it up with other tools. However, we try to work closely with other projects in order to make the experience as easy as possible.
 
-## <a id="toc-static-analysis-tools"></a>Static analysis tools
+## <a id="toc-static-analysis-tools"></a>Alat analisis statis
 
 Newer standards bring a lot of new syntax to the language and static analysis tools are just starting to take advantage of it.
 
@@ -729,7 +729,7 @@ For more information consult the [`babel-jscs`](https://github.com/jscs-dev/babe
 > [WIP]
 -->
 
-### <a id="toc-documentation"></a>Documentation
+### <a id="toc-documentation"></a>Dokumentasi
 
 Using Babel, ES2015, and Flow you can infer a lot about your code. Using [documentation.js](http://documentation.js.org) you can generate detailed API documentation very easily.
 
@@ -755,7 +755,7 @@ Most notably the [`babel-plugin-react-transform`](https://github.com/gaearon/bab
 > [WIP]
 -->
 
-## <a id="toc-text-editors-and-ides"></a>Text Editors and IDEs
+## <a id="toc-text-editors-and-ides"></a>Teks editor dan ide
 
 Introducing ES2015, JSX, and Flow syntax with Babel can be helpful, but if your text editor doesn't support it then it can be a really bad experience. For this reason you will want to setup your text editor or IDE with a Babel plugin.
 
@@ -772,7 +772,7 @@ Introducing ES2015, JSX, and Flow syntax with Babel can be helpful, but if your 
 
 * * *
 
-# <a id="toc-babel-support"></a>Babel Support
+# <a id="toc-babel-support"></a>Dukungan Babel
 
 Babel has a very large and quickly growing community, as we grow we want to ensure that people have all the resources they need to be successful. So we provide a number of different channels for getting support.
 
@@ -806,7 +806,7 @@ If you want to open a new issue:
   * [Login](https://phabricator.babeljs.io/auth/start/) or [Create an account](https://phabricator.babeljs.io/auth/register/) (You can also login using GitHub, Facebook, Twitter, Google, etc.)
   * [Create a new bug report](https://phabricator.babeljs.io/maniphest/task/create/?projects=PHID-PROJ-2ufzspoyuk4udiwfnzls#R) or [request a new feature](https://phabricator.babeljs.io/maniphest/task/create/?projects=PHID-PROJ-dfaevtocl5zgjtstjijd#R)
 
-### <a id="toc-creating-an-awesome-babel-bug-report"></a>Creating an awesome Babel bug report
+### <a id="toc-creating-an-awesome-babel-bug-report"></a>Membuat laporan bug Babel yang mengagumkan
 
 Babel issues can sometimes be very difficult to debug remotely, so we need all the help we can get. Spending a few more minutes crafting a really nice bug report can help get your problem solved significantly faster.
 
@@ -816,4 +816,4 @@ First, try isolating your problem. It's extremely unlikely that every part of yo
 
 * * *
 
-> ***For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.***
+> ***Untuk pembaruan terbaru, ikuti [@thejameskyle](https://twitter.com/thejameskyle) di Twitter.***

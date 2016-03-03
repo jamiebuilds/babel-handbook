@@ -214,19 +214,19 @@ Babelが生成したノードには、元のソースコード上のノードの
 
 これらのプロパティには`start`、`end`、`loc`が一つのノードに出現します。
 
-## <a id="toc-stages-of-babel"></a>Stages of Babel
+## <a id="toc-stages-of-babel"></a>Babelのステージ
 
-The three primary stages of Babel are **parse**, **transform**, **generate**.
+Babelには大きく分けて３つのステージが存在します。すなわち、**parse**、**transform**、そして**generate**です。.
 
 ### <a id="toc-parse"></a>Parse
 
-The **parse** stage, takes code and outputs an AST. There are two phases of parsing in Babel: [**Lexical Analysis**](https://en.wikipedia.org/wiki/Lexical_analysis) and [**Syntactic Analysis**](https://en.wikipedia.org/wiki/Parsing).
+**parse**は、コードを入力として受け取り、ASTを出力するステージです。 さらに、parseは２つのフェーズに分けることができます。すなわち、 [**Lexical Analysis**](https://en.wikipedia.org/wiki/Lexical_analysis) と [**Syntactic Analysis**](https://en.wikipedia.org/wiki/Parsing)です。.
 
 #### <a id="toc-lexical-analysis"></a>Lexical Analysis
 
-Lexical Analysis will take a string of code and turn it into a stream of **tokens**.
+Lexical Analysisは、コードの文字列を**token**のストリームへ変換するフェーズを指します。.
 
-You can think of tokens as a flat array of language syntax pieces.
+tokenは言語の構文の個々の部品であり、tokenのストリームはそれらがフラットに並んだものと考えてください。
 
 ```js
 n * n;
@@ -241,7 +241,7 @@ n * n;
 ]
 ```
 
-Each of the `type`s here have a set of properties describing the token:
+上記はtokenのストリームですが、それぞれのtokenは`type`を持ち、それは以下の様なプロパティから構成されています。
 
 ```js
 {
@@ -262,27 +262,27 @@ Each of the `type`s here have a set of properties describing the token:
 }
 ```
 
-Like AST nodes they also have a `start`, `end`, and `loc`.
+ASTのノードと同様、typeもまた`start`、`end`、`loc`といったプロパティを持ちます。.
 
 #### <a id="toc-syntactic-analysis"></a>Syntactic Analysis
 
-Syntactic Analysis will take a stream of tokens and turn it into an AST representation. Using the information in the tokens, this phase will reformat them as an AST which represents the structure of the code in a way that makes it easier to work with.
+一方、Syntactic Analysisは、tokenのストリームをASTに変換するフェーズを指します。 ここでは、tokenの情報をベースにそれらを再構成して、コードの構造をより加工しやすい形（AST）で表現します。
 
 ### <a id="toc-transform"></a>Transform
 
-The [transform](https://en.wikipedia.org/wiki/Program_transformation) stage takes an AST and traverses through it, adding, updating, and removing nodes as it goes along. This is by far the most complex part of Babel or any compiler. This is where plugins operate and so it will be the subject of most of this handbook. So we won't dive too deep right now.
+[transform](https://en.wikipedia.org/wiki/Program_transformation) ステージでは、ASTのツリーを走査して、ノードの追加、変更、削除といった処理を施します。 このステージこそが最も複雑なステージであり、それはBabelのみならず、他のコンパイラにおいても同様です。 また、このステージこそがプラグインに関わる部分であるため、言わばこのハンドブックの大半はtransformに関して書かれています。 したがって、ここでは簡単に説明するだけに留めたいと思います。
 
 ### <a id="toc-generate"></a>Generate
 
-The [code generation](https://en.wikipedia.org/wiki/Code_generation_(compiler)) stage takes the final AST and turns in back into a string of code, also creating [source maps](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/).
+[generate](https://en.wikipedia.org/wiki/Code_generation_(compiler))（code generation）ステージは、ASTをふたたびコードの文字列に変換するステージです。さらに、このステージは[source map](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/)も生成します。.
 
-Code generation is pretty simple: you traverse through the AST depth-first, building a string that represents the transformed code.
+code generationの処理は単純明快です。それは、ASTのツリーをdepth-firstの順番で走査することで、変換結果としてのコードの文字列を構築します。
 
 ## <a id="toc-traversal"></a>Traversal
 
-When you want to transform an AST you have to [traverse the tree](https://en.wikipedia.org/wiki/Tree_traversal) recursively.
+transformのステージでは、ASTのツリーを再帰的に走査（traverse）する必要があります。
 
-Say we have the type `FunctionDeclaration`. It has a few properties: `id`, `params`, and `body`. Each of them have nested nodes.
+たとえば、typeが`FunctionDeclaration`のASTがあるとしましょう。このASTは `id`、`params`、そして`body`という３つのネストしたノードを含みます。
 
 ```js
 {
@@ -316,19 +316,19 @@ Say we have the type `FunctionDeclaration`. It has a few properties: `id`, `para
 }
 ```
 
-So we start at the `FunctionDeclaration` and we know its internal properties so we visit each of them and their children in order.
+ご覧のとおり、`FunctionDeclaration`以下のノードはさらに子ノードを持つため、それらひとつひとつを走査しなければいけません。
 
-Next we go to `id` which is an `Identifier`. `Identifier`s don't have any child node properties so we move on.
+まずは、`id`を見てみましょう。これは`Identifier`ノードであり、自身の直接の子ノードのみを持ちます。
 
-After that is `params` which is an array of nodes so we visit each of them. In this case it's a single node which is also an `Identifier` so we move on.
+次に、`params`を見てみましょう。これはノードの配列で、それぞれのノードはまたしても、`Identifier`です。
 
-Then we hit `body` which is a `BlockStatement` with a property `body` that is an array of Nodes so we go to each of them.
+最後に`body` を見てみましょう。これは`BlockStatement` であり、`body`というプロパティを持ちます。<0>body</0>はノードの配列なので、ひとつづつ辿ってみましょう。
 
-The only item here is a `ReturnStatement` node which has an `argument`, we go to the `argument` and find a `BinaryExpression`.
+配列は単一のノード（`ReturnStatement`）から構成されており、`argument`というプロパティを持ちます。`argument`は`BinaryExpression`であり、さらに子ノードを持ちます。.
 
-The `BinaryExpression` has an `operator`, a `left`, and a `right`. The operator isn't a node, just a value, so we don't go to it, and instead just visit `left` and `right`.
+`BinaryExpression` は`operator`、`left`、そして`right`の３つのプロパティを持ちます。 operatorはノードではなく、ただの値です。一方、`left`と`right`はノードです。.
 
-This traversal process happens throughout the Babel transform stage.
+この操作（traversal）のプロセスは、Babelのtransformステージ全体を通じて行われます。
 
 ### <a id="toc-visitors"></a>Visitors
 
