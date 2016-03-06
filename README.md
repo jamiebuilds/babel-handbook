@@ -22,7 +22,7 @@ A guided handbook on how to use Babel and how to create plugins for Babel.
 - [한국어](/translations/ko/README.md)
 - [Norsk](/translations/no/README.md)
 - [Nederlands](/translations/nl/README.md)
-- [Português](/translations/pl/README.md)
+- [Português](/translations/pt-PT/README.md)
 - [Português (Brasil)](/translations/pt-BR/README.md)
 - [Portugisisk](/translations/pt-PT/README.md)
 - [Română](/translations/ro/README.md)
