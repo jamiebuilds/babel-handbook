@@ -9,8 +9,6 @@ A guided handbook on how to use Babel and how to create plugins for Babel.
 - [العربية](/translations/ar/README.md)
 - [Català](/translations/ca/README.md)
 - [Čeština](/translations/cs/README.md)
-- [中文](/translations/zh-Hans/README.md)
-- [繁體中文](/translations/zh-Hant/README.md)
 - [Danske](/translations/da/README.md)
 - [Deutsch](/translations/de/README.md)
 - [ελληνικά](/translations/el/README.md)
@@ -34,7 +32,8 @@ A guided handbook on how to use Babel and how to create plugins for Babel.
 - [Türkçe](/translations/tr/README.md)
 - [Tiếng Việt](/translations/vi/README.md)
 - [Український](/translations/uk/README.md)
-
+- [中文](/translations/zh-Hans/README.md)
+- [繁體中文](/translations/zh-Hant/README.md)
 
 **[Request another translation](https://github.com/thejameskyle/babel-plugin-handbook/issues/new?title=Translation%20Request:%20[Please%20enter%20language%20here]&body=I%20am%20able%20to%20translate%20this%20language%20[yes/no])**
 
