@@ -12,17 +12,17 @@
   * [基本功能](#toc-basics) 
       * [ASTs (抽象語法樹)](#toc-asts)
       * [Babel 的階段](#toc-stages-of-babel)
-      * [Parse](#toc-parse) 
+      * [解析 (Parse)](#toc-parse) 
           * [Lexical Analysis](#toc-lexical-analysis)
           * [Syntactic Analysis](#toc-syntactic-analysis)
-      * [轉換](#toc-transform)
-      * [Generate](#toc-generate)
-      * [Traversal](#toc-traversal)
-      * [Visitors](#toc-visitors)
-      * [Paths](#toc-paths) 
+      * [轉換 (Transform)](#toc-transform)
+      * [生成 (Generate)](#toc-generate)
+      * [遍歷 (Traversal)](#toc-traversal)
+      * [訪問者 (Visitors)](#toc-visitors)
+      * [路徑 (Paths)](#toc-paths) 
           * [Paths in Visitors](#toc-paths-in-visitors)
-      * [State](#toc-state)
-      * [Scopes](#toc-scopes) 
+      * [狀態 (State)](#toc-state)
+      * [範圍 (Scopes)](#toc-scopes) 
           * [Bindings](#toc-bindings)
   * [API](#toc-api) 
       * [babylon](#toc-babylon)
@@ -31,10 +31,10 @@
       * [定義](#toc-definitions)
       * [建置](#toc-builders)
       * [驗證](#toc-validators)
-      * [Converters](#toc-converters)
+      * [轉換器](#toc-converters)
       * [babel-generator](#toc-babel-generator)
       * [babel-template](#toc-babel-template)
-  * [Writing your first Babel Plugin](#toc-writing-your-first-babel-plugin)
+  * [撰寫你的第一個 Babel 外掛](#toc-writing-your-first-babel-plugin)
   * [Transformation Operations](#toc-transformation-operations) 
       * [Visiting](#toc-visiting)
       * [Check if a node is a certain type](#toc-check-if-a-node-is-a-certain-type)
@@ -218,7 +218,7 @@ These properties `start`, `end`, `loc`, appear in every single Node.
 
 The three primary stages of Babel are **parse**, **transform**, **generate**.
 
-### <a id="toc-parse"></a>Parse
+### <a id="toc-parse"></a>解析 (Parse)
 
 The **parse** stage, takes code and outputs an AST. There are two phases of parsing in Babel: [**Lexical Analysis**](https://en.wikipedia.org/wiki/Lexical_analysis) and [**Syntactic Analysis**](https://en.wikipedia.org/wiki/Parsing).
 
@@ -268,17 +268,17 @@ Like AST nodes they also have a `start`, `end`, and `loc`.
 
 Syntactic Analysis will take a stream of tokens and turn it into an AST representation. Using the information in the tokens, this phase will reformat them as an AST which represents the structure of the code in a way that makes it easier to work with.
 
-### <a id="toc-transform"></a>轉換
+### <a id="toc-transform"></a>轉換 (Transform)
 
 The [transform](https://en.wikipedia.org/wiki/Program_transformation) stage takes an AST and traverses through it, adding, updating, and removing nodes as it goes along. This is by far the most complex part of Babel or any compiler. This is where plugins operate and so it will be the subject of most of this handbook. So we won't dive too deep right now.
 
-### <a id="toc-generate"></a>Generate
+### <a id="toc-generate"></a>生成 (Generate)
 
 The [code generation](https://en.wikipedia.org/wiki/Code_generation_(compiler)) stage takes the final AST and turns in back into a string of code, also creating [source maps](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/).
 
 Code generation is pretty simple: you traverse through the AST depth-first, building a string that represents the transformed code.
 
-## <a id="toc-traversal"></a>Traversal
+## <a id="toc-traversal"></a>遍歷 (Traversal)
 
 When you want to transform an AST you have to [traverse the tree](https://en.wikipedia.org/wiki/Tree_traversal) recursively.
 
@@ -330,7 +330,7 @@ The `BinaryExpression` has an `operator`, a `left`, and a `right`. The operator 
 
 This traversal process happens throughout the Babel transform stage.
 
-### <a id="toc-visitors"></a>Visitors
+### <a id="toc-visitors"></a>訪問者 (Visitors)
 
 When we talk about "going" to a node, we actually mean we are **visiting** them. The reason we use that term is because there is this concept of a [**visitor**](https://en.wikipedia.org/wiki/Visitor_pattern).
 
@@ -418,7 +418,7 @@ const MyVisitor = {
 };
 ```
 
-### <a id="toc-paths"></a>Paths
+### <a id="toc-paths"></a>路徑 (Paths)
 
 An AST generally has many Nodes, but how do Nodes relate to one another? We could have one giant mutable object that you manipulate and have full access to, or we can simplify this with **Paths**.
 
@@ -507,7 +507,7 @@ Visiting: b
 Visiting: c
 ```
 
-### <a id="toc-state"></a>State
+### <a id="toc-state"></a>狀態 (State)
 
 State is the enemy of AST transformation. State will bite you over and over again and your assumptions about state will almost always be proven wrong by some syntax that you didn't consider.
 
@@ -572,7 +572,7 @@ const MyVisitor = {
 
 Of course, this is a contrived example but it demonstrates how to eliminate global state from your visitors.
 
-### <a id="toc-scopes"></a>Scopes
+### <a id="toc-scopes"></a>範圍 (Scopes)
 
 Next let's introduce the concept of a [**scope**](https://en.wikipedia.org/wiki/Scope_(computer_science)). JavaScript has [lexical scoping](https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scoping_vs._dynamic_scoping), which is a tree structure where blocks create new scope.
 
@@ -914,7 +914,7 @@ t.assertBinaryExpression(maybeBinaryExpressionNode, { operator: "*" });
 // Error: Expected type "BinaryExpression" with option { "operator": "*" }
 ```
 
-### <a id="toc-converters"></a>Converters
+### <a id="toc-converters"></a>轉換器
 
 > [WIP]
 
@@ -988,7 +988,7 @@ console.log(generate(ast).code);
 var myModule = require("my-module");
 ```
 
-# <a id="toc-writing-your-first-babel-plugin"></a>Writing your first Babel Plugin
+# <a id="toc-writing-your-first-babel-plugin"></a>撰寫你的第一個 Babel 外掛
 
 Now that you're familiar with all the basics of Babel, let's tie it together with the plugin API.
 

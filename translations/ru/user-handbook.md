@@ -79,11 +79,11 @@ Many people do too, the ecosystem that has sprung up around Babel is massive and
 
 # <a id="toc-setting-up-babel"></a>Настройка Babel
 
-Since the JavaScript community has no single build tool, framework, platform, etc., Babel has official integrations for all of the major tooling. Everything from Gulp to Browserify, from Ember to Meteor, no matter what your setup looks like there is probably an official integration.
+Так как javascript-сообщество имеет не один сборщик пакетов, фреймворк, платформу и т. д., Babel имеет официальную интеграцию для всех основных инструментов. Все, от Gulp до Browserify, от Ember до Meteor, не важно каковы ваши предпочтения, - скорее всего для них найдется официальная интеграция.
 
-For the purposes of this handbook, we're just going to cover the built-in ways of setting up Babel, but you can also visit the interactive [setup page](http://babeljs.io/docs/setup) for all of the integrations.
+В рамках целей данного руководства мы охватим только встроенные пути установки Babel, но вы также можете посетить интерактивную [страницу установки](http://babeljs.io/docs/setup) для выбора необходимых интеграций.
 
-> **Note:** This guide is going to refer to command line tools like `node` and `npm`. Before continuing any further you should be comfortable with these tools.
+> **Примечание:** Это руководство будет ссылаться на инструменты командной строки такие как `node` и `npm`. Перед продолжением чтения вам следует почувствовать себя комфортно с этими инструментами.
 
 ## <a id="toc-babel-cli"></a>`babel-cli`
 
@@ -651,25 +651,25 @@ Then simply publish this to npm and you can use it like you would any preset.
 
 # <a id="toc-babel-and-other-tools"></a>Babel и другие инструменты
 
-Babel is pretty straight forward to setup once you get the hang of it, but it can be rather difficult navigating how to set it up with other tools. However, we try to work closely with other projects in order to make the experience as easy as possible.
+Babel is pretty straight forward to setup once you get the hang of it, but it can be rather difficult navigating how to set it up with other tools. Тем не менее мы стараемся работать в тесном сотрудничестве с другими проектами для того, чтобы сделать опыт как можно проще.
 
 ## <a id="toc-static-analysis-tools"></a>Static analysis tools
 
 Newer standards bring a lot of new syntax to the language and static analysis tools are just starting to take advantage of it.
 
-### <a id="toc-linting"></a>Linting
+### <a id="toc-linting"></a>Линтинг (инструменты для проверки кода)
 
-One of the most popular tools for linting is [ESLint](http://eslint.org), because of this we maintain an official [`babel-eslint`](https://github.com/babel/babel-eslint) integration.
+Один из самых популярных инструментов для линтинга (проверки кода) - это [ESLint](http://eslint.org), по этой причине мы поддерживаем официальную интеграцию [`babel-eslint`](https://github.com/babel/babel-eslint).
 
-First install `eslint` and `babel-eslint`.
+Сначала установите `eslint` и `babel-eslint`.
 
 ```sh
 $ npm install --save-dev eslint babel-eslint
 ```
 
-> **Note:** `babel-eslint` compatibility with Babel 6 is currently in a pre-release version. Install the [latest](https://github.com/babel/babel-eslint/releases) 5.0 beta in order to use it with Babel 6.
+> **Примечание:** `babel-eslint` совместимость с Babel 6 в настоящее время в находится в версии пре-релиза (стадия-кандидат на то, чтобы стать стабильной). Установите [последнюю](https://github.com/babel/babel-eslint/releases) 5.0 бета версию для того, чтобы использовать его с Babel 6.
 
-Next create or use the existing `.eslintrc` file in your project and set the `parser` as `babel-eslint`.
+Затем создайте или используйте существующий файл `.eslintrc` в вашем проекте и установите `parser` как `babel-eslint`.
 
 ```diff
   {
@@ -680,7 +680,7 @@ Next create or use the existing `.eslintrc` file in your project and set the `pa
   }
 ```
 
-Now add a `lint` task to your npm `package.json` scripts:
+Теперь добавьте `lint`-задачу в ваш npm `package.json` скрипт:
 
 ```diff
   {
@@ -695,15 +695,15 @@ Now add a `lint` task to your npm `package.json` scripts:
   }
 ```
 
-Then just run the task and you will be all setup.
+Затем просто запустите данную задачу, - вы все настроили.
 
 ```sh
 $ npm run lint
 ```
 
-For more information consult the [`babel-eslint`](https://github.com/babel/babel-eslint) or [`eslint`](http://eslint.org) documentation.
+За дальнейшей информацией обращайтесь к документации [`babel-eslint`](https://github.com/babel/babel-eslint) или [`eslint`](http://eslint.org).
 
-### <a id="toc-code-style"></a>Code Style
+### <a id="toc-code-style"></a>Стиль кода
 
 JSCS is an extremely popular tool for taking linting a step further into checking the style of the code itself. A core maintainer of both the Babel and JSCS projects ([@hzoo](https://github.com/hzoo)) maintains an official integration with JSCS.
 

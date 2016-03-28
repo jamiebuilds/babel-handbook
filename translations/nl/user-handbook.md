@@ -43,37 +43,37 @@ Deze gebruikershandleiding is beschikbaar in andere talen, zie de [README](/READ
       * [Babel Issues](#toc-babel-issues)
       * [Creating an awesome Babel bug report](#toc-creating-an-awesome-babel-bug-report)
 
-# <a id="toc-introduction"></a>Introduction
+# <a id="toc-introduction"></a>Introductie
 
-Babel is a generic multi-purpose compiler for JavaScript. Using Babel you can use (and create) the next generation of JavaScript, as well as the next generation of JavaScript tooling.
+Babel is een generieke multifunctionele compiler voor JavaScript. Met behulp van Babel kan u de volgende generatie JavaScript gebruiken (en creëren), alsmede de volgende generatie van JavaScript hulpmiddelen.
 
-JavaScript as a language is constantly evolving, with new specs and proposals coming out with new features all the time. Using Babel will allow you to use many of these features years before they are available everywhere.
+JavaScript as a language is constantly evolving, with new specs and proposals coming out with new features all the time. Met behulp van Babel, kan je veel van deze functies reeds gebruiken, jaren voordat ze overal beschikbaar zijn.
 
-Babel does this by compiling down JavaScript code written with the latest standards into a version that will work everywhere today. This process is known as source-to-source compiling, also known as transpiling.
+Babel doet dit door de JavaScript-code geschreven volgens de laatste standaarden, te compileren naar een versie die heden overal zal werken. Dit proces staat bekend als bron-naar-bron compileren, ook bekend als transpileren.
 
-For example, Babel could transform the new ES2015 arrow function syntax from this:
+Bijvoorbeeld, Babel kan de nieuwe ES2015 pijl functie syntaxis transformeren van dit:
 
 ```js
-const square = n => n * n;
+const vierkantswortel = n = > n * n;
 ```
 
-Into the following:
+In het volgende:
 
 ```js
-const square = function square(n) {
-  return n * n;
+const vierkantswortel = function vierkantswortel(n) {
+        return n * n;
 };
 ```
 
-However, Babel can do much more than this as Babel has support for syntax extensions such as the JSX syntax for React and Flow syntax support for static type checking.
+Babel kan echter veel meer dan dit aangezien Babel ondersteuning biedt voor syntaxis extensies, zoals de JSX syntaxis voor React en Flow syntaxis voor controle van 'static type checking'.
 
-Further than that, everything in Babel is simply a plugin and anyone can go out and create their own plugins using the full power of Babel to do whatever they want.
+Verder dan dat, is alles in Babel gewoon een plugin en iedereen kan zelfgemaakte plugins maken die gebruik maken van de volledige kracht van Babel, om te doen wat ze maar wensen.
 
-*Even further* than that, Babel is broken down into a number of core modules that anyone can use to build the next generation of JavaScript tooling.
+*Nog meer* dan dat, is Babel onderverdeeld in een aantal basismodules die iedereen gebruiken kan om te bouwen aan de volgende generatie van JavaScript hulpgereedschap.
 
-Many people do too, the ecosystem that has sprung up around Babel is massive and very diverse. Throughout this handbook I'll be covering both how built-in Babel tools work as well as some useful things from around the community.
+Veel mensen doen dat ook, het ecosysteem dat is ontstaan rond Babel is massaal en zeer divers. In dit handboek zal ik het zowel hebben over hoe de ingebouwde Babel tools werken, alsook sommige nuttige dingen uit de gemeenschap.
 
-> ***For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.***
+> ***Voor toekomstige updates, volg [@thejameskyle](https://twitter.com/thejameskyle) op Twitter.***
 
 * * *
 

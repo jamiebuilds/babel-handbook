@@ -11,12 +11,12 @@ This handbook is available in other languages, see the [README](/README.md) for 
   * [イントロダクション](#toc-introduction)
   * [基本](#toc-basics) 
       * [抽象構文木(ASTs)](#toc-asts)
-      * [Stages of Babel](#toc-stages-of-babel)
-      * [Parse](#toc-parse) 
-          * [Lexical Analysis](#toc-lexical-analysis)
-          * [Syntactic Analysis](#toc-syntactic-analysis)
-      * [Transform](#toc-transform)
-      * [Generate](#toc-generate)
+      * [バベルの現状](#toc-stages-of-babel)
+      * [パーサー](#toc-parse) 
+          * [字句解析](#toc-lexical-analysis)
+          * [構文解析](#toc-syntactic-analysis)
+      * [変換](#toc-transform)
+      * [ジェネレーター](#toc-generate)
       * [Traversal](#toc-traversal)
       * [Visitors](#toc-visitors)
       * [Paths](#toc-paths) 
@@ -218,11 +218,11 @@ Babelが生成したノードには、元のソースコード上のノードの
 
 Babelには大きく分けて３つのステージが存在します。すなわち、**parse**、**transform**、そして**generate**です。.
 
-### <a id="toc-parse"></a>Parse
+### <a id="toc-parse"></a>パーサー
 
 **parse**は、コードを入力として受け取り、ASTを出力するステージです。 さらに、parseは２つのフェーズに分けることができます。すなわち、 [**Lexical Analysis**](https://en.wikipedia.org/wiki/Lexical_analysis) と [**Syntactic Analysis**](https://en.wikipedia.org/wiki/Parsing)です。.
 
-#### <a id="toc-lexical-analysis"></a>Lexical Analysis
+#### <a id="toc-lexical-analysis"></a>字句解析
 
 Lexical Analysisは、コードの文字列を**token**のストリームへ変換するフェーズを指します。.
 
@@ -264,15 +264,15 @@ n * n;
 
 ASTのノードと同様、typeもまた`start`、`end`、`loc`といったプロパティを持ちます。.
 
-#### <a id="toc-syntactic-analysis"></a>Syntactic Analysis
+#### <a id="toc-syntactic-analysis"></a>構文解析
 
 一方、Syntactic Analysisは、tokenのストリームをASTに変換するフェーズを指します。 ここでは、tokenの情報をベースにそれらを再構成して、コードの構造をより加工しやすい形（AST）で表現します。
 
-### <a id="toc-transform"></a>Transform
+### <a id="toc-transform"></a>変換
 
 [transform](https://en.wikipedia.org/wiki/Program_transformation) ステージでは、ASTのツリーを走査して、ノードの追加、変更、削除といった処理を施します。 このステージこそが最も複雑なステージであり、それはBabelのみならず、他のコンパイラにおいても同様です。 また、このステージこそがプラグインに関わる部分であるため、言わばこのハンドブックの大半はtransformに関して書かれています。 したがって、ここでは簡単に説明するだけに留めたいと思います。
 
-### <a id="toc-generate"></a>Generate
+### <a id="toc-generate"></a>ジェネレーター
 
 [generate](https://en.wikipedia.org/wiki/Code_generation_(compiler))（code generation）ステージは、ASTをふたたびコードの文字列に変換するステージです。さらに、このステージは[source map](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/)も生成します。.
 

@@ -4,7 +4,7 @@
 
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
-This handbook is available in other languages, see the [README](/README.md) for a complete list.
+Это руководство также доступно и на других языках, см. [файл README](/README.md) для получения полного списка.
 
 # Содержание
 
@@ -509,7 +509,7 @@ Visiting: c
 
 ### <a id="toc-state"></a>Состояние
 
-State is the enemy of AST transformation. State will bite you over and over again and your assumptions about state will almost always be proven wrong by some syntax that you didn't consider.
+Состояние является противником AST трансформации. Состояние будет "колоть" вас снова и снова, и ваши предположения о состоянии будут почти всегда опровергнуты каким-либо синтаксисом, который вы не рассматривали.
 
 Возьмем следующий код:
 
@@ -642,7 +642,7 @@ function scopeOne() {
 }
 ```
 
-When you create a new scope you do so by giving it a path and a parent scope. Then during the traversal process it collects all the references ("bindings") within that scope.
+Когда вы создаете новый scope, вы делаете это передавая ему путь и родительский scope. Затем в процессе обхода он собирает все ссылки ("bindings") внутри scope.
 
 Как только всё это сделано, перед Вами и открываются все методы, которые можно использовать в областях видимости. Хотя как обычно, мы поговорим об этом чуточку позднее.
 
@@ -680,9 +680,9 @@ function scopeOnce() {
 }
 ```
 
-With this information you can find all the references to a binding, see what type of binding it is (parameter, declaration, etc.), lookup what scope it belongs to, or get a copy of its identifier. You can even tell if it's constant and if not, see what paths are causing it to be non-constant.
+С этой информацией вы можете найти все ссылки на привязку (binding), увидеть, какой тип привязки (параметр, декларация и т. д.), поиск того, к какой области (scope) он принадлежит, или получить копию его идентификатора. You can even tell if it's constant and if not, see what paths are causing it to be non-constant.
 
-Being able to tell if a binding is constant is useful for many purposes, the largest of which is minification.
+Иметь возможность сказать, является ли binding постоянным, полезно для многих целей, крупнейшим из которых является минификация.
 
 ```js
 function scopeOne() {
@@ -707,7 +707,7 @@ Babel фактически представляет собой набор мод
 
 ## <a id="toc-babylon"></a>[`babylon`](https://github.com/babel/babel/tree/master/packages/babylon)
 
-Babylon is Babel's parser. Started as a fork of Acorn, it's fast, simple to use, has plugin-based architecture for non-standard features (as well as future standards).
+Babylon это парсер Babel'я. Появившийся как форк Acorn'а, он быстрый, простой в использовании, имеет плагин ориентированную архитектуру для нестандартных функций (а также будущих стандартов).
 
 Сперва давайте установим его.
 
@@ -755,7 +755,7 @@ babylon.parse(code, {
 
 ## <a id="toc-babel-traverse"></a>[`babel-traverse`](https://github.com/babel/babel/tree/master/packages/babel-traverse)
 
-The Babel Traverse module maintains the overall tree state, and is responsible for replacing, removing, and adding nodes.
+Модуль Babel Traverse поддерживает общее состояние дерева и отвечает за замену, удаление и добавление узлов.
 
 Установите его, выполнив:
 
@@ -789,7 +789,7 @@ traverse(ast, {
 
 ## <a id="toc-babel-types"></a>[`babel-types`](https://github.com/babel/babel/tree/master/packages/babel-types)
 
-Babel Types is a Lodash-esque utility library for AST nodes. It contains methods for building, validating, and converting AST nodes. It's useful for cleaning up AST logic with well thought out utility methods.
+Babel Types is a Lodash-esque utility library for AST nodes. Он содержит методы для создания, проверки и преобразования узлов AST. Он полезен для очистки AST логики с хорошо продуманными служебными методами.
 
 Его можно установить, запустив:
 
@@ -878,7 +878,7 @@ a * b
 
 ### <a id="toc-validators"></a>Валидаторы
 
-The definition for `BinaryExpression` also includes information on the `fields` of a node and how to validate them.
+Определение `BinaryExpression` также включает информацию о `полях` узла и как проверить их.
 
 ```js
 fields: {
@@ -894,7 +894,7 @@ fields: {
 }
 ```
 
-This is used to create two types of validating methods. The first of which is `isX`.
+Это используется для создания двух типов проверки методов. В первом из которых является `isX`.
 
 ```js
 t.isBinaryExpression(maybeBinaryExpressionNode);
