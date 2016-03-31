@@ -11,7 +11,7 @@ A guided handbook on how to use Babel and how to create plugins for Babel.
 - [Čeština](/translations/cs/README.md)
 - [Danske](/translations/da/README.md)
 - [Deutsch](/translations/de/README.md)
-- [ελληνικά](/translations/el/README.md)
+- [Ελληνικά](/translations/el/README.md)
 - [Español](/translations/es-ES/README.md)
 - [Français](/translations/fr/README.md)
 - [עִברִית](/translations/he/README.md)
