@@ -163,9 +163,10 @@ $ npm install --save-dev babel-cli
 
 > **Note:** Since it's generally a bad idea to run Babel globally you may want
 > to uninstall the global copy by running:
-```sh
-$ npm uninstall --global babel-cli
-```
+> 
+> ```sh
+> $ npm uninstall --global babel-cli
+> ```
 
 After that finishes installing, your `package.json` file should look like this:
 
