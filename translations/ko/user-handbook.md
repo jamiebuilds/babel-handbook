@@ -45,9 +45,9 @@
 
 # <a id="toc-introduction"></a>소개
 
-Babel is a generic multi-purpose compiler for JavaScript. Using Babel you can use (and create) the next generation of JavaScript, as well as the next generation of JavaScript tooling.
+Babel은 JavaScript를 위한 일반적인 다중 목적 컴파일러입니다. Babel은 다음 세대의 JavaScript를 사용할 수 있도록 해주고 (만들 수 있도록), 그 뿐만 아니라 다음 세대의 JavaScript 유용한 유틸리티를 제공합니다.
 
-JavaScript as a language is constantly evolving, with new specs and proposals coming out with new features all the time. Using Babel will allow you to use many of these features years before they are available everywhere.
+JavaScript는 언어로써 새로운 스팩과 제안과 새로운 기능들이 언제나 나오며 끊임없이 발전하고 있습니다. Babel을 사용하면 언어적 기능이 본격적으로 모든 곳에서 사용되기 이전에 모든 기능을 미리 사용할 수 있습니다.
 
 Babel does this by compiling down JavaScript code written with the latest standards into a version that will work everywhere today. This process is known as source-to-source compiling, also known as transpiling.
 
@@ -132,7 +132,11 @@ We can install Babel CLI locally by running:
 $ npm install --save-dev babel-cli
 ```
 
-> **Note:** Since it's generally a bad idea to run Babel globally you may want to uninstall the global copy by running `npm uninstall --global babel-cli`.
+> **Note:** Since it's generally a bad idea to run Babel globally you may want to uninstall the global copy by running:
+> 
+> ```sh
+$ npm uninstall --global babel-cli
+```
 
 After that finishes installing, your `package.json` file should look like this:
 

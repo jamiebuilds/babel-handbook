@@ -1,55 +1,55 @@
-# Babel Plugin Handbook
+# Довідник розробника плагінів до Babel
 
-This document covers how to create [Babel](https://babeljs.io) [plugins](https://babeljs.io/docs/advanced/plugins/).
+Цей документ містить інформацію про те, як створювати плагіни ([plugins](https://babeljs.io/docs/advanced/plugins/)) до [Babel](https://babeljs.io).
 
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
-This handbook is available in other languages, see the [README](/README.md) for a complete list.
+Цей довідник доступний також іншими мовами, повний список можна знайти у файлі [README](/README.md).
 
-# Table of Contents
+# Зміст
 
-  * [Introduction](#toc-introduction)
-  * [Basics](#toc-basics) 
-      * [ASTs](#toc-asts)
-      * [Stages of Babel](#toc-stages-of-babel)
-      * [Parse](#toc-parse) 
-          * [Lexical Analysis](#toc-lexical-analysis)
-          * [Syntactic Analysis](#toc-syntactic-analysis)
-      * [Transform](#toc-transform)
-      * [Generate](#toc-generate)
-      * [Traversal](#toc-traversal)
-      * [Visitors](#toc-visitors)
-      * [Paths](#toc-paths) 
-          * [Paths in Visitors](#toc-paths-in-visitors)
-      * [State](#toc-state)
-      * [Scopes](#toc-scopes) 
-          * [Bindings](#toc-bindings)
+  * [Вступ](#toc-introduction)
+  * [Основи](#toc-basics) 
+      * [AST](#toc-asts)
+      * [Етапи Babel](#toc-stages-of-babel)
+      * [Аналіз](#toc-parse) 
+          * [Лексичний аналіз](#toc-lexical-analysis)
+          * [Синтаксичний аналіз](#toc-syntactic-analysis)
+      * [Трансформація](#toc-transform)
+      * [Генерація](#toc-generate)
+      * [Обхід](#toc-traversal)
+      * [Відвідувачі](#toc-visitors)
+      * [Шляхи](#toc-paths) 
+          * [Шляхи для Відвідувачів](#toc-paths-in-visitors)
+      * [Стан](#toc-state)
+      * [Області](#toc-scopes) 
+          * [Прив'язки](#toc-bindings)
   * [API](#toc-api) 
       * [babylon](#toc-babylon)
       * [babel-traverse](#toc-babel-traverse)
       * [babel-types](#toc-babel-types)
-      * [Definitions](#toc-definitions)
-      * [Builders](#toc-builders)
-      * [Validators](#toc-validators)
-      * [Converters](#toc-converters)
+      * [Визначення](#toc-definitions)
+      * [Конструктори](#toc-builders)
+      * [Валідатори](#toc-validators)
+      * [Перетворювачі](#toc-converters)
       * [babel-generator](#toc-babel-generator)
       * [babel-template](#toc-babel-template)
-  * [Writing your first Babel Plugin](#toc-writing-your-first-babel-plugin)
-  * [Transformation Operations](#toc-transformation-operations) 
-      * [Visiting](#toc-visiting)
-      * [Check if a node is a certain type](#toc-check-if-a-node-is-a-certain-type)
-      * [Check if an identifier is referenced](#toc-check-if-an-identifier-is-referenced)
-      * [Manipulation](#toc-manipulation)
-      * [Replacing a node](#toc-replacing-a-node)
-      * [Replacing a node with multiple nodes](#toc-replacing-a-node-with-multiple-nodes)
-      * [Replacing a node with a source string](#toc-replacing-a-node-with-a-source-string)
-      * [Inserting a sibling node](#toc-inserting-a-sibling-node)
-      * [Removing a node](#toc-removing-a-node)
-      * [Replacing a parent](#toc-replacing-a-parent)
-      * [Removing a parent](#toc-removing-a-parent)
-      * [Scope](#toc-scope)
-      * [Checking if a local variable is bound](#toc-checking-if-a-local-variable-is-bound)
-      * [Generating a UID](#toc-generating-a-uid)
+  * [Написання свого першого плагіну до Babel](#toc-writing-your-first-babel-plugin)
+  * [Опреації трансформації](#toc-transformation-operations) 
+      * [Відвідування](#toc-visiting)
+      * [Перевірка конкретного типу вузла](#toc-check-if-a-node-is-a-certain-type)
+      * [Перевірка, чи є посилання на ідентифікатор](#toc-check-if-an-identifier-is-referenced)
+      * [Маніпуляції](#toc-manipulation)
+      * [Заміна вузлів](#toc-replacing-a-node)
+      * [Заміна одного вузла на декілька вузлів](#toc-replacing-a-node-with-multiple-nodes)
+      * [Заміна вузла на вихідний рядок](#toc-replacing-a-node-with-a-source-string)
+      * [Додавання дочірнього вузла](#toc-inserting-a-sibling-node)
+      * [Видалення вузлів](#toc-removing-a-node)
+      * [Заміна батьків](#toc-replacing-a-parent)
+      * [Видалення батьків](#toc-removing-a-parent)
+      * [Область](#toc-scope)
+      * [Перевірка, чи локальна змінна зв'язана](#toc-checking-if-a-local-variable-is-bound)
+      * [Генерація UID](#toc-generating-a-uid)
       * [Pushing a variable declaration to a parent scope](#toc-pushing-a-variable-declaration-to-a-parent-scope)
       * [Rename a binding and its references](#toc-rename-a-binding-and-its-references)
   * [Plugin Options](#toc-plugin-options)
@@ -61,7 +61,7 @@ This handbook is available in other languages, see the [README](/README.md) for 
       * [Optimizing nested visitors](#toc-optimizing-nested-visitors)
       * [Being aware of nested structures](#toc-being-aware-of-nested-structures)
 
-# <a id="toc-introduction"></a>Introduction
+# <a id="toc-introduction"></a>Вступ
 
 Babel is a generic multi-purpose compiler for JavaScript. More than that it is a collection of modules that can be used for many different forms of static analysis.
 
@@ -73,11 +73,11 @@ You can use Babel to build many different types of tools that can help you be mo
 
 * * *
 
-# <a id="toc-basics"></a>Basics
+# <a id="toc-basics"></a>Основи
 
 Babel is a JavaScript compiler, specifically a source-to-source compiler, often called a "transpiler". This means that you give Babel some JavaScript code, Babel modifies the code, and generates the new code back out.
 
-## <a id="toc-asts"></a>ASTs
+## <a id="toc-asts"></a>AST
 
 Each of these steps involve creating or working with an [Abstract Syntax Tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree) or AST.
 
@@ -214,15 +214,15 @@ There are additional properties on every Node that Babel generates which describ
 
 These properties `start`, `end`, `loc`, appear in every single Node.
 
-## <a id="toc-stages-of-babel"></a>Stages of Babel
+## <a id="toc-stages-of-babel"></a>Етапи Babel
 
 The three primary stages of Babel are **parse**, **transform**, **generate**.
 
-### <a id="toc-parse"></a>Parse
+### <a id="toc-parse"></a>Аналіз
 
 The **parse** stage, takes code and outputs an AST. There are two phases of parsing in Babel: [**Lexical Analysis**](https://en.wikipedia.org/wiki/Lexical_analysis) and [**Syntactic Analysis**](https://en.wikipedia.org/wiki/Parsing).
 
-#### <a id="toc-lexical-analysis"></a>Lexical Analysis
+#### <a id="toc-lexical-analysis"></a>Лексичний аналіз
 
 Lexical Analysis will take a string of code and turn it into a stream of **tokens**.
 
@@ -264,21 +264,21 @@ Each of the `type`s here have a set of properties describing the token:
 
 Like AST nodes they also have a `start`, `end`, and `loc`.
 
-#### <a id="toc-syntactic-analysis"></a>Syntactic Analysis
+#### <a id="toc-syntactic-analysis"></a>Синтаксичний аналіз
 
 Syntactic Analysis will take a stream of tokens and turn it into an AST representation. Using the information in the tokens, this phase will reformat them as an AST which represents the structure of the code in a way that makes it easier to work with.
 
-### <a id="toc-transform"></a>Transform
+### <a id="toc-transform"></a>Трансформація
 
 The [transform](https://en.wikipedia.org/wiki/Program_transformation) stage takes an AST and traverses through it, adding, updating, and removing nodes as it goes along. This is by far the most complex part of Babel or any compiler. This is where plugins operate and so it will be the subject of most of this handbook. So we won't dive too deep right now.
 
-### <a id="toc-generate"></a>Generate
+### <a id="toc-generate"></a>Генерація
 
 The [code generation](https://en.wikipedia.org/wiki/Code_generation_(compiler)) stage takes the final AST and turns in back into a string of code, also creating [source maps](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/).
 
 Code generation is pretty simple: you traverse through the AST depth-first, building a string that represents the transformed code.
 
-## <a id="toc-traversal"></a>Traversal
+## <a id="toc-traversal"></a>Обхід
 
 When you want to transform an AST you have to [traverse the tree](https://en.wikipedia.org/wiki/Tree_traversal) recursively.
 
@@ -330,7 +330,7 @@ The `BinaryExpression` has an `operator`, a `left`, and a `right`. The operator 
 
 This traversal process happens throughout the Babel transform stage.
 
-### <a id="toc-visitors"></a>Visitors
+### <a id="toc-visitors"></a>Відвідувачі
 
 When we talk about "going" to a node, we actually mean we are **visiting** them. The reason we use that term is because there is this concept of a [**visitor**](https://en.wikipedia.org/wiki/Visitor_pattern).
 
@@ -418,7 +418,7 @@ const MyVisitor = {
 };
 ```
 
-### <a id="toc-paths"></a>Paths
+### <a id="toc-paths"></a>Шляхи
 
 An AST generally has many Nodes, but how do Nodes relate to one another? We could have one giant mutable object that you manipulate and have full access to, or we can simplify this with **Paths**.
 
@@ -485,7 +485,7 @@ As well as tons and tons of methods related to adding, updating, moving, and rem
 
 In a sense, paths are a **reactive** representation of a node's position in the tree and all sorts of information about the node. Whenever you call a method that modifies the tree, this information is updated. Babel manages all of this for you to make working with nodes easy and as stateless as possible.
 
-#### <a id="toc-paths-in-visitors"></a>Paths in Visitors
+#### <a id="toc-paths-in-visitors"></a>Шляхи для Відвідувачів
 
 When you have a visitor that has a `Identifier()` method, you're actually visiting the path instead of the node. This way you are mostly working with the reactive representation of a node instead of the node itself.
 
@@ -507,7 +507,7 @@ Visiting: b
 Visiting: c
 ```
 
-### <a id="toc-state"></a>State
+### <a id="toc-state"></a>Стан
 
 State is the enemy of AST transformation. State will bite you over and over again and your assumptions about state will almost always be proven wrong by some syntax that you didn't consider.
 
@@ -572,7 +572,7 @@ const MyVisitor = {
 
 Of course, this is a contrived example but it demonstrates how to eliminate global state from your visitors.
 
-### <a id="toc-scopes"></a>Scopes
+### <a id="toc-scopes"></a>Області
 
 Next let's introduce the concept of a [**scope**](https://en.wikipedia.org/wiki/Scope_(computer_science)). JavaScript has [lexical scoping](https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scoping_vs._dynamic_scoping), which is a tree structure where blocks create new scope.
 
@@ -646,7 +646,7 @@ When you create a new scope you do so by giving it a path and a parent scope. Th
 
 Once that's done, there's all sorts of methods you can use on scopes. We'll get into those later though.
 
-#### <a id="toc-bindings"></a>Bindings
+#### <a id="toc-bindings"></a>Прив'язки
 
 References all belong to a particular scope; this relationship is known as a **binding**.
 
@@ -812,7 +812,7 @@ traverse(ast, {
 });
 ```
 
-### <a id="toc-definitions"></a>Definitions
+### <a id="toc-definitions"></a>Визначення
 
 Babel Types has definitions for every single type of node, with information on what properties belong where, what values are valid, how to build that node, how the node should be traversed, and aliases of the Node.
 
@@ -837,7 +837,7 @@ defineType("BinaryExpression", {
 });
 ```
 
-### <a id="toc-builders"></a>Builders
+### <a id="toc-builders"></a>Конструктори
 
 You'll notice the above definition for `BinaryExpression` has a field for a `builder`.
 
@@ -876,7 +876,7 @@ a * b
 
 Builders will also validate the nodes they are creating and throw descriptive errors if used improperly. Which leads into the next type of method.
 
-### <a id="toc-validators"></a>Validators
+### <a id="toc-validators"></a>Валідатори
 
 The definition for `BinaryExpression` also includes information on the `fields` of a node and how to validate them.
 
@@ -914,7 +914,7 @@ t.assertBinaryExpression(maybeBinaryExpressionNode, { operator: "*" });
 // Error: Expected type "BinaryExpression" with option { "operator": "*" }
 ```
 
-### <a id="toc-converters"></a>Converters
+### <a id="toc-converters"></a>Перетворювачі
 
 > [WIP]
 
@@ -988,7 +988,7 @@ console.log(generate(ast).code);
 var myModule = require("my-module");
 ```
 
-# <a id="toc-writing-your-first-babel-plugin"></a>Writing your first Babel Plugin
+# <a id="toc-writing-your-first-babel-plugin"></a>Написання свого першого плагіну до Babel
 
 Now that you're familiar with all the basics of Babel, let's tie it together with the plugin API.
 
@@ -1113,11 +1113,11 @@ Awesome! Our very first Babel plugin.
 
 * * *
 
-# <a id="toc-transformation-operations"></a>Transformation Operations
+# <a id="toc-transformation-operations"></a>Опреації трансформації
 
-## <a id="toc-visiting"></a>Visiting
+## <a id="toc-visiting"></a>Відвідування
 
-### <a id="toc-check-if-a-node-is-a-certain-type"></a>Check if a node is a certain type
+### <a id="toc-check-if-a-node-is-a-certain-type"></a>Перевірка конкретного типу вузла
 
 If you want to check what the type of a node is, the preferred way to do so is:
 
@@ -1153,7 +1153,7 @@ BinaryExpression(path) {
 }
 ```
 
-### <a id="toc-check-if-an-identifier-is-referenced"></a>Check if an identifier is referenced
+### <a id="toc-check-if-an-identifier-is-referenced"></a>Перевірка, чи є посилання на ідентифікатор
 
 ```js
 Identifier(path) {
@@ -1173,9 +1173,9 @@ Identifier(path) {
 }
 ```
 
-## <a id="toc-manipulation"></a>Manipulation
+## <a id="toc-manipulation"></a>Маніпуляції
 
-### <a id="toc-replacing-a-node"></a>Replacing a node
+### <a id="toc-replacing-a-node"></a>Заміна вузлів
 
 ```js
 BinaryExpression(path) {
@@ -1192,7 +1192,7 @@ BinaryExpression(path) {
   }
 ```
 
-### <a id="toc-replacing-a-node-with-multiple-nodes"></a>Replacing a node with multiple nodes
+### <a id="toc-replacing-a-node-with-multiple-nodes"></a>Заміна одного вузла на декілька вузлів
 
 ```js
 ReturnStatement(path) {
@@ -1215,7 +1215,7 @@ ReturnStatement(path) {
 
 > **Note:** When replacing an expression with multiple nodes, they must be statements. This is because Babel uses heuristics extensively when replacing nodes which means that you can do some pretty crazy transformations that would be extremely verbose otherwise.
 
-### <a id="toc-replacing-a-node-with-a-source-string"></a>Replacing a node with a source string
+### <a id="toc-replacing-a-node-with-a-source-string"></a>Заміна вузла на вихідний рядок
 
 ```js
 FunctionDeclaration(path) {
@@ -1235,7 +1235,7 @@ FunctionDeclaration(path) {
 
 > **Note:** It's not recommended to use this API unless you're dealing with dynamic source strings, otherwise it's more efficient to parse the code outside of the visitor.
 
-### <a id="toc-inserting-a-sibling-node"></a>Inserting a sibling node
+### <a id="toc-inserting-a-sibling-node"></a>Додавання дочірнього вузла
 
 ```js
 FunctionDeclaration(path) {
@@ -1254,7 +1254,7 @@ FunctionDeclaration(path) {
 
 > **Note:** This should always be a statement or an array of statements. This uses the same heuristics mentioned in [Replacing a node with multiple nodes](#replacing-a-node-with-multiple-nodes).
 
-### <a id="toc-removing-a-node"></a>Removing a node
+### <a id="toc-removing-a-node"></a>Видалення вузлів
 
 ```js
 FunctionDeclaration(path) {
@@ -1268,7 +1268,7 @@ FunctionDeclaration(path) {
 - }
 ```
 
-### <a id="toc-replacing-a-parent"></a>Replacing a parent
+### <a id="toc-replacing-a-parent"></a>Заміна батьків
 
 ```js
 BinaryExpression(path) {
@@ -1285,7 +1285,7 @@ BinaryExpression(path) {
   }
 ```
 
-### <a id="toc-removing-a-parent"></a>Removing a parent
+### <a id="toc-removing-a-parent"></a>Видалення батьків
 
 ```js
 BinaryExpression(path) {
@@ -1299,9 +1299,9 @@ BinaryExpression(path) {
   }
 ```
 
-## <a id="toc-scope"></a>Scope
+## <a id="toc-scope"></a>Область
 
-### <a id="toc-checking-if-a-local-variable-is-bound"></a>Checking if a local variable is bound
+### <a id="toc-checking-if-a-local-variable-is-bound"></a>Перевірка, чи локальна змінна зв'язана
 
 ```js
 FunctionDeclaration(path) {
@@ -1323,7 +1323,7 @@ FunctionDeclaration(path) {
 }
 ```
 
-### <a id="toc-generating-a-uid"></a>Generating a UID
+### <a id="toc-generating-a-uid"></a>Генерація UID
 
 This will generate an identifier that doesn't collide with any locally defined variables.
 

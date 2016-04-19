@@ -132,7 +132,11 @@ Nós podemos instalar o Cliente do Babel localmente com o seguinte comando:
 npm install --save-dev babel-cli
 ```
 
-> **Nota:** Já que geralmente não é uma boa ideia executar o Babel globalmente, você pode querer desinstalar a cópia global rodando o seguinte comando: `npm uninstall --global babel-cli`.
+> **Note:** Since it's generally a bad idea to run Babel globally you may want to uninstall the global copy by running:
+> 
+> ```sh
+$ npm uninstall --global babel-cli
+```
 
 Quando o procedimento terminar, o arquivo `package.json` deve ficar assim:
 

@@ -11,7 +11,7 @@ Ce manuel est disponible dans d'autres langues, voir le [README](/README.md) pou
   * [Introduction](#toc-introduction)
   * [Mise en place de Babel](#toc-setting-up-babel) 
       * [`babel-cli`](#toc-babel-cli)
-      * [Running Babel CLI from within a project](#toc-running-babel-cli-from-within-a-project)
+      * [Exécuter Babel CLI depuis un projet](#toc-running-babel-cli-from-within-a-project)
       * [`babel-register`](#toc-babel-register)
       * [`babel-node`](#toc-babel-node)
       * [`babel-core`](#toc-babel-core)
@@ -31,17 +31,17 @@ Ce manuel est disponible dans d'autres langues, voir le [README](/README.md) pou
   * [Babel et les autres outils](#toc-babel-and-other-tools) 
       * [Outils d'analyse statique](#toc-static-analysis-tools)
       * [Linting](#toc-linting)
-      * [Code Style](#toc-code-style)
+      * [Style de code](#toc-code-style)
       * [Documentation](#toc-documentation)
       * [Frameworks](#toc-frameworks)
       * [React](#toc-react)
       * [IDEs et les éditeurs de texte](#toc-text-editors-and-ides)
   * [Débogage de Babel](#toc-debugging-babel)
-  * [Babel Support](#toc-babel-support) 
+  * [Support Babel](#toc-babel-support) 
       * [Forum Babel](#toc-babel-forum)
-      * [Babel tchat](#toc-babel-chat)
+      * [Tchat Babel](#toc-babel-chat)
       * [Babel Issues](#toc-babel-issues)
-      * [Creating an awesome Babel bug report](#toc-creating-an-awesome-babel-bug-report)
+      * [Création du rapport d'erreur parfait](#toc-creating-an-awesome-babel-bug-report)
 
 # <a id="toc-introduction"></a>Introduction
 
@@ -79,11 +79,11 @@ Beaucoup de gens l'ont déjà fait, et l'écosystème qui a surgi autour de Babe
 
 # <a id="toc-setting-up-babel"></a>Mise en place de Babel
 
-Since the JavaScript community has no single build tool, framework, platform, etc., Babel has official integrations for all of the major tooling. Everything from Gulp to Browserify, from Ember to Meteor, no matter what your setup looks like there is probably an official integration.
+Puisque la communauté JavaScript dispose d'une multitude d'outils de construction, de frameworks, de plateformes, etc., Babel fournit des intégrations officielles pour la majorité des outils. Peu importe votre configuration, en allant de Gulp à Browserify, ou bien d'Ember à Meteor, il y a probablement une intégration officielle.
 
-For the purposes of this handbook, we're just going to cover the built-in ways of setting up Babel, but you can also visit the interactive [setup page](http://babeljs.io/docs/setup) for all of the integrations.
+Dans le cadre de ce guide, nous allons seulement couvrir les méthodes par défaut pour configurer Babel, mais vous pouvez également visiter la [page de configuration](http://babeljs.io/docs/setup) interactive pour les autres intégrations.
 
-> **Note:** This guide is going to refer to command line tools like `node` and `npm`. Before continuing any further you should be comfortable with these tools.
+> **Remarque :** Ce guide va se référer à des outils de ligne de commande comme `node` et `npm`. Avant d'aller plus loin, vous devez être à l'aise avec ces outils.
 
 ## <a id="toc-babel-cli"></a>`babel-cli`
 
@@ -117,7 +117,7 @@ $ babel src --out-dir lib
 $ babel src -d lib
 ```
 
-### <a id="toc-running-babel-cli-from-within-a-project"></a>Running Babel CLI from within a project
+### <a id="toc-running-babel-cli-from-within-a-project"></a>Exécuter Babel CLI depuis un projet
 
 While you *can* install Babel CLI globally on your machine, it's much better to install it **locally** project by project.
 
@@ -132,7 +132,11 @@ We can install Babel CLI locally by running:
 $ npm install --save-dev babel-cli
 ```
 
-> **Note:** Since it's generally a bad idea to run Babel globally you may want to uninstall the global copy by running `npm uninstall --global babel-cli`.
+> **Note:** Since it's generally a bad idea to run Babel globally you may want to uninstall the global copy by running:
+> 
+> ```sh
+$ npm uninstall --global babel-cli
+```
 
 After that finishes installing, your `package.json` file should look like this:
 
@@ -703,7 +707,7 @@ $ npm run lint
 
 For more information consult the [`babel-eslint`](https://github.com/babel/babel-eslint) or [`eslint`](http://eslint.org) documentation.
 
-### <a id="toc-code-style"></a>Code Style
+### <a id="toc-code-style"></a>Style de code
 
 JSCS is an extremely popular tool for taking linting a step further into checking the style of the code itself. A core maintainer of both the Babel and JSCS projects ([@hzoo](https://github.com/hzoo)) maintains an official integration with JSCS.
 
@@ -772,7 +776,7 @@ Introducing ES2015, JSX, and Flow syntax with Babel can be helpful, but if your 
 
 * * *
 
-# <a id="toc-babel-support"></a>Babel Support
+# <a id="toc-babel-support"></a>Support Babel
 
 Babel has a very large and quickly growing community, as we grow we want to ensure that people have all the resources they need to be successful. So we provide a number of different channels for getting support.
 
@@ -784,7 +788,7 @@ We are also looking to grow a self-supporting community, for people who stick ar
 
 [Discourse](http://www.discourse.org) has provided us with a hosted version of their forum software for free (and we love them for it!). If forums are your thing please stop by [discuss.babeljs.io](https://discuss.babeljs.io).
 
-## <a id="toc-babel-chat"></a>Babel tchat
+## <a id="toc-babel-chat"></a>Tchat Babel
 
 Everyone loves [Slack](https://slack.com). If you're looking for immediate support from the community then come chat with us at [slack.babeljs.io](https://slack.babeljs.io).
 
@@ -806,7 +810,7 @@ If you want to open a new issue:
   * [Login](https://phabricator.babeljs.io/auth/start/) or [Create an account](https://phabricator.babeljs.io/auth/register/) (You can also login using GitHub, Facebook, Twitter, Google, etc.)
   * [Create a new bug report](https://phabricator.babeljs.io/maniphest/task/create/?projects=PHID-PROJ-2ufzspoyuk4udiwfnzls#R) or [request a new feature](https://phabricator.babeljs.io/maniphest/task/create/?projects=PHID-PROJ-dfaevtocl5zgjtstjijd#R)
 
-### <a id="toc-creating-an-awesome-babel-bug-report"></a>Creating an awesome Babel bug report
+### <a id="toc-creating-an-awesome-babel-bug-report"></a>Création du rapport d'erreur parfait
 
 Babel issues can sometimes be very difficult to debug remotely, so we need all the help we can get. Spending a few more minutes crafting a really nice bug report can help get your problem solved significantly faster.
 

@@ -1,63 +1,63 @@
-# Babel User Handbook
+# Довідник користувача Babel
 
-This document covers everything you ever wanted to know about using [Babel](https://babeljs.io) and related tooling.
+Цей документ містить всю необхідну інформацію стосовно використання [Babel](https://babeljs.io) та відповідних інструментів.
 
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
-This handbook is available in other languages, see the [README](/README.md) for a complete list.
+Цей довідник доступний також іншими мовами, повний список можна знайти у файлі [README](/README.md).
 
-# Table of Contents
+# Зміст
 
-  * [Introduction](#toc-introduction)
-  * [Setting up Babel](#toc-setting-up-babel) 
+  * [Вступ](#toc-introduction)
+  * [Встановлення Babel](#toc-setting-up-babel) 
       * [`babel-cli`](#toc-babel-cli)
-      * [Running Babel CLI from within a project](#toc-running-babel-cli-from-within-a-project)
+      * [Запуск Babel CLI в рамках проекту](#toc-running-babel-cli-from-within-a-project)
       * [`babel-register`](#toc-babel-register)
       * [`babel-node`](#toc-babel-node)
       * [`babel-core`](#toc-babel-core)
-  * [Configuring Babel](#toc-configuring-babel) 
+  * [Налаштування Babel](#toc-configuring-babel) 
       * [`.babelrc`](#toc-babelrc)
       * [`babel-preset-es2015`](#toc-babel-preset-es2015)
       * [`babel-preset-react`](#toc-babel-preset-react)
       * [`babel-preset-stage-x`](#toc-babel-preset-stage-x)
-  * [Executing Babel-generated code](#toc-executing-babel-generated-code) 
+  * [Використання коду згенерованого Babel](#toc-executing-babel-generated-code) 
       * [`babel-polyfill`](#toc-babel-polyfill)
       * [`babel-runtime`](#toc-babel-runtime)
-  * [Configuring Babel (Advanced)](#toc-configuring-babel-advanced) 
-      * [Manually specifying plugins](#toc-manually-specifying-plugins)
-      * [Plugin options](#toc-plugin-options)
-      * [Customizing Babel based on environment](#toc-customizing-babel-based-on-environment)
-      * [Making your own preset](#toc-making-your-own-preset)
-  * [Babel and other tools](#toc-babel-and-other-tools) 
-      * [Static analysis tools](#toc-static-analysis-tools)
+  * [Налаштування Babel (додатково)](#toc-configuring-babel-advanced) 
+      * [Вручну зазначенні плагіни](#toc-manually-specifying-plugins)
+      * [Налаштування плагінів](#toc-plugin-options)
+      * [Персоналізація Babel для оточення](#toc-customizing-babel-based-on-environment)
+      * [Створення власного пресету (preset)](#toc-making-your-own-preset)
+  * [Babel та інші інструменти](#toc-babel-and-other-tools) 
+      * [Інструменти статичного аналізу](#toc-static-analysis-tools)
       * [Linting](#toc-linting)
       * [Code Style](#toc-code-style)
-      * [Documentation](#toc-documentation)
-      * [Frameworks](#toc-frameworks)
+      * [Документація](#toc-documentation)
+      * [Фреймворки](#toc-frameworks)
       * [React](#toc-react)
-      * [Text Editors and IDEs](#toc-text-editors-and-ides)
-  * [Debugging Babel](#toc-debugging-babel)
-  * [Babel Support](#toc-babel-support) 
-      * [Babel Forum](#toc-babel-forum)
-      * [Babel Chat](#toc-babel-chat)
-      * [Babel Issues](#toc-babel-issues)
-      * [Creating an awesome Babel bug report](#toc-creating-an-awesome-babel-bug-report)
+      * [Текстові редактори та інтегровані середовища розробки (IDE)](#toc-text-editors-and-ides)
+  * [Відладка Babel](#toc-debugging-babel)
+  * [Підтримка Babel](#toc-babel-support) 
+      * [Форум Babel](#toc-babel-forum)
+      * [Чат Babel](#toc-babel-chat)
+      * [Проблеми Babel](#toc-babel-issues)
+      * [Як створити гарний баг-репорт](#toc-creating-an-awesome-babel-bug-report)
 
-# <a id="toc-introduction"></a>Introduction
+# <a id="toc-introduction"></a>Вступ
 
-Babel is a generic multi-purpose compiler for JavaScript. Using Babel you can use (and create) the next generation of JavaScript, as well as the next generation of JavaScript tooling.
+Babel - це загальний багатоцільовий компілятор для JavaScript. Використовуючи Babel, ви можете користуватися (та створювати) наступним поколінням JavaScript, а також наступним поколінням JavaScript інструментів.
 
-JavaScript as a language is constantly evolving, with new specs and proposals coming out with new features all the time. Using Babel will allow you to use many of these features years before they are available everywhere.
+JavaScript - це мова, що постійно еволюціонує завдяки новим специфікаціям та пропозиціям, які постійно втілюються в нових версіях мови. Використання Babel дозволить вам скористатися багатьма новими функціями ще до того, як вони стануть доступними усюди.
 
-Babel does this by compiling down JavaScript code written with the latest standards into a version that will work everywhere today. This process is known as source-to-source compiling, also known as transpiling.
+Babel досягає цього шляхом компілювання JavaScript коду, написанного з використанням останніх стандартів, у версію, яка працюватиме усюди. Цей процес також відомий як source-to-source компіляція або transpiling.
 
-For example, Babel could transform the new ES2015 arrow function syntax from this:
+Наприклад, Babel може перетворити синтаксис нової стрілкової функції ES2015 arrow function з цього:
 
 ```js
 const square = n => n * n;
 ```
 
-Into the following:
+В наступний код:
 
 ```js
 const square = function square(n) {
@@ -65,76 +65,80 @@ const square = function square(n) {
 };
 ```
 
-However, Babel can do much more than this as Babel has support for syntax extensions such as the JSX syntax for React and Flow syntax support for static type checking.
+Але Babel може робити набагато більше, ніж це, оскільки Babel має вбудовану підтримку розширень синтаксису (syntax extensions), наприклад JSX синтаксис для React або синтаксис Flow для статичної перевірки типів.
 
-Further than that, everything in Babel is simply a plugin and anyone can go out and create their own plugins using the full power of Babel to do whatever they want.
+Більш того, все в Babel - це плагін, тому будь-хто може створити свої власні плагіни, використовуючи всю потужність Babel на власний розсуд.
 
-*Even further* than that, Babel is broken down into a number of core modules that anyone can use to build the next generation of JavaScript tooling.
+*Навіть більше*, Babel складається з кількох основних модулів, які можуть бути використані будь ким для створення JavaScript інструментів нового покоління.
 
-Many people do too, the ecosystem that has sprung up around Babel is massive and very diverse. Throughout this handbook I'll be covering both how built-in Babel tools work as well as some useful things from around the community.
+І багато людей це роблять, наразі екосистема, що зросла навколо Babel, є дуже великою та різноманітною. В цьому посібнику розглянуті як інструменти вбудовані в Babel, так і деякі гарні та дуже корисні інструменти, побудовані спільнотою.
 
 > ***Ви можете слідкувати за оновленнями в Twitter, підписавшись на [@thejameskyle](https://twitter.com/thejameskyle).***
 
 * * *
 
-# <a id="toc-setting-up-babel"></a>Setting up Babel
+# <a id="toc-setting-up-babel"></a>Встановлення Babel
 
-Since the JavaScript community has no single build tool, framework, platform, etc., Babel has official integrations for all of the major tooling. Everything from Gulp to Browserify, from Ember to Meteor, no matter what your setup looks like there is probably an official integration.
+У зв'язку з тим, що спільнота JavaScript не має єдиного стандарту по інструменту збирання проекту (build tool), фреймворку (framework), платформі (platform) і так далі, Babel має офіційні інтеграції для всих відомих систем. Будь що, від Gulp до Browserify, від Ember до Meteor, не важливо з чого складається ваш проект - ймовірно, що для нього доступна офіційна версія інтеграції.
 
-For the purposes of this handbook, we're just going to cover the built-in ways of setting up Babel, but you can also visit the interactive [setup page](http://babeljs.io/docs/setup) for all of the integrations.
+В рамках цього посібника ми розглянемо лише вбудовані засоби встановлення Babel, але ви можете також відвідати й інтерактивну [сторінку установки](http://babeljs.io/docs/setup), щоб побачити всі доступні інтеграції.
 
-> **Note:** This guide is going to refer to command line tools like `node` and `npm`. Before continuing any further you should be comfortable with these tools.
+> **Примітка:** Цей посібник посилається на інструменти командного рядка, такі як `node` та `npm`. Перш ніж продовжити, ви маєте вміти впевнено користуватися цими інструментами.
 
 ## <a id="toc-babel-cli"></a>`babel-cli`
 
-Babel's CLI is a simple way to compile files with Babel from the command line.
+Babel CLI - це простий спосіб компілювати файли за допомогою Babel з командного рядка.
 
-Let's first install it globally to learn the basics.
+Давайте спочатку встановимо його глобально, для того, щоб навчитися основам.
 
 ```sh
 $ npm install --global babel-cli
 ```
 
-We can compile our first file like so:
+Тепер ми можемо скомпілювати наш перший файл наступним чином:
 
 ```sh
 $ babel my-file.js
 ```
 
-This will dump the compiled output directly into your terminal. To write it to a file we'll specify an `--out-file` or `-o`.
+Ця команда поверне скомпільований результат безпосередньо у вікно терміналу. Для того, щоб спрямувати його у файл, ми маємо викликати команду з ключем `--out-file` або `-o`.
 
 ```sh
 $ babel example.js --out-file compiled.js
-# or
+# або
 $ babel example.js -o compiled.js
 ```
 
-If we want to compile a whole directory into a new directory we can do so using `--out-dir` or `-d`.
+Якщо ми бажаємо скомпілювати всі файли в теці та покласти результати у нову теку, то маємо скористатися наступними ключами командного рядка: `--out-dir` або `-d`.
 
 ```sh
 $ babel src --out-dir lib
-# or
+# або
 $ babel src -d lib
 ```
 
-### <a id="toc-running-babel-cli-from-within-a-project"></a>Running Babel CLI from within a project
+### <a id="toc-running-babel-cli-from-within-a-project"></a>Запуск Babel CLI в рамках проекту
 
-While you *can* install Babel CLI globally on your machine, it's much better to install it **locally** project by project.
+Хоч ви і *можете* встановити Babel CLI глобально на вашому комп'ютері, все ж набагато краще встановлювати його **локально** для кожного проекту.
 
-There are two primary reasons for this.
+Для цього є дві основні причини.
 
-  1. Different projects on the same machine can depend on different versions of Babel allowing you to update one at a time.
-  2. It means you do not have an implicit dependency on the environment you are working in. Making your project far more portable and easier to setup.
+  1. Різні проекти на одному комп'ютері можуть залежати від різних версій Babel, це дозволить вам оновлювати кожен проект окремо.
+  2. Це означає, що у вас немає неявної залежності від середовища, в якому ви працюєте. Це робить ваш проект набагато більш портативним та простішим в налаштуванні.
 
-We can install Babel CLI locally by running:
+Ми можемо встановити Babel CLI локально, виконавши наступну команду:
 
 ```sh
 $ npm install --save-dev babel-cli
 ```
 
-> **Note:** Since it's generally a bad idea to run Babel globally you may want to uninstall the global copy by running `npm uninstall --global babel-cli`.
+> **Примітка:** Оскільки, як правило, запускати Babel глобально - це погана ідея, ви можете видалити глобальну копію, виконавши команду:
+> 
+> ```sh
+$ npm uninstall --global babel-cli
+```
 
-After that finishes installing, your `package.json` file should look like this:
+Після завершення інсталяції файл `package.json` повинен виглядати наступним чином:
 
 ```json
 {
@@ -146,9 +150,9 @@ After that finishes installing, your `package.json` file should look like this:
 }
 ```
 
-Now instead of running Babel directly from the command line we're going to put our commands in **npm scripts** which will use our local version.
+Тепер, замість запуску Babel безпосередньо з командного рядка, ми додамо наші команди в **npm scripts**, які будуть використовувати нашу локальну версію.
 
-Simply add a `"scripts"` field to your `package.json` and put the babel command inside there as `build`.
+Просто додайте поле `"scripts"` до вашого файлу `package.json` та додайте туди команди babel під ключем `build`.
 
 ```diff
   {
@@ -163,74 +167,74 @@ Simply add a `"scripts"` field to your `package.json` and put the babel command 
   }
 ```
 
-Now from our terminal we can run:
+Тепер ми можемо викликати наступну команду з нашого терміналу:
 
 ```js
 npm run build
 ```
 
-This will run Babel the same way as before, only now we are using a local copy.
+Ця команда запустить Babel так само, як і раніше, але тепер з використанням локальної копії Babel.
 
 ## <a id="toc-babel-register"></a>`babel-register`
 
-The next most common method of running Babel is through `babel-register`. This option will allow you to run Babel just by requiring files, which may integrate with your setup better.
+Ще одним поширеним методом запуску Babel є `babel-register`. Цей параметр дозволяє запускати Babel лише за допомогою включення необхідних файлів, що може зробити інтеграцію простішою.
 
-Note that this is not meant for production use. It's considered bad practice to deploy code that gets compiled this way. It is far better to compile ahead of time before deploying. However this works quite well for build scripts or other things that you run locally.
+Зверніть увагу, що це не підходить для використання на "бойовому" сервері. Зазвичай вважається поганою практикою розгортати код, скомпільований таким чином. Набагато краще скомпілювати весь код до того, як він стане доступний кінцевому користувачу. Однак цей підход чудово працює для збирання скриптів або інших інструментів, які ви запускаєте локально.
 
-First let's create an `index.js` file in our project.
+Для початку давайте створимо файл `index.js` в нашому проекті.
 
 ```js
 console.log("Hello world!");
 ```
 
-If we were to run this with `node index.js` this wouldn't be compiled with Babel. So instead of doing that, we'll setup `babel-register`.
+Якщо ми запустимо цей файл, виконавши `node index.js` він не буде скомпільований за допомогою Babel. Тому замість безпосереднього виконання ми налаштуємо `babel-register`.
 
-First install `babel-register`.
+Спочатку встановимо `babel-register`.
 
 ```sh
 $ npm install --save-dev babel-register
 ```
 
-Next, create a `register.js` file in the project and write the following code:
+Наступним кроком необхідно створити файл `register.js` в нашому проекті з наступним кодом всередині:
 
 ```js
 require("babel-register");
 require("./index.js");
 ```
 
-What this does is *registers* Babel in Node's module system and begins compiling every file that is `require`'d.
+Цей файл *реєструє * Babel в якості модуля Node та починає компілювати кожен `require`'d файл.
 
-Now, instead of running `node index.js` we can use `register.js` instead.
+Тепер замість того, щоб запускати наш код за допомогою `node index.js`, ми можемо скористатися файлом `register.js`.
 
 ```sh
 $ node register.js
 ```
 
-> **Note:** You can't register Babel in the same file that you want to compile. As node is executing the file before Babel has a chance to compile it.
+> **Примітка:** Ви не можете зареєструвати Babel в тому ж самому файлі, який ви хочете скомпілювати. Це пов'язано з тим, що node виконує цей файл до того, як Babel може його скомпілювати.
 > 
 > ```js
 require("babel-register");
-// not compiled:
+// не скомпілює:
 console.log("Hello world!");
 ```
 
 ## <a id="toc-babel-node"></a>`babel-node`
 
-If you are just running some code via the `node` CLI the easiest way to integrate Babel might be to use the `babel-node` CLI which largely is just a drop in replacement for the `node` CLI.
+Якщо ви просто запускаєте деякий код за допомогою `node` CLI, то найпростішим способом інтегрувати Babel буде використання `babel-node` CLI, який по великому рахунку просто заміняє `node` CLI.
 
-Note that this is not meant for production use. It's considered bad practice to deploy code that gets compiled this way. It is far better to compile ahead of time before deploying. However this works quite well for build scripts or other things that you run locally.
+Зверніть увагу, що це не підходить для використання на "бойовому" сервері. Зазвичай вважається поганою практикою розгортати код, скомпільований таким чином. Набагато краще скомпілювати весь код до того, як він стане доступний кінцевому користувачу. Однак цей підход чудово працює для збирання скриптів або інших інструментів, які ви запускаєте локально.
 
-First make sure that you have `babel-cli` installed.
+Спочатку переконайтеся, що `babel-cli` встановлений.
 
 ```sh
 $ npm install --save-dev babel-cli
 ```
 
-> **Note:** If you are wondering why we are installing this locally, please read the [Running Babel CLI from within a project](#running-babel-cli--from-within-a-project) section above.
+> **Примітка:** Якщо вас цікавить, чому ми установлюємо його локально, будь ласка, прочитайте попередній розділ [Запуск Babel CLI в рамках проекту](#running-babel-cli--from-within-a-project).
 
-Then replace wherever you are running `node` with `babel-node`.
+Потім потрібно всюди замінити виклик `node` на `babel-node`.
 
-If you are using npm `scripts` you can simply do:
+Якщо ви використовуєте npm `scripts`, то ви можете просто зробити:
 
 ```diff
   {
@@ -241,20 +245,20 @@ If you are using npm `scripts` you can simply do:
   }
 ```
 
-Otherwise you'll need to write out the path to `babel-node` itself.
+В іншому випадку ви повинні будете прописати шлях до самого `babel-node`.
 
 ```diff
 - node script.js
 + ./node_modules/.bin/babel-node script.js
 ```
 
-> Tip: You can also use [`npm-run`](https://www.npmjs.com/package/npm-run).
+> Порада: Ви також можете використати [`npm-run`](https://www.npmjs.com/package/npm-run).
 
 ## <a id="toc-babel-core"></a>`babel-core`
 
-If you need to use Babel programmatically for some reason, you can use the `babel-core` package itself.
+Якщо з деякої причини вам потрібно використовувати Babel програмно, ви можете використовувати безпосередньо сам пакет `babel-core`.
 
-First install `babel-core`.
+Спочатку встановіть `babel-core`.
 
 ```sh
 $ npm install babel-core
@@ -264,14 +268,14 @@ $ npm install babel-core
 var babel = require("babel-core");
 ```
 
-If you have a string of JavaScript you can compile it directly using `babel.transform`.
+Якщо у вас є рядок з JavaScript кодом, то ви можете скомпілювати його безпосередньо, використовуючи `babel.transform`.
 
 ```js
 babel.transform("code();", options);
 // => { code, map, ast }
 ```
 
-If you are working with files you can use either the asynchronous api:
+Якщо ви працюєте з файлами, то можете використовувати або асинхронний api:
 
 ```js
 babel.transformFile("filename.js", options, function(err, result) {
@@ -279,37 +283,37 @@ babel.transformFile("filename.js", options, function(err, result) {
 });
 ```
 
-Or the synchronous api:
+Або синхронний api:
 
 ```js
 babel.transformFileSync("filename.js", options);
 // => { code, map, ast }
 ```
 
-If you already have a Babel AST for whatever reason you may transform from the AST directly.
+Якщо з тої чи іншої причини у вас вже є Babel AST, то ви може перетворити безпосередньо з AST.
 
 ```js
 babel.transformFromAst(ast, code, options);
 // => { code, map, ast }
 ```
 
-For all of the above methods, `options` refers to http://babeljs.io/docs/usage/options/.
+Для всіх перерахованих вище методів, довідник параметрів (`options`) знаходиться за адресою http://babeljs.io/docs/usage/options/.
 
 * * *
 
-# <a id="toc-configuring-babel"></a>Configuring Babel
+# <a id="toc-configuring-babel"></a>Налаштування Babel
 
-You may have noticed by now that running Babel on its own doesn't seem to do anything other than copy JavaScript files from one location to another.
+Можливо, ви вже помітили, що, на перший погляд, запуск Babel сам по собі нічого не робить, окрім копіювання JavaScript файлів з одного місця до іншого.
 
-This is because we haven't told Babel to do anything yet.
+Так відбувається тому, що ми не сказали Babel зробити що-небудь ще.
 
-> Since Babel is a general purpose compiler that gets used in a myriad of different ways, it doesn't do anything by default. You have to explicitly tell Babel what it should be doing.
+> Оскільки Babel - це компілятор загального призначення, який може використовуватися в безліч різних способів, то він не робить нічого за промовчанням. Ви маєте явно сказати Babel те, що він повинен робити.
 
-You can give Babel instructions on what to do by installing **plugins** or **presets** (groups of plugins).
+Ви можете дати Babel інструкції про те, що він має робити, встановивиши плагіни - **plugins** або пресети - **presets** (групи плагінів).
 
 ## <a id="toc-babelrc"></a>`.babelrc`
 
-Before we start telling Babel what to do. We need to create a configuration file. All you need to do is create a `.babelrc` file at the root of your project. Start off with it like this:
+Перш ніж ми почнемо казати Babel, що робити, нам потрібно створити файл конфігурації. Все, що вам потрібно зробити, це створити файл `.babelrc` у корені вашого проекту. Заповнимо його наступним чином:
 
 ```js
 {
@@ -318,21 +322,21 @@ Before we start telling Babel what to do. We need to create a configuration file
 }
 ```
 
-This file is how you configure Babel to do what you want.
+Цей файл містить налаштування Babel і змушує його робити те, що ви хочете.
 
-> **Note:** While you can also pass options to Babel in other ways the `.babelrc` file is convention and is the best way.
+> **Примітка:** Хоча ви й можете передаватити параметри Babel іншим чином, використання файлу `.babelrc` - це звичний і найкращий спосіб.
 
 ## <a id="toc-babel-preset-es2015"></a>`babel-preset-es2015`
 
-Let's start by telling Babel to compile ES2015 (the newest version of the JavaScript standard, also known as ES6) to ES5 (the version available in most JavaScript environments today).
+Давайте скажемо Babel скомпілювати ES2015 (найновішу версію стандарту JavaScript, також відому як ES6) в ES5 (версія, що зараз доступна в більшості JavaScript середовищ).
 
-We'll do this by installing the "es2015" Babel preset:
+Встановимо для цього пресет Babel "es2015":
 
 ```sh
 $ npm install --save-dev babel-preset-es2015
 ```
 
-Next we'll modify our `.babelrc` to include that preset.
+Далі змінимо наш файл `.babelrc` щоб включити цей пресет.
 
 ```diff
   {
@@ -345,13 +349,13 @@ Next we'll modify our `.babelrc` to include that preset.
 
 ## <a id="toc-babel-preset-react"></a>`babel-preset-react`
 
-Setting up React is just as easy. Just install the preset:
+Налаштувати React так само легко. Просто встановіть пресет:
 
 ```sh
 $ npm install --save-dev babel-preset-react
 ```
 
-Then add the preset to your `.babelrc` file:
+Потім додайте пресет до вашого файлу `.babelrc`:
 
 ```diff
   {
@@ -365,28 +369,28 @@ Then add the preset to your `.babelrc` file:
 
 ## <a id="toc-babel-preset-stage-x"></a>`babel-preset-stage-x`
 
-JavaScript also has some proposals that are making their way into the standard through the TC39's (the technical committee behind the ECMAScript standard) process.
+JavaScript має деякі пропозиції, які вносяться до стандарту через процес TC39 (технічний комітет по стандарту ECMAScript).
 
-This process is broken through a 5 stage (0-4) process. As proposals gain more traction and are more likely to be accepted into the standard they proceed through the various stages, finally being accepted into the standard at stage 4.
+Цей процес розбитий на 5 етапів (0-4). По мірі того, як пропозиції набирають підтримку та стають майже готовими для прийняття до стандарту, вони проходять через різні етапи і нарешті приймаються у стандарт на стадії 4.
 
-These are bundled in babel as 4 different presets:
+Ці етапи включені до Babel як 4 різних пресети (presets):
 
   * `babel-preset-stage-0`
   * `babel-preset-stage-1`
   * `babel-preset-stage-2`
   * `babel-preset-stage-3`
 
-> Note that there is no stage-4 preset as it is simply the `es2015` preset above.
+> Зверніть увагу, що немає пресету stage-4, оскільки він просто є згаданим вище пресетом `es2015`.
 
-Each of these presets requires the preset for the later stages. i.e. `babel-preset-stage-1` requires `babel-preset-stage-2` which requires `babel-preset-stage-3`.
+Кожен з цих пресетів вимагає пресет для більш пізніх етапів. Тобто `babel-preset-stage-1` вимагає `babel-preset-stage2`, який вимагає `babel-preset-stage-3`.
 
-Simply install the stage you are interested in using:
+Ви можете встановити необхідний етап виконавши:
 
 ```sh
 $ npm install --save-dev babel-preset-stage-2
 ```
 
-Then you can add it to your `.babelrc` config.
+Потім ви можете додати його до вашого файлу конфігурації `.babelrc`.
 
 ```diff
   {
@@ -401,15 +405,15 @@ Then you can add it to your `.babelrc` config.
 
 * * *
 
-# <a id="toc-executing-babel-generated-code"></a>Executing Babel-generated code
+# <a id="toc-executing-babel-generated-code"></a>Використання коду згенерованого Babel
 
-So you've compiled your code with Babel, but this is not the end of the story.
+Отже, ви скомпілювали ваш код за допомогою Babel, але це ще не кінець історії.
 
 ## <a id="toc-babel-polyfill"></a>`babel-polyfill`
 
-Almost all futuristic JavaScript syntax can be compiled with Babel, but the same is not true for APIs.
+Майже увесь футуристичний синтаксис JavaScript можна скомпілювати за допомогою Babel, але для API це не завжди так.
 
-For example, the following code has an arrow function that needs to be compiled:
+Наприклад, наступний код містить стрілкову функцію (arrow function):
 
 ```js
 function addAll() {
@@ -417,7 +421,7 @@ function addAll() {
 }
 ```
 
-Which turns into this:
+Після компіляції він перетворюється на це:
 
 ```js
 function addAll() {
@@ -427,22 +431,22 @@ function addAll() {
 }
 ```
 
-However, this still won't work everywhere because `Array.from` doesn't exist in every JavaScript environment.
+Але цей код може і не виконатися тому, що `Array.from` може існувати не в кожному JavaScript середовищі.
 
     Uncaught TypeError: Array.from is not a function
     
 
-To solve this problem we use something called a [Polyfill](https://remysharp.com/2010/10/08/what-is-a-polyfill). Simply put, a polyfill is a piece of code that replicates a native api that does not exist in the current runtime. Allowing you to use APIs such as `Array.from` before they are available.
+Щоб вирішити цю проблему, ми скористаємося дечим під назвою [Polyfill](https://remysharp.com/2010/10/08/what-is-a-polyfill). Кажучи простими словами, polyfill - це шматок коду, який дублює native api, котрого бракує в поточний час виконання. Це дозволяє користуватися такими API як `Array.from` ще до того, як вони стають доступними.
 
-Babel uses the excellent [core-js](https://github.com/zloirock/core-js) as its polyfill, along with a customized [regenerator](https://github.com/facebook/regenerator) runtime for getting generators and async functions working.
+Babel має неперевершений [core-js](https://github.com/zloirock/core-js) в якості polyfill, а також модифікований [regenerator](https://github.com/facebook/regenerator) runtime для отримання генераторів та можливості виклику асинхронних функцій.
 
-To include the Babel polyfill, first install it with npm:
+Щоб включити Babel polyfill, спочатку встановимо його за допомогою npm:
 
 ```sh
 $ npm install --save babel-polyfill
 ```
 
-Then simply include the polyfill at the top of any file that requires it:
+А потім включаємо polyfill у верхній частині будь-якого файлу, що його використовує:
 
 ```js
 import "babel-polyfill";
@@ -450,18 +454,18 @@ import "babel-polyfill";
 
 ## <a id="toc-babel-runtime"></a>`babel-runtime`
 
-In order to implement details of ECMAScript specs, Babel will use "helper" methods in order to keep the generated code clean.
+Для реалізації деталей специфікації ECMAScript, Babel буде використовувати "helper" методи для того, щоб тримати згенерований код чистим.
 
-Since these helpers can get pretty long, and they get added to the top of every file you can move them into a single "runtime" which gets required.
+Оскільки ці допоміжні методи можуть бути досить великими, а також вони додаються до верхньої частини всіх файлів, ви можете перемістити їх усі в один "runtime", який потім викликається.
 
-Start by installing `babel-plugin-transform-runtime` and `babel-runtime`:
+Почніть з інсталяції `babel-plugin-transform-runtime` та `babel-runtime`:
 
 ```sh
 $ npm install --save-dev babel-plugin-transform-runtime
 $ npm install --save babel-runtime
 ```
 
-Then update your `.babelrc`:
+Потім відредагуйте ваш `.babelrc`:
 
 ```diff
   {
@@ -472,7 +476,7 @@ Then update your `.babelrc`:
   }
 ```
 
-Now Babel will compile code like the following:
+Тепер Babel буде компілювати даний код:
 
 ```js
 class Foo {
@@ -480,7 +484,7 @@ class Foo {
 }
 ```
 
-Into this:
+В оце:
 
 ```js
 import _classCallCheck from "babel-runtime/helpers/classCallCheck";
@@ -500,25 +504,25 @@ let Foo = function () {
 }();
 ```
 
-Rather than putting the `_classCallCheck` and `_createClass` helpers in every single file where they are needed.
+Замість додавання допоміжних `_classCallCheck` та `_createClass` до кожного файлу, де вони потрібні.
 
 * * *
 
-# <a id="toc-configuring-babel-advanced"></a>Configuring Babel (Advanced)
+# <a id="toc-configuring-babel-advanced"></a>Налаштування Babel (додатково)
 
-Most people can get by using Babel with just the built-in presets, but Babel exposes much finer-grained power than that.
+Більшість людей може користуватися лише вбудованими до Babel пресетами, але Babel має набагато більше потужності.
 
-## <a id="toc-manually-specifying-plugins"></a>Manually specifying plugins
+## <a id="toc-manually-specifying-plugins"></a>Вручну зазначенні плагіни
 
-Babel presets are simply collections of pre-configured plugins, if you want to do something differently you manually specify plugins. This works almost exactly the same way as presets.
+Пресети Babel - це просто колекції попередньо сконфігурованих плагінів (plugins), якщо ви хочете зробити щось по-іншому, то маєте вказати плагіни вручну. Це робиться майже так само, як і при роботі з пресетами.
 
-First install a plugin:
+Спочатку встановіть плагін:
 
 ```sh
 $ npm install --save-dev babel-plugin-transform-es2015-classes
 ```
 
-Then add the `plugins` field to your `.babelrc`.
+Потім додайте поле ` plugins ` до вашого `.babelrc`.
 
 ```diff
   {
@@ -528,17 +532,17 @@ Then add the `plugins` field to your `.babelrc`.
   }
 ```
 
-This gives you much finer grained control over the exact transforms you are running.
+Це дає вам набагато більше контролю над конкретними перетвореннями.
 
-For a full list of official plugins see the [Babel Plugins page](http://babeljs.io/docs/plugins/).
+Повний перелік офіційних плагінів знаходиться на [сторінці Babel Plugins](http://babeljs.io/docs/plugins/).
 
-Also take a look at all the plugins that have been [built by the community](https://www.npmjs.com/search?q=babel-plugin). If you would like to learn how to write your own plugin read the [Babel Plugin Handbook](plugin-handbook.md).
+Гляньте також і на інші плагіни, які були [побудовані спільнотою](https://www.npmjs.com/search?q=babel-plugin). Якщо ви хочете дізнатися, як написати свій плагін, читайте [Довідник розробника плагінів](plugin-handbook.md).
 
-## <a id="toc-plugin-options"></a>Plugin options
+## <a id="toc-plugin-options"></a>Налаштування плагінів
 
-Many plugins also have options to configure them to behave differently. For example, many transforms have a "loose" mode which drops some spec behavior in favor of simpler and more performant generated code.
+Багато плагінів також мають параметри для налаштування їхньої поведінки. Наприклад, багато перетворень мають вільний "loose" режим, який додає деяку специфічну поведінку для генерації більш простого та продуктивного коду.
 
-To add options to a plugin, simply make the following change:
+Для того, щоб додати параметри до плагіна, просто зробіть наступні зміни:
 
 ```diff
   {
@@ -549,13 +553,13 @@ To add options to a plugin, simply make the following change:
   }
 ```
 
-> I'll be working on updates to the plugin documentation to detail every option in the coming weeks. [Follow me for updates](https://twitter.com/thejameskyle).
+> Я ще працюю над оновленнями до документації по плагінах, щоб освітити кожен параметр найближчим часом. [Слідкуйте за моїми оновленнями](https://twitter.com/thejameskyle).
 
-## <a id="toc-customizing-babel-based-on-environment"></a>Customizing Babel based on environment
+## <a id="toc-customizing-babel-based-on-environment"></a>Персоналізація Babel для оточення
 
-Babel plugins solve many different tasks. Many of them are development tools that can help you debugging your code or integrate with tools. There are also a lot of plugins that are meant for optimizing your code in production.
+Плагіни Babel вирішують багато різних завдань. Багато з них є інструментами для розробки, що можуть допомогти вам в налагодженні вашого коду або інтеграції з іншими інструментами. Є також багато плагінів, які призначені для оптимізації коду на "бойовому" сервері.
 
-For this reason, it is common to want Babel configuration based on the environment. You can do this easily with your `.babelrc` file.
+З цієї причини стало загальною практикою створювати різні налаштування Babel в залежності від середовища. Ви можете легко налаштувати це у вашому файлі `.babelrc`.
 
 ```diff
   {
@@ -572,9 +576,9 @@ For this reason, it is common to want Babel configuration based on the environme
   }
 ```
 
-Babel will enable configuration inside of `env` based on the current environment.
+Babel буде використовувати необхідну конфігурацію всередині `env` в залежності від поточного середовища.
 
-The current environment will use `process.env.BABEL_ENV`. When `BABEL_ENV` is not available, it will fallback to `NODE_ENV`, and if that is not available it will default to `"development"`.
+Поточне середовище буде використовувати `process.env.BABEL_ENV`. Коли `BABEL_ENV` недоступна, то буде використана `NODE_ENV`, а якщо і вона недоступна - за промовчанням буде використана `"development"`.
 
 **Unix**
 
@@ -590,17 +594,17 @@ $ SET BABEL_ENV=production
 $ [COMMAND]
 ```
 
-> **Note:** `[COMMAND]` is whatever you use to run Babel (ie. `babel`, `babel-node`, or maybe just `node` if you are using the register hook).
+> **Примітка:** `[COMMAND]` - це будь-яка команда для запуску Babel (як то `babel`, `babel-node` чи просто `node` якщо ви використовуєте register hook).
 > 
-> **Tip:** If you want your command to work across unix and windows platforms then use [`cross-env`](https://www.npmjs.com/package/cross-env).
+> **Порада:** Для того, щоб команди працювали як на unix так і на windows платформі - скористайтеся [`cross-env`](https://www.npmjs.com/package/cross-env).
 
-## <a id="toc-making-your-own-preset"></a>Making your own preset
+## <a id="toc-making-your-own-preset"></a>Створення власного пресету (preset)
 
-Manually specifying plugins? Plugin options? Environment-based settings? All this configuration might seem like a ton of repetition for all of your projects.
+Обрати плагіни вручну? Налаштування плагінів? Налаштування в залежності від середовища? Всі ці налаштування можуть стати цілою купою повторень для всіх ваших проектів.
 
-For this reason, we encourage the community to create their own presets. This could be a preset for the specific [node version](https://github.com/leebenson/babel-preset-node5) you are running, or maybe a preset for your [entire](https://github.com/cloudflare/babel-preset-cf) [company](https://github.com/airbnb/babel-preset-airbnb).
+З цієї причини ми закликаємо спільноту створювати свої власні пресети. Це може бути пресет для конкретної [версії node](https://github.com/leebenson/babel-preset-node5) з якою ви працюєте, або це може бути пресет для [усієї](https://github.com/cloudflare/babel-preset-cf) вашої [компанії](https://github.com/airbnb/babel-preset-airbnb).
 
-It's easy to create a preset. Say you have this `.babelrc` file:
+Пресет створити дуже легко. Скажімо у вас є цей файл `.babelrc`:
 
 ```js
 {
@@ -614,9 +618,9 @@ It's easy to create a preset. Say you have this `.babelrc` file:
 }
 ```
 
-All you need to do is create a new project following the naming convention `babel-preset-*` (please be responsible with this namespace), and create two files.
+Все, що вам потрібно зробити - це створити новий проект, користуючись наступним іменуванням `babel-preset-*` (будь ласка, будьте відповідальним за цей простір імен) і створіть два файли.
 
-First, create a new `package.json` file with the necessary `dependencies` for your preset.
+Спочатку створіть новий файл `package.json` з необхідним ключем `dependencies` для вашого пресету.
 
 ```js
 {
@@ -631,7 +635,7 @@ First, create a new `package.json` file with the necessary `dependencies` for yo
 }
 ```
 
-Then create an `index.js` file that exports the contents of your `.babelrc` file, replacing plugin/preset strings with `require` calls.
+Потім створіть файл `index.js`, який експортує вміст вашого файлу `.babelrc`, замінивши плагін/преcет на виклики `require`.
 
 ```js
 module.exports = {
@@ -645,31 +649,31 @@ module.exports = {
 };
 ```
 
-Then simply publish this to npm and you can use it like you would any preset.
+Потім просто опублікуйте цей пресет в npm, і можете користуватися ним як будь-яким іншим пресетом.
 
 * * *
 
-# <a id="toc-babel-and-other-tools"></a>Babel and other tools
+# <a id="toc-babel-and-other-tools"></a>Babel та інші інструменти
 
-Babel is pretty straight forward to setup once you get the hang of it, but it can be rather difficult navigating how to set it up with other tools. However, we try to work closely with other projects in order to make the experience as easy as possible.
+Babel досить простий в налаштуванні коли ви з ним трохи розберетеся. Але все ж вам може бути досить важко розібратися, як його налаштувати за допомогою інших інструментів. Тим не менш, ми намагаємося працювати в тісному контакті з іншими проектами для того, щоб зробити взаємодію якомога простішою.
 
-## <a id="toc-static-analysis-tools"></a>Static analysis tools
+## <a id="toc-static-analysis-tools"></a>Інструменти статичного аналізу
 
-Newer standards bring a lot of new syntax to the language and static analysis tools are just starting to take advantage of it.
+Новітні стандарти принесли багато нового синтаксису в мову, і інструменти статичного аналізу вже починають розуміти цей синтаксис.
 
 ### <a id="toc-linting"></a>Linting
 
-One of the most popular tools for linting is [ESLint](http://eslint.org), because of this we maintain an official [`babel-eslint`](https://github.com/babel/babel-eslint) integration.
+Одним з найбільш популярних інструментів для перевірки коректності синтаксису та стилю (linting) є [ESLint](http://eslint.org). У зв'язку з цим ми підтримуємо офіційну інтеграцію [`babel-eslint`](https://github.com/babel/babel-eslint).
 
-First install `eslint` and `babel-eslint`.
+Спочатку встановіть `eslint` та `babel-eslint`.
 
 ```sh
 $ npm install --save-dev eslint babel-eslint
 ```
 
-> **Note:** `babel-eslint` compatibility with Babel 6 is currently in a pre-release version. Install the [latest](https://github.com/babel/babel-eslint/releases) 5.0 beta in order to use it with Babel 6.
+> **Примітка:** Сумісність `babel-eslint` з Babel 6 в даний час знаходиться в пре-реліз стані. Інсталюйте [останню](https://github.com/babel/babel-eslint/releases) 5.0 beta для того, щоб використовувати його разом з Babel 6.
 
-Next create or use the existing `.eslintrc` file in your project and set the `parser` as `babel-eslint`.
+Далі створіть або використайте існуючий файл `.eslintrc` у вашому проекті і вкажіть в ключі `parser` значення `babel-eslint`.
 
 ```diff
   {
@@ -680,7 +684,7 @@ Next create or use the existing `.eslintrc` file in your project and set the `pa
   }
 ```
 
-Now add a `lint` task to your npm `package.json` scripts:
+Тепер додайте завдання `lint` всередині ключа scripts до вашого npm `package.json`:
 
 ```diff
   {
@@ -695,24 +699,24 @@ Now add a `lint` task to your npm `package.json` scripts:
   }
 ```
 
-Then just run the task and you will be all setup.
+Потім просто запустіть завдання, ось і всі налаштування.
 
 ```sh
 $ npm run lint
 ```
 
-For more information consult the [`babel-eslint`](https://github.com/babel/babel-eslint) or [`eslint`](http://eslint.org) documentation.
+Для отримання додаткової інформації відвідайте розділи документації [`babel-eslint`](https://github.com/babel/babel-eslint) або [`eslint`](http://eslint.org).
 
 ### <a id="toc-code-style"></a>Code Style
 
-JSCS is an extremely popular tool for taking linting a step further into checking the style of the code itself. A core maintainer of both the Babel and JSCS projects ([@hzoo](https://github.com/hzoo)) maintains an official integration with JSCS.
+JSCS - надзвичайно популярний інструмент для того, щоб підняти linting на вищий рівень і навчити його перевіряти безпосередньо стиль коду. Ключовий супровідник обох - Babel і JSCS проектів ([@hzoo](https://github.com/hzoo)) підтримує офіційну інтеграцію з JSCS.
 
-Even better, this integration now lives within JSCS itself under the `--esnext` option. So integrating Babel is as easy as:
+Навіть краще, ця інтеграція зараз живе в JSCS, сама по собі як параметр `--esnext`. Тому аби інтегрувати Babel, достатньо лише виконати:
 
     $ jscs . --esnext
     
 
-From the cli, or adding the `esnext` option to your `.jscsrc` file.
+З командного рядка, або можете додати параметр `esnext` до вашого файлу `.jscsrc`.
 
 ```diff
   {
@@ -721,7 +725,7 @@ From the cli, or adding the `esnext` option to your `.jscsrc` file.
   }
 ```
 
-For more information consult the [`babel-jscs`](https://github.com/jscs-dev/babel-jscs) or [`jscs`](http://jscs.info) documentation.
+Для отримання додаткової інформації відвідайте розділи документації [`babel-jscs`](https://github.com/jscs-dev/babel-jscs) або [`jscs`](http://jscs.info).
 
 <!--
 ### Code Coverage
@@ -729,25 +733,25 @@ For more information consult the [`babel-jscs`](https://github.com/jscs-dev/babe
 > [WIP]
 -->
 
-### <a id="toc-documentation"></a>Documentation
+### <a id="toc-documentation"></a>Документація
 
-Using Babel, ES2015, and Flow you can infer a lot about your code. Using [documentation.js](http://documentation.js.org) you can generate detailed API documentation very easily.
+Використовуючи Babel, ES2015 та Flow ви зможете краще пізнати свій код. А за допомогою [documentation.js](http://documentation.js.org) ви зможете з легкістю генерувати детальну документацію по API.
 
-Documentation.js uses Babel behind the scenes to support all of the latest syntax including Flow annotations in order to declare the types in your code.
+Documentation.js використовує Babel за лаштунками, щоб підтримувати увесь останній синтаксис, включаючи анотації Flow для того, щоб описати типи у вашому коді.
 
-## <a id="toc-frameworks"></a>Frameworks
+## <a id="toc-frameworks"></a>Фреймворки
 
-All of the major JavaScript frameworks are now focused on aligning their APIs around the future of the language. Because of this, there has been a lot of work going into the tooling.
+Всі основні JavaScript фреймворки зараз зосереджені на підгонці своїх API навколо майбутнього мови. У зв'язку з цим було зроблено багато роботи.
 
-Frameworks have the opportunity not just to use Babel but to extend it in ways that improve their users' experience.
+Фреймворки мають можливість не тільки використовувати Babel, але й розширюють його таким чином, щоб поліпшити взаємодію з користувачем.
 
 ### <a id="toc-react"></a>React
 
-React has dramatically changed their API to align with ES2015 classes ([Read about the updated API here](https://babeljs.io/blog/2015/06/07/react-on-es6-plus)). Even further, React relies on Babel to compile it's JSX syntax, deprecating it's own custom tooling in favor of Babel. You can start by setting up the `babel-preset-react` package following the [instructions above](#babel-preset-react).
+React кардинально змінили своє API для того щоб підігнати його під класи ES2015 ([Читайте про оновлений API тут](https://babeljs.io/blog/2015/06/07/react-on-es6-plus)). Навіть більше, React спирається на Babel, щоб компілювати свій JSX синтаксис, і оголосили застарілими (deprecated) свої власні інструменти на користь Babel. Ви можете почати, налаштувавши пакет `babel-preset-react` у відповідності до [наведених вище інструкцій](#babel-preset-react).
 
-The React community took Babel and ran with it. There are now a number of transforms [built by the community](https://www.npmjs.com/search?q=babel-plugin+react).
+Спільнота React одразу підтримала Babel. В даний час уже є певна кількість трансформацій [побудованих спільнотою](https://www.npmjs.com/search?q=babel-plugin+react).
 
-Most notably the [`babel-plugin-react-transform`](https://github.com/gaearon/babel-plugin-react-transform) plugin which combined with a number of [React-specific transforms](https://github.com/gaearon/babel-plugin-react-transform#transforms) can enable things like *hot module reloading* and other debugging utilities.
+Одним з найцікавіших є плагін [`babel-plugin-react-transform`](https://github.com/gaearon/babel-plugin-react-transform), який у поєднанні з низкою [специфічних для React трансформацій](https://github.com/gaearon/babel-plugin-react-transform#transforms) може робити речі накшталт *перезавантаження модулів на льоту (hot module reloading)*, а також інші засоби налагодження.
 
 <!--
 ### Ember
@@ -755,9 +759,9 @@ Most notably the [`babel-plugin-react-transform`](https://github.com/gaearon/bab
 > [WIP]
 -->
 
-## <a id="toc-text-editors-and-ides"></a>Text Editors and IDEs
+## <a id="toc-text-editors-and-ides"></a>Текстові редактори та інтегровані середовища розробки (IDE)
 
-Introducing ES2015, JSX, and Flow syntax with Babel can be helpful, but if your text editor doesn't support it then it can be a really bad experience. For this reason you will want to setup your text editor or IDE with a Babel plugin.
+Вивчення ES2015, JSX та синтаксису Flow разом з Babel може бути корисним, але якщо ваш текстовий редактор всього цього не підтримує, то це не сприяє отриманню гарного досвіду. З цієї причини, вам можливо доведеться встановити текстовий редактор або IDE з плагіном Babel.
 
   * [Sublime Text](https://github.com/babel/babel-sublime)
   * [Atom](https://atom.io/packages/language-babel)
@@ -772,21 +776,21 @@ Introducing ES2015, JSX, and Flow syntax with Babel can be helpful, but if your 
 
 * * *
 
-# <a id="toc-babel-support"></a>Babel Support
+# <a id="toc-babel-support"></a>Підтримка Babel
 
-Babel has a very large and quickly growing community, as we grow we want to ensure that people have all the resources they need to be successful. So we provide a number of different channels for getting support.
+У Babel дуже велика і швидко зростаюча спільнота. Оскільки ми ростемо, ми хочемо, щоб люди мали всі ресурси для досягнення успіху. Саме тому ми пропонуємо низку каналів для отримання підтримки.
 
-Remember that across all of these communities we enforce a [Code of Conduct](https://github.com/babel/babel/blob/master/CODE_OF_CONDUCT.md). If you break the Code of Conduct, action will be taken. So please read it and be conscious of it when interacting with others.
+Пам'ятайте, що в усіх цих спільнотах слід дотримуватися [Кодексу Поведінки (Code of Conduct)](https://github.com/babel/babel/blob/master/CODE_OF_CONDUCT.md). Якщо ви порушите Правила Поведінки, будуть вжиті відповідні заходи. Тож, будь ласка, прочитайте ці правила та дотримуйтеся їх при взаємодії з іншими учасниками.
 
-We are also looking to grow a self-supporting community, for people who stick around and support others. If you find someone asking a question you know the answer to, take a few minutes and help them out. Try your best to be kind and understanding when doing so.
+Ми також плануємо зосередитись на збільшенні спільноти підтримки, для людей, які можуть прийти на допомогу іншим. Якщо хтось задає питання, на яке ви знаєте відповідь, будь-ласка, виділіть кілька хвилин і домоможіть їм. Зробіть все, що у ваших силах аби бути добрим і ставтеся до питання з розумінням.
 
-## <a id="toc-babel-forum"></a>Babel Forum
+## <a id="toc-babel-forum"></a>Форум Babel
 
-[Discourse](http://www.discourse.org) has provided us with a hosted version of their forum software for free (and we love them for it!). If forums are your thing please stop by [discuss.babeljs.io](https://discuss.babeljs.io).
+[Discourse](http://www.discourse.org) безкоштовно надали нам своє програмне забезпечення для створення форуму (і ми їх любимо за це!). Якщо форуми - це ваша стихія, будь ласка, відвідайте [discuss.babeljs.io](https://discuss.babeljs.io).
 
-## <a id="toc-babel-chat"></a>Babel Chat
+## <a id="toc-babel-chat"></a>Чат Babel
 
-Everyone loves [Slack](https://slack.com). If you're looking for immediate support from the community then come chat with us at [slack.babeljs.io](https://slack.babeljs.io).
+Усі люблять [Slack](https://slack.com). Якщо ви шукаєте невідкладної підтримки з боку спільноти, то відвідайте наш чат на [slack.babeljs.io](https://slack.babeljs.io).
 
 <!--
 ## Babel Stack Overflow
@@ -794,23 +798,23 @@ Everyone loves [Slack](https://slack.com). If you're looking for immediate suppo
 > [WIP]
 -->
 
-## <a id="toc-babel-issues"></a>Babel Issues
+## <a id="toc-babel-issues"></a>Проблеми Babel
 
-Babel uses the awesome issue tracker provided by [Phabricator](http://phabricator.org) an open source software development platform that makes GitHub issues a nightmare of the past.
+Babel має прекрасну систему відстеження помилок, надану [Phabricator](http://phabricator.org), платформою розробки програмного забезпечення з відкритим кодом, що робить GitHub нічним жахом з минулого.
 
-Babel's Phabricator is available at [phabricator.babeljs.io](https://phabricator.babeljs.io). You can see all the open and closed issues on [maniphest](https://phabricator.babeljs.io/maniphest/).
+Phabricator для Babel доступний на [phabricator.babeljs.io](https://phabricator.babeljs.io). Там ви зможете побачити всі відкриті та закриті питання в розділі [maniphest](https://phabricator.babeljs.io/maniphest/).
 
-If you want to open a new issue:
+Якщо ви виявили проблему і хочете відкрити для цього нову тему:
 
-  * [Search for an existing issue](https://phabricator.babeljs.io/maniphest/query/advanced/)
-  * [Login](https://phabricator.babeljs.io/auth/start/) or [Create an account](https://phabricator.babeljs.io/auth/register/) (You can also login using GitHub, Facebook, Twitter, Google, etc.)
-  * [Create a new bug report](https://phabricator.babeljs.io/maniphest/task/create/?projects=PHID-PROJ-2ufzspoyuk4udiwfnzls#R) or [request a new feature](https://phabricator.babeljs.io/maniphest/task/create/?projects=PHID-PROJ-dfaevtocl5zgjtstjijd#R)
+  * [Пошукайте вже існуючу тему](https://phabricator.babeljs.io/maniphest/query/advanced/)
+  * [Увійдіть](https://phabricator.babeljs.io/auth/start/) чи [Створіть обліковий запис](https://phabricator.babeljs.io/auth/register/) (ви можете також увійти, використовуючи GitHub, Facebook, Twitter, Google, тощо)
+  * [Створіть нове повідомлення про помилку](https://phabricator.babeljs.io/maniphest/task/create/?projects=PHID-PROJ-2ufzspoyuk4udiwfnzls#R) або [запитайте новий функціонал](https://phabricator.babeljs.io/maniphest/task/create/?projects=PHID-PROJ-dfaevtocl5zgjtstjijd#R)
 
-### <a id="toc-creating-an-awesome-babel-bug-report"></a>Creating an awesome Babel bug report
+### <a id="toc-creating-an-awesome-babel-bug-report"></a>Як створити гарний баг-репорт
 
-Babel issues can sometimes be very difficult to debug remotely, so we need all the help we can get. Spending a few more minutes crafting a really nice bug report can help get your problem solved significantly faster.
+Проблеми Babel інколи дуже важко відлагодити віддалено, то ж ми потребуємо будь-якої допомоги, яку ви зможете надати. Кілька додаткових хвилин, присвячених створенню дійсно гарного баг репорту зможуть допомогти вирішенню вашої проблеми у значно швидший термін.
 
-First, try isolating your problem. It's extremely unlikely that every part of your setup is contributing to the problem. If your problem is a piece of input code, try deleting as much code as possible that still causes an issue.
+По-перше, спробуйте ізолювати неполадку. Вкрай малоймовірно, що кожна частина вашої конфігурації провокує проблему. Якщо ваша проблема - це частина вхідного коду, спробуйте видалити стільки коду, наскільки це можливо до тих пір поки проблема буде існувати.
 
 > [WIP]
 

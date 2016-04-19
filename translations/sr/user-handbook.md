@@ -1,17 +1,17 @@
-# Babel User Handbook
+# Вавилон Кориснички Приручник
 
-This document covers everything you ever wanted to know about using [Babel](https://babeljs.io) and related tooling.
+Овај документ покрива све што сте увек желели да знате о коришћењу [Вавилона](https://babeljs.io) и повезаних алатки.
 
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
-This handbook is available in other languages, see the [README](/README.md) for a complete list.
+Овај приручник је доступан и у другим језицима, погледајте [README](/README.md) фајл за комплетну листу.
 
 # Sadržaj
 
   * [Uvod](#toc-introduction)
-  * [Setting up Babel](#toc-setting-up-babel) 
+  * [Постављање Вавилона](#toc-setting-up-babel) 
       * [`babel-cli`](#toc-babel-cli)
-      * [Running Babel CLI from within a project](#toc-running-babel-cli-from-within-a-project)
+      * [Коришћење Вавилоновог CLI из пројекта](#toc-running-babel-cli-from-within-a-project)
       * [`babel-register`](#toc-babel-register)
       * [`babel-node`](#toc-babel-node)
       * [`babel-core`](#toc-babel-core)
@@ -45,19 +45,19 @@ This handbook is available in other languages, see the [README](/README.md) for 
 
 # <a id="toc-introduction"></a>Uvod
 
-Babel is a generic multi-purpose compiler for JavaScript. Using Babel you can use (and create) the next generation of JavaScript, as well as the next generation of JavaScript tooling.
+Вавилон (Babel) је генерички вишенаменски компајлер за ЈаваСкрипт. Док користите Вавилон, можете користити (и направити) следећу генерацију ЈаваСкрипта, као и следећу генерацију ЈаваСкрипт алатки.
 
-JavaScript as a language is constantly evolving, with new specs and proposals coming out with new features all the time. Using Babel will allow you to use many of these features years before they are available everywhere.
+ЈаваСкрипт као језик констатно еволуира, са новим спецификацијама и предлозима који се појављују редовно са новим функционалностима. Коришћење Вавилона ће вам дозволити да користите јако пуно ових функционалности годинама пре него што буду омогућене свуда.
 
-Babel does this by compiling down JavaScript code written with the latest standards into a version that will work everywhere today. This process is known as source-to-source compiling, also known as transpiling.
+Вавилон ово ради компајлирајући ЈаваСкрипт код писан по последњим стандардима у верзију која ће радити свуда данас. Овај просец је познат као изворни-у-изворни (Source-to-source) компајлирање, такође познат као транспајлирање.
 
-For example, Babel could transform the new ES2015 arrow function syntax from this:
+На пример, Вавилон може транспајлирати нову ЕС2015 "стрела функција" синтаксу из овога:
 
 ```js
 const square = n => n * n;
 ```
 
-Into the following:
+У следећу:
 
 ```js
 const square = function square(n) {
@@ -65,76 +65,80 @@ const square = function square(n) {
 };
 ```
 
-However, Babel can do much more than this as Babel has support for syntax extensions such as the JSX syntax for React and Flow syntax support for static type checking.
+Ипак, Вавилон може урадити много више од овога, зато што Вавилон има подршку за синтаксне екстензије као што је ЈСХ синтакса за Риект (React) и Флоу (Flow) синтаксна подршка за статичну проверу куцања.
 
-Further than that, everything in Babel is simply a plugin and anyone can go out and create their own plugins using the full power of Babel to do whatever they want.
+Поред тога, све у Вавилону је једноставно плагин и сви могу креирати своје плагинове користећи пуну моћ Вавилона да ураде шта пожеле.
 
-*Even further* than that, Babel is broken down into a number of core modules that anyone can use to build the next generation of JavaScript tooling.
+*И поред тога*, Вавилон је разврстан у велики број кор модула (core modules) које било ко може користити да направи следећу генерацију ЈаваСкрипт алатки.
 
-Many people do too, the ecosystem that has sprung up around Babel is massive and very diverse. Throughout this handbook I'll be covering both how built-in Babel tools work as well as some useful things from around the community.
+Многи људи то и раде, екосистем који је изникао око Вавилона је огроман и јако разноврстан. Кроз овај приручник, ја ћу покрити уједно и како Вавилонове уграђене алатке раде, и са друге стране неке корисне ствари из заједнице.
 
-> ***For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.***
+> ***За будуће апдејтове, пратите follow [@thejameskyle](https://twitter.com/thejameskyle) на Твитеру.***
 
 * * *
 
-# <a id="toc-setting-up-babel"></a>Setting up Babel
+# <a id="toc-setting-up-babel"></a>Постављање (Setting up) Вавилона
 
-Since the JavaScript community has no single build tool, framework, platform, etc., Babel has official integrations for all of the major tooling. Everything from Gulp to Browserify, from Ember to Meteor, no matter what your setup looks like there is probably an official integration.
+Пошто ЈаваСкрипт заједница нема јединствени алат за грађење (build tool), оквир (framework), платформу (platform) итд., Вавилон има званичне интеграције за све главне алате. Све од Галпа (Gulp) до Браузерфаја (Browserify), од Ембера (Ember) до Метеора (Meteor), без обзира како ваше поставке изгледају, вероватно постоји званична интеграција.
 
-For the purposes of this handbook, we're just going to cover the built-in ways of setting up Babel, but you can also visit the interactive [setup page](http://babeljs.io/docs/setup) for all of the integrations.
+У сврхе овог приручника, ми ћемо само покрити уграђене начине постављања Вавилона, али ви такође можете посетити интерактивну [сетап страницу](http://babeljs.io/docs/setup) за све интеграције.
 
-> **Note:** This guide is going to refer to command line tools like `node` and `npm`. Before continuing any further you should be comfortable with these tools.
+> **Белешка:** Овај водич ће правити референце на алате из командне линије као што су `node` и `npm`. Пре него што наставите даље, требало би да познајете њихово коришћење.
 
 ## <a id="toc-babel-cli"></a>`babel-cli`
 
-Babel's CLI is a simple way to compile files with Babel from the command line.
+Вавилонов CLI је лак начин да компајлирате фајлове користећи Вавилон из командне линије.
 
-Let's first install it globally to learn the basics.
+Прво ћемо га инсталирати глобално како бисмо научили основе.
 
 ```sh
 $ npm install --global babel-cli
 ```
 
-We can compile our first file like so:
+Можемо компајлирати наш први фајл овако:
 
 ```sh
 $ babel my-file.js
 ```
 
-This will dump the compiled output directly into your terminal. To write it to a file we'll specify an `--out-file` or `-o`.
+Ово ће приказати компајлирани аутпут директно у вашем терминалу. Како бисмо га уписали у фајл, ставићемо и `--out-file` или`-o`.
 
 ```sh
 $ babel example.js --out-file compiled.js
-# or
+# или
 $ babel example.js -o compiled.js
 ```
 
-If we want to compile a whole directory into a new directory we can do so using `--out-dir` or `-d`.
+Ако желимо да компајлирамо целу директорију у нову директорију можемо урадити то користећи `--out-dir` или`-d`.
 
 ```sh
 $ babel src --out-dir lib
-# or
+# или
 $ babel src -d lib
 ```
 
-### <a id="toc-running-babel-cli-from-within-a-project"></a>Running Babel CLI from within a project
+### <a id="toc-running-babel-cli-from-within-a-project"></a>Коришћење Вавилонове CLI из пројекта
 
-While you *can* install Babel CLI globally on your machine, it's much better to install it **locally** project by project.
+Иако *можете* инсталирати Вавилонов CLI глобално на вашој машини, много је боље инсталирати га **локално** за сваки пројекат посебно.
 
-There are two primary reasons for this.
+Постоје два главна разлога за ово.
 
-  1. Different projects on the same machine can depend on different versions of Babel allowing you to update one at a time.
-  2. It means you do not have an implicit dependency on the environment you are working in. Making your project far more portable and easier to setup.
+  1. Различити пројекти на истој машини могу зависити од различитих верзија Вавилона, дозвољавајући вам да их унапређујете један по један.
+  2. Значи да немате имплицитну зависност од окружења на ком радите. Ово чини ваш пројекат портабилнијим и лакшим за сетаповање.
 
-We can install Babel CLI locally by running:
+Можемо инсталирати Вавилонов CLI локално користећи:
 
 ```sh
 $ npm install --save-dev babel-cli
 ```
 
-> **Note:** Since it's generally a bad idea to run Babel globally you may want to uninstall the global copy by running `npm uninstall --global babel-cli`.
+> **Белешка:** Пошто је иначе лоша идеја да користите Вавилон глобално, можда желите да деинсталирате глобалну копију користећи:
+> 
+> ```sh
+$ npm uninstall --global babel-cli
+```
 
-After that finishes installing, your `package.json` file should look like this:
+Пошто се деинсталација заврши, ваш `package.json` фајл би требало да изгледа овако:
 
 ```json
 {
@@ -146,9 +150,9 @@ After that finishes installing, your `package.json` file should look like this:
 }
 ```
 
-Now instead of running Babel directly from the command line we're going to put our commands in **npm scripts** which will use our local version.
+Сада уместо да користимо Вавилон директно из командне линије, ми ћемо ставити наше команде у **нпм скрипту** која ће користити нашу локалну верзију.
 
-Simply add a `"scripts"` field to your `package.json` and put the babel command inside there as `build`.
+Једноставно додајте `"scripts"` поље у ваш `package.json` фајл и ставите Вавилон команду унутар као `build`.
 
 ```diff
   {
@@ -163,13 +167,13 @@ Simply add a `"scripts"` field to your `package.json` and put the babel command 
   }
 ```
 
-Now from our terminal we can run:
+Сада из терминала можемо покренути:
 
 ```js
 npm run build
 ```
 
-This will run Babel the same way as before, only now we are using a local copy.
+Ово ће покренути Вавилон на исти начин као раније, осим што сада користимо локалну копију.
 
 ## <a id="toc-babel-register"></a>`babel-register`
 
@@ -816,4 +820,4 @@ First, try isolating your problem. It's extremely unlikely that every part of yo
 
 * * *
 
-> ***For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.***
+> ***За будућа ажурирања, пратите [@thejameskyle](https://twitter.com/thejameskyle) на Твитеру.***

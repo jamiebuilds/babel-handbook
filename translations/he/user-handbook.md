@@ -132,7 +132,11 @@ We can install Babel CLI locally by running:
 $ npm install --save-dev babel-cli
 ```
 
-> **Note:** Since it's generally a bad idea to run Babel globally you may want to uninstall the global copy by running `npm uninstall --global babel-cli`.
+> **Note:** Since it's generally a bad idea to run Babel globally you may want to uninstall the global copy by running:
+> 
+> ```sh
+$ npm uninstall --global babel-cli
+```
 
 After that finishes installing, your `package.json` file should look like this:
 

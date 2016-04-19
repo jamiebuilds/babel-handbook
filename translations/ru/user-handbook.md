@@ -87,15 +87,15 @@ Many people do too, the ecosystem that has sprung up around Babel is massive and
 
 ## <a id="toc-babel-cli"></a>`babel-cli`
 
-Babel's CLI is a simple way to compile files with Babel from the command line.
+Интерфейс коммандной строки (Command Line Interface, CLI) Babel это простой путь для компилляции файлов с помощью Babel из коммандной строки.
 
-Let's first install it globally to learn the basics.
+Давайте вначале установим его глобально, чтобы изучить основы.
 
 ```sh
 $ npm install --global babel-cli
 ```
 
-We can compile our first file like so:
+Мы можем скомпиллировать наш первый файл как показано дальше:
 
 ```sh
 $ babel my-file.js
@@ -109,7 +109,7 @@ $ babel example.js --out-file compiled.js
 $ babel example.js -o compiled.js
 ```
 
-If we want to compile a whole directory into a new directory we can do so using `--out-dir` or `-d`.
+Если мы хотим скомпиллировать целую директорию в новую директорию, мы можем это сделать используя `--out-dir` или `-d`.
 
 ```sh
 $ babel src --out-dir lib
@@ -132,7 +132,11 @@ We can install Babel CLI locally by running:
 $ npm install --save-dev babel-cli
 ```
 
-> **Note:** Since it's generally a bad idea to run Babel globally you may want to uninstall the global copy by running `npm uninstall --global babel-cli`.
+> **Note:** Since it's generally a bad idea to run Babel globally you may want to uninstall the global copy by running:
+> 
+> ```sh
+$ npm uninstall --global babel-cli
+```
 
 After that finishes installing, your `package.json` file should look like this:
 

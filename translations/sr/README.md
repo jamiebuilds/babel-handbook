@@ -1,10 +1,10 @@
-# Babel Handbook
+# Вавилон Приручник
 
-This handbook is divided into two parts:
+Овај приручник је подељен у два дела:
 
-  * [User Handbook](user-handbook.md) - How to setup/configure Babel and more.
-  * [Plugin Handbook](plugin-handbook.md) - How to create plugins for Babel.
+  * [Кориснички Приручник](user-handbook.md) - Како да подесите/прилагодите Вавилон и више.
+  * [Плагин Приручник](plugin-handbook.md) - Како да креирате плагинове за Вавилон.
 
-> For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.
+> За будућа ажурирања, пратите [@thejameskyle](https://twitter.com/thejameskyle) на Твитеру.
 
-Ako je pred vama priručnika koji nije pisan engleskim jezikom, možete da pronađete neprevedene delove, pisane englekim jezikom. Uz pomoć Crowdin-a možete da doprinesete u prevođenju na neki od jezika. Molim vas pročitajte [vodič za učešće](/CONTRIBUTING.md) ukoliko vam je potrebno više informacija. You will find a number of english words that are programming concepts. If these were translated to other languages there would be a lack of consistency and fluency when reading about them. In many cases you will find the literal translation followed by the english term in parenthesis `()`. For example: Abstract Syntax Trees (ASTs).
+Ако читате не-енглески превод овог приручника, још увек можете пронаћи делове на енглеском који још увек нису преведени. Ако желите да допринесете преводу на неки од других језика, морате то урадити кроз Crowdin. Молимо вас, прочитајте [водич за учешће](/CONTRIBUTING.md) за више информација. Пронаћи ћете одређен број енглеских речи које су програмерски концепти. Ако би се они преводили на друге језике, јавио би се недостатак конзистентности и течности када читате о њима. У највећем броју случајева, наћи ћете буквални превод праћен енглеским изразом у заградама `()`. На пример: Апстрактна синтаксна стабла (Abstract Syntax Trees).
