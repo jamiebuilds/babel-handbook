@@ -49,15 +49,15 @@ Babel은 JavaScript를 위한 일반적인 다중 목적 컴파일러입니다. 
 
 JavaScript는 언어로써 새로운 스팩과 제안과 새로운 기능들이 언제나 나오며 끊임없이 발전하고 있습니다. Babel을 사용하면 언어적 기능이 본격적으로 모든 곳에서 사용되기 이전에 모든 기능을 미리 사용할 수 있습니다.
 
-Babel does this by compiling down JavaScript code written with the latest standards into a version that will work everywhere today. This process is known as source-to-source compiling, also known as transpiling.
+Babel은 최신 표준으로 작성된 JavaScript 코드를 현재 어디서나 동작하는 코드로 컴파일합니다. 이 과정은 source-to-source 컴파일이라고도 부르고 트랜스파일이라고도 부릅니다.
 
-For example, Babel could transform the new ES2015 arrow function syntax from this:
+예를 들어, Babel은 ES2015의 새로운 화살표 함수 문법을 변환할 수 있습니다:
 
 ```js
 const square = n => n * n;
 ```
 
-Into the following:
+이를 다음과 같이 변환합니다:
 
 ```js
 const square = function square(n) {
@@ -65,13 +65,13 @@ const square = function square(n) {
 };
 ```
 
-However, Babel can do much more than this as Babel has support for syntax extensions such as the JSX syntax for React and Flow syntax support for static type checking.
+하지만 Babel은 React의 JSX 문법이나 정적 타입 검사를 위한 Flow 문법 지원 같은 문법 확장도 지원하므로 위에서 본 것보다 더 많은 일을 할 수 있습니다.
 
-Further than that, everything in Babel is simply a plugin and anyone can go out and create their own plugins using the full power of Babel to do whatever they want.
+더 나아가 Babel에서 모든 것은 단순한 플러그인이고 원한다면 언제든지 Babel의 모든 기능을 사용해서 자신만의 플러그인을 만들 수 있습니다.
 
-*Even further* than that, Babel is broken down into a number of core modules that anyone can use to build the next generation of JavaScript tooling.
+*여기서 더 나아가* Babel은 차세대 JavaScript 도구를 만드는데 사용할 수 있는 다수의 핵심 모듈로 모듈화되어 있습니다.
 
-Many people do too, the ecosystem that has sprung up around Babel is massive and very diverse. Throughout this handbook I'll be covering both how built-in Babel tools work as well as some useful things from around the community.
+많은 사람들 하듯이 갑자기 등장한 Babel의 생태계는 아주 크고 매우 다양합니다. 이 핸드북에서 Babel의 내장 도구들이 동작하는 원리와 커뮤니티에서 만든 유용한 내용을 다룰 것입니다.
 
 > ***향후 업데이트에 대한 내용은 Twitter의 [@thejameskyle](https://twitter.com/thejameskyle)를 팔로우하세요.***
 
@@ -79,66 +79,66 @@ Many people do too, the ecosystem that has sprung up around Babel is massive and
 
 # <a id="toc-setting-up-babel"></a>Babel 설정하기
 
-Since the JavaScript community has no single build tool, framework, platform, etc., Babel has official integrations for all of the major tooling. Everything from Gulp to Browserify, from Ember to Meteor, no matter what your setup looks like there is probably an official integration.
+JavaScript 커뮤니티가 다양한 빌드도구, 프레임워크, 플랫폼 등을 가지므로 Babel은 주요 도구를 공식적으로 통합하고 있습니다. Gulp에서 Browserify 까지, Ember에서 Meteor까지 공식적인 통합이 있을 것 같은 모든 것을 설정해서 사용할 수 있습니다.
 
-For the purposes of this handbook, we're just going to cover the built-in ways of setting up Babel, but you can also visit the interactive [setup page](http://babeljs.io/docs/setup) for all of the integrations.
+이 핸드북의 목적에 따라 Babel을 구성하는 내장된 방법을 설명하고 있지만 다른 통합에 대해서는 인터렉티브한 [설정 페이지](http://babeljs.io/docs/setup)를 사용할 수도 있습니다.
 
-> **Note:** This guide is going to refer to command line tools like `node` and `npm`. Before continuing any further you should be comfortable with these tools.
+> **Note:** 이 가이드에서는 `node`와 `npm`같은 커맨드라인 도구를 사용합니다. 더 진행하기 전에 이러한 도구에 익숙해 져야 합니다.
 
 ## <a id="toc-babel-cli"></a>`babel-cli`
 
-Babel's CLI is a simple way to compile files with Babel from the command line.
+Babel의 CLI는 커맨드라인에서 Babel로 파일을 컴파일하는 간단한 방법입니다.
 
-Let's first install it globally to learn the basics.
+일단 기본을 배우기 위해 전역으로 설치해 보겠습니다.
 
 ```sh
 $ npm install --global babel-cli
 ```
 
-We can compile our first file like so:
+첫 파일을 다음과 같이 컴파일할 수 있습니다.
 
 ```sh
 $ babel my-file.js
 ```
 
-This will dump the compiled output directly into your terminal. To write it to a file we'll specify an `--out-file` or `-o`.
+터미널에 컴파일된 결과가 바로 나타납니다. 컴파일된 결과를 파일에 쓰려면 `--out-file`나 `-o`을 지정해야 합니다..
 
 ```sh
 $ babel example.js --out-file compiled.js
-# or
+# 또는
 $ babel example.js -o compiled.js
 ```
 
-If we want to compile a whole directory into a new directory we can do so using `--out-dir` or `-d`.
+디렉터리 전체를 새로운 디렉터리로 컴파일하고 싶다면 `--out-dir`나 `-d`를 사용합니다..
 
 ```sh
 $ babel src --out-dir lib
-# or
+# 또는
 $ babel src -d lib
 ```
 
 ### <a id="toc-running-babel-cli-from-within-a-project"></a>프로젝트 내에서 Babel CLI 실행하기
 
-While you *can* install Babel CLI globally on your machine, it's much better to install it **locally** project by project.
+자신의 머신에 Babel CLI를 전역으로 *설치할 수도 있지만* 프로젝트 **내부에** Babel을 설치하는 것이 훨씬 더 좋습니다.
 
-There are two primary reasons for this.
+내부에 설치하는 이유가 두 가지 있습니다.
 
-  1. Different projects on the same machine can depend on different versions of Babel allowing you to update one at a time.
-  2. It means you do not have an implicit dependency on the environment you are working in. Making your project far more portable and easier to setup.
+  1. 같은 머신에서 다른 프로젝트는 다른 버전의 Babel을 사용할 수 있으므로 한번에 하나씩 업데이트 할 수 있습니다.
+  2. 이는 작업하는 환경에 암묵적인 의존성을 갖지 않는다는 의미입니다. 프로젝트를 이식하고 구성하기 쉽게 만드세요.
 
-We can install Babel CLI locally by running:
+다음 명령어로 Babel CLI를 프로젝트 내부에 설치할 수 있습니다.
 
 ```sh
 $ npm install --save-dev babel-cli
 ```
 
-> **Note:** Since it's generally a bad idea to run Babel globally you may want to uninstall the global copy by running:
+> **참고:** 전역에서 Babel을 실행하는 것은 좋지 않은 생각이므로 다음 명령으로 전역에 설치된 Babel을 지울 수 있습니다:
 > 
 > ```sh
 $ npm uninstall --global babel-cli
 ```
 
-After that finishes installing, your `package.json` file should look like this:
+설치가 끝나면, `package.json`이 다음과 같이 표시되어야 합니다:
 
 ```json
 {
@@ -150,9 +150,9 @@ After that finishes installing, your `package.json` file should look like this:
 }
 ```
 
-Now instead of running Babel directly from the command line we're going to put our commands in **npm scripts** which will use our local version.
+이제 CLI에서 Babel을 직접적으로 사용하는 대신, **npm scripts**를 추가하여 로컬 버전의 Babel을 사용하도록 명령어를 추가합니다.
 
-Simply add a `"scripts"` field to your `package.json` and put the babel command inside there as `build`.
+간단히 `package.json`에 `"scripts"` 필드를 추가한 후 `build` 명령어와 같이 Babel 명령어를 추가하세요.
 
 ```diff
   {
@@ -167,74 +167,74 @@ Simply add a `"scripts"` field to your `package.json` and put the babel command 
   }
 ```
 
-Now from our terminal we can run:
+이제 터미널에서 다음을 실행할 수 있습니다:
 
 ```js
 npm run build
 ```
 
-This will run Babel the same way as before, only now we are using a local copy.
+이 명령어는 이전과 같이 Babel을 실행하지만, 로컬에 설치된 Babel을 사용합니다.
 
 ## <a id="toc-babel-register"></a>`babel-register`
 
-The next most common method of running Babel is through `babel-register`. This option will allow you to run Babel just by requiring files, which may integrate with your setup better.
+Babel을 실행하는 또 다른 방법의 하나는 `babel-register`를 사용하는 것입니다. 이 방법을 이용하면 파일을 require하는 것만으로도 Babel을 실행할 수 있어 더 간단하게 설정에 통합할 수 있을 것입니다.
 
-Note that this is not meant for production use. It's considered bad practice to deploy code that gets compiled this way. It is far better to compile ahead of time before deploying. However this works quite well for build scripts or other things that you run locally.
+이는 프로덕션에서 사용할 목적이라는 의미는 아닙니다. 이 방법으로 컴파일되는 코드를 배포하는 것은 좋지 않은 방법입니다. 배포하기 전에 미리 컴파일하는 것이 훨씬 나은 방법입니다. 하지만 빌드 스크립트나 로컬에서 실행하는 다른 작업에서는 아주 잘 동작합니다.
 
-First let's create an `index.js` file in our project.
+먼저 프로젝트에 `index.js`을 생성해 보겠습니다.
 
 ```js
 console.log("Hello world!");
 ```
 
-If we were to run this with `node index.js` this wouldn't be compiled with Babel. So instead of doing that, we'll setup `babel-register`.
+이 파일을 `node index.js`로 실행한다면 Babel로 컴파일되지 않을 것이므로 대신 `babel-register`를 설정해 보겠습니다..
 
-First install `babel-register`.
+먼저 `babel-register`를 설치하세요.
 
 ```sh
 $ npm install --save-dev babel-register
 ```
 
-Next, create a `register.js` file in the project and write the following code:
+그다음 프로젝트에 `register.js` 파일을 생성하고 다음 코드를 작성하세요.
 
 ```js
 require("babel-register");
 require("./index.js");
 ```
 
-What this does is *registers* Babel in Node's module system and begins compiling every file that is `require`'d.
+이 코드는 Node의 모듈 시스템에 Babel을 *등록하고* `require`하는 모든 파일을 컴파일합니다.
 
-Now, instead of running `node index.js` we can use `register.js` instead.
+이제 `node index.js`를 실행하는 대신 `register.js`를 사용할 수 있습니다.
 
 ```sh
 $ node register.js
 ```
 
-> **Note:** You can't register Babel in the same file that you want to compile. As node is executing the file before Babel has a chance to compile it.
+> **Note:** Babel이 코드를 컴파일하기 전에 node가 파일을 실행하므로 컴파일하려는 파일에서 Babel을 등록할 수는 없습니다.
 > 
 > ```js
 require("babel-register");
-// not compiled:
+// 컴파일되지 않음:
 console.log("Hello world!");
 ```
 
 ## <a id="toc-babel-node"></a>`babel-node`
 
-If you are just running some code via the `node` CLI the easiest way to integrate Babel might be to use the `babel-node` CLI which largely is just a drop in replacement for the `node` CLI.
+`node` CLI로 코드를 실행한다면 `node` CLI의 대체물인 `babel-node` CLI를 사용하는 것이 Babel을 통합하는 가장 쉬운 방법입니다.
 
-Note that this is not meant for production use. It's considered bad practice to deploy code that gets compiled this way. It is far better to compile ahead of time before deploying. However this works quite well for build scripts or other things that you run locally.
+이는 프로덕션에서 사용할 목적이라는 의미는 아닙니다. 이 방법으로 컴파일되는 코드를 배포하는 것은 좋지 않은 방법입니다. 배포하기 전에 미리 컴파일하는 것이 훨씬 나은 방법입니다. 하지만 빌드 스크립트나 로컬에서 실행하는 다른 작업에서는 아주 잘 동작합니다.
 
-First make sure that you have `babel-cli` installed.
+일단 `babel-cli`가 설치되었는지 확인합니다.
 
 ```sh
 $ npm install --save-dev babel-cli
 ```
 
-> **Note:** If you are wondering why we are installing this locally, please read the [Running Babel CLI from within a project](#running-babel-cli--from-within-a-project) section above.
+> **Note:** 여기서 왜 로컬에 설치하는지 궁금하다면 앞의 [프로젝트 내에서 Babel CLI 실행하기](#running-babel-cli--from-within-a-project) 부분을 읽어보세요.
 
-Then replace wherever you are running `node` with `babel-node`.
+그 다음 `node`를 사용하는 대신 `babel-node`를 사용하세요..
 
-If you are using npm `scripts` you can simply do:
+npm `scripts`를 사용한다면 다음과 같이 설정할 수 있습니다.
 
 ```diff
   {
@@ -245,20 +245,20 @@ If you are using npm `scripts` you can simply do:
   }
 ```
 
-Otherwise you'll need to write out the path to `babel-node` itself.
+아니면 `babel-node`의 경로를 적어주어야 합니다.
 
 ```diff
 - node script.js
 + ./node_modules/.bin/babel-node script.js
 ```
 
-> Tip: You can also use [`npm-run`](https://www.npmjs.com/package/npm-run).
+> Tip: [`npm-run`](https://www.npmjs.com/package/npm-run)을 사용할 수도 있습니다..
 
 ## <a id="toc-babel-core"></a>`babel-core`
 
-If you need to use Babel programmatically for some reason, you can use the `babel-core` package itself.
+만약 어떠한 이유로 Babel을 프로그래밍 방식으로 사용해야 하는 경우, `babel-core` 패키지 자체를 사용할 수도 있습니다.
 
-First install `babel-core`.
+먼저 `babel-core`를 설치합니다.
 
 ```sh
 $ npm install babel-core
@@ -268,14 +268,14 @@ $ npm install babel-core
 var babel = require("babel-core");
 ```
 
-If you have a string of JavaScript you can compile it directly using `babel.transform`.
+만약 JavaScript 문자열이 있는 경우 `babel.transform`를 통해 바로 컴파일 할 수 있습니다..
 
 ```js
 babel.transform("code();", options);
 // => { code, map, ast }
 ```
 
-If you are working with files you can use either the asynchronous api:
+만약 파일로 작업하고 있다면 비동기 api와 함께 사용할 수 있습니다:
 
 ```js
 babel.transformFile("filename.js", options, function(err, result) {
@@ -283,37 +283,37 @@ babel.transformFile("filename.js", options, function(err, result) {
 });
 ```
 
-Or the synchronous api:
+또는 동기 api를 사용할 수도 있습니다:
 
 ```js
 babel.transformFileSync("filename.js", options);
 // => { code, map, ast }
 ```
 
-If you already have a Babel AST for whatever reason you may transform from the AST directly.
+만약 어떠한 이유로 이미 Babel AST를 가지고 있다면 AST를 통해 직접 변환할 수 있습니다.
 
 ```js
 babel.transformFromAst(ast, code, options);
 // => { code, map, ast }
 ```
 
-For all of the above methods, `options` refers to http://babeljs.io/docs/usage/options/.
+위의 모든 메서드에서 사용할 수 있는, `options`에 대한 내용은 http://babeljs.io/docs/usage/options/에서 찾아볼 수 있습니다.
 
 * * *
 
-# <a id="toc-configuring-babel"></a>Babel 컨픽 작성하기
+# <a id="toc-configuring-babel"></a>Babel 설정 파일 작성하기
 
-You may have noticed by now that running Babel on its own doesn't seem to do anything other than copy JavaScript files from one location to another.
+아마 Babel을 실행했을 때 JavaScript 파일들을 다른 경로로 복사하는 것 말고는 아무 일도 하지 않는다는 것을 눈치챘을 겁니다.
 
-This is because we haven't told Babel to do anything yet.
+이는 아직 Babel에게 할 일을 아무것도 주지 않았기 때문입니다.
 
-> Since Babel is a general purpose compiler that gets used in a myriad of different ways, it doesn't do anything by default. You have to explicitly tell Babel what it should be doing.
+> Babel이 범용 컴파일러가 된 이후부터 무수히 많은 용도로 쓰이게 되었으나 기본적으론 아무 일도 하지 않습니다. 따라서 명시적으로 Babel에게 할 일을 알려주어야 합니다.
 
-You can give Babel instructions on what to do by installing **plugins** or **presets** (groups of plugins).
+**플러그인** 또는 **프리셋** (플러그인 모음)을 설치함으로써 Babel에게 지시를 내릴 수 있습니다.
 
 ## <a id="toc-babelrc"></a>`.babelrc`
 
-Before we start telling Babel what to do. We need to create a configuration file. All you need to do is create a `.babelrc` file at the root of your project. Start off with it like this:
+Babel에게 무엇을 해야 하는지 지시하기 전에, 파일을 하나 만들어야 합니다. 작업하기 전에 가장 먼저 할 것은 프로젝트의 루트에 `.babelrc` 파일을 만드는 것입니다. 다음과 같이 작성합니다:
 
 ```js
 {
@@ -322,21 +322,21 @@ Before we start telling Babel what to do. We need to create a configuration file
 }
 ```
 
-This file is how you configure Babel to do what you want.
+이 파일은 Babel이 어떤 작업을 해야 할 지 구성합니다.
 
-> **Note:** While you can also pass options to Babel in other ways the `.babelrc` file is convention and is the best way.
+> **참고:** 또한 `.babelrc`에서 Babel에 옵션을 전달할 수도 있으며 가장 좋은 방법입니다.
 
 ## <a id="toc-babel-preset-es2015"></a>`babel-preset-es2015`
 
-Let's start by telling Babel to compile ES2015 (the newest version of the JavaScript standard, also known as ES6) to ES5 (the version available in most JavaScript environments today).
+이제 Babel에게 ES2015 (ES6으로 알려진 새로운 버전의 JavaScript 표준)를 ES5 (현대 대부분의 환경이 실행할 수 있는 JavaScript 버전)로 컴파일하도록 지시해봅시다.
 
-We'll do this by installing the "es2015" Babel preset:
+위 커맨드는 "es2015" Babel 프리셋을 설치할 것입니다:
 
 ```sh
 $ npm install --save-dev babel-preset-es2015
 ```
 
-Next we'll modify our `.babelrc` to include that preset.
+다음은 `.babelrc`가 프리셋을 포함하도록 수정합니다.
 
 ```diff
   {
@@ -349,13 +349,13 @@ Next we'll modify our `.babelrc` to include that preset.
 
 ## <a id="toc-babel-preset-react"></a>`babel-preset-react`
 
-Setting up React is just as easy. Just install the preset:
+React를 설정하는 것은 매우 쉽습니다. 그저 프리셋을 설치하고:
 
 ```sh
 $ npm install --save-dev babel-preset-react
 ```
 
-Then add the preset to your `.babelrc` file:
+`.babelrc` 파일에 프리셋을 추가합니다:
 
 ```diff
   {
@@ -369,28 +369,28 @@ Then add the preset to your `.babelrc` file:
 
 ## <a id="toc-babel-preset-stage-x"></a>`babel-preset-stage-x`
 
-JavaScript also has some proposals that are making their way into the standard through the TC39's (the technical committee behind the ECMAScript standard) process.
+자바스크립트는 표준으로 만들기 위한 몇 가지 제안 사항을 가지고 있고 TC39의 진행 상황에 따라 표준이 제정됩니다. (ECMAScript 표준 기술 위원회)
 
-This process is broken through a 5 stage (0-4) process. As proposals gain more traction and are more likely to be accepted into the standard they proceed through the various stages, finally being accepted into the standard at stage 4.
+이 과정은 5 스테이지 (0-4) 로 진행됩니다. 제안은 어느 정도의 호응과 함께 표준이 되어야 한다고 판단되면 스테이지에 따라 표준화 작업을 진행합니다. 최종 표준으로 받아들여질 제안은 stage 4에 위치됩니다.
 
-These are bundled in babel as 4 different presets:
+Babel에선 다음 4가지 프리셋으로 번들되어 있습니다:
 
   * `babel-preset-stage-0`
   * `babel-preset-stage-1`
   * `babel-preset-stage-2`
   * `babel-preset-stage-3`
 
-> Note that there is no stage-4 preset as it is simply the `es2015` preset above.
+> stage-4 프리셋은 단순히 `es2015`이며 따로 프리셋이 존재하진 않습니다.
 
-Each of these presets requires the preset for the later stages. i.e. `babel-preset-stage-1` requires `babel-preset-stage-2` which requires `babel-preset-stage-3`.
+각 프리셋들은 이후의 프리셋을 자동으로 포함합니다. 즉, `babel-preset-stage-1`은 `babel-preset-stage-2`를 포함하며 다시 이 프리셋은 `babel-preset-stage-3`를 포함합니다.
 
-Simply install the stage you are interested in using:
+관심이 있다면 단순히 다음과 같이 원하는 스테이지를 설치합니다:
 
 ```sh
 $ npm install --save-dev babel-preset-stage-2
 ```
 
-Then you can add it to your `.babelrc` config.
+그런 다음 `.babelrc` 설정에 추가할 수 있습니다.
 
 ```diff
   {
@@ -407,13 +407,13 @@ Then you can add it to your `.babelrc` config.
 
 # <a id="toc-executing-babel-generated-code"></a>Babel로 생성된 코드 실행하기
 
-So you've compiled your code with Babel, but this is not the end of the story.
+그래서 일단 Babel로 코드를 컴파일 했습니다, 하지만 아직 끝나지 않았습니다.
 
 ## <a id="toc-babel-polyfill"></a>`babel-polyfill`
 
-Almost all futuristic JavaScript syntax can be compiled with Babel, but the same is not true for APIs.
+거의 모든 미래적인 JavaScript 문법은 Babel로 컴파일할 수 있습니다. 하지만 API는 그렇지 않습니다.
 
-For example, the following code has an arrow function that needs to be compiled:
+예를 들어, 다음 코드는 화살표 함수를 포함하고 있고 컴파일되어야 합니다:
 
 ```js
 function addAll() {
@@ -421,7 +421,7 @@ function addAll() {
 }
 ```
 
-Which turns into this:
+위 코드는 다음과 같이 변환됩니다:
 
 ```js
 function addAll() {
@@ -431,22 +431,22 @@ function addAll() {
 }
 ```
 
-However, this still won't work everywhere because `Array.from` doesn't exist in every JavaScript environment.
+그러나, 모든 JavaScript 환경에 `Array.from`가 있지 않기 때문에 여전히 어디서나 작동하진 않을 것입니다.
 
     Uncaught TypeError: Array.from is not a function
     
 
-To solve this problem we use something called a [Polyfill](https://remysharp.com/2010/10/08/what-is-a-polyfill). Simply put, a polyfill is a piece of code that replicates a native api that does not exist in the current runtime. Allowing you to use APIs such as `Array.from` before they are available.
+이러한 문제는 [Polyfill](https://remysharp.com/2010/10/08/what-is-a-polyfill)을 사용함으로써 해결할 수 있습니다. 간단히 설명하자면, polyfill은 현재 런타임에 존재하지 않는 네이티브 API를 흉내내는 코드입니다. 이로써 `Array.from` 같은 API들을 환경의 지원에 상관없이 언제나 사용할 수 있습니다.
 
-Babel uses the excellent [core-js](https://github.com/zloirock/core-js) as its polyfill, along with a customized [regenerator](https://github.com/facebook/regenerator) runtime for getting generators and async functions working.
+Babel은 우수한 [core-js](https://github.com/zloirock/core-js)를 polyfill로 사용하고, 생성기와 async 함수가 작동할 수 있도록 약간 변경한 [regenerator](https://github.com/facebook/regenerator) 런타임을 사용합니다.
 
-To include the Babel polyfill, first install it with npm:
+Babel polyfill을 포함하려면, 먼저 npm으로 설치합니다:
 
 ```sh
 $ npm install --save babel-polyfill
 ```
 
-Then simply include the polyfill at the top of any file that requires it:
+그리고 간단히 어떤 파일의 가장 상단에 다음 코드를 추가합니다:
 
 ```js
 import "babel-polyfill";
@@ -454,18 +454,18 @@ import "babel-polyfill";
 
 ## <a id="toc-babel-runtime"></a>`babel-runtime`
 
-In order to implement details of ECMAScript specs, Babel will use "helper" methods in order to keep the generated code clean.
+ECMAScript 스팩의 상세 구현을 따르기 위함과 동시에 생성되는 코드를 깨끗하게 유지하기 위해, Babel은 "helper" 메서드를 사용할 것입니다.
 
-Since these helpers can get pretty long, and they get added to the top of every file you can move them into a single "runtime" which gets required.
+이러한 헬퍼 코드는 상당히 길고 매 파일 위에 삽입되어야 하기 때문에, 필요하다면 단일 "runtime"으로 모든 헬퍼 코드를 옮길 수 있습니다.
 
-Start by installing `babel-plugin-transform-runtime` and `babel-runtime`:
+먼저 `babel-plugin-transform-runtime`과 `babel-runtime`을 설치합니다:
 
 ```sh
 $ npm install --save-dev babel-plugin-transform-runtime
 $ npm install --save babel-runtime
 ```
 
-Then update your `.babelrc`:
+그리고 `.babelrc`를 수정하세요:
 
 ```diff
   {
@@ -476,7 +476,7 @@ Then update your `.babelrc`:
   }
 ```
 
-Now Babel will compile code like the following:
+이제 Babel은 다음 코드를:
 
 ```js
 class Foo {
@@ -484,7 +484,7 @@ class Foo {
 }
 ```
 
-Into this:
+다음과 같이 컴파일할 것입니다:
 
 ```js
 import _classCallCheck from "babel-runtime/helpers/classCallCheck";
@@ -504,25 +504,25 @@ let Foo = function () {
 }();
 ```
 
-Rather than putting the `_classCallCheck` and `_createClass` helpers in every single file where they are needed.
+필요할 때마다 매 파일에 `_classCallCheck`와 `_createClass` 헬퍼를 삽입하는 대신 위와 같이 런타임 헬퍼를 사용하는 것으로 변경됩니다.
 
 * * *
 
-# <a id="toc-configuring-babel-advanced"></a>Babel 컨픽 작성하기 (고급)
+# <a id="toc-configuring-babel-advanced"></a>Babel 설정 파일 작성하기 (고급)
 
-Most people can get by using Babel with just the built-in presets, but Babel exposes much finer-grained power than that.
+대부분의 사람들은 Babel과 빌트인 프리셋만을 사용합니다. 하지만 Babel은 더 세분화된 작업을 할 수 있습니다.
 
 ## <a id="toc-manually-specifying-plugins"></a>수동으로 플러그인 지정하기
 
-Babel presets are simply collections of pre-configured plugins, if you want to do something differently you manually specify plugins. This works almost exactly the same way as presets.
+Babel 프리셋은 미리 구성된 플러그인들의 집합입니다. 만약 플러그인을 특정하여 다른 작업을 하고 싶다면, 프리셋과 거의 정확히 같은 방식으로 작동합니다.
 
-First install a plugin:
+먼저 플러그인을 설치합니다:
 
 ```sh
 $ npm install --save-dev babel-plugin-transform-es2015-classes
 ```
 
-Then add the `plugins` field to your `.babelrc`.
+그리고 `.babelrc`의 `plugins` 필드에 추가합니다.
 
 ```diff
   {
@@ -532,17 +532,17 @@ Then add the `plugins` field to your `.babelrc`.
   }
 ```
 
-This gives you much finer grained control over the exact transforms you are running.
+이는 세분화된 트랜스폼을 통해 세밀한 작업을 할 수 있게 해줍니다.
 
-For a full list of official plugins see the [Babel Plugins page](http://babeljs.io/docs/plugins/).
+전체 공식 플러그인 리스트는 [Babel Plugins 페이지](http://babeljs.io/docs/plugins/)에서 확인할 수 있습니다.
 
-Also take a look at all the plugins that have been [built by the community](https://www.npmjs.com/search?q=babel-plugin). If you would like to learn how to write your own plugin read the [Babel Plugin Handbook](plugin-handbook.md).
+또한 이미 [커뮤니티에 의해 만들어진](https://www.npmjs.com/search?q=babel-plugin) 모든 플러그인을 사용할 수도 있습니다. 만약 자신만의 플러그인을 작성하는 방법을 배우고 싶다면 [Babel Plugin Handbook](plugin-handbook.md)을 읽으세요..
 
 ## <a id="toc-plugin-options"></a>플러그인 옵션
 
-Many plugins also have options to configure them to behave differently. For example, many transforms have a "loose" mode which drops some spec behavior in favor of simpler and more performant generated code.
+또한 많은 플러그인들이 다르게 동작 하도록 구성할 수 있는 옵션을 가지고 있습니다. 예를 들면, 많은 트랜스폼이 일부 스펙을 지키지 않는 대신 생성되는 코드의 성능을 개선하고 단순하게 만드는 "loose" 모드를 가지고 있습니다.
 
-To add options to a plugin, simply make the following change:
+플러그인에 옵션을 추가하려면, 간단히 설정을 다음과 같이 변경하면 됩니다:
 
 ```diff
   {
@@ -553,13 +553,13 @@ To add options to a plugin, simply make the following change:
   }
 ```
 
-> I'll be working on updates to the plugin documentation to detail every option in the coming weeks. [Follow me for updates](https://twitter.com/thejameskyle).
+> 앞으로 몇 주 내로 모든 플러그인 옵션의 상세 사항을 포함하도록 플러그인 문서를 업데이트할 예정입니다. [업데이트 소식을 얻으려면 팔로우](https://twitter.com/thejameskyle).
 
 ## <a id="toc-customizing-babel-based-on-environment"></a>환경에 따른 Babel 커스터마이징
 
-Babel plugins solve many different tasks. Many of them are development tools that can help you debugging your code or integrate with tools. There are also a lot of plugins that are meant for optimizing your code in production.
+Babel 플러그인은 많은 다른 작업을 해결합니다. 대부분의 경우는 개발 툴이며 코드를 디버깅하거나 다른 툴과 통합할 수 있도록 도와줍니다. 또한 실제 프로덕션 코드를 위한 수 많은 최적화 플러그인도 많이 있습니다.
 
-For this reason, it is common to want Babel configuration based on the environment. You can do this easily with your `.babelrc` file.
+이러한 이유로 인해 Babel을 환경에 따라 구성을 변경하려 하는 것이 일반적입니다. `.babelrc`에서 쉽게 할 수 있습니다.
 
 ```diff
   {
@@ -576,9 +576,9 @@ For this reason, it is common to want Babel configuration based on the environme
   }
 ```
 
-Babel will enable configuration inside of `env` based on the current environment.
+Babel은 현재 환경에 따라 `env` 내에 정의된 구성을 활성화 할 것입니다.
 
-The current environment will use `process.env.BABEL_ENV`. When `BABEL_ENV` is not available, it will fallback to `NODE_ENV`, and if that is not available it will default to `"development"`.
+현재 환경은 `process.env.BABEL_ENV` 변수를 사용합니다. `BABEL_ENV`를 사용할 수 없다면, `NODE_ENV`를 대신 사용합니다. 만약 둘 다 사용할 수 없다면 기본으로 `"development"`가 지정됩니다..
 
 **Unix**
 
@@ -594,17 +594,17 @@ $ SET BABEL_ENV=production
 $ [COMMAND]
 ```
 
-> **Note:** `[COMMAND]` is whatever you use to run Babel (ie. `babel`, `babel-node`, or maybe just `node` if you are using the register hook).
+> **참고:** `[COMMAND]`는 Babel을 실행하기 위한 명령어입니다. (ie. `babel`, `babel-node`, 또는 register 훅을 사용할 경우 그냥 `node`)
 > 
-> **Tip:** If you want your command to work across unix and windows platforms then use [`cross-env`](https://www.npmjs.com/package/cross-env).
+> **Tip:** 만약 명령어가 unix와 windows 플랫폼에서 모두 작동하도록 하고 싶다면 [`cross-env`](https://www.npmjs.com/package/cross-env)를 사용하세요..
 
 ## <a id="toc-making-your-own-preset"></a>나만의 프리셋 만들기
 
-Manually specifying plugins? Plugin options? Environment-based settings? All this configuration might seem like a ton of repetition for all of your projects.
+직접 플러그인과 플러그인 옵션, 환경에 따른 설정을 지정하는 경우 모든 설정 과정이 프로젝트마다 되풀이되는 것을 느낄 것입니다.
 
-For this reason, we encourage the community to create their own presets. This could be a preset for the specific [node version](https://github.com/leebenson/babel-preset-node5) you are running, or maybe a preset for your [entire](https://github.com/cloudflare/babel-preset-cf) [company](https://github.com/airbnb/babel-preset-airbnb).
+이러한 이유로, 우리는 커뮤니티가 용도에 맞는 프리셋을 직접 만드는 것을 권장합니다. 이는 실행하고 있는 [node 버전](https://github.com/leebenson/babel-preset-node5)에 대해 특정되거나 [전적](https://github.com/cloudflare/babel-preset-cf)으로 [회사](https://github.com/airbnb/babel-preset-airbnb)에 관련된 프리셋이 될 수 있습니다..
 
-It's easy to create a preset. Say you have this `.babelrc` file:
+프리셋을 만드는 것은 간단합니다. 다음과 같은 `.babelrc`를 프리셋으로 만드려면:
 
 ```js
 {
@@ -618,9 +618,9 @@ It's easy to create a preset. Say you have this `.babelrc` file:
 }
 ```
 
-All you need to do is create a new project following the naming convention `babel-preset-*` (please be responsible with this namespace), and create two files.
+프리셋을 만들기 위해 해야 할 일은 단지 새 프로젝트를 만들고 `babel-preset-*`과 같은 명명법을 따르는 것 입니다. (네임 스페이스를 만들었다면 꼭 책임을 지시기 바랍니다) 그리고 두 개의 파일을 생성합니다.
 
-First, create a new `package.json` file with the necessary `dependencies` for your preset.
+먼저, 새 `package.json` 파일을 만든 후 프리셋에서 요구하는 `종속성`들을 설치합니다.
 
 ```js
 {
@@ -635,7 +635,7 @@ First, create a new `package.json` file with the necessary `dependencies` for yo
 }
 ```
 
-Then create an `index.js` file that exports the contents of your `.babelrc` file, replacing plugin/preset strings with `require` calls.
+그리고 `index.js` 파일을 생성한 후 `.babelrc`의 내용을 export하도록 만들고 플러그인/프리셋 문자열을 `require` 호출로 바꿉니다.
 
 ```js
 module.exports = {
@@ -649,31 +649,31 @@ module.exports = {
 };
 ```
 
-Then simply publish this to npm and you can use it like you would any preset.
+그리고 간단히 npm에 배포하면 이 프리셋을 원하는 곳에 사용할 수 있습니다.
 
 * * *
 
 # <a id="toc-babel-and-other-tools"></a>Babel과 기타 도구들
 
-Babel is pretty straight forward to setup once you get the hang of it, but it can be rather difficult navigating how to set it up with other tools. However, we try to work closely with other projects in order to make the experience as easy as possible.
+Babel은 설치 방법이 아주 직관적입니다. 하지만 다른 툴과 함께 사용하는 경우라면 설정하는 방법을 탐색하는 것이 어려울 수 있습니다. 그러나, 우리는 다른 프로젝트와의 운용을 쉽게 만들기 위해 가능한 한 가깝게 만들고 있습니다.
 
 ## <a id="toc-static-analysis-tools"></a>정적 분석 도구
 
-Newer standards bring a lot of new syntax to the language and static analysis tools are just starting to take advantage of it.
+새로운 표준은 언어로 수 많은 새 문법을 가져오고 있으며 정적 분석 도구는 이를 그대로 활용합니다.
 
 ### <a id="toc-linting"></a>코드 검사기 (Linter)
 
-One of the most popular tools for linting is [ESLint](http://eslint.org), because of this we maintain an official [`babel-eslint`](https://github.com/babel/babel-eslint) integration.
+코드 검사 도구 중 가장 인기있는 도구는 [ESLint](http://eslint.org)이며, 이에 따라 공식적으로 [`babel-eslint`](https://github.com/babel/babel-eslint)를 제공하고 있습니다.
 
-First install `eslint` and `babel-eslint`.
+먼저 `eslint`와 `babel-eslint`를 설치합니다.
 
 ```sh
 $ npm install --save-dev eslint babel-eslint
 ```
 
-> **Note:** `babel-eslint` compatibility with Babel 6 is currently in a pre-release version. Install the [latest](https://github.com/babel/babel-eslint/releases) 5.0 beta in order to use it with Babel 6.
+> **참고:** `babel-eslint`와 Babel 6의 호환성은 현재 프리 릴리즈 버전입니다. Babel 6와 함께 사용하려면 가장 [최신](https://github.com/babel/babel-eslint/releases) 버전을 설치해야 합니다.
 
-Next create or use the existing `.eslintrc` file in your project and set the `parser` as `babel-eslint`.
+그 다음 프로젝트에 새 `.eslintrc` 파일을 만들거나 이미 존재하는 설정에서 `파서`로 `babel-eslint`를 사용하도록 설정합니다.
 
 ```diff
   {
@@ -684,7 +684,7 @@ Next create or use the existing `.eslintrc` file in your project and set the `pa
   }
 ```
 
-Now add a `lint` task to your npm `package.json` scripts:
+이제 `package.json`의 스크립트에 `lint` 작업을 추가합니다:
 
 ```diff
   {
@@ -699,24 +699,24 @@ Now add a `lint` task to your npm `package.json` scripts:
   }
 ```
 
-Then just run the task and you will be all setup.
+그리고 작업을 실행하면 모든 설정이 완료됩니다.
 
 ```sh
 $ npm run lint
 ```
 
-For more information consult the [`babel-eslint`](https://github.com/babel/babel-eslint) or [`eslint`](http://eslint.org) documentation.
+더 자세한 사항은 [`babel-eslint`](https://github.com/babel/babel-eslint) 또는 [`eslint`](http://eslint.org) 문서를 참고하세요.
 
 ### <a id="toc-code-style"></a>코드 스타일
 
-JSCS is an extremely popular tool for taking linting a step further into checking the style of the code itself. A core maintainer of both the Babel and JSCS projects ([@hzoo](https://github.com/hzoo)) maintains an official integration with JSCS.
+JSCS는 코드 검사의 추가 단계에 있어서 코딩 스타일 자체를 점검하는 매우 인기 있는 코드 검사 도구입니다. Babel과 JSCS 프로젝트의 핵심 관리자 ([@hzoo](https://github.com/hzoo))는 공식적으로 JSCS와의 통합을 제공하고 있습니다.
 
-Even better, this integration now lives within JSCS itself under the `--esnext` option. So integrating Babel is as easy as:
+더 나은 방법으로는, JSCS 자체의 `--esnext` 옵션을 통해 쉽게 Babel과 통합하는 방법도 있습니다:
 
     $ jscs . --esnext
     
 
-From the cli, or adding the `esnext` option to your `.jscsrc` file.
+CLI에서 실행하거나 `.jscsrc` 파일에 `esnext` 옵션을 추가해도 됩니다.
 
 ```diff
   {
@@ -725,7 +725,7 @@ From the cli, or adding the `esnext` option to your `.jscsrc` file.
   }
 ```
 
-For more information consult the [`babel-jscs`](https://github.com/jscs-dev/babel-jscs) or [`jscs`](http://jscs.info) documentation.
+더 자세한 정보는 [`babel-jscs`](https://github.com/jscs-dev/babel-jscs) 또는 [`jscs`](http://jscs.info) 문서를 참고하세요.
 
 <!--
 ### Code Coverage
@@ -778,19 +778,19 @@ Introducing ES2015, JSX, and Flow syntax with Babel can be helpful, but if your 
 
 # <a id="toc-babel-support"></a>Babel 지원
 
-Babel has a very large and quickly growing community, as we grow we want to ensure that people have all the resources they need to be successful. So we provide a number of different channels for getting support.
+Babel은 아주 크고 빠르게 성장하는 커뮤니티를 가지고 있으며, 성장하면서 사람들이 확실히 원하는 리소스를 성공적으로 얻을 수 있도록 도움을 주기 위해 노력하고 있습니다. 그래서 우리는 지원을 위해 서로 다른 채널을 제공하고 있습니다.
 
-Remember that across all of these communities we enforce a [Code of Conduct](https://github.com/babel/babel/blob/master/CODE_OF_CONDUCT.md). If you break the Code of Conduct, action will be taken. So please read it and be conscious of it when interacting with others.
+참고로 모든 커뮤니티는 [행동 강령](https://github.com/babel/babel/blob/master/CODE_OF_CONDUCT.md)을 적용받는다는 것을 기억하세요. 만약 행동 강령을 어길 경우, 조치가 취해질 것입니다. 따라서 위 문서를 읽고 다른 이들과 상호작용할 때 유의하시기 바랍니다.
 
-We are also looking to grow a self-supporting community, for people who stick around and support others. If you find someone asking a question you know the answer to, take a few minutes and help them out. Try your best to be kind and understanding when doing so.
+우리는 사람들이 커뮤니티에 머무르며 다른 사람에게 지원하는, 자체적인 지원을 하는 커뮤니티를 목표로 하고 있습니다. 만약 다른 이들이 질문하고 있고 스스로가 이 질문에 대한 답을 안다면, 약간의 시간을 들여 그들을 도와주세요. 최대한 친절하고 이해하려 노력해주세요.
 
 ## <a id="toc-babel-forum"></a>Babel 포럼
 
-[Discourse](http://www.discourse.org) has provided us with a hosted version of their forum software for free (and we love them for it!). If forums are your thing please stop by [discuss.babeljs.io](https://discuss.babeljs.io).
+[Discourse](http://www.discourse.org)는 호스팅 버전의 포럼 소프트웨어를 무료로 우리에게 제공하고 있습니다. (그리고 우리는 그들을 매우 사랑합니다!) 만약 포럼에 볼일이 있다면 [discuss.babeljs.io](https://discuss.babeljs.io)에 들러주세요..
 
 ## <a id="toc-babel-chat"></a>Babel 채팅
 
-Everyone loves [Slack](https://slack.com). If you're looking for immediate support from the community then come chat with us at [slack.babeljs.io](https://slack.babeljs.io).
+모두가 [Slack](https://slack.com)을 사랑합니다. 만약 즉각적인 커뮤니티 지원을 알아보고 있다면 [slack.babeljs.io](https://slack.babeljs.io)에 참여하여 도움을 요청하세요.
 
 <!--
 ## Babel Stack Overflow
@@ -800,21 +800,21 @@ Everyone loves [Slack](https://slack.com). If you're looking for immediate suppo
 
 ## <a id="toc-babel-issues"></a>Babel 이슈
 
-Babel uses the awesome issue tracker provided by [Phabricator](http://phabricator.org) an open source software development platform that makes GitHub issues a nightmare of the past.
+Babel은 GitHub를 과거의 악몽으로 만들 정도인 놀라운 오픈 소스 개발 플랫폼 [Phabricator](http://phabricator.org)가 제공하는 이슈 트레커를 사용하고 있습니다.
 
-Babel's Phabricator is available at [phabricator.babeljs.io](https://phabricator.babeljs.io). You can see all the open and closed issues on [maniphest](https://phabricator.babeljs.io/maniphest/).
+Babel의 Phabricator는 [phabricator.babeljs.io](https://phabricator.babeljs.io)에서 사용할 수 있습니다. [maniphest](https://phabricator.babeljs.io/maniphest/)에서 모든 열렸거나 닫힌 이슈를 확인할 수 있습니다.
 
-If you want to open a new issue:
+만약 새로운 이슈를 만들고 싶다면:
 
-  * [Search for an existing issue](https://phabricator.babeljs.io/maniphest/query/advanced/)
-  * [Login](https://phabricator.babeljs.io/auth/start/) or [Create an account](https://phabricator.babeljs.io/auth/register/) (You can also login using GitHub, Facebook, Twitter, Google, etc.)
-  * [Create a new bug report](https://phabricator.babeljs.io/maniphest/task/create/?projects=PHID-PROJ-2ufzspoyuk4udiwfnzls#R) or [request a new feature](https://phabricator.babeljs.io/maniphest/task/create/?projects=PHID-PROJ-dfaevtocl5zgjtstjijd#R)
+  * [먼저 해당 이슈가 이미 있는지 검색하세요](https://phabricator.babeljs.io/maniphest/query/advanced/)
+  * [로그인](https://phabricator.babeljs.io/auth/start/)하거나 [새 계정](https://phabricator.babeljs.io/auth/register/)을 만듭니다 (GitHub, Facebook, Twitter, Google, 등을 통해 로그인할 수도 있습니다)
+  * [새 버그 이슈를 생성](https://phabricator.babeljs.io/maniphest/task/create/?projects=PHID-PROJ-2ufzspoyuk4udiwfnzls#R)하거나 [새 기능을 요청](https://phabricator.babeljs.io/maniphest/task/create/?projects=PHID-PROJ-dfaevtocl5zgjtstjijd#R)합니다
 
-### <a id="toc-creating-an-awesome-babel-bug-report"></a>멋진 Babel 버그 리포트 생성
+### <a id="toc-creating-an-awesome-babel-bug-report"></a>멋진 Babel 버그 보고 생성
 
-Babel issues can sometimes be very difficult to debug remotely, so we need all the help we can get. Spending a few more minutes crafting a really nice bug report can help get your problem solved significantly faster.
+가끔 Babel의 이슈는 원격으로 디버깅하기 상당히 어려울 때가 있습니다, 따라서 우리는 가능한 한 모든 도움을 받아야 합니다. 약간의 시간을 들여 정말 멋진 버그 리포트를 작성하여 개시한다면 해당 문제가 빠르게 해결되는 데 큰 도움이 됩니다.
 
-First, try isolating your problem. It's extremely unlikely that every part of your setup is contributing to the problem. If your problem is a piece of input code, try deleting as much code as possible that still causes an issue.
+첫째, 문제를 고립시킵니다. 설치 과정이 문제의 모든 부분에서 영향을 미치고 있을 가능성이 큽니다. 만약 문제가 코드내에 있다면, 같은 문제가 발생하도록 최대한 코드를 줄여주세요.
 
 > [WIP]
 

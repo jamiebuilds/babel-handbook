@@ -4,7 +4,7 @@
 
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
-This handbook is available in other languages, see the [README](/README.md) for a complete list.
+이 핸드북은 다른 언어로도 볼 수 있습니다. 전체 목록은 [README](/README.md)를 참고하세요.
 
 # 목차
 
@@ -35,7 +35,7 @@ This handbook is available in other languages, see the [README](/README.md) for 
       * [babel-generator](#toc-babel-generator)
       * [babel-template](#toc-babel-template)
   * [첫 Babel 플러그인 작성](#toc-writing-your-first-babel-plugin)
-  * [Transformation Operations](#toc-transformation-operations) 
+  * [변환 작업](#toc-transformation-operations) 
       * [Visiting](#toc-visiting)
       * [Check if a node is a certain type](#toc-check-if-a-node-is-a-certain-type)
       * [Check if an identifier is referenced](#toc-check-if-an-identifier-is-referenced)
@@ -1113,7 +1113,7 @@ Awesome! Our very first Babel plugin.
 
 * * *
 
-# <a id="toc-transformation-operations"></a>Transformation Operations
+# <a id="toc-transformation-operations"></a>변환 작업
 
 ## <a id="toc-visiting"></a>Visiting
 
