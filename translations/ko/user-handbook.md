@@ -735,23 +735,23 @@ CLI에서 실행하거나 `.jscsrc` 파일에 `esnext` 옵션을 추가해도 �
 
 ### <a id="toc-documentation"></a>문서
 
-Using Babel, ES2015, and Flow you can infer a lot about your code. Using [documentation.js](http://documentation.js.org) you can generate detailed API documentation very easily.
+Babel, ES2015, Flow를 사용함으로써 코드의 많은 부분을 추론할 수 있습니다. [documentation.js](http://documentation.js.org)를 사용하면 자세한 API 문서를 쉽게 생성할 수 있습니다.
 
-Documentation.js uses Babel behind the scenes to support all of the latest syntax including Flow annotations in order to declare the types in your code.
+Documentation.js는 Flow 표기법이 코드 내에서 타입을 정의함과 동시에 최신의 문법을 지원하기 위해 내부적으로 Babel을 사용합니다.
 
 ## <a id="toc-frameworks"></a>프레임워크
 
-All of the major JavaScript frameworks are now focused on aligning their APIs around the future of the language. Because of this, there has been a lot of work going into the tooling.
+모든 주요 JavaScript 프레임워크의 API들은 이제 언어의 미래를 향해 초점이 맞춰졌습니다. 이 때문에 툴링에 많은 일이 진행되고 있습니다.
 
-Frameworks have the opportunity not just to use Babel but to extend it in ways that improve their users' experience.
+프레임워크들은 Babel을 사용하는 것뿐만 아니라 확장하여 사용자 경험을 더 강화할 기회가 있습니다.
 
 ### <a id="toc-react"></a>React
 
-React has dramatically changed their API to align with ES2015 classes ([Read about the updated API here](https://babeljs.io/blog/2015/06/07/react-on-es6-plus)). Even further, React relies on Babel to compile it's JSX syntax, deprecating it's own custom tooling in favor of Babel. You can start by setting up the `babel-preset-react` package following the [instructions above](#babel-preset-react).
+React는 극적으로 ES2015의 클래스에 맞춰 API를 변경했습니다. ([업데이트된 API는 이곳에서 확인](https://babeljs.io/blog/2015/06/07/react-on-es6-plus)) 더욱이, React는 JSX 구문의 컴파일을 Babel에 의존하며 Babel을 사용함으로써 그들의 커스텀 툴의 사용을 반대합니다. `babel-preset-react` 패키지와 함께 [위의 절차](#babel-preset-react)에 따라 시작할 수 있습니다..
 
-The React community took Babel and ran with it. There are now a number of transforms [built by the community](https://www.npmjs.com/search?q=babel-plugin+react).
+React 커뮤니티는 Babel과 함께 성장합니다. [커뮤니티에 의해 만들어진](https://www.npmjs.com/search?q=babel-plugin+react) 트랜스폼의 개수가 상당해졌습니다..
 
-Most notably the [`babel-plugin-react-transform`](https://github.com/gaearon/babel-plugin-react-transform) plugin which combined with a number of [React-specific transforms](https://github.com/gaearon/babel-plugin-react-transform#transforms) can enable things like *hot module reloading* and other debugging utilities.
+가장 주목할 것은 몇 가지의 [React-specific transforms](https://github.com/gaearon/babel-plugin-react-transform#transforms)과 함께 *hot module reloading* 그리고 디버깅 유틸리티를 활성화 시킬 수 있는 [`babel-plugin-react-transform`](https://github.com/gaearon/babel-plugin-react-transform)입니다.
 
 <!--
 ### Ember
@@ -761,7 +761,7 @@ Most notably the [`babel-plugin-react-transform`](https://github.com/gaearon/bab
 
 ## <a id="toc-text-editors-and-ides"></a>텍스트 편집기와 IDE
 
-Introducing ES2015, JSX, and Flow syntax with Babel can be helpful, but if your text editor doesn't support it then it can be a really bad experience. For this reason you will want to setup your text editor or IDE with a Babel plugin.
+Babel과 함께 ES2015와 JSX와 Flow 문법을 사용하는 것은 매우 유용할 수 있습니다. 하지만 텍스트 편집기가 지원하지 않는 경우 정말 좋지 않은 경험이 될 수 있습니다. 이러한 이유로 사용하는 IDE와 함께 Babel 플러그인을 사용하는 방법을 알아보고 싶을 것입니다. 다음을 참고하세요:
 
   * [Sublime Text](https://github.com/babel/babel-sublime)
   * [Atom](https://atom.io/packages/language-babel)
