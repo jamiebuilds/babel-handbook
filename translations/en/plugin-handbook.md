@@ -1067,7 +1067,8 @@ generate(ast, {
 
 Babel Template is another tiny but incredibly useful module. It allows you to
 write strings of code with placeholders that you can use instead of manually
-building up a massive AST.
+building up a massive AST. In computer science, this capability is called
+quasiquotes.
 
 ```sh
 $ npm install --save babel-template
