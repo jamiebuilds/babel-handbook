@@ -961,7 +961,7 @@ generate(ast, {
 
 ## <a id="toc-babel-template"></a>[`babel-template`](https://github.com/babel/babel/tree/master/packages/babel-template)
 
-Babel Template это еще один крошечный, но невероятно полезный модуль. Он позволяет писать строки кода с заполнителями, которые можно использовать вместо создания вручную массовых AST.
+Babel Template is another tiny but incredibly useful module. It allows you to write strings of code with placeholders that you can use instead of manually building up a massive AST. In computer science, this capability is called quasiquotes.
 
 ```sh
 $ npm install --save babel-template

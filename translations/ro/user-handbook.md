@@ -132,7 +132,7 @@ Putem instala Babel CLI la nivel local prin rularea:
 $ npm install --save-dev babel-cli
 ```
 
-> **Note:** Since it's generally a bad idea to run Babel globally you may want to uninstall the global copy by running:
+> **Notă:** Deoarece, în general, este o idee rea să rulați Babel la nivel global, ar trebui să dezinstalaţi copia globală prin rularea:
 > 
 > ```sh
 $ npm uninstall --global babel-cli

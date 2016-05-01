@@ -45,19 +45,19 @@ Buku pedoman ini tersedia dalam bahasa lain, lihat [README](/README.md) untuk da
 
 # <a id="toc-introduction"></a>Pengenalan
 
-Babel is a generic multi-purpose compiler for JavaScript. Using Babel you can use (and create) the next generation of JavaScript, as well as the next generation of JavaScript tooling.
+Babel adalah kompiler generik multi-tujuan untuk JavaScript. Dengan menggunakan Babel Anda dapat menggunakan (dan membuat) generasi JavaScript berikutnya, serta generasi alat JavaScript berikutnya.
 
-JavaScript as a language is constantly evolving, with new specs and proposals coming out with new features all the time. Using Babel will allow you to use many of these features years before they are available everywhere.
+JavaScript sebagai bahasa yang terus berkembang, dengan spesifikasi baru dan usulan-usulan yang keluar dengan fitur terbaru sepanjang waktu. Menggunakan Babel akan memungkinkan Anda untuk menggunakan berbagai fitur bertahun-tahun sebelum mereka tersedia di mana-mana.
 
-Babel does this by compiling down JavaScript code written with the latest standards into a version that will work everywhere today. This process is known as source-to-source compiling, also known as transpiling.
+Babel melakukan ini dengan menyusun turun kode JavaScript yang ditulis dengan standar terbaru ke versi yang akan bekerja di mana-mana hari ini. Proses ini dikenal sebagai sumber-ke-sumber kompilasi, juga dikenal sebagai transpiling.
 
-For example, Babel could transform the new ES2015 arrow function syntax from this:
+Sebagai contoh, Babel bisa mengubah sintaks panah fungsi baru pada ES2015 dari:
 
 ```js
 const square = n => n * n;
 ```
 
-Into the following:
+Menjadi:
 
 ```js
 const square = function square(n) {
@@ -65,13 +65,13 @@ const square = function square(n) {
 };
 ```
 
-However, Babel can do much more than this as Babel has support for syntax extensions such as the JSX syntax for React and Flow syntax support for static type checking.
+Namun, Babel bisa melakukan jauh lebih daripada ini. Babel memiliki dukungan untuk sintaks ekstensi seperti JSX syntax untuk React dan Flow syntax dukungan untuk memeriksa tipe statis.
 
-Further than that, everything in Babel is simply a plugin and anyone can go out and create their own plugins using the full power of Babel to do whatever they want.
+Lebih dari itu, semuanya di Babel hanya sebuah plugin dan siapa saja bisa menggunakan dan membuat plugin mereka sendiri yang menggunakan kekuatan penuh dari Babel untuk melakukan apa pun yang mereka inginkan.
 
-*Even further* than that, Babel is broken down into a number of core modules that anyone can use to build the next generation of JavaScript tooling.
+*Bahkan lebih* dari itu, Babel dibagi menjadi beberapa modul inti yang siapa pun dapat menggunakannya untuk membangun generasi alat javascript berikutnya.
 
-Many people do too, the ecosystem that has sprung up around Babel is massive and very diverse. Throughout this handbook I'll be covering both how built-in Babel tools work as well as some useful things from around the community.
+Banyak orang telah melakukan, ekosistem yang telah bermunculan di sekitar Babel besar dan sangat beragam. Seluruh buku ini aku akan membahas baik bagaimana tool Babel bekerja seperti beberapa hal yang berguna dari seluruh masyarakat.
 
 > ***Untuk pembaruan terbaru, ikuti [@thejameskyle](https://twitter.com/thejameskyle) di Twitter.***
 
@@ -79,29 +79,29 @@ Many people do too, the ecosystem that has sprung up around Babel is massive and
 
 # <a id="toc-setting-up-babel"></a>Mempersiapkan Babel
 
-Since the JavaScript community has no single build tool, framework, platform, etc., Babel has official integrations for all of the major tooling. Everything from Gulp to Browserify, from Ember to Meteor, no matter what your setup looks like there is probably an official integration.
+Karena komunitas JavaScript tidak membangun satu alat, kerangka, platform, dll, Babel telah resmi integrasi untuk semua perkakas utama. Semuanya dari Gulp sampai Browserify, dari Ember sampai dengan Meteor, tidak peduli pengaturan yang anda buat disana mungkin ada integrasi resmi.
 
-For the purposes of this handbook, we're just going to cover the built-in ways of setting up Babel, but you can also visit the interactive [setup page](http://babeljs.io/docs/setup) for all of the integrations.
+Untuk tujuan buku ini, kita hanya akan membahas cara-cara built-in menyiapkan Babel, tetapi Anda juga dapat mengunjungi interaktif [halaman setup](http://babeljs.io/docs/setup) untuk semua integrasi.
 
-> **Note:** This guide is going to refer to command line tools like `node` and `npm`. Before continuing any further you should be comfortable with these tools.
+> **Catatan:** Panduan ini akan merujuk pada baris perintah perangkat seperti `node` dan `npm`. Sebelum melanjutkan lebih jauh Anda harus nyaman dengan alat-alat ini.
 
 ## <a id="toc-babel-cli"></a>`babel-cli`
 
-Babel's CLI is a simple way to compile files with Babel from the command line.
+Babel's CLI adalah cara sederhana untuk mengkompilasi file dengan Babel dari command line atau terminal.
 
-Let's first install it globally to learn the basics.
+Pertama mari kita menginstalnya secara global untuk mempelajari dasar-dasar.
 
 ```sh
 $ npm install --global babel-cli
 ```
 
-We can compile our first file like so:
+Kita dapat mengkompilasi file pertama kita seperti:
 
 ```sh
 $ babel my-file.js
 ```
 
-This will dump the compiled output directly into your terminal. To write it to a file we'll specify an `--out-file` or `-o`.
+Ini akan membuang output dikompilasi langsung ke terminal Anda. Untuk menulis ke file kita akan menentukan `--out-file` atau `-o`.
 
 ```sh
 $ babel example.js --out-file compiled.js
@@ -109,7 +109,7 @@ $ babel example.js --out-file compiled.js
 $ babel example.js -o compiled.js
 ```
 
-If we want to compile a whole directory into a new directory we can do so using `--out-dir` or `-d`.
+Jika kita ingin menyusun seluruh direktori ke direktori baru kita dapat melakukannya dengan menggunakan `-out-dir` atau `-d`.
 
 ```sh
 $ babel src --out-dir lib
@@ -119,26 +119,26 @@ $ babel src -d lib
 
 ### <a id="toc-running-babel-cli-from-within-a-project"></a>Menjalankan Babel CLI dalam sebuah proyek
 
-While you *can* install Babel CLI globally on your machine, it's much better to install it **locally** project by project.
+Meskipun Anda *dapat* menginstal Babel CLI secara global pada mesin Anda, itu jauh lebih baik untuk menginstalnya **secara lokal** untuk setiap proyek.
 
-There are two primary reasons for this.
+Ada dua alasan utama untuk ini.
 
-  1. Different projects on the same machine can depend on different versions of Babel allowing you to update one at a time.
-  2. It means you do not have an implicit dependency on the environment you are working in. Making your project far more portable and easier to setup.
+  1. Proyek-proyek yang berbeda di mesin yang sama dapat bergantung pada versi yang berbeda dari Babel yang memungkinkan Anda untuk memperbarui satu per satu waktu.
+  2. Itu berarti Anda tidak memiliki ketergantungan implisit terhadap lingkungan Anda bekerja di. Membuat proyek Anda jauh lebih portabel dan mudah untuk setup.
 
-We can install Babel CLI locally by running:
+Kita dapat menginstal Babel CLI secara lokal dengan menjalankan:
 
 ```sh
 $ npm install --save-dev babel-cli
 ```
 
-> **Note:** Since it's generally a bad idea to run Babel globally you may want to uninstall the global copy by running:
+> **Catatan:** Karena umumnya ide yang buruk untuk menjalankan Babel global Anda mungkin ingin menghapus salinan global dengan menjalankan:
 > 
 > ```sh
 $ npm uninstall --global babel-cli
 ```
 
-After that finishes installing, your `package.json` file should look like this:
+Setelah itu selesai menginstal, file `package.json` Anda akan terlihat seperti ini:
 
 ```json
 {
@@ -150,9 +150,9 @@ After that finishes installing, your `package.json` file should look like this:
 }
 ```
 
-Now instead of running Babel directly from the command line we're going to put our commands in **npm scripts** which will use our local version.
+Sekarang bukan menjalankan Babel langsung dari baris perintah kami akan memasukkan perintah kami di **npm script** yang akan menggunakan versi lokal kami.
 
-Simply add a `"scripts"` field to your `package.json` and put the babel command inside there as `build`.
+Cukup tambahkan sebuah field `"scripts"` untuk `package.json` anda dan menempatkan perintah babel di dalam sana sebagai `membangun`.
 
 ```diff
   {
@@ -167,50 +167,50 @@ Simply add a `"scripts"` field to your `package.json` and put the babel command 
   }
 ```
 
-Now from our terminal we can run:
+Sekarang dari terminal kita kita dapat menjalankan:
 
 ```js
 npm run build
 ```
 
-This will run Babel the same way as before, only now we are using a local copy.
+Ini akan menjalankan Babel dengan cara yang sama seperti sebelumnya, hanya sekarang kami menggunakan salinan lokal.
 
 ## <a id="toc-babel-register"></a>`babel-register`
 
-The next most common method of running Babel is through `babel-register`. This option will allow you to run Babel just by requiring files, which may integrate with your setup better.
+Metode yang paling umum berikutnya menjalankan Babel adalah melalui `babel-register`. Pilihan ini akan memungkinkan Anda untuk menjalankan Babel hanya dengan mengharuskan file, yang dapat mengintegrasikan dengan setup Anda lebih baik.
 
-Note that this is not meant for production use. It's considered bad practice to deploy code that gets compiled this way. It is far better to compile ahead of time before deploying. However this works quite well for build scripts or other things that you run locally.
+Catatan bahwa ini tidak dimaksudkan untuk penggunaan produksi. Hal ini dianggap praktik buruk untuk menggunakan kode yang mendapat disusun dengan cara ini. Hal ini jauh lebih baik untuk mengkompilasi terlebih dahulu sebelum penggelaran. Namun karya ini cukup baik untuk membangun script atau hal-hal lain yang Anda jalankan secara lokal.
 
-First let's create an `index.js` file in our project.
+Pertama mari kita membuat `index.js` file di proyek kami.
 
 ```js
 console.log("Hello world!");
 ```
 
-If we were to run this with `node index.js` this wouldn't be compiled with Babel. So instead of doing that, we'll setup `babel-register`.
+Kalau kita harus menjalankan hal ini dengan `node index.js` ini tidak dikompilasi dengan Babel. Jadi bukannya melakukan itu, kita akan setup `babel-register`.
 
-First install `babel-register`.
+Pertama Instal `babel-register`.
 
 ```sh
 $ npm install --save-dev babel-register
 ```
 
-Next, create a `register.js` file in the project and write the following code:
+Selanjutnya, buat `register.js` file dalam proyek dan tuliskan kode berikut ini:
 
 ```js
 require("babel-register");
 require("./index.js");
 ```
 
-What this does is *registers* Babel in Node's module system and begins compiling every file that is `require`'d.
+Apa yang dilakukan adalah *registers* Babel di Node modul sistem dan mulai menyusun setiap file yang `require` ' d.
 
-Now, instead of running `node index.js` we can use `register.js` instead.
+Sekarang, daripada menjalankan `simpul index.js` kita dapat menggunakan `register.js` sebagai gantinya.
 
 ```sh
 $ node register.js
 ```
 
-> **Note:** You can't register Babel in the same file that you want to compile. As node is executing the file before Babel has a chance to compile it.
+> **Catatan:** Anda tidak dapat mendaftar Babel pada file yang sama yang Anda ingin mengkompilasi. Sebagai node mengeksekusi file sebelum Babel memiliki kesempatan untuk mengkompilasi.
 > 
 > ```js
 require("babel-register");
@@ -220,21 +220,21 @@ console.log("Hello world!");
 
 ## <a id="toc-babel-node"></a>`babel-node`
 
-If you are just running some code via the `node` CLI the easiest way to integrate Babel might be to use the `babel-node` CLI which largely is just a drop in replacement for the `node` CLI.
+Jika Anda hanya menjalankan beberapa kode melalui `node` CLI cara termudah untuk mengintegrasikan Babel mungkin menggunakan `babel-node` CLI yang sebagian besar hanya penurunan pengganti `node` CLI.
 
-Note that this is not meant for production use. It's considered bad practice to deploy code that gets compiled this way. It is far better to compile ahead of time before deploying. However this works quite well for build scripts or other things that you run locally.
+Catatan bahwa ini tidak dimaksudkan untuk penggunaan produksi. Hal ini dianggap praktik buruk untuk menggunakan kode yang mendapat disusun dengan cara ini. Hal ini jauh lebih baik untuk mengkompilasi terlebih dahulu sebelum penggelaran. Namun karya ini cukup baik untuk membangun script atau hal-hal lain yang Anda jalankan secara lokal.
 
-First make sure that you have `babel-cli` installed.
+Pertama, pastikan bahwa Anda memiliki `babel-cli` diinstal.
 
 ```sh
 $ npm install --save-dev babel-cli
 ```
 
-> **Note:** If you are wondering why we are installing this locally, please read the [Running Babel CLI from within a project](#running-babel-cli--from-within-a-project) section above.
+> **Catatan:** Jika Anda bertanya-tanya mengapa kita menginstal ini secara lokal, silakan baca bagian [CLI Babel berjalan dari dalam sebuah proyek](#running-babel-cli--from-within-a-project) di atas.
 
-Then replace wherever you are running `node` with `babel-node`.
+Lalu timpa dimanapun Anda menjalankan `node` dengan `babel node`.
 
-If you are using npm `scripts` you can simply do:
+Jika Anda menggunakan npm `scripts` Anda dapat melakukan:
 
 ```diff
   {
@@ -245,20 +245,20 @@ If you are using npm `scripts` you can simply do:
   }
 ```
 
-Otherwise you'll need to write out the path to `babel-node` itself.
+Sebaliknya Anda akan perlu untuk menulis path ke `babel-node` itu sendiri.
 
 ```diff
 - node script.js
 + ./node_modules/.bin/babel-node script.js
 ```
 
-> Tip: You can also use [`npm-run`](https://www.npmjs.com/package/npm-run).
+> Tip: Anda juga dapat menggunakan [`npm-run`](https://www.npmjs.com/package/npm-run).
 
 ## <a id="toc-babel-core"></a>`babel-core`
 
-If you need to use Babel programmatically for some reason, you can use the `babel-core` package itself.
+Jika Anda perlu menggunakan Babel pemrograman untuk beberapa alasan, Anda dapat menggunakan paket `babel-core` itu sendiri.
 
-First install `babel-core`.
+Pertama Instal `babel-core`.
 
 ```sh
 $ npm install babel-core
@@ -268,14 +268,14 @@ $ npm install babel-core
 var babel = require("babel-core");
 ```
 
-If you have a string of JavaScript you can compile it directly using `babel.transform`.
+Jika Anda memiliki serangkaian JavaScript Anda dapat mengkompilasi langsung menggunakan `babel.transform`.
 
 ```js
 babel.transform("code();", options);
 // => { code, map, ast }
 ```
 
-If you are working with files you can use either the asynchronous api:
+Jika Anda bekerja dengan file, Anda dapat menggunakan baik api tak sinkron:
 
 ```js
 babel.transformFile("filename.js", options, function(err, result) {
@@ -283,37 +283,37 @@ babel.transformFile("filename.js", options, function(err, result) {
 });
 ```
 
-Or the synchronous api:
+Atau api sinkron:
 
 ```js
 babel.transformFileSync("filename.js", options);
 // => { code, map, ast }
 ```
 
-If you already have a Babel AST for whatever reason you may transform from the AST directly.
+Jika Anda sudah memiliki AST Babel untuk alasan apa pun Anda mungkin mengubah dari AST langsung.
 
 ```js
 babel.transformFromAst(ast, code, options);
 // => { code, map, ast }
 ```
 
-For all of the above methods, `options` refers to http://babeljs.io/docs/usage/options/.
+Untuk semua metode di atas, `pilihan` mengacu pada http://babeljs.io/docs/usage/options/.
 
 * * *
 
 # <a id="toc-configuring-babel"></a>Mengkonfigurasi Babel
 
-You may have noticed by now that running Babel on its own doesn't seem to do anything other than copy JavaScript files from one location to another.
+Anda mungkin telah memperhatikan oleh sekarang bahwa menjalankan Babel sendiri tampaknya tidak melakukan apa-apa selain menyalin file JavaScript dari satu lokasi lain.
 
-This is because we haven't told Babel to do anything yet.
+Hal ini karena kita belum diberitahu Babel untuk melakukan apa-apa lagi.
 
-> Since Babel is a general purpose compiler that gets used in a myriad of different ways, it doesn't do anything by default. You have to explicitly tell Babel what it should be doing.
+> Karena Babel kompiler tujuan umum yang akan digunakan dalam berbagai cara yang berbeda, tidak melakukan apa pun secara default. Anda harus secara eksplisit memberitahu Babel apa yang harus ia lakukan.
 
-You can give Babel instructions on what to do by installing **plugins** or **presets** (groups of plugins).
+Anda dapat memberikan petunjuk Babel tentang apa yang harus dilakukan dengan menginstal **plugin** atau **presets** (kelompok plugin).
 
 ## <a id="toc-babelrc"></a>`.babelrc`
 
-Before we start telling Babel what to do. We need to create a configuration file. All you need to do is create a `.babelrc` file at the root of your project. Start off with it like this:
+Sebelum kita mulai menceritakan Babel apa yang harus dilakukan. Kita perlu membuat file konfigurasi. Yang perlu Anda lakukan adalah membuat `.babelrc` file akar dari proyek Anda. Memulai dengan itu seperti ini:
 
 ```js
 {
@@ -322,21 +322,21 @@ Before we start telling Babel what to do. We need to create a configuration file
 }
 ```
 
-This file is how you configure Babel to do what you want.
+File ini adalah bagaimana Anda mengkonfigurasi Babel untuk melakukan apa yang Anda inginkan.
 
-> **Note:** While you can also pass options to Babel in other ways the `.babelrc` file is convention and is the best way.
+> **Catatan:** Sementara Anda juga dapat melewati pilihan untuk Babel dengan cara lain `.babelrc` file Konvensi dan cara terbaik.
 
 ## <a id="toc-babel-preset-es2015"></a>`babel-preset-es2015`
 
-Let's start by telling Babel to compile ES2015 (the newest version of the JavaScript standard, also known as ES6) to ES5 (the version available in most JavaScript environments today).
+Mari kita mulai dengan mengatakan Babel untuk mengkompilasi ES2015 (versi terbaru JavaScript standar, juga dikenal sebagai ES6) untuk ES5 (versi tersedia dalam kebanyakan lingkungan JavaScript hari).
 
-We'll do this by installing the "es2015" Babel preset:
+Kami akan melakukan hal ini dengan menginstal "es2015" Babel preset:
 
 ```sh
 $ npm install --save-dev babel-preset-es2015
 ```
 
-Next we'll modify our `.babelrc` to include that preset.
+Selanjutnya kita akan memodifikasi kami `.babelrc` untuk menyertakan pra-atur itu.
 
 ```diff
   {
@@ -349,13 +349,13 @@ Next we'll modify our `.babelrc` to include that preset.
 
 ## <a id="toc-babel-preset-react"></a>`babel-preset-react`
 
-Setting up React is just as easy. Just install the preset:
+Menyiapkan React sama mudahnya. Hanya menginstal preset:
 
 ```sh
 $ npm install --save-dev babel-preset-react
 ```
 
-Then add the preset to your `.babelrc` file:
+Kemudian tambahkan preset untuk `.babelrc` file:
 
 ```diff
   {
@@ -369,28 +369,28 @@ Then add the preset to your `.babelrc` file:
 
 ## <a id="toc-babel-preset-stage-x"></a>`babel-preset-stage-x`
 
-JavaScript also has some proposals that are making their way into the standard through the TC39's (the technical committee behind the ECMAScript standard) process.
+JavaScript juga memiliki beberapa proposal yang membuat jalan mereka ke dalam standar melalui TC39 (Komite teknis di balik standar ECMAScript) proses.
 
-This process is broken through a 5 stage (0-4) process. As proposals gain more traction and are more likely to be accepted into the standard they proceed through the various stages, finally being accepted into the standard at stage 4.
+Proses ini rusak melalui proses tahap 5 (0-4). Proposal mendapatkan traksi yang lebih dan lebih mungkin untuk diterima ke dalam standar mereka melanjutkan melalui berbagai tahap, akhirnya diterima menjadi standar pada tahap 4.
 
-These are bundled in babel as 4 different presets:
+Ini dibundel di babel sebagai 4 preset yang berbeda:
 
   * `babel-preset-stage-0`
   * `babel-preset-stage-1`
   * `babel-preset-stage-2`
   * `babel-preset-stage-3`
 
-> Note that there is no stage-4 preset as it is simply the `es2015` preset above.
+> Perhatikan bahwa ada tidak ada tahap-4 preset seperti itu hanya `es2015` preset di atas.
 
-Each of these presets requires the preset for the later stages. i.e. `babel-preset-stage-1` requires `babel-preset-stage-2` which requires `babel-preset-stage-3`.
+Masing-masing preset ini memerlukan preset untuk tahap. yaitu `babel-preset-stage-1` mengharuskan `babel-preset-stage-2` yang memerlukan `babel-preset-stage-3`.
 
-Simply install the stage you are interested in using:
+Hanya menginstal tahap Anda tertarik untuk menggunakan:
 
 ```sh
 $ npm install --save-dev babel-preset-stage-2
 ```
 
-Then you can add it to your `.babelrc` config.
+Kemudian Anda dapat menambahkannya ke konfigurasi `.babelrc`.
 
 ```diff
   {
@@ -407,13 +407,13 @@ Then you can add it to your `.babelrc` config.
 
 # <a id="toc-executing-babel-generated-code"></a>Mengeksekusi kode yang dihasilkan Babel
 
-So you've compiled your code with Babel, but this is not the end of the story.
+Jadi Anda telah menyusun kode Anda dengan Babel, tetapi ini bukanlah akhir dari cerita.
 
 ## <a id="toc-babel-polyfill"></a>`babel-polyfill`
 
-Almost all futuristic JavaScript syntax can be compiled with Babel, but the same is not true for APIs.
+Sintaks JavaScript futuristik hampir semua dapat dikompail dengan Babel, tetapi hal yang sama tidak berlaku untuk api.
 
-For example, the following code has an arrow function that needs to be compiled:
+Sebagai contoh, kode berikut memiliki fungsi panah yang perlu dikompilasi:
 
 ```js
 function addAll() {
@@ -421,7 +421,7 @@ function addAll() {
 }
 ```
 
-Which turns into this:
+Yang berubah menjadi ini:
 
 ```js
 function addAll() {
@@ -431,22 +431,22 @@ function addAll() {
 }
 ```
 
-However, this still won't work everywhere because `Array.from` doesn't exist in every JavaScript environment.
+Namun, ini masih tidak akan bekerja di mana-mana karena `Array.from` tidak ada di setiap lingkungan JavaScript.
 
     Uncaught TypeError: Array.from is not a function
     
 
-To solve this problem we use something called a [Polyfill](https://remysharp.com/2010/10/08/what-is-a-polyfill). Simply put, a polyfill is a piece of code that replicates a native api that does not exist in the current runtime. Allowing you to use APIs such as `Array.from` before they are available.
+Untuk mengatasi masalah ini, kami menggunakan sesuatu yang disebut [Polyfill](https://remysharp.com/2010/10/08/what-is-a-polyfill). Sederhananya, polyfill adalah bagian dari kode yang mereplikasi api asli yang tidak ada di runtime saat ini. Memungkinkan Anda untuk menggunakan api seperti `Array.from` sebelum mereka tersedia.
 
-Babel uses the excellent [core-js](https://github.com/zloirock/core-js) as its polyfill, along with a customized [regenerator](https://github.com/facebook/regenerator) runtime for getting generators and async functions working.
+Babel menggunakan baik [core-js](https://github.com/zloirock/core-js) sebagai polyfill yang, bersama dengan disesuaikan [regenerator](https://github.com/facebook/regenerator) runtime untuk mendapatkan generator dan fungsi async bekerja.
 
-To include the Babel polyfill, first install it with npm:
+Untuk menyertakan Babel polyfill, pertama menginstalnya dengan npm:
 
 ```sh
 $ npm install --save babel-polyfill
 ```
 
-Then simply include the polyfill at the top of any file that requires it:
+Kemudian hanya menyertakan polyfill di bagian atas setiap file yang membutuhkan itu:
 
 ```js
 import "babel-polyfill";
@@ -454,18 +454,18 @@ import "babel-polyfill";
 
 ## <a id="toc-babel-runtime"></a>`babel-runtime`
 
-In order to implement details of ECMAScript specs, Babel will use "helper" methods in order to keep the generated code clean.
+Untuk menerapkan rincian ECMAScript spesifikasi, Babel akan menggunakan metode "Pembantu" untuk menjaga kode bersih.
 
-Since these helpers can get pretty long, and they get added to the top of every file you can move them into a single "runtime" which gets required.
+Karena ini dapat mendapatkan cukup panjang, dan mereka ditambahkan ke atas setiap file, Anda dapat memindahkan mereka ke dalam satu "runtime" yang akan diperlukan.
 
-Start by installing `babel-plugin-transform-runtime` and `babel-runtime`:
+Mulai dengan menginstal `babel-plugin-transform-runtime` dan `babel-runtime`:
 
 ```sh
 $ npm install --save-dev babel-plugin-transform-runtime
 $ npm install --save babel-runtime
 ```
 
-Then update your `.babelrc`:
+Kemudian update Anda `.babelrc`:
 
 ```diff
   {
@@ -476,7 +476,7 @@ Then update your `.babelrc`:
   }
 ```
 
-Now Babel will compile code like the following:
+Sekarang Babel akan mengkompilasi kode seperti berikut:
 
 ```js
 class Foo {
@@ -484,7 +484,7 @@ class Foo {
 }
 ```
 
-Into this:
+Ke ini:
 
 ```js
 import _classCallCheck from "babel-runtime/helpers/classCallCheck";
@@ -504,25 +504,25 @@ let Foo = function () {
 }();
 ```
 
-Rather than putting the `_classCallCheck` and `_createClass` helpers in every single file where they are needed.
+Daripada menempatkan penolong `_classCallCheck` dan `_createClass` dalam setiap satu file di mana mereka dibutuhkan.
 
 * * *
 
 # <a id="toc-configuring-babel-advanced"></a>Mengkonfigurasi Babel (lanjutan)
 
-Most people can get by using Babel with just the built-in presets, but Babel exposes much finer-grained power than that.
+Kebanyakan orang bisa mendapatkan dengan menggunakan Babel dengan hanya preset bawaan, tetapi Babel memperlihatkan banyak kekuasaan berbulir lebih halus dari itu.
 
 ## <a id="toc-manually-specifying-plugins"></a>Menentukan plugin secara manual
 
-Babel presets are simply collections of pre-configured plugins, if you want to do something differently you manually specify plugins. This works almost exactly the same way as presets.
+Babel preset cukup koleksi pra-konfigurasi plugin, jika Anda ingin melakukan sesuatu yang berbeda Anda secara manual menentukan plugin. Ini bekerja hampir sama persis dengan cara yang sama sebagai preset.
 
-First install a plugin:
+Pertama Instal plugin:
 
 ```sh
 $ npm install --save-dev babel-plugin-transform-es2015-classes
 ```
 
-Then add the `plugins` field to your `.babelrc`.
+Kemudian tambahkan bidang `plugin` untuk Anda `.babelrc`.
 
 ```diff
   {
@@ -532,17 +532,17 @@ Then add the `plugins` field to your `.babelrc`.
   }
 ```
 
-This gives you much finer grained control over the exact transforms you are running.
+Ini memberi Anda jauh lebih halus kendali atas mentransformasi tepat yang Anda menjalankan.
 
-For a full list of official plugins see the [Babel Plugins page](http://babeljs.io/docs/plugins/).
+Untuk daftar lengkap plugin resmi Lihat [halaman plugin Babel](http://babeljs.io/docs/plugins/).
 
-Also take a look at all the plugins that have been [built by the community](https://www.npmjs.com/search?q=babel-plugin). If you would like to learn how to write your own plugin read the [Babel Plugin Handbook](plugin-handbook.md).
+Juga lihat di semua plugin yang telah [dibangun oleh masyarakat](https://www.npmjs.com/search?q=babel-plugin). Jika Anda ingin belajar bagaimana menulis plugin Anda sendiri membaca [Babel Plugin Handbook](plugin-handbook.md).
 
 ## <a id="toc-plugin-options"></a>Pilihan plugin
 
-Many plugins also have options to configure them to behave differently. For example, many transforms have a "loose" mode which drops some spec behavior in favor of simpler and more performant generated code.
+Banyak plugin juga memiliki pilihan untuk mengkonfigurasi mereka untuk berperilaku berbeda. Sebagai contoh, banyak mengubah memiliki modus "longgar" yang tetes beberapa perilaku spec dalam mendukung lebih sederhana dan lebih performant dihasilkan kode.
 
-To add options to a plugin, simply make the following change:
+Untuk menambahkan pilihan ke sebuah plugin, cukup membuat perubahan berikut:
 
 ```diff
   {
@@ -553,13 +553,13 @@ To add options to a plugin, simply make the following change:
   }
 ```
 
-> I'll be working on updates to the plugin documentation to detail every option in the coming weeks. [Follow me for updates](https://twitter.com/thejameskyle).
+> Aku akan bekerja pada update ke dokumentasi plugin untuk detail setiap pilihan dalam beberapa minggu mendatang. [Ikuti saya untuk update](https://twitter.com/thejameskyle).
 
 ## <a id="toc-customizing-babel-based-on-environment"></a>Menyesuaikan Babel berdasarkan lingkungan
 
-Babel plugins solve many different tasks. Many of them are development tools that can help you debugging your code or integrate with tools. There are also a lot of plugins that are meant for optimizing your code in production.
+Babel plugin memecahkan berbagai tugas. Banyak dari mereka adalah alat-alat pengembangan yang dapat membantu Anda debug kode Anda atau mengintegrasikan dengan alat. Ada juga banyak plugin yang dimaksudkan untuk mengoptimalkan kode Anda dalam produksi.
 
-For this reason, it is common to want Babel configuration based on the environment. You can do this easily with your `.babelrc` file.
+Untuk alasan ini, itu umum untuk menginginkan konfigurasi Babel yang didasarkan pada lingkungan. Anda dapat melakukannya dengan mudah dengan file `.babelrc` Anda.
 
 ```diff
   {
@@ -576,9 +576,9 @@ For this reason, it is common to want Babel configuration based on the environme
   }
 ```
 
-Babel will enable configuration inside of `env` based on the current environment.
+Babel akan memungkinkan konfigurasi dalam `env` berdasarkan lingkungan saat ini.
 
-The current environment will use `process.env.BABEL_ENV`. When `BABEL_ENV` is not available, it will fallback to `NODE_ENV`, and if that is not available it will default to `"development"`.
+Lingkungan saat ini akan menggunakan `process.env.BABEL_ENV`. Ketika `BABEL_ENV` tidak tersedia, itu akan mundur ke `NODE_ENV`, dan jika itu tidak tersedia, itu akan default untuk `"pembangunan"`.
 
 **Unix**
 
@@ -594,17 +594,17 @@ $ SET BABEL_ENV=production
 $ [COMMAND]
 ```
 
-> **Note:** `[COMMAND]` is whatever you use to run Babel (ie. `babel`, `babel-node`, or maybe just `node` if you are using the register hook).
+> **Catatan:** `[COMMAND]` adalah apa pun yang Anda gunakan untuk menjalankan Babel (ie. `Babel`, `babel-node`, atau mungkin hanya `node` jika Anda menggunakan hook daftar).
 > 
-> **Tip:** If you want your command to work across unix and windows platforms then use [`cross-env`](https://www.npmjs.com/package/cross-env).
+> **Tip:** Jika Anda ingin perintah Anda untuk bekerja di platform unix dan windows kemudian menggunakan [`salib-env`](https://www.npmjs.com/package/cross-env).
 
 ## <a id="toc-making-your-own-preset"></a>Membuat preset Anda sendiri
 
-Manually specifying plugins? Plugin options? Environment-based settings? All this configuration might seem like a ton of repetition for all of your projects.
+Secara manual menentukan plugin? Pilihan plugin? Pengaturan berbasis lingkungan? Semua konfigurasi ini mungkin tampak seperti satu ton pengulangan untuk semua proyek Anda.
 
-For this reason, we encourage the community to create their own presets. This could be a preset for the specific [node version](https://github.com/leebenson/babel-preset-node5) you are running, or maybe a preset for your [entire](https://github.com/cloudflare/babel-preset-cf) [company](https://github.com/airbnb/babel-preset-airbnb).
+Untuk alasan ini, kita mendorong komunitas untuk menciptakan preset mereka sendiri. Ini bisa preset untuk tertentu [node Versi](https://github.com/leebenson/babel-preset-node5) Anda menjalankan, atau mungkin preset untuk [seluruh](https://github.com/cloudflare/babel-preset-cf) [perusahaan](https://github.com/airbnb/babel-preset-airbnb).
 
-It's easy to create a preset. Say you have this `.babelrc` file:
+Sangat mudah untuk menciptakan preset. Katakanlah Anda memiliki file `.babelrc` ini:
 
 ```js
 {
@@ -618,9 +618,9 @@ It's easy to create a preset. Say you have this `.babelrc` file:
 }
 ```
 
-All you need to do is create a new project following the naming convention `babel-preset-*` (please be responsible with this namespace), and create two files.
+Semua yang perlu Anda lakukan adalah membuat sebuah proyek baru yang mengikuti konvensi penamaan `babel - preset-*` (silahkan menjadi bertanggung jawab dengan namespace ini), dan membuat dua file.
 
-First, create a new `package.json` file with the necessary `dependencies` for your preset.
+Pertama, membuat file `package.json` baru dengan diperlukan `dependensi` Atur.
 
 ```js
 {
@@ -635,7 +635,7 @@ First, create a new `package.json` file with the necessary `dependencies` for yo
 }
 ```
 
-Then create an `index.js` file that exports the contents of your `.babelrc` file, replacing plugin/preset strings with `require` calls.
+Kemudian membuat file `index.js` yang ekspor isi dari file `.babelrc` Anda, menggantikan plugin pra-atur string dengan `memerlukan` panggilan.
 
 ```js
 module.exports = {
@@ -649,31 +649,31 @@ module.exports = {
 };
 ```
 
-Then simply publish this to npm and you can use it like you would any preset.
+Kemudian hanya menerbitkan ini untuk npm dan Anda dapat menggunakannya seperti Anda akan preset apapun.
 
 * * *
 
 # <a id="toc-babel-and-other-tools"></a>Babel dan alat lainnya
 
-Babel is pretty straight forward to setup once you get the hang of it, but it can be rather difficult navigating how to set it up with other tools. However, we try to work closely with other projects in order to make the experience as easy as possible.
+Babel adalah cukup lurus ke depan untuk setup sekali Anda mendapatkan menguasainya, tetapi bisa agak sulit menavigasi cara mengatur dengan alat-alat lain. Namun, kami mencoba untuk bekerja sama dengan proyek-proyek lain untuk membuat pengalaman semudah mungkin.
 
 ## <a id="toc-static-analysis-tools"></a>Alat analisis statis
 
-Newer standards bring a lot of new syntax to the language and static analysis tools are just starting to take advantage of it.
+Standar baru membawa banyak sintaks baru ke bahasa dan alat analisis statis hanya mulai mengambil keuntungan dari itu.
 
 ### <a id="toc-linting"></a>Linting
 
-One of the most popular tools for linting is [ESLint](http://eslint.org), because of this we maintain an official [`babel-eslint`](https://github.com/babel/babel-eslint) integration.
+Salah satu alat yang paling populer untuk linting [ESLint](http://eslint.org), karena ini kami menjaga integrasi resmi [`babel-eslint`](https://github.com/babel/babel-eslint).
 
-First install `eslint` and `babel-eslint`.
+Pertama Instal `eslint` dan `babel-eslint`.
 
 ```sh
 $ npm install --save-dev eslint babel-eslint
 ```
 
-> **Note:** `babel-eslint` compatibility with Babel 6 is currently in a pre-release version. Install the [latest](https://github.com/babel/babel-eslint/releases) 5.0 beta in order to use it with Babel 6.
+> **Catatan:** `Babel-eslint` kompatibilitas dengan Babel 6 sedang dalam versi pra-rilis. Menginstal [terbaru](https://github.com/babel/babel-eslint/releases) 5,0 beta untuk menggunakannya dengan Babel 6.
 
-Next create or use the existing `.eslintrc` file in your project and set the `parser` as `babel-eslint`.
+Selanjutnya menciptakan atau menggunakan file `.eslintrc` yang sudah ada dalam proyek Anda dan mengatur `parser` sebagai `babel-eslint`.
 
 ```diff
   {
@@ -684,7 +684,7 @@ Next create or use the existing `.eslintrc` file in your project and set the `pa
   }
 ```
 
-Now add a `lint` task to your npm `package.json` scripts:
+Sekarang tambahkan tugas `serat` skrip `package.json` npm:
 
 ```diff
   {
@@ -699,19 +699,19 @@ Now add a `lint` task to your npm `package.json` scripts:
   }
 ```
 
-Then just run the task and you will be all setup.
+Kemudian hanya menjalankan tugas dan Anda akan semua setup.
 
 ```sh
 $ npm run lint
 ```
 
-For more information consult the [`babel-eslint`](https://github.com/babel/babel-eslint) or [`eslint`](http://eslint.org) documentation.
+Untuk informasi lebih lanjut lihat dokumentasi [`babel-eslint`](https://github.com/babel/babel-eslint) atau [`eslint`](http://eslint.org).
 
 ### <a id="toc-code-style"></a>Code Style
 
-JSCS is an extremely popular tool for taking linting a step further into checking the style of the code itself. A core maintainer of both the Babel and JSCS projects ([@hzoo](https://github.com/hzoo)) maintains an official integration with JSCS.
+JSCS adalah alat yang sangat populer untuk mengambil linting langkah lebih jauh ke dalam memeriksa gaya kode itu sendiri. Pengelola inti Babel dan JSCS proyek ([@hzoo](https://github.com/hzoo)) mempertahankan integrasi resmi dengan JSCS.
 
-Even better, this integration now lives within JSCS itself under the `--esnext` option. So integrating Babel is as easy as:
+Bahkan lebih baik, integrasi ini sekarang hidup dalam JSCS sendiri di bawah `--esnext` pilihan. Jadi mengintegrasikan Babel semudah:
 
     $ jscs . --esnext
     
@@ -725,7 +725,7 @@ From the cli, or adding the `esnext` option to your `.jscsrc` file.
   }
 ```
 
-For more information consult the [`babel-jscs`](https://github.com/jscs-dev/babel-jscs) or [`jscs`](http://jscs.info) documentation.
+Untuk informasi lebih lanjut lihat dokumentasi [`babel-jscs`](https://github.com/jscs-dev/babel-jscs) atau [`jscs`](http://jscs.info).
 
 <!--
 ### Code Coverage
@@ -735,23 +735,23 @@ For more information consult the [`babel-jscs`](https://github.com/jscs-dev/babe
 
 ### <a id="toc-documentation"></a>Dokumentasi
 
-Using Babel, ES2015, and Flow you can infer a lot about your code. Using [documentation.js](http://documentation.js.org) you can generate detailed API documentation very easily.
+Menggunakan Babel, ES2015, dan aliran Anda dapat menyimpulkan banyak tentang kode Anda. Menggunakan [documentation.js](http://documentation.js.org) Anda dapat menghasilkan rinci dokumentasi API sangat mudah.
 
-Documentation.js uses Babel behind the scenes to support all of the latest syntax including Flow annotations in order to declare the types in your code.
+Documentation.js menggunakan Babel di belakang layar untuk mendukung semua sintaks terbaru termasuk aliran anotasi untuk menyatakan jenis dalam kode Anda.
 
 ## <a id="toc-frameworks"></a>Frameworks
 
-All of the major JavaScript frameworks are now focused on aligning their APIs around the future of the language. Because of this, there has been a lot of work going into the tooling.
+Semua kerangka JavaScript utama sekarang berfokus pada penyelarasan api mereka di sekitar masa depan bahasa. Karena ini, ada banyak pekerjaan yang masuk ke perkakas.
 
-Frameworks have the opportunity not just to use Babel but to extend it in ways that improve their users' experience.
+Kerangka kerja memiliki kesempatan tidak hanya untuk menggunakan Babel tetapi untuk memperluas cara-cara yang meningkatkan pengalaman pengguna mereka.
 
 ### <a id="toc-react"></a>React
 
-React has dramatically changed their API to align with ES2015 classes ([Read about the updated API here](https://babeljs.io/blog/2015/06/07/react-on-es6-plus)). Even further, React relies on Babel to compile it's JSX syntax, deprecating it's own custom tooling in favor of Babel. You can start by setting up the `babel-preset-react` package following the [instructions above](#babel-preset-react).
+Bereaksi telah berubah secara dramatis API untuk menyelaraskan dengan kelas ES2015 ([Baca tentang API yang diperbarui di sini](https://babeljs.io/blog/2015/06/07/react-on-es6-plus)). Lebih jauh, bereaksi bergantung pada Babel untuk mengkompilasi sintaks BEJ, mencela itu sendiri kustom tooling mendukung Babel. Anda dapat memulai dengan menyiapkan paket `babel-preset-react` mengikuti [petunjuk di atas](#babel-preset-react).
 
-The React community took Babel and ran with it. There are now a number of transforms [built by the community](https://www.npmjs.com/search?q=babel-plugin+react).
+Masyarakat React mengambil Babel dan berlari dengan itu. Sekarang ada sejumlah mentransformasi [dibangun oleh komunitas](https://www.npmjs.com/search?q=babel-plugin+react).
 
-Most notably the [`babel-plugin-react-transform`](https://github.com/gaearon/babel-plugin-react-transform) plugin which combined with a number of [React-specific transforms](https://github.com/gaearon/babel-plugin-react-transform#transforms) can enable things like *hot module reloading* and other debugging utilities.
+Terutama [`babel-plugin-react-transform`](https://github.com/gaearon/babel-plugin-react-transform) plugin yang dikombinasikan dengan jumlah [tertentu bereaksi mengubah](https://github.com/gaearon/babel-plugin-react-transform#transforms) dapat mengaktifkan hal-hal seperti *panas modul reload* dan utilitas debugging lain.
 
 <!--
 ### Ember
@@ -761,7 +761,7 @@ Most notably the [`babel-plugin-react-transform`](https://github.com/gaearon/bab
 
 ## <a id="toc-text-editors-and-ides"></a>Teks editor dan ide
 
-Introducing ES2015, JSX, and Flow syntax with Babel can be helpful, but if your text editor doesn't support it then it can be a really bad experience. For this reason you will want to setup your text editor or IDE with a Babel plugin.
+Memperkenalkan ES2015, BEJ dan aliran sintaks dengan Babel dapat membantu, tapi jika editor teks Anda tidak mendukung itu maka dapat menjadi pengalaman yang benar-benar buruk. Untuk alasan ini, Anda akan ingin untuk men-setup editor teks atau IDE Anda dengan Babel plugin.
 
   * [Sublime Text](https://github.com/babel/babel-sublime)
   * [Atom](https://atom.io/packages/language-babel)
@@ -778,19 +778,19 @@ Introducing ES2015, JSX, and Flow syntax with Babel can be helpful, but if your 
 
 # <a id="toc-babel-support"></a>Dukungan Babel
 
-Babel has a very large and quickly growing community, as we grow we want to ensure that people have all the resources they need to be successful. So we provide a number of different channels for getting support.
+Babel memiliki komunitas yang sangat besar dan dengan cepat berkembang, seperti yang kita tumbuh kami ingin memastikan bahwa orang memiliki semua sumber daya yang mereka butuhkan untuk menjadi sukses. Jadi kami menyediakan sejumlah saluran yang berbeda untuk mendapatkan dukungan.
 
-Remember that across all of these communities we enforce a [Code of Conduct](https://github.com/babel/babel/blob/master/CODE_OF_CONDUCT.md). If you break the Code of Conduct, action will be taken. So please read it and be conscious of it when interacting with others.
+Ingat bahwa seluruh komunitas ini, kami melaksanakan [Kode etik](https://github.com/babel/babel/blob/master/CODE_OF_CONDUCT.md). Jika Anda melanggar kode etik, tindakan akan diambil. Jadi silakan membacanya dan menjadi sadar akan hal itu ketika berinteraksi dengan orang lain.
 
-We are also looking to grow a self-supporting community, for people who stick around and support others. If you find someone asking a question you know the answer to, take a few minutes and help them out. Try your best to be kind and understanding when doing so.
+Kami juga mencari untuk tumbuh Komunitas mandiri, untuk orang yang bertahan dan mendukung orang lain. Jika Anda menemukan seseorang mengajukan pertanyaan Anda tahu jawaban, mengambil beberapa menit dan membantu mereka keluar. Cobalah yang terbaik untuk jenis dan pengertian ketika melakukannya.
 
 ## <a id="toc-babel-forum"></a>Babel Forum
 
-[Discourse](http://www.discourse.org) has provided us with a hosted version of their forum software for free (and we love them for it!). If forums are your thing please stop by [discuss.babeljs.io](https://discuss.babeljs.io).
+[Wacana](http://www.discourse.org) telah memberikan kita dengan versi host mereka software forum gratis (dan kita mencintai mereka untuk itu!). Jika Forum hal Anda silahkan mampir [discuss.babeljs.io](https://discuss.babeljs.io).
 
 ## <a id="toc-babel-chat"></a>Babel Chat
 
-Everyone loves [Slack](https://slack.com). If you're looking for immediate support from the community then come chat with us at [slack.babeljs.io](https://slack.babeljs.io).
+Semua orang menyukai [kendur](https://slack.com). Jika Anda sedang mencari dukungan langsung dari masyarakat kemudian datang chatting dengan kami di [slack.babeljs.io](https://slack.babeljs.io).
 
 <!--
 ## Babel Stack Overflow
@@ -800,21 +800,21 @@ Everyone loves [Slack](https://slack.com). If you're looking for immediate suppo
 
 ## <a id="toc-babel-issues"></a>Babel Issues
 
-Babel uses the awesome issue tracker provided by [Phabricator](http://phabricator.org) an open source software development platform that makes GitHub issues a nightmare of the past.
+Babel menggunakan pelacak isu mengagumkan yang disediakan oleh [Phabricator](http://phabricator.org) platform pengembangan perangkat lunak open source yang membuat isu-isu GitHub mimpi buruk di masa lalu.
 
-Babel's Phabricator is available at [phabricator.babeljs.io](https://phabricator.babeljs.io). You can see all the open and closed issues on [maniphest](https://phabricator.babeljs.io/maniphest/).
+Phabricator Babel's tersedia di [phabricator.babeljs.io](https://phabricator.babeljs.io). Anda dapat melihat semua masalah terbuka dan tertutup pada [maniphest](https://phabricator.babeljs.io/maniphest/).
 
-If you want to open a new issue:
+Jika Anda ingin membuka masalah baru:
 
-  * [Search for an existing issue](https://phabricator.babeljs.io/maniphest/query/advanced/)
-  * [Login](https://phabricator.babeljs.io/auth/start/) or [Create an account](https://phabricator.babeljs.io/auth/register/) (You can also login using GitHub, Facebook, Twitter, Google, etc.)
-  * [Create a new bug report](https://phabricator.babeljs.io/maniphest/task/create/?projects=PHID-PROJ-2ufzspoyuk4udiwfnzls#R) or [request a new feature](https://phabricator.babeljs.io/maniphest/task/create/?projects=PHID-PROJ-dfaevtocl5zgjtstjijd#R)
+  * [Mencari masalah yang ada](https://phabricator.babeljs.io/maniphest/query/advanced/)
+  * [Login](https://phabricator.babeljs.io/auth/start/) atau [membuat account](https://phabricator.babeljs.io/auth/register/) (Anda juga dapat login menggunakan GitHub, Facebook, Twitter, Google, dll.)
+  * [Membuat laporan bug](https://phabricator.babeljs.io/maniphest/task/create/?projects=PHID-PROJ-2ufzspoyuk4udiwfnzls#R) atau [permintaan fitur baru](https://phabricator.babeljs.io/maniphest/task/create/?projects=PHID-PROJ-dfaevtocl5zgjtstjijd#R)
 
 ### <a id="toc-creating-an-awesome-babel-bug-report"></a>Membuat laporan bug Babel yang mengagumkan
 
-Babel issues can sometimes be very difficult to debug remotely, so we need all the help we can get. Spending a few more minutes crafting a really nice bug report can help get your problem solved significantly faster.
+Babel masalah kadang-kadang bisa sangat sulit untuk debug jarak jauh, jadi kita perlu semua bantuan yang bisa kita dapatkan. Menghabiskan beberapa menit menyusun laporan bug yang benar-benar baik dapat membantu mendapatkan masalah Anda terpecahkan secara signifikan lebih cepat.
 
-First, try isolating your problem. It's extremely unlikely that every part of your setup is contributing to the problem. If your problem is a piece of input code, try deleting as much code as possible that still causes an issue.
+Pertama, coba mengisolasi masalah Anda. Hal ini sangat tidak mungkin bahwa setiap bagian dari Anda setup memberikan kontribusi kepada masalah. Jika masalah Anda sepotong masukan kode, mencoba menghapus kode sebanyak mungkin yang masih menyebabkan masalah.
 
 > [WIP]
 

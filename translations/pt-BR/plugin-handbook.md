@@ -960,7 +960,7 @@ generate(ast, {
 
 ## <a id="toc-babel-template"></a>[`babel-template`](https://github.com/babel/babel/tree/master/packages/babel-template)
 
-babel-template é outro módulo minúsculo, mas incrivelmente útil. Ele permite que você grave seqüências de caracteres de código com espaços reservados, para que você possa usá-los ao invés de, manualmente, acumular uma enorme AST.
+Babel Template is another tiny but incredibly useful module. It allows you to write strings of code with placeholders that you can use instead of manually building up a massive AST. In computer science, this capability is called quasiquotes.
 
 ```sh
 $ npm install --save babel-template
