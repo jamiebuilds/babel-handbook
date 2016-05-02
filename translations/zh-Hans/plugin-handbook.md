@@ -961,7 +961,7 @@ generate(ast, {
 
 ## <a id="toc-babel-template"></a>[`babel-template`](https://github.com/babel/babel/tree/master/packages/babel-template)
 
-Babel Template 是另一个虽然很小但却非常有用的模块。 它能让你编写字符串形式且带有占位符的代码来代替手动编码生成的大规模 AST。 In computer science, this capability is called quasiquotes.
+Babel Template 是另一个虽然很小但却非常有用的模块。 它能让你编写字符串形式且带有占位符的代码来代替手动编码生成的大规模 AST。 在计算机科学中，这种能力被称为准引用（quasiquotes）。
 
 ```sh
 $ npm install --save babel-template
