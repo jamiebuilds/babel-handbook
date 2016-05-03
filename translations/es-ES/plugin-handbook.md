@@ -274,7 +274,7 @@ La etapa de [transformación](https://en.wikipedia.org/wiki/Program_transformati
 
 ### <a id="toc-generate"></a>Generar
 
-La etapa de [generación de código](https://en.wikipedia.org/wiki/Code_generation_(compiler)) toma el AST final y lo convierte nuevamente en una cadena de código, creando además [mapas de fuente](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/).
+The [code generation](https://en.wikipedia.org/wiki/Code_generation_(compiler)) stage takes the final AST and turns it back into a string of code, also creating [source maps](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/).
 
 Generar el código es bastante simple: se recorre a través del AST, empezando en lo más profundo, construyendo una cadena que representa el código transformado.
 

@@ -273,7 +273,7 @@ O estágio de [transform](https://en.wikipedia.org/wiki/Program_transformation) 
 
 ### <a id="toc-generate"></a>Generate
 
-O estágio de [geração de código](https://en.wikipedia.org/wiki/Code_generation_(compiler)) leva a AST final e transforma de volta em uma seqüência de caracteres do código, criando também [mapa da fonte](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/).
+The [code generation](https://en.wikipedia.org/wiki/Code_generation_(compiler)) stage takes the final AST and turns it back into a string of code, also creating [source maps](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/).
 
 Geração de código é muito simples: você percorre através da AST primeiro, e constroi uma sequência de caracteres que representa o código transformado.
 

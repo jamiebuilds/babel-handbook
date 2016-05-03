@@ -274,7 +274,7 @@ Tahap [transformasi](https://en.wikipedia.org/wiki/Program_transformation) menga
 
 ### <a id="toc-generate"></a>Pembuatan
 
-Tahap [pembuatan kode](https://en.wikipedia.org/wiki/Code_generation_(compiler)) mengambil AST akhir dan mengubah kembali menjadi serangkaian kode, juga menciptakan [source maps](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/).
+The [code generation](https://en.wikipedia.org/wiki/Code_generation_(compiler)) stage takes the final AST and turns it back into a string of code, also creating [source maps](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/).
 
 Pembuatan kode ini cukup sederhana: Anda melintasi melalui AST pada kedalaman pertama, membangun sebuah string yang mewakili kode yang sudah ditransormasi.
 

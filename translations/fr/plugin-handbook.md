@@ -179,7 +179,7 @@ Vous remarquerez que chaque niveau de l'AST a une structure similaire :
 
 > Remarque : Certaines propriétés ont été supprimées par souci de simplicité.
 
-Chacun de ces paramètre est connu sous le nom d'un **Nœud**. L'AST peut être composé d'un seul nœud, de centaines ou même de milliers de nœuds. Ensemble, ils sont capables de décrire la syntaxe d'un programme qui peut être utilisé pour l'analyse statique.
+Chacun de ces niveaux est connu sous le terme **Nœud**. L'AST peut être composé d'un seul nœud, de centaines ou même de milliers de nœuds. Ensemble, ils sont capables de décrire la syntaxe d'un programme qui peut être utilisé pour l'analyse statique.
 
 Chaque Nœud a cette interface :
 
@@ -189,9 +189,9 @@ interface Node {
 }
 ```
 
-The `type` field is a string representing the type of Node the object is (ie. `"FunctionDeclaration"`, `"Identifier"`, or `"BinaryExpression"`). Each type of Node defines an additional set of properties that describe that particular node type.
+Le champ `type` est une chaîne qui représente le type de l'objet nœud (c'est à dire. `"FunctionDeclaration"`, `"Identifier"` ou `"BinaryExpression"`). Chaque type de nœud définit un ensemble de propriétés supplémentaires qui décrivent ce type de nœud particulier .
 
-There are additional properties on every Node that Babel generates which describe the position of the Node in the original source code.
+Des propriétés supplémentaires sont présentes sur chaque nœud que Babel génère qui décrivent la position du nœud dans le code source original.
 
 ```js
 {
@@ -212,19 +212,19 @@ There are additional properties on every Node that Babel generates which describ
 }
 ```
 
-These properties `start`, `end`, `loc`, appear in every single Node.
+Ces propriétés `start`, `end`, `loc`, apparaissent sur chacun des nœuds.
 
 ## <a id="toc-stages-of-babel"></a>Les étapes de Babel
 
-The three primary stages of Babel are **parse**, **transform**, **generate**.
+Les trois étapes principales de Babel sont **parse**, **transform**, **generate**.
 
 ### <a id="toc-parse"></a>Parse
 
-The **parse** stage, takes code and outputs an AST. There are two phases of parsing in Babel: [**Lexical Analysis**](https://en.wikipedia.org/wiki/Lexical_analysis) and [**Syntactic Analysis**](https://en.wikipedia.org/wiki/Parsing).
+L'étape **d'analyse** prend le code et génère un AST. Il y a deux phases d'analyse dans Babel : [**Analyse lexicale**](https://en.wikipedia.org/wiki/Lexical_analysis) et [**Analyse Syntaxique**](https://en.wikipedia.org/wiki/Parsing).
 
 #### <a id="toc-lexical-analysis"></a>Analyse lexicale
 
-Lexical Analysis will take a string of code and turn it into a stream of **tokens**.
+L'analyse lexicale va prendre une chaîne de code et la transformer en un flux de **jetons** (tokens).
 
 You can think of tokens as a flat array of language syntax pieces.
 
@@ -274,7 +274,7 @@ The [transform](https://en.wikipedia.org/wiki/Program_transformation) stage take
 
 ### <a id="toc-generate"></a>Générer
 
-The [code generation](https://en.wikipedia.org/wiki/Code_generation_(compiler)) stage takes the final AST and turns in back into a string of code, also creating [source maps](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/).
+The [code generation](https://en.wikipedia.org/wiki/Code_generation_(compiler)) stage takes the final AST and turns it back into a string of code, also creating [source maps](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/).
 
 Code generation is pretty simple: you traverse through the AST depth-first, building a string that represents the transformed code.
 

@@ -274,7 +274,7 @@ n * n;
 
 ### <a id="toc-generate"></a>Генерация
 
-Этапе [генерации кода](https://en.wikipedia.org/wiki/Code_generation_(compiler)) принимает окончательное AST и преобразует его в сроку кода, так же создавая [source maps](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/).
+The [code generation](https://en.wikipedia.org/wiki/Code_generation_(compiler)) stage takes the final AST and turns it back into a string of code, also creating [source maps](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/).
 
 Генерация кода довольно проста: вы проходите через AST в глубину, строя строку, которая представляет преобразованный код.
 

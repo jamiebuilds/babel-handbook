@@ -274,7 +274,7 @@ Die [Transformations](https://en.wikipedia.org/wiki/Program_transformation)-Phas
 
 ### <a id="toc-generate"></a>Generate
 
-Die [Code Generierung](https://en.wikipedia.org/wiki/Code_generation_(compiler)) Phase wandelt den finalen AST wieder in einen String um und erzeugt auch [Source Maps](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/).
+The [code generation](https://en.wikipedia.org/wiki/Code_generation_(compiler)) stage takes the final AST and turns it back into a string of code, also creating [source maps](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/).
 
 Die Code Generierung ist ziemlich einfach: Der AST wird mit einer Tiefensuche traversiert. Dabei wird eine Zeichenkette generiert, welche den transformierten Code darstellt.
 

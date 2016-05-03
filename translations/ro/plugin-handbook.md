@@ -274,7 +274,7 @@ Etapa de [Transformare](https://en.wikipedia.org/wiki/Program_transformation) pr
 
 ### <a id="toc-generate"></a>Generare
 
-Etapa de [generare de cod](https://en.wikipedia.org/wiki/Code_generation_(compiler)) primește AST-ul final şi-l transformă înapoi într-un şir de cod, creând şi [source maps](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/).
+The [code generation](https://en.wikipedia.org/wiki/Code_generation_(compiler)) stage takes the final AST and turns it back into a string of code, also creating [source maps](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/).
 
 Generarea de cod este destul de simplă: se traversează AST-ul și se construiește un şir de caractere care reprezintă codul transformat.
 

@@ -274,7 +274,7 @@ n * n;
 
 ### <a id="toc-generate"></a>Παραγωγή
 
-Το στάδιο [παραγωγής κώδικα](https://en.wikipedia.org/wiki/Code_generation_(compiler)) λαμβάνει το τελικό ΑΣΔ και το μετατρέπει σε μια συμβολοσειρά κώδικα και δημιουργεί και [χάρτες προέλευσης](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/).
+The [code generation](https://en.wikipedia.org/wiki/Code_generation_(compiler)) stage takes the final AST and turns it back into a string of code, also creating [source maps](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/).
 
 Η παραγωγή του κώδικα είναι πολύ απλή: η διεισδυση του ΑΣΔ γίνεται με τον αλγόριθμο "βάθος πρώτα" (depth-first) χτίζοντας μια συμβολοσειρά η οποία αναπαρειστά τον μετασχηματισμένο κώδικα.
 
