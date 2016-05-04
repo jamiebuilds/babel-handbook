@@ -1,8 +1,8 @@
-# Babel Handbook
+# Manuel de Babel
 
 Ce manuel est divisé en deux parties :
 
-  * [Manuel utilisateur](user-handbook.md) - Comment démarrer/configurer Babel et plus.
+  * [Manuel utilisateur](user-handbook.md) - Comment démarrer/configurer Babel et plus encore.
   * [Manuel des plugins](plugin-handbook.md) - Comment créer des plugins pour Babel.
 
 > Pour les prochaines mises à jour, suivez [@thejameskyle](https://twitter.com/thejameskyle) sur Twitter.
