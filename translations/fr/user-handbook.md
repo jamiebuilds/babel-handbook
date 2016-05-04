@@ -11,7 +11,7 @@ Ce manuel est disponible dans d'autres langues, voir le [README](/README.md) pou
   * [Introduction](#toc-introduction)
   * [Mise en place de Babel](#toc-setting-up-babel) 
       * [`babel-cli`](#toc-babel-cli)
-      * [Exécuter Babel CLI depuis un projet](#toc-running-babel-cli-from-within-a-project)
+      * [Exécution du CLI de Babel dans un projet](#toc-running-babel-cli-from-within-a-project)
       * [`babel-register`](#toc-babel-register)
       * [`babel-node`](#toc-babel-node)
       * [`babel-core`](#toc-babel-core)
@@ -40,8 +40,8 @@ Ce manuel est disponible dans d'autres langues, voir le [README](/README.md) pou
   * [Support Babel](#toc-babel-support) 
       * [Forum Babel](#toc-babel-forum)
       * [Tchat Babel](#toc-babel-chat)
-      * [Babel Issues](#toc-babel-issues)
-      * [Création du rapport d'erreur parfait](#toc-creating-an-awesome-babel-bug-report)
+      * [Issues (anomalies) de Babel](#toc-babel-issues)
+      * [Création d'un génial rapport de bogue](#toc-creating-an-awesome-babel-bug-report)
 
 # <a id="toc-introduction"></a>Introduction
 
@@ -51,13 +51,13 @@ JavaScript est un langage en constante évolution, avec sans cesse de nouvelles 
 
 Babel fait cela en compilant le code JavaScript écrit avec le dernier standard dans une version fonctionnant partout aujourd'hui. Ce processus est connu comme de la compilation de source à source, aussi connu sous le nom de transpilation.
 
-Par exemple, Babel pourrait transformer la syntaxe de la nouvelle fonction fléchée, de ceci:
+Par exemple, Babel pourrait transformer la syntaxe de la nouvelle fonction fléchée, de ceci :
 
 ```js
 const square = n => n * n;
 ```
 
-En cela:
+En cela :
 
 ```js
 const square = function square(n) {
@@ -71,7 +71,7 @@ De plus, dans Babel tout est composé de module, et n'importe qui peut créer le
 
 *Bien plus encore*, Babel est décomposé en un certain nombre de modules de base que n'importe qui peut utiliser pour construire la prochaine génération d'outils pour JavaScript.
 
-Beaucoup de gens l'ont déjà fait, et l'écosystème qui a surgi autour de Babel est massif et très diversifiée. Tout au long de ce guide, que je vais couvrir ces deux aspects, comment les outils intégrés de Babel fonctionnent ainsi que des choses utiles provenant de la communauté.
+Beaucoup de gens l'ont déjà fait, et l'écosystème qui a surgi autour de Babel est massif et très diversifié. Tout au long de ce guide, que je vais couvrir ces deux aspects, comment les outils intégrés de Babel fonctionnent ainsi que des choses utiles provenant de la communauté.
 
 > ***Pour les prochaines mises à jour, suivez [@thejameskyle](https://twitter.com/thejameskyle) sur Twitter.***
 
@@ -117,7 +117,7 @@ $ babel src --out-dir lib
 $ babel src -d lib
 ```
 
-### <a id="toc-running-babel-cli-from-within-a-project"></a>Exécuter Babel CLI depuis un projet
+### <a id="toc-running-babel-cli-from-within-a-project"></a>Exécution du CLI de Babel dans un projet
 
 While you *can* install Babel CLI globally on your machine, it's much better to install it **locally** project by project.
 
@@ -798,7 +798,7 @@ Everyone loves [Slack](https://slack.com). If you're looking for immediate suppo
 > [WIP]
 -->
 
-## <a id="toc-babel-issues"></a>Babel Issues
+## <a id="toc-babel-issues"></a>Issues (anomalies) de Babel
 
 Babel uses the awesome issue tracker provided by [Phabricator](http://phabricator.org) an open source software development platform that makes GitHub issues a nightmare of the past.
 
@@ -810,7 +810,7 @@ If you want to open a new issue:
   * [Login](https://phabricator.babeljs.io/auth/start/) or [Create an account](https://phabricator.babeljs.io/auth/register/) (You can also login using GitHub, Facebook, Twitter, Google, etc.)
   * [Create a new bug report](https://phabricator.babeljs.io/maniphest/task/create/?projects=PHID-PROJ-2ufzspoyuk4udiwfnzls#R) or [request a new feature](https://phabricator.babeljs.io/maniphest/task/create/?projects=PHID-PROJ-dfaevtocl5zgjtstjijd#R)
 
-### <a id="toc-creating-an-awesome-babel-bug-report"></a>Création du rapport d'erreur parfait
+### <a id="toc-creating-an-awesome-babel-bug-report"></a>Création d'un génial rapport de bogue
 
 Babel issues can sometimes be very difficult to debug remotely, so we need all the help we can get. Spending a few more minutes crafting a really nice bug report can help get your problem solved significantly faster.
 
