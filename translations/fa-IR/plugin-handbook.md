@@ -1,17 +1,17 @@
 # Babel Plugin Handbook
 
-이 문서는 [Babel](https://babeljs.io) [플러그인](https://babeljs.io/docs/advanced/plugins/)을 만드는 방법을 설명합니다.
+This document covers how to create [Babel](https://babeljs.io) [plugins](https://babeljs.io/docs/advanced/plugins/).
 
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
-이 핸드북은 다른 언어로도 볼 수 있습니다. 전체 목록은 [README](/README.md)를 참고하세요.
+This handbook is available in other languages, see the [README](/README.md) for a complete list.
 
-# 목차
+# Table of Contents
 
-  * [소개](#toc-introduction)
-  * [기본](#toc-basics) 
-      * [추상 구문 트리 (ASTs)](#toc-asts)
-      * [Babel의 실행 절차](#toc-stages-of-babel)
+  * [Introduction](#toc-introduction)
+  * [Basics](#toc-basics) 
+      * [ASTs](#toc-asts)
+      * [Stages of Babel](#toc-stages-of-babel)
       * [Parse](#toc-parse) 
           * [Lexical Analysis](#toc-lexical-analysis)
           * [Syntactic Analysis](#toc-syntactic-analysis)
@@ -34,8 +34,8 @@
       * [Converters](#toc-converters)
       * [babel-generator](#toc-babel-generator)
       * [babel-template](#toc-babel-template)
-  * [첫 Babel 플러그인 작성](#toc-writing-your-first-babel-plugin)
-  * [변환 작업](#toc-transformation-operations) 
+  * [Writing your first Babel Plugin](#toc-writing-your-first-babel-plugin)
+  * [Transformation Operations](#toc-transformation-operations) 
       * [Visiting](#toc-visiting)
       * [Check if a node is a certain type](#toc-check-if-a-node-is-a-certain-type)
       * [Check if an identifier is referenced](#toc-check-if-an-identifier-is-referenced)
@@ -52,16 +52,16 @@
       * [Generating a UID](#toc-generating-a-uid)
       * [Pushing a variable declaration to a parent scope](#toc-pushing-a-variable-declaration-to-a-parent-scope)
       * [Rename a binding and its references](#toc-rename-a-binding-and-its-references)
-  * [플러그인 옵션](#toc-plugin-options)
+  * [Plugin Options](#toc-plugin-options)
   * [Building Nodes](#toc-building-nodes)
-  * [모범 사례](#toc-best-practices) 
+  * [Best Practices](#toc-best-practices) 
       * [Avoid traversing the AST as much as possible](#toc-avoid-traversing-the-ast-as-much-as-possible)
       * [Merge visitors whenever possible](#toc-merge-visitors-whenever-possible)
       * [Do not traverse when manual lookup will do](#toc-do-not-traverse-when-manual-lookup-will-do)
       * [Optimizing nested visitors](#toc-optimizing-nested-visitors)
       * [Being aware of nested structures](#toc-being-aware-of-nested-structures)
 
-# <a id="toc-introduction"></a>소개
+# <a id="toc-introduction"></a>Introduction
 
 Babel is a generic multi-purpose compiler for JavaScript. More than that it is a collection of modules that can be used for many different forms of static analysis.
 
@@ -69,15 +69,15 @@ Babel is a generic multi-purpose compiler for JavaScript. More than that it is a
 
 You can use Babel to build many different types of tools that can help you be more productive and write better programs.
 
-> ***향후 업데이트에 대한 내용은 Twitter의 [@thejameskyle](https://twitter.com/thejameskyle)를 팔로우하세요.***
+> ***For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.***
 
 * * *
 
-# <a id="toc-basics"></a>기본
+# <a id="toc-basics"></a>Basics
 
-Babel은 JavaScript 컴파일러입니다. 정확히는 소스를 소스로 컴파일하는 "transpiler"로 불리우는 컴파일러입니다. 즉, Babel에 자바스크립트 코드를 넘겨주면 Babel에서 코드를 수정하고 새로운 코드를 생성하여 반환해주게 됩니다.
+Babel is a JavaScript compiler, specifically a source-to-source compiler, often called a "transpiler". This means that you give Babel some JavaScript code, Babel modifies the code, and generates the new code back out.
 
-## <a id="toc-asts"></a>추상 구문 트리 (ASTs)
+## <a id="toc-asts"></a>ASTs
 
 Each of these steps involve creating or working with an [Abstract Syntax Tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree) or AST.
 
@@ -214,7 +214,7 @@ There are additional properties on every Node that Babel generates which describ
 
 These properties `start`, `end`, `loc`, appear in every single Node.
 
-## <a id="toc-stages-of-babel"></a>Babel의 실행 절차
+## <a id="toc-stages-of-babel"></a>Stages of Babel
 
 The three primary stages of Babel are **parse**, **transform**, **generate**.
 
@@ -988,7 +988,7 @@ console.log(generate(ast).code);
 var myModule = require("my-module");
 ```
 
-# <a id="toc-writing-your-first-babel-plugin"></a>첫 Babel 플러그인 작성
+# <a id="toc-writing-your-first-babel-plugin"></a>Writing your first Babel Plugin
 
 Now that you're familiar with all the basics of Babel, let's tie it together with the plugin API.
 
@@ -1113,7 +1113,7 @@ Awesome! Our very first Babel plugin.
 
 * * *
 
-# <a id="toc-transformation-operations"></a>변환 작업
+# <a id="toc-transformation-operations"></a>Transformation Operations
 
 ## <a id="toc-visiting"></a>Visiting
 
@@ -1390,7 +1390,7 @@ FunctionDeclaration(path) {
 
 * * *
 
-# <a id="toc-plugin-options"></a>플러그인 옵션
+# <a id="toc-plugin-options"></a>Plugin Options
 
 If you would like to let your users customize the behavior of your Babel plugin you can accept plugin specific options which users can specify like this:
 
@@ -1535,7 +1535,7 @@ You can find all of the actual [definitions here](https://github.com/babel/babel
 
 * * *
 
-# <a id="toc-best-practices"></a>모범 사례
+# <a id="toc-best-practices"></a>Best Practices
 
 > I'll be working on this section over the coming weeks.
 
@@ -1721,4 +1721,4 @@ class Foo {
 }
 ```
 
-> ***향후 업데이트에 대한 내용은 Twitter의 [@thejameskyle](https://twitter.com/thejameskyle)를 팔로우하세요.***
+> ***For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.***

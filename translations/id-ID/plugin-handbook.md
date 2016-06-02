@@ -37,8 +37,8 @@ Buku pedoman ini tersedia dalam bahasa lain, lihat file [README](/README.md) unt
   * [Menulis Plugin Babel pertama Anda](#toc-writing-your-first-babel-plugin)
   * [Aperasi Transformasi](#toc-transformation-operations) 
       * [Mengunjungi](#toc-visiting)
-      * [Check if a node is a certain type](#toc-check-if-a-node-is-a-certain-type)
-      * [Check if an identifier is referenced](#toc-check-if-an-identifier-is-referenced)
+      * [Memeriksa apakah sebuah node jenis tertentu](#toc-check-if-a-node-is-a-certain-type)
+      * [Periksa jika pengidentifikasi yang dirujuk](#toc-check-if-an-identifier-is-referenced)
       * [Manipulation](#toc-manipulation)
       * [Replacing a node](#toc-replacing-a-node)
       * [Replacing a node with multiple nodes](#toc-replacing-a-node-with-multiple-nodes)
@@ -177,11 +177,11 @@ Anda akan melihat bahwa setiap tingkat AST memiliki struktur serupa:
 }
 ```
 
-> Catatan: Beberapa properti telah dihapus untuk kesederhanaan.
+> Catatan: Beberapa properti telah dihapus untuk disederhanakan.
 
-Masing-masing yang dikenal sebagai **Node**. AST dapat terdiri dari satu node, atau ratusan jika tidak ribuan node. Bersama-sama mereka mampu menjelaskan sintaks dari sebuah program yang dapat digunakan untuk analisis statis.
+Masing-masing dikenal sebagai **Node**. AST dapat terdiri dari satu node, atau ratusan jika tidak ribuan node. Bersama-sama mereka mampu menerangkan sintaks dari sebuah program yang dapat digunakan untuk analisis statis.
 
-Setiap Node memiliki antarmuka seperti ini:
+Setiap Node memiliki antarmuka berikut:
 
 ```typescript
 interface Node {
@@ -189,7 +189,7 @@ interface Node {
 }
 ```
 
-Field `type` adalah sebuah string yang mewakili tipe Node objek (seperti. `"FunctionDeclaration"`, `"Identifier"`, or `"BinaryExpression"`). Setiap jenis Node mendefinisikan tambahan set properti yang menggambarkan jenis node tertentu.
+Field `type` adalah sebuah string yang mewakili tipe objek Node (seperti. `"FunctionDeclaration"`, `"Identifier"`, or `"BinaryExpression"`). Setiap jenis Node mendefinisikan tambahan set properti yang menggambarkan tipe node tertentu.
 
 Ada properti tambahan pada setiap Node bahwa Babel menghasilkan yang menggambarkan posisi Node dalam kode sumber aslinya.
 
@@ -274,7 +274,7 @@ Tahap [transformasi](https://en.wikipedia.org/wiki/Program_transformation) menga
 
 ### <a id="toc-generate"></a>Pembuatan
 
-The [code generation](https://en.wikipedia.org/wiki/Code_generation_(compiler)) stage takes the final AST and turns it back into a string of code, also creating [source maps](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/).
+Tahap [kode generasi](https://en.wikipedia.org/wiki/Code_generation_(compiler)) mengambil AST akhir dan mengubahnya kembali ke serangkaian kode, juga menciptakan [sumber peta](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/).
 
 Pembuatan kode ini cukup sederhana: Anda melintasi melalui AST pada kedalaman pertama, membangun sebuah string yang mewakili kode yang sudah ditransormasi.
 
@@ -363,9 +363,9 @@ Called!
 Called!
 ```
 
-These calls are all on node **enter**. However there is also the possibility of calling a visitor method when on **exit**.
+Panggilan ini adalah semua node **Masukkan**. Namun ada juga kemungkinan memanggil metode pengunjung ketika pada **keluar**.
 
-Imagine we have this tree structure:
+Bayangkan kita memiliki struktur ini:
 
 ```js
 - FunctionDeclaration
@@ -378,9 +378,9 @@ Imagine we have this tree structure:
         - Identifier (right)
 ```
 
-As we traverse down each branch of the tree we eventually hit dead ends where we need to traverse back up the tree to get to the next node. Going down the tree we **enter** each node, then going back up we **exit** each node.
+Seperti kita melintasi turun setiap cabang pohon kita akhirnya memukul mati berakhir di mana kita perlu untuk melintasi cadangan pohon untuk mendapatkan ke node berikutnya. Turun pohon kita **Masukkan** setiap node, maka akan kembali kita **keluar** setiap node.
 
-Let's *walk* through what this process looks like for the above tree.
+Mari kita *berjalan* melalui apa proses ini tampak seperti untuk pohon di atas.
 
   * Enter `FunctionDeclaration` 
       * Enter `Identifier (id)`
@@ -403,7 +403,7 @@ Let's *walk* through what this process looks like for the above tree.
       * Exit `BlockStatement (body)`
   * Exit `FunctionDeclaration`
 
-So when creating a visitor you have two opportunities to visit a node.
+Jadi ketika membuat pengunjung Anda memiliki dua kesempatan untuk mengunjungi sebuah node.
 
 ```js
 const MyVisitor = {
@@ -420,7 +420,7 @@ const MyVisitor = {
 
 ### <a id="toc-paths"></a>Paths
 
-An AST generally has many Nodes, but how do Nodes relate to one another? We could have one giant mutable object that you manipulate and have full access to, or we can simplify this with **Paths**.
+AST umumnya memiliki banyak node, tapi bagaimana node berhubungan satu sama lain? Kita bisa memiliki satu objek bisa berubah raksasa yang Anda memanipulasi dan memiliki akses penuh ke, atau kita dapat menyederhanakan ini dengan **jalan**.
 
 Sebuah **Path** adalah representasi objek berhubungan antara dua node.
 

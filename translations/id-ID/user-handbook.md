@@ -1,4 +1,4 @@
-# Babel User Handbook
+# Paduan Pengguna Babel
 
 Dokumen ini mencakup semua yang ingin Anda tahu tentang menggunakan [Babel](https://babeljs.io) dan terkait tooling.
 
@@ -31,16 +31,16 @@ Buku pedoman ini tersedia dalam bahasa lain, lihat [README](/README.md) untuk da
   * [Babel dan alat lainnya](#toc-babel-and-other-tools) 
       * [Alat analisis statis](#toc-static-analysis-tools)
       * [Linting](#toc-linting)
-      * [Code Style](#toc-code-style)
+      * [Gaya kode](#toc-code-style)
       * [Dokumentasi](#toc-documentation)
-      * [Frameworks](#toc-frameworks)
+      * [Kerangka kerja](#toc-frameworks)
       * [React](#toc-react)
       * [Teks editor dan IDE](#toc-text-editors-and-ides)
   * [Debugging Babel](#toc-debugging-babel)
   * [Dukungan Babel](#toc-babel-support) 
-      * [Babel Forum](#toc-babel-forum)
-      * [Babel Chat](#toc-babel-chat)
-      * [Babel Issues](#toc-babel-issues)
+      * [Forum Babel](#toc-babel-forum)
+      * [Chat Babel](#toc-babel-chat)
+      * [Masalah Babel](#toc-babel-issues)
       * [Membuat laporan bug Babel yang mengagumkan](#toc-creating-an-awesome-babel-bug-report)
 
 # <a id="toc-introduction"></a>Pengenalan
@@ -105,7 +105,7 @@ Ini akan membuang output dikompilasi langsung ke terminal Anda. Untuk menulis ke
 
 ```sh
 $ babel example.js --out-file compiled.js
-# or
+# atau
 $ babel example.js -o compiled.js
 ```
 
@@ -113,7 +113,7 @@ Jika kita ingin menyusun seluruh direktori ke direktori baru kita dapat melakuka
 
 ```sh
 $ babel src --out-dir lib
-# or
+# atau
 $ babel src -d lib
 ```
 
@@ -707,7 +707,7 @@ $ npm run lint
 
 Untuk informasi lebih lanjut lihat dokumentasi [`babel-eslint`](https://github.com/babel/babel-eslint) atau [`eslint`](http://eslint.org).
 
-### <a id="toc-code-style"></a>Code Style
+### <a id="toc-code-style"></a>Gaya kode
 
 JSCS adalah alat yang sangat populer untuk mengambil linting langkah lebih jauh ke dalam memeriksa gaya kode itu sendiri. Pengelola inti Babel dan JSCS proyek ([@hzoo](https://github.com/hzoo)) mempertahankan integrasi resmi dengan JSCS.
 
@@ -716,7 +716,7 @@ Bahkan lebih baik, integrasi ini sekarang hidup dalam JSCS sendiri di bawah `--e
     $ jscs . --esnext
     
 
-From the cli, or adding the `esnext` option to your `.jscsrc` file.
+Dari cli, atau menambahkan opsi `esnext` ke `.jscsrc` file.
 
 ```diff
   {
@@ -739,7 +739,7 @@ Menggunakan Babel, ES2015, dan aliran Anda dapat menyimpulkan banyak tentang kod
 
 Documentation.js menggunakan Babel di belakang layar untuk mendukung semua sintaks terbaru termasuk aliran anotasi untuk menyatakan jenis dalam kode Anda.
 
-## <a id="toc-frameworks"></a>Frameworks
+## <a id="toc-frameworks"></a>Kerangka kerja
 
 Semua kerangka JavaScript utama sekarang berfokus pada penyelarasan api mereka di sekitar masa depan bahasa. Karena ini, ada banyak pekerjaan yang masuk ke perkakas.
 
@@ -784,11 +784,11 @@ Ingat bahwa seluruh komunitas ini, kami melaksanakan [Kode etik](https://github.
 
 Kami juga mencari untuk tumbuh Komunitas mandiri, untuk orang yang bertahan dan mendukung orang lain. Jika Anda menemukan seseorang mengajukan pertanyaan Anda tahu jawaban, mengambil beberapa menit dan membantu mereka keluar. Cobalah yang terbaik untuk jenis dan pengertian ketika melakukannya.
 
-## <a id="toc-babel-forum"></a>Babel Forum
+## <a id="toc-babel-forum"></a>Forum Babel
 
-[Wacana](http://www.discourse.org) telah memberikan kita dengan versi host mereka software forum gratis (dan kita mencintai mereka untuk itu!). Jika Forum hal Anda silahkan mampir [discuss.babeljs.io](https://discuss.babeljs.io).
+[Wacana](http://www.discourse.org) telah menyediakan software forum gratis untuk kita dengan versi hosted (dan kita mencintai mereka untuk itu!). Jika Forum hal Anda silahkan mampir [discuss.babeljs.io](https://discuss.babeljs.io).
 
-## <a id="toc-babel-chat"></a>Babel Chat
+## <a id="toc-babel-chat"></a>Chat Babel
 
 Semua orang menyukai [kendur](https://slack.com). Jika Anda sedang mencari dukungan langsung dari masyarakat kemudian datang chatting dengan kami di [slack.babeljs.io](https://slack.babeljs.io).
 
@@ -798,7 +798,7 @@ Semua orang menyukai [kendur](https://slack.com). Jika Anda sedang mencari dukun
 > [WIP]
 -->
 
-## <a id="toc-babel-issues"></a>Babel Issues
+## <a id="toc-babel-issues"></a>Masalah Babel
 
 Babel menggunakan pelacak isu mengagumkan yang disediakan oleh [Phabricator](http://phabricator.org) platform pengembangan perangkat lunak open source yang membuat isu-isu GitHub mimpi buruk di masa lalu.
 
