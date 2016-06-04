@@ -302,7 +302,7 @@ Esto es porque nosotros no hemos dicho a Babel hacer nada aún.
 
 > Desde que el propósito general de Babel es compilar que usado en muchisimas formas diferentes, no hace nada por defecto. Usted tiene que decirle explícitamente a Babel que es lo que debería hacer.
 
-Usted puede darle a Babel instrucciones sobre lo que hacer instalando **plugins** o **presets** (grupos de plugins).
+Usted puede darle a Babel instrucciones sobre lo que hacer instalando **plugins** o **presets** (grupos de extensiones).
 
 ## <a id="toc-babelrc"></a>`.babelrc`
 
@@ -501,7 +501,7 @@ La mayor parte de las personas pueden usar Babel solo con los ajustes incorporad
 
 ## <a id="toc-manually-specifying-plugins"></a>Especificar extensiones manualmente
 
-Los ajustes `presets` the Babel son simplemente coleciones de `plugins` pre-configurados, si usted quiere hacer algo diferente usted puede especificar manualmente `plugins`. Esta tarea es muy parecida a la forma de los ajustes.
+Los ajustes `presets` the Babel son simplemente coleciones de extensiones pre-configurados, si usted quiere hacer algo diferente usted puede especificar manualmente extensiones. Esta tarea es muy parecida a la forma de los ajustes.
 
 Primero instalamos un plugin:
 
@@ -520,9 +520,9 @@ Luego agrega el campo `plugins` en tu `.babelrc`.
 ```
 Esto le da un control refinado sobre la transformación exacta que usted esta ejecutando.
 
-Para una lista completa de plugins vea [Babel Plugins page](http://babeljs.io/docs/plugins/).
+Para una lista completa de extensiones vea [Babel Plugins page](http://babeljs.io/docs/plugins/).
 
-También eche un ojo a todos los plugins que han sido construcidos [por la comunidad](https://www.npmjs.com/search?q=babel-plugin). Si usted le gustaria aprender como escribir su propio plugin lea el [Babel Plugin Handbook](plugin-handbook.md).
+También eche un ojo a todos las extensiones que han sido construcidos [por la comunidad](https://www.npmjs.com/search?q=babel-plugin). Si usted le gustaria aprender como escribir su propio plugin lea el [Babel Plugin Handbook](plugin-handbook.md).
 
 ## <a id="toc-plugin-options"></a>Opciones de extensiones
 
@@ -539,11 +539,11 @@ Para agregar opciones al plugin, simplemente tiene que hacer el siguiente cambio
   }
 ```
 
-> Voy a estar trabajando en actualizaciones the la documentación de plugins para detallar cada opción en la siguientes semanas. [Sigueme para obtener las actualizaciones](https://twitter.com/thejameskyle).
+> Voy a estar trabajando en actualizaciones the la documentación de extensiones para detallar cada opción en la siguientes semanas. [Sigueme para obtener las actualizaciones](https://twitter.com/thejameskyle).
 
 ## <a id="toc-customizing-babel-based-on-environment"></a>Personalizar Babel basado en el entorno
 
-Los plugins de Babel resuelve muchas tareas diferentes. Muchos de ellos son herramientas de desarrollo que pueden ayudar a debugear su código o intetración con herramientas. Hay también muchos plugins que solo se enfocan en optimizar su código en producción.
+Las extensiones de Babel resuelve muchas tareas diferentes. Muchos de ellos son herramientas de desarrollo que pueden ayudar a debugear su código o intetración con herramientas. Hay también muchas extensiones que solo se enfocan en optimizar su código en producción.
 
 Para esta razón, es común que quieras una configuración de Babel basado en un ambiente. Uster puede facilmente hacerlo en su archivo `.babelrc`.
 
@@ -586,7 +586,7 @@ $ [COMMAND]
 
 ## <a id="toc-making-your-own-preset"></a>Haciendo su propio preset
 
-Especificar plugins manualmente? Opciones en Plugins? Configuración parametrizada? Todas estas configuraciones podrian llegar a ser toneladas de duplicaciones en todos sus proyectos.
+Especificar extensiones manualmente? Opciones en extensiones? Configuración parametrizada? Todas estas configuraciones podrian llegar a ser toneladas de duplicaciones en todos sus proyectos.
 
 For esta razon, nosotros animanos a la comunidad a crear sus propios ajustes `presets`. Esto podria ser un ajuste especifico [node version](https://github.com/leebenson/babel-preset-node5) que ustead ejecutando, o tal vez un ajuste para [toda](https://github.com/cloudflare/babel-preset-cf) su [compañia](https://github.com/airbnb/babel-preset-airbnb).
 
