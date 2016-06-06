@@ -11,7 +11,7 @@
   * [イントロダクション](#toc-introduction)
   * [Babel のセットアップ](#toc-setting-up-babel) 
       * [`babel-cli`](#toc-babel-cli)
-      * [Running Babel CLI from within a project](#toc-running-babel-cli-from-within-a-project)
+      * [プロジェクトでBabel CLI を実行する](#toc-running-babel-cli-from-within-a-project)
       * [`babel-register`](#toc-babel-register)
       * [`babel-node`](#toc-babel-node)
       * [`babel-core`](#toc-babel-core)
@@ -20,7 +20,7 @@
       * [`babel-preset-es2015`](#toc-babel-preset-es2015)
       * [`babel-preset-react`](#toc-babel-preset-react)
       * [`babel-preset-stage-x`](#toc-babel-preset-stage-x)
-  * [Executing Babel-generated code](#toc-executing-babel-generated-code) 
+  * [Babelで生成したコードを実行する](#toc-executing-babel-generated-code) 
       * [`babel-polyfill`](#toc-babel-polyfill)
       * [`babel-runtime`](#toc-babel-runtime)
   * [Configuring Babel (Advanced)](#toc-configuring-babel-advanced) 
@@ -83,25 +83,25 @@ Since the JavaScript community has no single build tool, framework, platform, et
 
 For the purposes of this handbook, we're just going to cover the built-in ways of setting up Babel, but you can also visit the interactive [setup page](http://babeljs.io/docs/setup) for all of the integrations.
 
-> **Note:** This guide is going to refer to command line tools like `node` and `npm`. Before continuing any further you should be comfortable with these tools.
+> **Note:** ここでは`node`や`npm`といったコマンドラインツールの使い方を紹介しません。これらのツールに習熟していることを前提とします。
 
 ## <a id="toc-babel-cli"></a>`babel-cli`
 
-Babel's CLI is a simple way to compile files with Babel from the command line.
+Babel CLIによって、コマンドラインから Babel で簡単にコンパイルできます。
 
-Let's first install it globally to learn the basics.
+グローバルインストールして、基本を学びましょう。
 
 ```sh
 $ npm install --global babel-cli
 ```
 
-We can compile our first file like so:
+初めてコンパイルするにはこんな感じにします。
 
 ```sh
 $ babel my-file.js
 ```
 
-This will dump the compiled output directly into your terminal. To write it to a file we'll specify an `--out-file` or `-o`.
+コンパイルした結果がターミナルにそのままダンプされます。ファイルに書き込む際は`--out-file` or `-o`オプションを指定してください。.
 
 ```sh
 $ babel example.js --out-file compiled.js
@@ -109,7 +109,7 @@ $ babel example.js --out-file compiled.js
 $ babel example.js -o compiled.js
 ```
 
-If we want to compile a whole directory into a new directory we can do so using `--out-dir` or `-d`.
+ディレクトリ全体をコンパイルしたい場合は`--out-dir` or `-d`オプションを指定してください.
 
 ```sh
 $ babel src --out-dir lib
@@ -117,7 +117,7 @@ $ babel src --out-dir lib
 $ babel src -d lib
 ```
 
-### <a id="toc-running-babel-cli-from-within-a-project"></a>Running Babel CLI from within a project
+### <a id="toc-running-babel-cli-from-within-a-project"></a>プロジェクトでBabel CLI を実行する
 
 While you *can* install Babel CLI globally on your machine, it's much better to install it **locally** project by project.
 
@@ -181,13 +181,13 @@ The next most common method of running Babel is through `babel-register`. This o
 
 Note that this is not meant for production use. It's considered bad practice to deploy code that gets compiled this way. It is far better to compile ahead of time before deploying. However this works quite well for build scripts or other things that you run locally.
 
-First let's create an `index.js` file in our project.
+`index.js`ファイルをプロジェクトに作成しましょう。
 
 ```js
 console.log("Hello world!");
 ```
 
-If we were to run this with `node index.js` this wouldn't be compiled with Babel. So instead of doing that, we'll setup `babel-register`.
+仮に`node index.js`を実行していたら、コンパイルされません。代わりに`babel-register`をセットアップしましょう。.
 
 初めに、`babel-register`をインストールします.
 
@@ -195,16 +195,16 @@ If we were to run this with `node index.js` this wouldn't be compiled with Babel
 $ npm install --save-dev babel-register
 ```
 
-Next, create a `register.js` file in the project and write the following code:
+次に、プロジェクトに`register.js`ファイルを生成し、以下のコードを記述します。
 
 ```js
 require("babel-register");
 require("./index.js");
 ```
 
-What this does is *registers* Babel in Node's module system and begins compiling every file that is `require`'d.
+こうして、Babelをノードのモジュールシステムに登録（*register*） し、 `require`した全ファイルのコンパイルを開始します。
 
-Now, instead of running `node index.js` we can use `register.js` instead.
+それでは `node index.js` を実行して ` register.js` を使用してみましょう。
 
 ```sh
 $ node register.js
@@ -405,7 +405,7 @@ Then you can add it to your `.babelrc` config.
 
 * * *
 
-# <a id="toc-executing-babel-generated-code"></a>Executing Babel-generated code
+# <a id="toc-executing-babel-generated-code"></a>Babelで生成したコードを実行する
 
 So you've compiled your code with Babel, but this is not the end of the story.
 

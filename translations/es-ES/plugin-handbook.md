@@ -274,7 +274,7 @@ La etapa de [transformación](https://en.wikipedia.org/wiki/Program_transformati
 
 ### <a id="toc-generate"></a>Generar
 
-The [code generation](https://en.wikipedia.org/wiki/Code_generation_(compiler)) stage takes the final AST and turns it back into a string of code, also creating [source maps](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/).
+La etapa de [generación de código](https://en.wikipedia.org/wiki/Code_generation_(compiler)) toma el AST y lo convierte de vuelta en una cadena de código, también creando el [source maps](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/).
 
 Generar el código es bastante simple: se recorre a través del AST, empezando en lo más profundo, construyendo una cadena que representa el código transformado.
 
@@ -334,7 +334,7 @@ Este proceso de recorrido, en Babel, pasa a lo largo de la etapa de transformaci
 
 Cuando decimos que "vamos" a un nodo, lo que realmente queremos decir es que los estamos **visitando**. Se utiliza éste término porque existe el concepto de [**visitante**](https://en.wikipedia.org/wiki/Visitor_pattern) (visitor).
 
-Visitors are a pattern used in AST traversal across languages. Básicamente son objetos, con métodos definidos para aceptar ciertos tipos de nodos en un árbol. Esto es un poco abstracto, veamos un ejemplo.
+Los visitantes (visitors) son patrones usados en AST transversal en distintos idiomas. Básicamente son objetos, con métodos definidos para aceptar ciertos tipos de nodos en un árbol. Esto es un poco abstracto, veamos un ejemplo.
 
 ```js
 const MyVisitor = {
