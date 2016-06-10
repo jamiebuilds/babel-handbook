@@ -705,7 +705,7 @@ Babel este de fapt o colecţie de module. În această secţiune vom trece prin 
 
 > Notă: Acest document nu este un înlocuitor pentru documentaţia detaliată a API-ului, care va fi disponibilă în altă parte în scurt timp.
 
-## <a id="toc-babylon"></a>[`babylon`](https://github.com/babel/babel/tree/master/packages/babylon)
+## <a id="toc-babylon"></a>[`babylon`](https://github.com/babel/babylon)
 
 Babylon este analizorul din Babel. A început ca o bifurcație din Acorn, este rapid, simplu de utilizat, are o arhitectură bazată pe plugin-uri pentru caracteristici neconvenţionale (precum şi viitoarele standarde).
 

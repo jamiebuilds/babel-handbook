@@ -346,7 +346,7 @@ const MyVisitor = {
 
 > **Nota:**`Identifier() { ... }` es la abreviatura de `Identifier: { enter() { ... } }`.
 
-This is a basic visitor that when used during a traversal will call the `Identifier()` method for every `Identifier` in the tree.
+Esto es un visitador básico que cuando se usa durante un recorrido llamara el método `Identifier()` por cada `Identifier` en el árbol.
 
 So with this code the `Identifier()` method will be called four times with each `Identifier` (including `square`).
 
@@ -363,9 +363,9 @@ Called!
 Called!
 ```
 
-These calls are all on node **enter**. However there is also the possibility of calling a visitor method when on **exit**.
+Estas llamadas son por cada nodo cuando **entrar** al nodo. Sin embargo existe la posibilidad de llamar al método del visitador cuando **sale**.
 
-Imagine we have this tree structure:
+Imagina que nosotros tememos una estructura así:
 
 ```js
 - FunctionDeclaration
@@ -380,22 +380,22 @@ Imagine we have this tree structure:
 
 As we traverse down each branch of the tree we eventually hit dead ends where we need to traverse back up the tree to get to the next node. Going down the tree we **enter** each node, then going back up we **exit** each node.
 
-Let's *walk* through what this process looks like for the above tree.
+Vamos a *caminar* a traves el proceso de lo que parece el árbol de arriba.
 
-  * Enter `FunctionDeclaration` 
-      * Enter `Identifier (id)`
+  * Entra `FunctionDeclaration` 
+      * Entra `Identifier (id)`
       * Hit dead end
       * Exit `Identifier (id)`
       * Enter `Identifier (params[0])`
       * Hit dead end
       * Exit `Identifier (params[0])`
       * Enter `BlockStatement (body)`
-      * Enter `ReturnStatement (body)` 
+      * Entra `ReturnStatement (body)` 
           * Enter `BinaryExpression (argument)`
-          * Enter `Identifier (left)` 
+          * Entra `Identifier (left)` 
               * Hit dead end
           * Exit `Identifier (left)`
-          * Enter `Identifier (right)` 
+          * Entra `Identifier (right)` 
               * Hit dead end
           * Exit `Identifier (right)`
           * Exit `BinaryExpression (argument)`
@@ -403,7 +403,7 @@ Let's *walk* through what this process looks like for the above tree.
       * Exit `BlockStatement (body)`
   * Exit `FunctionDeclaration`
 
-So when creating a visitor you have two opportunities to visit a node.
+Así que cuando se crea un visitador tu tienes dos oportunidades de visitar un nodo.
 
 ```js
 const MyVisitor = {
@@ -424,7 +424,7 @@ An AST generally has many Nodes, but how do Nodes relate to one another? We coul
 
 A **Path** is an object representation of the link between two nodes.
 
-For example if we take the following node and its child:
+Por ejemplo, si tomamos el siguiente nodo y su hijo:
 
 ```js
 {
@@ -705,7 +705,7 @@ Babel is actually a collection of modules. In this section we'll walk through th
 
 > Note: This is not a replacement for detailed API documentation which will be available elsewhere shortly.
 
-## <a id="toc-babylon"></a>[`babylon`](https://github.com/babel/babel/tree/master/packages/babylon)
+## <a id="toc-babylon"></a>[`babylon`](https://github.com/babel/babylon)
 
 Babylon is Babel's parser. Started as a fork of Acorn, it's fast, simple to use, has plugin-based architecture for non-standard features (as well as future standards).
 
@@ -1432,7 +1432,7 @@ The method name for a builder is simply the name of the node type you want to bu
 
 The arguments of these builders are decided by the node definition. There's some work that's being done to generate easy-to-read documentation on the definitions, but for now they can all be found [here](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions).
 
-A node definition looks like the following:
+Una definición de nodo se parece a lo siguiente:
 
 ```js
 defineType("MemberExpression", {

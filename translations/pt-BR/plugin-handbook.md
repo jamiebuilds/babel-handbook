@@ -704,7 +704,7 @@ Babel é na verdade uma coleção de módulos. Nesta seção veremos os mais fam
 
 > Nota: Este não é um substituto para a documentação da API, que será mais detalhada, e que estarão disponível em outro lugar em breve.
 
-## <a id="toc-babylon"></a>[`babylon`](https://github.com/babel/babel/tree/master/packages/babylon)
+## <a id="toc-babylon"></a>[`babylon`](https://github.com/babel/babylon)
 
 Babylon é um analisador sintático para o Babel. Começou como um fork do Acorn, é rápido, simples de usar e tem uma arquitetura baseada em plugins para recursos que não são padrões (assim como propostas futuras).
 

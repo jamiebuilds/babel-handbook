@@ -705,7 +705,7 @@ Babel u osnovi čini kolekciju modula. U ovom odeljku ćemo pomenuti one koji su
 
 > Napomena: Ovaj dokument ne zamenjuje detaljnu API dokumentaciju koja će uskoro biti dostupna na drugom mestu.
 
-## <a id="toc-babylon"></a>[`babylon`](https://github.com/babel/babel/tree/master/packages/babylon)
+## <a id="toc-babylon"></a>[`babylon`](https://github.com/babel/babylon)
 
 Babylon je parser koji se koristi u Babelu. Ovaj modul je nastao kao "ogranak" (fork) projekta Acorn, veoma je brz, jednostavan za korišćenje, ima arhitekturu "plugina" koja je upotrebljiva za nestandardne potrebe (kao i za buduće standarde).
 

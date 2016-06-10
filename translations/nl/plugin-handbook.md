@@ -705,7 +705,7 @@ Babel is actually a collection of modules. In this section we'll walk through th
 
 > Note: This is not a replacement for detailed API documentation which will be available elsewhere shortly.
 
-## <a id="toc-babylon"></a>[`babylon`](https://github.com/babel/babel/tree/master/packages/babylon)
+## <a id="toc-babylon"></a>[`babylon`](https://github.com/babel/babylon)
 
 Babylon is Babel's parser. Started as a fork of Acorn, it's fast, simple to use, has plugin-based architecture for non-standard features (as well as future standards).
 

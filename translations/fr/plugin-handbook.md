@@ -241,7 +241,7 @@ n * n;
 ]
 ```
 
-Each of the `type`s here have a set of properties describing the token:
+Ici, chacun des `type` s a un ensemble de propriétés décrivant le jeton :
 
 ```js
 {
@@ -266,7 +266,7 @@ Like AST nodes they also have a `start`, `end`, and `loc`.
 
 #### <a id="toc-syntactic-analysis"></a>Analyse syntaxique
 
-Syntactic Analysis will take a stream of tokens and turn it into an AST representation. Using the information in the tokens, this phase will reformat them as an AST which represents the structure of the code in a way that makes it easier to work with.
+L'analyse syntaxique va prendre un flux de jetons et le transformer en une représentation AST. En utilisant les informations dans les jetons, cette phase les reformatera en un AST qui représente la structure du code, cela permettra de les manipuler plus facilement.
 
 ### <a id="toc-transform"></a>Transformer
 
@@ -705,7 +705,7 @@ Babel is actually a collection of modules. In this section we'll walk through th
 
 > Note: This is not a replacement for detailed API documentation which will be available elsewhere shortly.
 
-## <a id="toc-babylon"></a>[`babylon`](https://github.com/babel/babel/tree/master/packages/babylon)
+## <a id="toc-babylon"></a>[`babylon`](https://github.com/babel/babylon)
 
 Babylon is Babel's parser. Started as a fork of Acorn, it's fast, simple to use, has plugin-based architecture for non-standard features (as well as future standards).
 

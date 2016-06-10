@@ -19,11 +19,11 @@ Buku pedoman ini tersedia dalam bahasa lain, lihat file [README](/README.md) unt
       * [Pembuatan](#toc-generate)
       * [Traversal](#toc-traversal)
       * [Pengunjung](#toc-visitors)
-      * [Paths](#toc-paths) 
-          * [Paths in Visitors](#toc-paths-in-visitors)
-      * [State](#toc-state)
-      * [Scopes](#toc-scopes) 
-          * [Bindings](#toc-bindings)
+      * [Jalur](#toc-paths) 
+          * [Jalan pengunjung](#toc-paths-in-visitors)
+      * [Keadaan](#toc-state)
+      * [Cakupan](#toc-scopes) 
+          * [Binding](#toc-bindings)
   * [API](#toc-api) 
       * [babylon](#toc-babylon)
       * [babel-traverse](#toc-babel-traverse)
@@ -39,27 +39,27 @@ Buku pedoman ini tersedia dalam bahasa lain, lihat file [README](/README.md) unt
       * [Mengunjungi](#toc-visiting)
       * [Memeriksa apakah sebuah node jenis tertentu](#toc-check-if-a-node-is-a-certain-type)
       * [Periksa jika pengidentifikasi yang dirujuk](#toc-check-if-an-identifier-is-referenced)
-      * [Manipulation](#toc-manipulation)
-      * [Replacing a node](#toc-replacing-a-node)
-      * [Replacing a node with multiple nodes](#toc-replacing-a-node-with-multiple-nodes)
-      * [Replacing a node with a source string](#toc-replacing-a-node-with-a-source-string)
-      * [Inserting a sibling node](#toc-inserting-a-sibling-node)
-      * [Removing a node](#toc-removing-a-node)
-      * [Replacing a parent](#toc-replacing-a-parent)
-      * [Removing a parent](#toc-removing-a-parent)
-      * [Scope](#toc-scope)
-      * [Checking if a local variable is bound](#toc-checking-if-a-local-variable-is-bound)
-      * [Generating a UID](#toc-generating-a-uid)
-      * [Pushing a variable declaration to a parent scope](#toc-pushing-a-variable-declaration-to-a-parent-scope)
-      * [Rename a binding and its references](#toc-rename-a-binding-and-its-references)
-  * [Plugin Options](#toc-plugin-options)
-  * [Building Nodes](#toc-building-nodes)
-  * [Best Practices](#toc-best-practices) 
-      * [Avoid traversing the AST as much as possible](#toc-avoid-traversing-the-ast-as-much-as-possible)
-      * [Merge visitors whenever possible](#toc-merge-visitors-whenever-possible)
-      * [Do not traverse when manual lookup will do](#toc-do-not-traverse-when-manual-lookup-will-do)
-      * [Optimizing nested visitors](#toc-optimizing-nested-visitors)
-      * [Being aware of nested structures](#toc-being-aware-of-nested-structures)
+      * [Manipulasi](#toc-manipulation)
+      * [Mengganti sebuah node](#toc-replacing-a-node)
+      * [Mengganti sebuah node dengan node beberapa](#toc-replacing-a-node-with-multiple-nodes)
+      * [Mengganti sebuah node dengan string sumber](#toc-replacing-a-node-with-a-source-string)
+      * [Memasukkan sebuah sibling node](#toc-inserting-a-sibling-node)
+      * [Menghapus sebuah node](#toc-removing-a-node)
+      * [Menggantikan parent](#toc-replacing-a-parent)
+      * [Menghapus parent](#toc-removing-a-parent)
+      * [Ruang lingkup](#toc-scope)
+      * [Memeriksa jika variabel lokal adalah terikat](#toc-checking-if-a-local-variable-is-bound)
+      * [Menghasilkan UID](#toc-generating-a-uid)
+      * [Mendorong sebuah Deklarasi variabel untuk lingkup orangtua](#toc-pushing-a-variable-declaration-to-a-parent-scope)
+      * [Mengubah nama yang mengikat dan referensi yang](#toc-rename-a-binding-and-its-references)
+  * [Plugin: Opsi](#toc-plugin-options)
+  * [Bangunan node](#toc-building-nodes)
+  * [Praktik terbaik](#toc-best-practices) 
+      * [Menghindari melintasi AST sebanyak mungkin](#toc-avoid-traversing-the-ast-as-much-as-possible)
+      * [Menggabungkan pengunjung sedapat mungkin](#toc-merge-visitors-whenever-possible)
+      * [Tidak melintasi ketika pencarian manual akan melakukan](#toc-do-not-traverse-when-manual-lookup-will-do)
+      * [Mengoptimalkan pengunjung bertingkat](#toc-optimizing-nested-visitors)
+      * [Berhati-hati terhadap struktur bertingkat](#toc-being-aware-of-nested-structures)
 
 # <a id="toc-introduction"></a>Pengenalan
 
@@ -418,7 +418,7 @@ const MyVisitor = {
 };
 ```
 
-### <a id="toc-paths"></a>Paths
+### <a id="toc-paths"></a>Jalur
 
 AST umumnya memiliki banyak node, tapi bagaimana node berhubungan satu sama lain? Kita bisa memiliki satu objek bisa berubah raksasa yang Anda memanipulasi dan memiliki akses penuh ke, atau kita dapat menyederhanakan ini dengan **jalan**.
 
@@ -485,7 +485,7 @@ Sama halnya dengan metode yang berhubungan dengan menambahkan, update, memindahk
 
 Dalam artinya, paths adalah sebuah representasi **reaktif** dari posisi node di pohon dan segala macam informasi tentang node. Setiap kali Anda memanggil metode yang memodifikasi pohon, informasi ini diperbarui. Babel mengelola semua ini bagi anda untuk membuat bekerja dengan node mudah dan semakin stateless.
 
-#### <a id="toc-paths-in-visitors"></a>Paths in Visitors
+#### <a id="toc-paths-in-visitors"></a>Jalan pengunjung
 
 Bila Anda memiliki pengunjung yang memiliki metode`Identifier()`, Anda benar-benar mengunjungi path bukan node. Dengan cara ini Anda sebagian besar bekerja dengan perwakilan reaktif dari sebuah node bukan node itu sendiri.
 
@@ -507,11 +507,11 @@ Visiting: b
 Visiting: c
 ```
 
-### <a id="toc-state"></a>State
+### <a id="toc-state"></a>Keadaan
 
-State is the enemy of AST transformation. State will bite you over and over again and your assumptions about state will almost always be proven wrong by some syntax that you didn't consider.
+Keadaan adalah musuh AST transformasi. Negara akan menggigit Anda lagi dan lagi dan Anda asumsi tentang keadaan akan hampir selalu terbukti salah oleh beberapa sintaks yang tidak Anda pertimbangkan.
 
-Take the following code:
+Ambil kode berikut:
 
 ```js
 function square(n) {
@@ -519,7 +519,7 @@ function square(n) {
 }
 ```
 
-Let's write a quick hacky visitor that will rename `n` to `x`.
+Ayo menulis pengunjung hacky cepat yang akan mengubah `n` `x`.
 
 ```js
 let paramName;
@@ -539,7 +539,7 @@ const MyVisitor = {
 };
 ```
 
-This might work for the above code, but we can easily break that by doing this:
+Ini mungkin bekerja untuk kode di atas, tetapi kita dapat dengan mudah pecah bahwa dengan melakukan hal ini:
 
 ```js
 function square(n) {
@@ -548,7 +548,7 @@ function square(n) {
 n;
 ```
 
-The better way to deal with this is recursion. So let's make like a Christopher Nolan film and put a visitor inside of a visitor.
+Cara yang lebih baik untuk menangani hal ini adalah rekursi. Jadi mari kita membuat seperti film Christopher Nolan dan menempatkan pengunjung dalam pengunjung.
 
 ```js
 const updateParamNameVisitor = {
@@ -572,7 +572,7 @@ const MyVisitor = {
 
 Tentu saja, ini adalah contoh yang dibuat-buat, tapi ini menunjukkan bagaimana untuk menghilangkan state global dari pengunjung anda.
 
-### <a id="toc-scopes"></a>Scopes
+### <a id="toc-scopes"></a>Cakupan
 
 Selanjutnya mari kita belajar konsep [**cakupan**](https://en.wikipedia.org/wiki/Scope_(computer_science)). JavaScript memiliki [cakupan leksikal](https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scoping_vs._dynamic_scoping), yang merupakan struktur pohon di mana blok dapat membuat cakupan baru.
 
@@ -646,7 +646,7 @@ Ketika Anda membuat cakupan baru Anda melakukannya dengan memberikan jalan dan l
 
 Setelah selesai, ada segala macam metode yang dapat Anda gunakan pada cakupan. Kita akan mendapatkan ke orang-orang kemudian meskipun.
 
-#### <a id="toc-bindings"></a>Bindings
+#### <a id="toc-bindings"></a>Binding
 
 Semua referensi adalah milik cakupan tertentu; hubungan ini dikenal sebagai **binding**.
 
@@ -705,7 +705,7 @@ Babel adalah benar-benar kumpulan dari modul. Dalam bagian ini kita akan berjala
 
 > Catatan: Ini bukanlah pengganti untuk rinci dokumentasi API yang akan tersedia di tempat lain segera.
 
-## <a id="toc-babylon"></a>[`babylon`](https://github.com/babel/babel/tree/master/packages/babylon)
+## <a id="toc-babylon"></a>[`babylon`](https://github.com/babel/babylon)
 
 Babylon adalah pengurai Babel. Dimulai sebagai sebuah fork dari Acorn, dia cepat, mudah digunakan, memiliki arsitektur berbasis plugin untuk non-standar fitur (serta standar masa depan).
 
@@ -961,7 +961,7 @@ generate(ast, {
 
 ## <a id="toc-babel-template"></a>[`babel-template`](https://github.com/babel/babel/tree/master/packages/babel-template)
 
-Babel Template is another tiny but incredibly useful module. It allows you to write strings of code with placeholders that you can use instead of manually building up a massive AST. In computer science, this capability is called quasiquotes.
+Babel Template adalah modul kecil tapi sangat berguna yang lain. Hal ini memungkinkan Anda untuk menulis string kode dengan pengganti yang Anda dapat menggunakan bukan secara manual membangun AST besar. Dalam ilmu komputer, kemampuan ini disebut quasiquotes.
 
 ```sh
 $ npm install --save babel-template
@@ -1299,7 +1299,7 @@ BinaryExpression(path) {
   }
 ```
 
-## <a id="toc-scope"></a>Scope
+## <a id="toc-scope"></a>Ruang lingkup
 
 ### <a id="toc-checking-if-a-local-variable-is-bound"></a>Memeriksa jika variabel lokal adalah terikat
 
@@ -1390,7 +1390,7 @@ FunctionDeclaration(path) {
 
 * * *
 
-# <a id="toc-plugin-options"></a>Plugin Options
+# <a id="toc-plugin-options"></a>Plugin: Opsi
 
 Jika Anda ingin agar pengguna Anda menyesuaikan perilaku Anda Babel plugin Anda dapat menerima pilihan plugin tertentu yang pengguna dapat menentukan seperti ini:
 
@@ -1424,7 +1424,7 @@ Pilihan ini plugin-spesifik dan Anda tidak dapat mengakses pilihan dari plugin l
 
 * * *
 
-# <a id="toc-building-nodes"></a>Building Nodes
+# <a id="toc-building-nodes"></a>Bangunan node
 
 Saat menulis transformasi Anda akan sering ingin membangun beberapa node untuk memasukkan ke dalam AST. Seperti disebutkan sebelumnya, Anda dapat melakukannya menggunakan metode [pembangun](#builder) dalam [`babel-jenis`](#babel-types) paket.
 
@@ -1675,7 +1675,7 @@ const MyVisitor = {
 };
 ```
 
-## <a id="toc-being-aware-of-nested-structures"></a>Being aware of nested structures
+## <a id="toc-being-aware-of-nested-structures"></a>Berhati-hati terhadap struktur bertingkat
 
 Kadang-kadang ketika berpikir tentang mengubah tertentu, Anda mungkin lupa bahwa struktur yang diberikan dapat disusun bertingkat.
 
