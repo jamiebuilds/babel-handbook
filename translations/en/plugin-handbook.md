@@ -841,7 +841,7 @@ Since Babylon is built with a plugin-based architecture, there is also a
 not yet opened this API to external plugins, although may do so in the future.
 
 To see a full list of plugins, see the
-[Babylon README](https://github.com/babel/babel/blob/master/packages/babylon/README.md#plugins).
+[Babylon README](https://github.com/babel/babylon/blob/master/README.md#plugins).
 
 ## <a id="toc-babel-traverse"></a>[`babel-traverse`](https://github.com/babel/babel/tree/master/packages/babel-traverse)
 
