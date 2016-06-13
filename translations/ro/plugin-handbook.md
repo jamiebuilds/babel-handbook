@@ -751,7 +751,7 @@ babylon.parse(code, {
 
 Din moment ce Babylon este construit cu o arhitectură bazată pe plugin-uri, există, de asemenea, o opţiune ` plugins` care permite activarea plugin-urilor interne. Reţineţi că Babylon nu a deschis încă API-ul pentru plugin-uri externe, deşi este posibil sa facă acest lucru în viitor.
 
-Pentru a vedea o listă completă de plugin-uri, examinați [Babylon README](https://github.com/babel/babel/blob/master/packages/babylon/README.md#plugins).
+Pentru a vedea o listă completă de plugin-uri, a se vedea [Babylon README](https://github.com/babel/babylon/blob/master/README.md#plugins).
 
 ## <a id="toc-babel-traverse"></a>[`babel-traverse`](https://github.com/babel/babel/tree/master/packages/babel-traverse)
 

@@ -750,7 +750,7 @@ babylon.parse(code, {
 
 Desde que Babylon é construído com uma arquitetura baseada em plugins, há também uma opção de `plugins` que permitirá o uso dos plugins internos. Nota, Babylon ainda não abriu essa API para plugins externos, embora, no futuro, possa fazê-lo.
 
-Para ver uma lista completa de plugins, consulte o [Leia-me do Babylon](https://github.com/babel/babel/blob/master/packages/babylon/README.md#plugins).
+To see a full list of plugins, see the [Babylon README](https://github.com/babel/babylon/blob/master/README.md#plugins).
 
 ## <a id="toc-babel-traverse"></a>[`babel-traverse`](https://github.com/babel/babel/tree/master/packages/babel-traverse)
 

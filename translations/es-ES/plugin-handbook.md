@@ -420,7 +420,7 @@ const MyVisitor = {
 
 ### <a id="toc-paths"></a>Paths
 
-An AST generally has many Nodes, but how do Nodes relate to one another? We could have one giant mutable object that you manipulate and have full access to, or we can simplify this with **Paths**.
+AST en general tiene muchos Nodos, pero, Cómo esos Nodos se relacionan unos con otros? Nosotros podríamos tener un objeto gigante mutable que tu podrías manipular y tener acceso o podemos simplificarlo con **Rutas**.
 
 A **Path** is an object representation of the link between two nodes.
 
@@ -751,7 +751,7 @@ babylon.parse(code, {
 
 Since Babylon is built with a plugin-based architecture, there is also a `plugins` option which will enable the internal plugins. Note that Babylon has not yet opened this API to external plugins, although may do so in the future.
 
-To see a full list of plugins, see the [Babylon README](https://github.com/babel/babel/blob/master/packages/babylon/README.md#plugins).
+To see a full list of plugins, see the [Babylon README](https://github.com/babel/babylon/blob/master/README.md#plugins).
 
 ## <a id="toc-babel-traverse"></a>[`babel-traverse`](https://github.com/babel/babel/tree/master/packages/babel-traverse)
 
@@ -1638,7 +1638,7 @@ const MyVisitor = {
 };
 ```
 
-If you need some state within the nested visitor, like so:
+Si usted necesita algún estado dentro del visitante anidado, seria algo así:
 
 ```js
 const MyVisitor = {
@@ -1656,7 +1656,7 @@ const MyVisitor = {
 };
 ```
 
-You can pass it in as state to the `traverse()` method and have access to it on `this` in the visitor.
+Usted puede pasar coo estado el método `traverse()` y tener acceso a `this` en el visitante.
 
 ```js
 const visitorOne = {
@@ -1675,11 +1675,11 @@ const MyVisitor = {
 };
 ```
 
-## <a id="toc-being-aware-of-nested-structures"></a>Being aware of nested structures
+## <a id="toc-being-aware-of-nested-structures"></a>Estando consciente sobre estructuras anidadas
 
-Sometimes when thinking about a given transform, you might forget that the given structure can be nested.
+A veces cuando pensamos sobre una transformación dada, usted podría olvidar que la estructura dada puede ser anidada.
 
-For example, imagine we want to lookup the `constructor` `ClassMethod` from the `Foo` `ClassDeclaration`.
+Por ejemplo, imagina que nosotros queremos buscar el `constructor`` ClassMethod` para `Foo` `ClassDeclaration`.
 
 ```js
 class Foo {
@@ -1707,7 +1707,7 @@ const MyVisitor = {
 }
 ```
 
-We are ignoring the fact that classes can be nested and using the traversal above we will hit a nested `constructor` as well:
+Estamos ignorando el echo que las clases pueden ser anidadas usando el transversal, arriba nosotros vamos impactar un `constructor` anidado también:
 
 ```js
 class Foo {

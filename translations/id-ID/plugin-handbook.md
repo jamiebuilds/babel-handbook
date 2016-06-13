@@ -751,7 +751,7 @@ babylon.parse(code, {
 
 Karena Babel dibangun dengan arsitektur yang berbasis plugin, juga ada pilihan `plugin` yang akan memungkinkan plugin internal. Catatan bahwa Babel tidak belum dibuka API ini untuk plugin eksternal, meskipun dapat melakukannya di masa depan.
 
-Untuk melihat daftar lengkap plugin, lihat [README Babel](https://github.com/babel/babel/blob/master/packages/babylon/README.md#plugins).
+To see a full list of plugins, see the [Babylon README](https://github.com/babel/babylon/blob/master/README.md#plugins).
 
 ## <a id="toc-babel-traverse"></a>[`babel-traverse`](https://github.com/babel/babel/tree/master/packages/babel-traverse)
 

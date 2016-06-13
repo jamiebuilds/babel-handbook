@@ -751,7 +751,7 @@ babylon.parse(code, {
 
 Поскольку Babylon имеет плагин-архитектуру, есть также опция `plugins`, которая включит внутренние плагины. Обратите внимание, что в этот API Babylon еще не открыт для внешних плагинов, но может сделать это в будущем.
 
-Чтобы увидеть полный список плагинов, посетите [Babylon README](https://github.com/babel/babel/blob/master/packages/babylon/README.md#plugins).
+To see a full list of plugins, see the [Babylon README](https://github.com/babel/babylon/blob/master/README.md#plugins).
 
 ## <a id="toc-babel-traverse"></a>[`babel-traverse`](https://github.com/babel/babel/tree/master/packages/babel-traverse)
 

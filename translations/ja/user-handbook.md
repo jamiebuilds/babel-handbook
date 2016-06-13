@@ -23,8 +23,8 @@
   * [Babelで生成したコードを実行する](#toc-executing-babel-generated-code) 
       * [`babel-polyfill`](#toc-babel-polyfill)
       * [`babel-runtime`](#toc-babel-runtime)
-  * [Configuring Babel (Advanced)](#toc-configuring-babel-advanced) 
-      * [Manually specifying plugins](#toc-manually-specifying-plugins)
+  * [Babel 設定 (高度な)](#toc-configuring-babel-advanced) 
+      * [プラグインを手動で設定](#toc-manually-specifying-plugins)
       * [プラグインのオプション](#toc-plugin-options)
       * [Customizing Babel based on environment](#toc-customizing-babel-based-on-environment)
       * [Making your own preset](#toc-making-your-own-preset)
@@ -508,11 +508,11 @@ Rather than putting the `_classCallCheck` and `_createClass` helpers in every si
 
 * * *
 
-# <a id="toc-configuring-babel-advanced"></a>Configuring Babel (Advanced)
+# <a id="toc-configuring-babel-advanced"></a>Babel 設定 (高度な)
 
 Most people can get by using Babel with just the built-in presets, but Babel exposes much finer-grained power than that.
 
-## <a id="toc-manually-specifying-plugins"></a>Manually specifying plugins
+## <a id="toc-manually-specifying-plugins"></a>プラグインを手動で設定
 
 Babel presets are simply collections of pre-configured plugins, if you want to do something differently you manually specify plugins. This works almost exactly the same way as presets.
 
