@@ -73,7 +73,7 @@ Further than that, everything in Babel is simply a plugin and anyone can go out 
 
 Many people do too, the ecosystem that has sprung up around Babel is massive and very diverse. Throughout this handbook I'll be covering both how built-in Babel tools work as well as some useful things from around the community.
 
-> ***更多的最新資訊，請上[@thejameskyle](https://twitter.com/thejameskyle)的 Twitter 查詢。***
+> ***進一步的最新資訊，請追蹤[@thejameskyle](https://twitter.com/thejameskyle)的 Twitter 帳號。***
 
 * * *
 
@@ -820,4 +820,4 @@ First, try isolating your problem. It's extremely unlikely that every part of yo
 
 * * *
 
-> ***更多的最新資訊，請上[@thejameskyle](https://twitter.com/thejameskyle)的 Twitter 查詢。***
+> ***進一步的最新資訊，請追蹤[@thejameskyle](https://twitter.com/thejameskyle)的 Twitter 帳號。***

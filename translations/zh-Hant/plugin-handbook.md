@@ -1721,4 +1721,4 @@ class Foo {
 }
 ```
 
-> ***更多的最新資訊，請上[@thejameskyle](https://twitter.com/thejameskyle)的 Twitter 查詢。***
+> ***進一步的最新資訊，請追蹤[@thejameskyle](https://twitter.com/thejameskyle)的 Twitter 帳號。***
