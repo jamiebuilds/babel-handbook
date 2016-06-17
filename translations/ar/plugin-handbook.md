@@ -30,7 +30,7 @@ This handbook is available in other languages, see the [README](/README.md) for 
       * [babel-types](#toc-babel-types)
       * [Definitions](#toc-definitions)
       * [Builders](#toc-builders)
-      * [Validators](#toc-validators)
+      * [المدقق](#toc-validators)
       * [Converters](#toc-converters)
       * [babel-generator](#toc-babel-generator)
       * [babel-template](#toc-babel-template)
@@ -876,7 +876,7 @@ a * b
 
 Builders will also validate the nodes they are creating and throw descriptive errors if used improperly. Which leads into the next type of method.
 
-### <a id="toc-validators"></a>Validators
+### <a id="toc-validators"></a>المدقق
 
 The definition for `BinaryExpression` also includes information on the `fields` of a node and how to validate them.
 

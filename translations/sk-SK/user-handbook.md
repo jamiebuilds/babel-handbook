@@ -1,14 +1,14 @@
-# Babel User Handbook
+# Babel užívateľská príručka
 
 This document covers everything you ever wanted to know about using [Babel](https://babeljs.io) and related tooling.
 
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
-This handbook is available in other languages, see the [README](/README.md) for a complete list.
+Táto príručka je k dispozícii v iných jazykoch, pozri [README](/README.md) pre úplný zoznam.
 
-# Table of Contents
+# Obsah
 
-  * [Introduction](#toc-introduction)
+  * [Úvod](#toc-introduction)
   * [Setting up Babel](#toc-setting-up-babel) 
       * [`babel-cli`](#toc-babel-cli)
       * [Running Babel CLI from within a project](#toc-running-babel-cli-from-within-a-project)
@@ -43,7 +43,7 @@ This handbook is available in other languages, see the [README](/README.md) for 
       * [Babel Issues](#toc-babel-issues)
       * [Creating an awesome Babel bug report](#toc-creating-an-awesome-babel-bug-report)
 
-# <a id="toc-introduction"></a>Introduction
+# <a id="toc-introduction"></a>Úvod
 
 Babel is a generic multi-purpose compiler for JavaScript. Using Babel you can use (and create) the next generation of JavaScript, as well as the next generation of JavaScript tooling.
 
@@ -73,7 +73,7 @@ Further than that, everything in Babel is simply a plugin and anyone can go out 
 
 Many people do too, the ecosystem that has sprung up around Babel is massive and very diverse. Throughout this handbook I'll be covering both how built-in Babel tools work as well as some useful things from around the community.
 
-> ***For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.***
+> ***Aktualizácie sledujte na Twitteri [@thejameskyle](https://twitter.com/thejameskyle).***
 
 * * *
 
@@ -820,4 +820,4 @@ First, try isolating your problem. It's extremely unlikely that every part of yo
 
 * * *
 
-> ***For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.***
+> ***Aktualizácie sledujte na Twitteri [@thejameskyle](https://twitter.com/thejameskyle).***

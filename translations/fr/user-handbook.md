@@ -87,15 +87,15 @@ Dans le cadre de ce guide, nous allons seulement couvrir les méthodes par défa
 
 ## <a id="toc-babel-cli"></a>`babel-cli`
 
-Babel's CLI is a simple way to compile files with Babel from the command line.
+Le CLI de Babel est une façon simple de compiler des fichiers avec Babel depuis la ligne de commande.
 
-Let's first install it globally to learn the basics.
+Nous allons d’abord l’installer globalement pour apprendre les bases.
 
 ```sh
 $ npm install --global babel-cli
 ```
 
-We can compile our first file like so:
+Nous pouvons compiler notre premier fichier comme suit :
 
 ```sh
 $ babel my-file.js

@@ -1,34 +1,34 @@
-# Babel Plugin Handbook
+# Príručka Babel pluginov
 
-This document covers how to create [Babel](https://babeljs.io) [plugins](https://babeljs.io/docs/advanced/plugins/).
+Tento dokument popisuje, ako vytvoriť [Babel](https://babeljs.io) [pluginy](https://babeljs.io/docs/advanced/plugins/).
 
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
-This handbook is available in other languages, see the [README](/README.md) for a complete list.
+Táto príručka je k dispozícii v iných jazykoch, pozri [README](/README.md) pre úplný zoznam.
 
-# Table of Contents
+# Obsah
 
-  * [Introduction](#toc-introduction)
-  * [Basics](#toc-basics) 
-      * [ASTs](#toc-asts)
-      * [Stages of Babel](#toc-stages-of-babel)
-      * [Parse](#toc-parse) 
-          * [Lexical Analysis](#toc-lexical-analysis)
-          * [Syntactic Analysis](#toc-syntactic-analysis)
-      * [Transform](#toc-transform)
-      * [Generate](#toc-generate)
-      * [Traversal](#toc-traversal)
-      * [Visitors](#toc-visitors)
-      * [Paths](#toc-paths) 
-          * [Paths in Visitors](#toc-paths-in-visitors)
-      * [State](#toc-state)
-      * [Scopes](#toc-scopes) 
-          * [Bindings](#toc-bindings)
+  * [Úvod](#toc-introduction)
+  * [Základy](#toc-basics) 
+      * [Abstraktné syntaktické stromy (AST)](#toc-asts)
+      * [Etapy Babelu](#toc-stages-of-babel)
+      * [Analýza](#toc-parse) 
+          * [Lexikálna analýza](#toc-lexical-analysis)
+          * [Syntaktická analýza](#toc-syntactic-analysis)
+      * [Transformácia](#toc-transform)
+      * [Generovanie](#toc-generate)
+      * [Prechod](#toc-traversal)
+      * [Inšpektori](#toc-visitors)
+      * [Cesty](#toc-paths) 
+          * [Cesty v inšpektoroch](#toc-paths-in-visitors)
+      * [Stav](#toc-state)
+      * [Rozsahy](#toc-scopes) 
+          * [Väzby](#toc-bindings)
   * [API](#toc-api) 
       * [babylon](#toc-babylon)
       * [babel-traverse](#toc-babel-traverse)
       * [babel-types](#toc-babel-types)
-      * [Definitions](#toc-definitions)
+      * [Definície](#toc-definitions)
       * [Builders](#toc-builders)
       * [Validators](#toc-validators)
       * [Converters](#toc-converters)
@@ -61,7 +61,7 @@ This handbook is available in other languages, see the [README](/README.md) for 
       * [Optimizing nested visitors](#toc-optimizing-nested-visitors)
       * [Being aware of nested structures](#toc-being-aware-of-nested-structures)
 
-# <a id="toc-introduction"></a>Introduction
+# <a id="toc-introduction"></a>Úvod
 
 Babel is a generic multi-purpose compiler for JavaScript. More than that it is a collection of modules that can be used for many different forms of static analysis.
 
@@ -69,15 +69,15 @@ Babel is a generic multi-purpose compiler for JavaScript. More than that it is a
 
 You can use Babel to build many different types of tools that can help you be more productive and write better programs.
 
-> ***For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.***
+> ***Aktualizácie sledujte na Twitteri [@thejameskyle](https://twitter.com/thejameskyle).***
 
 * * *
 
-# <a id="toc-basics"></a>Basics
+# <a id="toc-basics"></a>Základy
 
 Babel is a JavaScript compiler, specifically a source-to-source compiler, often called a "transpiler". This means that you give Babel some JavaScript code, Babel modifies the code, and generates the new code back out.
 
-## <a id="toc-asts"></a>ASTs
+## <a id="toc-asts"></a>Abstraktné syntaktické stromy (AST)
 
 Each of these steps involve creating or working with an [Abstract Syntax Tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree) or AST.
 
@@ -214,15 +214,15 @@ There are additional properties on every Node that Babel generates which describ
 
 These properties `start`, `end`, `loc`, appear in every single Node.
 
-## <a id="toc-stages-of-babel"></a>Stages of Babel
+## <a id="toc-stages-of-babel"></a>Etapy Babelu
 
 The three primary stages of Babel are **parse**, **transform**, **generate**.
 
-### <a id="toc-parse"></a>Parse
+### <a id="toc-parse"></a>Analýza
 
 The **parse** stage, takes code and outputs an AST. There are two phases of parsing in Babel: [**Lexical Analysis**](https://en.wikipedia.org/wiki/Lexical_analysis) and [**Syntactic Analysis**](https://en.wikipedia.org/wiki/Parsing).
 
-#### <a id="toc-lexical-analysis"></a>Lexical Analysis
+#### <a id="toc-lexical-analysis"></a>Lexikálna analýza
 
 Lexical Analysis will take a string of code and turn it into a stream of **tokens**.
 
@@ -264,21 +264,21 @@ Each of the `type`s here have a set of properties describing the token:
 
 Like AST nodes they also have a `start`, `end`, and `loc`.
 
-#### <a id="toc-syntactic-analysis"></a>Syntactic Analysis
+#### <a id="toc-syntactic-analysis"></a>Syntaktická analýza
 
 Syntactic Analysis will take a stream of tokens and turn it into an AST representation. Using the information in the tokens, this phase will reformat them as an AST which represents the structure of the code in a way that makes it easier to work with.
 
-### <a id="toc-transform"></a>Transform
+### <a id="toc-transform"></a>Transformácia
 
 The [transform](https://en.wikipedia.org/wiki/Program_transformation) stage takes an AST and traverses through it, adding, updating, and removing nodes as it goes along. This is by far the most complex part of Babel or any compiler. This is where plugins operate and so it will be the subject of most of this handbook. So we won't dive too deep right now.
 
-### <a id="toc-generate"></a>Generate
+### <a id="toc-generate"></a>Generovanie
 
 The [code generation](https://en.wikipedia.org/wiki/Code_generation_(compiler)) stage takes the final AST and turns it back into a string of code, also creating [source maps](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/).
 
 Code generation is pretty simple: you traverse through the AST depth-first, building a string that represents the transformed code.
 
-## <a id="toc-traversal"></a>Traversal
+## <a id="toc-traversal"></a>Prechod
 
 When you want to transform an AST you have to [traverse the tree](https://en.wikipedia.org/wiki/Tree_traversal) recursively.
 
@@ -330,7 +330,7 @@ The `BinaryExpression` has an `operator`, a `left`, and a `right`. The operator 
 
 This traversal process happens throughout the Babel transform stage.
 
-### <a id="toc-visitors"></a>Visitors
+### <a id="toc-visitors"></a>Inšpektori
 
 When we talk about "going" to a node, we actually mean we are **visiting** them. The reason we use that term is because there is this concept of a [**visitor**](https://en.wikipedia.org/wiki/Visitor_pattern).
 
@@ -418,7 +418,7 @@ const MyVisitor = {
 };
 ```
 
-### <a id="toc-paths"></a>Paths
+### <a id="toc-paths"></a>Cesty
 
 An AST generally has many Nodes, but how do Nodes relate to one another? We could have one giant mutable object that you manipulate and have full access to, or we can simplify this with **Paths**.
 
@@ -485,7 +485,7 @@ As well as tons and tons of methods related to adding, updating, moving, and rem
 
 In a sense, paths are a **reactive** representation of a node's position in the tree and all sorts of information about the node. Whenever you call a method that modifies the tree, this information is updated. Babel manages all of this for you to make working with nodes easy and as stateless as possible.
 
-#### <a id="toc-paths-in-visitors"></a>Paths in Visitors
+#### <a id="toc-paths-in-visitors"></a>Cesty v inšpektoroch
 
 When you have a visitor that has a `Identifier()` method, you're actually visiting the path instead of the node. This way you are mostly working with the reactive representation of a node instead of the node itself.
 
@@ -507,7 +507,7 @@ Visiting: b
 Visiting: c
 ```
 
-### <a id="toc-state"></a>State
+### <a id="toc-state"></a>Stav
 
 State is the enemy of AST transformation. State will bite you over and over again and your assumptions about state will almost always be proven wrong by some syntax that you didn't consider.
 
@@ -572,7 +572,7 @@ const MyVisitor = {
 
 Of course, this is a contrived example but it demonstrates how to eliminate global state from your visitors.
 
-### <a id="toc-scopes"></a>Scopes
+### <a id="toc-scopes"></a>Rozsahy
 
 Next let's introduce the concept of a [**scope**](https://en.wikipedia.org/wiki/Scope_(computer_science)). JavaScript has [lexical scoping](https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scoping_vs._dynamic_scoping), which is a tree structure where blocks create new scope.
 
@@ -646,7 +646,7 @@ When you create a new scope you do so by giving it a path and a parent scope. Th
 
 Once that's done, there's all sorts of methods you can use on scopes. We'll get into those later though.
 
-#### <a id="toc-bindings"></a>Bindings
+#### <a id="toc-bindings"></a>Väzby
 
 References all belong to a particular scope; this relationship is known as a **binding**.
 
@@ -812,7 +812,7 @@ traverse(ast, {
 });
 ```
 
-### <a id="toc-definitions"></a>Definitions
+### <a id="toc-definitions"></a>Definície
 
 Babel Types has definitions for every single type of node, with information on what properties belong where, what values are valid, how to build that node, how the node should be traversed, and aliases of the Node.
 
@@ -1721,4 +1721,4 @@ class Foo {
 }
 ```
 
-> ***For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.***
+> ***Aktualizácie sledujte na Twitteri [@thejameskyle](https://twitter.com/thejameskyle).***
