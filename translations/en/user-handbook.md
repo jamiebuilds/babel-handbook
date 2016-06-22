@@ -163,7 +163,7 @@ $ npm install --save-dev babel-cli
 
 > **Note:** Since it's generally a bad idea to run Babel globally you may want
 > to uninstall the global copy by running:
-> 
+>
 > ```sh
 > $ npm uninstall --global babel-cli
 > ```
@@ -786,11 +786,6 @@ First install `eslint` and `babel-eslint`.
 ```sh
 $ npm install --save-dev eslint babel-eslint
 ```
-
-> **Note:** `babel-eslint` compatibility with Babel 6 is currently in a
-> pre-release version. Install the
-> [latest](https://github.com/babel/babel-eslint/releases) 5.0 beta in order to
-> use it with Babel 6.
 
 Next create or use the existing `.eslintrc` file in your project and set the
 `parser` as `babel-eslint`.
