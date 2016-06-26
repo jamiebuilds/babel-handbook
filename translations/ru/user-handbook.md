@@ -177,9 +177,9 @@ npm run build
 
 ## <a id="toc-babel-register"></a>`babel-register`
 
-The next most common method of running Babel is through `babel-register`. This option will allow you to run Babel just by requiring files, which may integrate with your setup better.
+Следующий наиболее распространенный метод вызова Babel является вызов через `babel-register`. Эта опция позволит запускать Babel просто вызывая require(), возможно этот вариант лучше подойдет для вашей системы. 
 
-Note that this is not meant for production use. It's considered bad practice to deploy code that gets compiled this way. It is far better to compile ahead of time before deploying. However this works quite well for build scripts or other things that you run locally.
+Внимание: этот метод не предназначен для использования в продакшене. It's considered bad practice to deploy code that gets compiled this way. It is far better to compile ahead of time before deploying. However this works quite well for build scripts or other things that you run locally.
 
 First let's create an `index.js` file in our project.
 
