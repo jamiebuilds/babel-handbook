@@ -751,7 +751,7 @@ babylon.parse(code, {
 
 因为 Babylon 使用了基于插件的架构，因此 `plugins` 选项可以开启内置插件。 注意 Babylon 尚未对外部插件开放此 API 接口，不过未来会开放的。
 
-To see a full list of plugins, see the [Babylon README](https://github.com/babel/babylon/blob/master/README.md#plugins).
+要查看完整的插件列表，请参见 [Babylon 自述](https://github.com/babel/babylon/blob/master/README.md#plugins)。.
 
 ## <a id="toc-babel-traverse"></a>[`babel-traverse`](https://github.com/babel/babel/tree/master/packages/babel-traverse)
 

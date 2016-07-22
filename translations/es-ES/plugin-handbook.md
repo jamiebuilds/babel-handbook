@@ -348,7 +348,7 @@ const MyVisitor = {
 
 Esto es un visitador básico que cuando se usa durante un recorrido llamara el método `Identifier()` por cada `Identifier` en el árbol.
 
-So with this code the `Identifier()` method will be called four times with each `Identifier` (including `square`).
+Así que, el código del método `Identifier()` será llamado cuatro veces por cada `Identifier` (incluyendo `square`).
 
 ```js
 function square(n) {
@@ -422,7 +422,7 @@ const MyVisitor = {
 
 AST en general tiene muchos Nodos, pero, Cómo esos Nodos se relacionan unos con otros? Nosotros podríamos tener un objeto gigante mutable que tu podrías manipular y tener acceso o podemos simplificarlo con **Rutas**.
 
-A **Path** is an object representation of the link between two nodes.
+Un **Path** es la representación de un enlace entre dos nodos.
 
 Por ejemplo, si tomamos el siguiente nodo y su hijo:
 
@@ -437,7 +437,7 @@ Por ejemplo, si tomamos el siguiente nodo y su hijo:
 }
 ```
 
-And represent the child `Identifier` as a path, it looks something like this:
+Y representa un hijo de `Identifier` como camino, se parece a algo así:
 
 ```js
 {
@@ -453,7 +453,7 @@ And represent the child `Identifier` as a path, it looks something like this:
 }
 ```
 
-It also has additional metadata about the path:
+También tiene metadatos adicionales sobre la trayectoria:
 
 ```js
 {
@@ -481,7 +481,7 @@ It also has additional metadata about the path:
 }
 ```
 
-As well as tons and tons of methods related to adding, updating, moving, and removing nodes, but we'll get into those later.
+También como toneladas y toneladas de metodos relacionados con agregar, actualizar, mover y remover nodos, pero nosotros los veremos mas adelante.
 
 In a sense, paths are a **reactive** representation of a node's position in the tree and all sorts of information about the node. Whenever you call a method that modifies the tree, this information is updated. Babel manages all of this for you to make working with nodes easy and as stateless as possible.
 
@@ -507,11 +507,11 @@ Visiting: b
 Visiting: c
 ```
 
-### <a id="toc-state"></a>State
+### <a id="toc-state"></a>Estado
 
 State is the enemy of AST transformation. State will bite you over and over again and your assumptions about state will almost always be proven wrong by some syntax that you didn't consider.
 
-Take the following code:
+Tome el siguiente código:
 
 ```js
 function square(n) {
@@ -519,7 +519,7 @@ function square(n) {
 }
 ```
 
-Let's write a quick hacky visitor that will rename `n` to `x`.
+Vamos a escribir un pequeño hack para renombrar `n` a `x`.
 
 ```js
 let paramName;
@@ -539,7 +539,7 @@ const MyVisitor = {
 };
 ```
 
-This might work for the above code, but we can easily break that by doing this:
+Esto podría funcionar con el código de arriba, pero nosotros fácilmente podríamos romperlo haciendo esto:
 
 ```js
 function square(n) {
@@ -548,7 +548,7 @@ function square(n) {
 n;
 ```
 
-The better way to deal with this is recursion. So let's make like a Christopher Nolan film and put a visitor inside of a visitor.
+La mejor manera para lidiar con es la recursividad. Así que vamos a hacer la película de Christopher Nolan y pondremos un visitador dentro de otro visitador.
 
 ```js
 const updateParamNameVisitor = {
@@ -570,9 +570,9 @@ const MyVisitor = {
 };
 ```
 
-Of course, this is a contrived example but it demonstrates how to eliminate global state from your visitors.
+Por su puesto, esto es un ejemplo artificial pero demostrara como eliminar el estado global de tus visitadores.
 
-### <a id="toc-scopes"></a>Scopes
+### <a id="toc-scopes"></a>Ámbito
 
 Next let's introduce the concept of a [**scope**](https://en.wikipedia.org/wiki/Scope_(computer_science)). JavaScript has [lexical scoping](https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scoping_vs._dynamic_scoping), which is a tree structure where blocks create new scope.
 
@@ -851,7 +851,7 @@ This is because each node type gets a builder method, which when used looks like
 t.binaryExpression("*", t.identifier("a"), t.identifier("b"));
 ```
 
-Which creates an AST like this:
+Que crea un AST como este:
 
 ```js
 {
@@ -868,7 +868,7 @@ Which creates an AST like this:
 }
 ```
 
-Which when printed looks like this:
+El cual sera imprimido algo como esto:
 
 ```js
 a * b
@@ -876,7 +876,7 @@ a * b
 
 Builders will also validate the nodes they are creating and throw descriptive errors if used improperly. Which leads into the next type of method.
 
-### <a id="toc-validators"></a>Validators
+### <a id="toc-validators"></a>Validadores
 
 The definition for `BinaryExpression` also includes information on the `fields` of a node and how to validate them.
 
@@ -894,7 +894,7 @@ fields: {
 }
 ```
 
-This is used to create two types of validating methods. The first of which is `isX`.
+Esto es usado para crear dos tipos de métodos de validación. El primero de ellos es `isX`.
 
 ```js
 t.isBinaryExpression(maybeBinaryExpressionNode);
@@ -914,7 +914,7 @@ t.assertBinaryExpression(maybeBinaryExpressionNode, { operator: "*" });
 // Error: Expected type "BinaryExpression" with option { "operator": "*" }
 ```
 
-### <a id="toc-converters"></a>Converters
+### <a id="toc-converters"></a>Convertidores
 
 > [WIP]
 
@@ -922,13 +922,13 @@ t.assertBinaryExpression(maybeBinaryExpressionNode, { operator: "*" });
 
 Babel Generator is the code generator for Babel. It takes an AST and turns it into code with sourcemaps.
 
-Run the following to install it:
+Ejecuta los siguiente para instalarlo:
 
 ```sh
 $ npm install --save babel-generator
 ```
 
-Then use it
+Y luego use
 
 ```js
 import * as babylon from "babylon";
@@ -947,7 +947,7 @@ generate(ast, null, code);
 // }
 ```
 
-You can also pass options to `generate()`.
+Tambien puedes pasar opciones a `generate()`.
 
 ```js
 generate(ast, {

@@ -6,7 +6,7 @@ This document covers everything you ever wanted to know about using [Babel](http
 
 Das Handbuch ist in verschiedenen Sprachen verfügbar. Eine vollständige Liste findest du im [README](/README.md).
 
-# Table of Contents
+# Inhaltsverzeichnis
 
   * [Einführung](#toc-introduction)
   * [Setting up Babel](#toc-setting-up-babel) 
@@ -670,8 +670,6 @@ First install `eslint` and `babel-eslint`.
 ```sh
 $ npm install --save-dev eslint babel-eslint
 ```
-
-> **Note:** `babel-eslint` compatibility with Babel 6 is currently in a pre-release version. Install the [latest](https://github.com/babel/babel-eslint/releases) 5.0 beta in order to use it with Babel 6.
 
 Next create or use the existing `.eslintrc` file in your project and set the `parser` as `babel-eslint`.
 

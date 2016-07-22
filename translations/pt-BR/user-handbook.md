@@ -671,8 +671,6 @@ Primeiro, instale o `eslint` e `babel-eslint`.
 $ npm install --save-dev eslint babel-eslint
 ```
 
-> **Nota:** A compatibilidade do `babel-eslint` com Babel 6 está atualmente em uma versão de pré-lançamento. Instale a versão beta [mais recente](https://github.com/babel/babel-eslint/releases), 5.0, para usá-lo com Babel 6.
-
 Em seguida, crie ou use o arquivo `.eslintrc` existente em seu projeto e defina o `parser` como `babel-eslint`.
 
 ```diff

@@ -671,8 +671,6 @@ Babel은 설치 방법이 아주 직관적입니다. 하지만 다른 툴과 함
 $ npm install --save-dev eslint babel-eslint
 ```
 
-> **참고:** `babel-eslint`와 Babel 6의 호환성은 현재 프리 릴리즈 버전입니다. Babel 6와 함께 사용하려면 가장 [최신](https://github.com/babel/babel-eslint/releases) 버전을 설치해야 합니다.
-
 그 다음 프로젝트에 새 `.eslintrc` 파일을 만들거나 이미 존재하는 설정에서 `파서`로 `babel-eslint`를 사용하도록 설정합니다.
 
 ```diff
@@ -816,7 +814,7 @@ Babel의 Phabricator는 [phabricator.babeljs.io](https://phabricator.babeljs.io)
 
 첫째, 문제를 고립시킵니다. 설치 과정이 문제의 모든 부분에서 영향을 미치고 있을 가능성이 큽니다. 만약 문제가 코드내에 있다면, 같은 문제가 발생하도록 최대한 코드를 줄여주세요.
 
-> [WIP]
+> [작업중]
 
 * * *
 

@@ -29,8 +29,8 @@
       * [Customizing Babel based on environment](#toc-customizing-babel-based-on-environment)
       * [Making your own preset](#toc-making-your-own-preset)
   * [Babel и другие инструменты](#toc-babel-and-other-tools) 
-      * [Static analysis tools](#toc-static-analysis-tools)
-      * [Linting](#toc-linting)
+      * [Инструменты статического анализа](#toc-static-analysis-tools)
+      * [Линтинг (инструменты для проверки кода)](#toc-linting)
       * [Code Style](#toc-code-style)
       * [Documentation](#toc-documentation)
       * [Frameworks](#toc-frameworks)
@@ -177,40 +177,40 @@ npm run build
 
 ## <a id="toc-babel-register"></a>`babel-register`
 
-The next most common method of running Babel is through `babel-register`. This option will allow you to run Babel just by requiring files, which may integrate with your setup better.
+Следующий наиболее общий способ запуска Babel используя `babel-register`. Эта опция позволит вам запускать Babel просто запрашивая необходимые файлы, которые могут упростить интеграцию.
 
-Note that this is not meant for production use. It's considered bad practice to deploy code that gets compiled this way. It is far better to compile ahead of time before deploying. However this works quite well for build scripts or other things that you run locally.
+Заметим, что это не самый подходящий вариант для продакшена. Не рекомендуется использовать код, скомпилированный подобным способом. Гораздо эффективнее скомпилировать код заранее. Тем не менее, этот вариант может подойти для сборки скриптов и других действий, которые вы захотите проделать на локальной машине.
 
-First let's create an `index.js` file in our project.
+Для начала добавим в наш проект файл `index.js`.
 
 ```js
 console.log("Hello world!");
 ```
 
-If we were to run this with `node index.js` this wouldn't be compiled with Babel. So instead of doing that, we'll setup `babel-register`.
+Если мы теперь запустим команду `node index.js`, файл не будет скомпилирован с помощью Babel. Так что вместо этого, мы установим `babel-register`.
 
-First install `babel-register`.
+Устанавливаем `babel-register`.
 
 ```sh
 $ npm install --save-dev babel-register
 ```
 
-Next, create a `register.js` file in the project and write the following code:
+Затем, в проекте создаем файл `register.js` и пишем следующий код:
 
 ```js
 require("babel-register");
 require("./index.js");
 ```
 
-What this does is *registers* Babel in Node's module system and begins compiling every file that is `require`'d.
+Таким образом мы *регистрируем* Babel в системе модулей Node и начинаем компиляцию всех файлов, добавленных в `require`.
 
-Now, instead of running `node index.js` we can use `register.js` instead.
+Теперь вместо команды `node index.js` мы можем использовать `register.js`.
 
 ```sh
 $ node register.js
 ```
 
-> **Note:** You can't register Babel in the same file that you want to compile. As node is executing the file before Babel has a chance to compile it.
+> **Примечание:** Вы не сможете зарегистрировать Babel в том же файле, который собираетесь компилировать, поскольку node исполняет этот файл перед тем, как Babel доходит до его компиляции.
 > 
 > ```js
 require("babel-register");
@@ -220,21 +220,21 @@ console.log("Hello world!");
 
 ## <a id="toc-babel-node"></a>`babel-node`
 
-If you are just running some code via the `node` CLI the easiest way to integrate Babel might be to use the `babel-node` CLI which largely is just a drop in replacement for the `node` CLI.
+Если вы просто запускаете некоторый код посредством `node` CLI (интерфейса командной строки), то самым легким способом подключить Babel станет, пожалуй, `babel-node` CLI, являющийся, по сути, всего лишь заменой `node` CLI.
 
-Note that this is not meant for production use. It's considered bad practice to deploy code that gets compiled this way. It is far better to compile ahead of time before deploying. However this works quite well for build scripts or other things that you run locally.
+Заметим, что это не самый подходящий вариант для продакшена. Не рекомендуется использовать код, скомпилированный подобным способом. Гораздо эффективнее скомпилировать код заранее. Тем не менее, этот вариант может подойти для сборки скриптов и других действий, которые вы захотите проделать на локальной машине.
 
-First make sure that you have `babel-cli` installed.
+Для начала, убедитесь, что у вас установлен `babel-cli`.
 
 ```sh
 $ npm install --save-dev babel-cli
 ```
 
-> **Note:** If you are wondering why we are installing this locally, please read the [Running Babel CLI from within a project](#running-babel-cli--from-within-a-project) section above.
+> **Примечание:** Если вам интересно, почему используем локальную установку, пожалуйста, прочитайте раздел [Использование Babel CLI в рамках проекта](#running-babel-cli--from-within-a-project).
 
-Then replace wherever you are running `node` with `babel-node`.
+Затем, переключитесь на работу с `babel-node` везде, где вы работаете с `node`.
 
-If you are using npm `scripts` you can simply do:
+Если вы используете npm `scripts`, вы можете сделать так:
 
 ```diff
   {
@@ -245,20 +245,20 @@ If you are using npm `scripts` you can simply do:
   }
 ```
 
-Otherwise you'll need to write out the path to `babel-node` itself.
+Либо вам придется прописать путь к собственно `babel-node`.
 
 ```diff
 - node script.js
 + ./node_modules/.bin/babel-node script.js
 ```
 
-> Tip: You can also use [`npm-run`](https://www.npmjs.com/package/npm-run).
+> Подсказка: Вы также можете использовать [`npm-run`](https://www.npmjs.com/package/npm-run).
 
 ## <a id="toc-babel-core"></a>`babel-core`
 
-If you need to use Babel programmatically for some reason, you can use the `babel-core` package itself.
+Если вы хотите использовать Babel программно, то подключите пакет `babel-core`.
 
-First install `babel-core`.
+Установите `babel-core`.
 
 ```sh
 $ npm install babel-core
@@ -268,14 +268,14 @@ $ npm install babel-core
 var babel = require("babel-core");
 ```
 
-If you have a string of JavaScript you can compile it directly using `babel.transform`.
+Если вам нужно скомпилировать строку JavaScript кода, можно воспользоваться `babel.transform`.
 
 ```js
 babel.transform("code();", options);
 // => { code, map, ast }
 ```
 
-If you are working with files you can use either the asynchronous api:
+Если вы работаете с файлами, вы можете использовать асинхронные api:
 
 ```js
 babel.transformFile("filename.js", options, function(err, result) {
@@ -283,37 +283,37 @@ babel.transformFile("filename.js", options, function(err, result) {
 });
 ```
 
-Or the synchronous api:
+Либо синхронные api:
 
 ```js
 babel.transformFileSync("filename.js", options);
 // => { code, map, ast }
 ```
 
-If you already have a Babel AST for whatever reason you may transform from the AST directly.
+Если у вас уже, по какой-то причине, есть Babel AST, вы можете преобразовывать непосредственно AST.
 
 ```js
 babel.transformFromAst(ast, code, options);
 // => { code, map, ast }
 ```
 
-For all of the above methods, `options` refers to http://babeljs.io/docs/usage/options/.
+Для всех перечисленных методов, параметры `options` можно найти тут: http://babeljs.io/docs/usage/options/.
 
 * * *
 
 # <a id="toc-configuring-babel"></a>Настройка Babel
 
-You may have noticed by now that running Babel on its own doesn't seem to do anything other than copy JavaScript files from one location to another.
+Как вы могли заметить, сам по себе Babel при запуске только копирует Javascript файлы из одного места в другое.
 
-This is because we haven't told Babel to do anything yet.
+Это происходит потому что мы еще не сказали Babel что следует делать.
 
-> Since Babel is a general purpose compiler that gets used in a myriad of different ways, it doesn't do anything by default. You have to explicitly tell Babel what it should be doing.
+> Так как Babel представляет собой компилятор общего назначения, который можно использовать множеством способов, то по умолчанию он не делает ничего. Необходимо явно указать Babel, что ему следует делать.
 
-You can give Babel instructions on what to do by installing **plugins** or **presets** (groups of plugins).
+Вы можете снабдить Babel необходимыми инструкциями, установив **плагины** либо **пресеты** (группы плагинов).
 
 ## <a id="toc-babelrc"></a>`.babelrc`
 
-Before we start telling Babel what to do. We need to create a configuration file. All you need to do is create a `.babelrc` file at the root of your project. Start off with it like this:
+Перед тем как мы начнем говорить Babel, что ему следует сделать, мы создадим файл конфигурации. Для этого нужно всего лишь создать файл `.babelrc` в корне вашего проекта. Запишите в него следующее:
 
 ```js
 {
@@ -322,9 +322,9 @@ Before we start telling Babel what to do. We need to create a configuration file
 }
 ```
 
-This file is how you configure Babel to do what you want.
+Используйте этот файл, чтобы настроить Babel свои специфические требования.
 
-> **Note:** While you can also pass options to Babel in other ways the `.babelrc` file is convention and is the best way.
+> **Примечание:** Хотя вы можете настроить Babel и другими путями, файл `.babelrc` является лучшим и общепризанным стандартным способом это сделать.
 
 ## <a id="toc-babel-preset-es2015"></a>`babel-preset-es2015`
 
@@ -655,11 +655,11 @@ Then simply publish this to npm and you can use it like you would any preset.
 
 # <a id="toc-babel-and-other-tools"></a>Babel и другие инструменты
 
-Babel is pretty straight forward to setup once you get the hang of it, but it can be rather difficult navigating how to set it up with other tools. Тем не менее мы стараемся работать в тесном сотрудничестве с другими проектами для того, чтобы сделать опыт как можно проще.
+Babel довольно прост в установке, когда вы только начинаете знакомство с ним, однако настройка его работы с прочими инструментами может оказаться непростой задачей. Тем не менее мы тесно сотрудничаем с другими проектами, чтобы как можно сильнее упростить этот процесс.
 
-## <a id="toc-static-analysis-tools"></a>Static analysis tools
+## <a id="toc-static-analysis-tools"></a>Инструменты для статического анализа
 
-Newer standards bring a lot of new syntax to the language and static analysis tools are just starting to take advantage of it.
+Новейшие стандарты добавляют в язык новый синтаксис и инструменты статического анализа только начинают пользоваться этими преимуществами.
 
 ### <a id="toc-linting"></a>Линтинг (инструменты для проверки кода)
 
@@ -670,8 +670,6 @@ Newer standards bring a lot of new syntax to the language and static analysis to
 ```sh
 $ npm install --save-dev eslint babel-eslint
 ```
-
-> **Примечание:** `babel-eslint` совместимость с Babel 6 в настоящее время в находится в версии пре-релиза (стадия-кандидат на то, чтобы стать стабильной). Установите [последнюю](https://github.com/babel/babel-eslint/releases) 5.0 бета версию для того, чтобы использовать его с Babel 6.
 
 Затем создайте или используйте существующий файл `.eslintrc` в вашем проекте и установите `parser` как `babel-eslint`.
 

@@ -210,7 +210,7 @@ require("./index.js");
 $ node register.js
 ```
 
-> **注意：**你不能在你要编译的文件内同时注册 Babel，因为 node 会在 Babel 编译它之间就将它执行了。
+> **注意：**你不能在你要编译的文件内同时注册 Babel，因为 node 会在 Babel 编译它之前就将它执行了。
 > 
 > ```js
 require("babel-register");
@@ -557,7 +557,7 @@ $ npm install --save-dev babel-plugin-transform-es2015-classes
 
 ## <a id="toc-customizing-babel-based-on-environment"></a>基于环境自定义 Babel
 
-巴贝尔插件解决许多不同的问题。 其中大多数是开发工具，可以帮助你调试代码或是与工具集成。 也有大量的插件用于在生产环境中优化你的代码。
+Babel 插件解决许多不同的问题。 其中大多数是开发工具，可以帮助你调试代码或是与工具集成。 也有大量的插件用于在生产环境中优化你的代码。
 
 因此，想要基于环境来配置 Babel 是很常见的。你可以轻松的使用 `.babelrc` 文件来达成目的。
 
@@ -670,8 +670,6 @@ module.exports = {
 ```sh
 $ npm install --save-dev eslint babel-eslint
 ```
-
-> **注意：**兼容 Babel 6 的 `babel-eslint` 目前正处于预发行版本。 安装[最新的](https://github.com/babel/babel-eslint/releases) 5.0 beta 版来兼容 Babel 6。
 
 然后创建或使用项目现有的 `.eslintrc` 文件并设置 `parser` 为 `babel-eslint`。.
 

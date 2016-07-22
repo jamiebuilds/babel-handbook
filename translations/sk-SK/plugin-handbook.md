@@ -17,53 +17,53 @@ Táto príručka je k dispozícii v iných jazykoch, pozri [README](/README.md) 
           * [Syntaktická analýza](#toc-syntactic-analysis)
       * [Transformácia](#toc-transform)
       * [Generovanie](#toc-generate)
-      * [Prechod](#toc-traversal)
-      * [Inšpektori](#toc-visitors)
+      * [Prechod (Traversal)](#toc-traversal)
+      * [Inšpektori (Visitors)](#toc-visitors)
       * [Cesty](#toc-paths) 
           * [Cesty v inšpektoroch](#toc-paths-in-visitors)
       * [Stav](#toc-state)
-      * [Rozsahy](#toc-scopes) 
+      * [Rozsahy (Scopes)](#toc-scopes) 
           * [Väzby](#toc-bindings)
   * [API](#toc-api) 
       * [babylon](#toc-babylon)
       * [babel-traverse](#toc-babel-traverse)
       * [babel-types](#toc-babel-types)
       * [Definície](#toc-definitions)
-      * [Builders](#toc-builders)
-      * [Validators](#toc-validators)
-      * [Converters](#toc-converters)
+      * [Stavitelia (Builders)](#toc-builders)
+      * [Validátory](#toc-validators)
+      * [Konvertory](#toc-converters)
       * [babel-generator](#toc-babel-generator)
       * [babel-template](#toc-babel-template)
-  * [Writing your first Babel Plugin](#toc-writing-your-first-babel-plugin)
-  * [Transformation Operations](#toc-transformation-operations) 
-      * [Visiting](#toc-visiting)
-      * [Check if a node is a certain type](#toc-check-if-a-node-is-a-certain-type)
-      * [Check if an identifier is referenced](#toc-check-if-an-identifier-is-referenced)
-      * [Manipulation](#toc-manipulation)
-      * [Replacing a node](#toc-replacing-a-node)
-      * [Replacing a node with multiple nodes](#toc-replacing-a-node-with-multiple-nodes)
-      * [Replacing a node with a source string](#toc-replacing-a-node-with-a-source-string)
-      * [Inserting a sibling node](#toc-inserting-a-sibling-node)
-      * [Removing a node](#toc-removing-a-node)
-      * [Replacing a parent](#toc-replacing-a-parent)
-      * [Removing a parent](#toc-removing-a-parent)
-      * [Scope](#toc-scope)
-      * [Checking if a local variable is bound](#toc-checking-if-a-local-variable-is-bound)
-      * [Generating a UID](#toc-generating-a-uid)
-      * [Pushing a variable declaration to a parent scope](#toc-pushing-a-variable-declaration-to-a-parent-scope)
-      * [Rename a binding and its references](#toc-rename-a-binding-and-its-references)
-  * [Plugin Options](#toc-plugin-options)
-  * [Building Nodes](#toc-building-nodes)
-  * [Best Practices](#toc-best-practices) 
-      * [Avoid traversing the AST as much as possible](#toc-avoid-traversing-the-ast-as-much-as-possible)
-      * [Merge visitors whenever possible](#toc-merge-visitors-whenever-possible)
-      * [Do not traverse when manual lookup will do](#toc-do-not-traverse-when-manual-lookup-will-do)
-      * [Optimizing nested visitors](#toc-optimizing-nested-visitors)
-      * [Being aware of nested structures](#toc-being-aware-of-nested-structures)
+  * [Písanie tvojho prvého Babel pluginu](#toc-writing-your-first-babel-plugin)
+  * [Transformačné operácie](#toc-transformation-operations) 
+      * [Inšpekcie (Visiting)](#toc-visiting)
+      * [Kontrola, či je uzol určitého typu](#toc-check-if-a-node-is-a-certain-type)
+      * [Kontrola, či je identifikátor referencovaný](#toc-check-if-an-identifier-is-referenced)
+      * [Manipulácia](#toc-manipulation)
+      * [Nahradenie uzlu](#toc-replacing-a-node)
+      * [Nahradenie uzlu viacerými uzlami](#toc-replacing-a-node-with-multiple-nodes)
+      * [Nahradenie uzlu zdrojovým reťazcom](#toc-replacing-a-node-with-a-source-string)
+      * [Vloženie susedného uzlu](#toc-inserting-a-sibling-node)
+      * [Odstránenie uzlu](#toc-removing-a-node)
+      * [Nahradenie rodiča](#toc-replacing-a-parent)
+      * [Odstránenie rodiča](#toc-removing-a-parent)
+      * [Rozsah (Scope)](#toc-scope)
+      * [Kontrola, či je lokálna premenná viazaná](#toc-checking-if-a-local-variable-is-bound)
+      * [Generovanie UID](#toc-generating-a-uid)
+      * [Strčenie deklarácie premennej do rodičovského rozsahu (scopu)](#toc-pushing-a-variable-declaration-to-a-parent-scope)
+      * [Premenovanie väzby a jej referencií](#toc-rename-a-binding-and-its-references)
+  * [Možnosti pluginov](#toc-plugin-options)
+  * [Stavba uzlov](#toc-building-nodes)
+  * [Osvedčené postupy](#toc-best-practices) 
+      * [Vyhni sa čo najviac prechádzaniu AST](#toc-avoid-traversing-the-ast-as-much-as-possible)
+      * [Zlučuj inšpektory kedykoľvek je to možné](#toc-merge-visitors-whenever-possible)
+      * [Neprechádzaj stromom, ak to zvládne manuálne prehľadávanie](#toc-do-not-traverse-when-manual-lookup-will-do)
+      * [Optimalizácia vnorených návštevníkov](#toc-optimizing-nested-visitors)
+      * [Uvedom si vnorené štruktúry](#toc-being-aware-of-nested-structures)
 
 # <a id="toc-introduction"></a>Úvod
 
-Babel is a generic multi-purpose compiler for JavaScript. More than that it is a collection of modules that can be used for many different forms of static analysis.
+Babel je všeobecný viacúčelový kompilátor pre JavaScript. Naviac je to kolekcia modulov, ktoré môžu byť použité pre mnoho rôznych foriem statickej analýzy.
 
 > Static analysis is the process of analyzing code without executing it. (Analysis of code while executing it is known as dynamic analysis). The purpose of static analysis varies greatly. It can be used for linting, compiling, code highlighting, code transformation, optimization, minification, and much more.
 
@@ -278,7 +278,7 @@ The [code generation](https://en.wikipedia.org/wiki/Code_generation_(compiler)) 
 
 Code generation is pretty simple: you traverse through the AST depth-first, building a string that represents the transformed code.
 
-## <a id="toc-traversal"></a>Prechod
+## <a id="toc-traversal"></a>Prechod (Traversal)
 
 When you want to transform an AST you have to [traverse the tree](https://en.wikipedia.org/wiki/Tree_traversal) recursively.
 
@@ -330,7 +330,7 @@ The `BinaryExpression` has an `operator`, a `left`, and a `right`. The operator 
 
 This traversal process happens throughout the Babel transform stage.
 
-### <a id="toc-visitors"></a>Inšpektori
+### <a id="toc-visitors"></a>Inšpektori (Visitors)
 
 When we talk about "going" to a node, we actually mean we are **visiting** them. The reason we use that term is because there is this concept of a [**visitor**](https://en.wikipedia.org/wiki/Visitor_pattern).
 
@@ -572,7 +572,7 @@ const MyVisitor = {
 
 Of course, this is a contrived example but it demonstrates how to eliminate global state from your visitors.
 
-### <a id="toc-scopes"></a>Rozsahy
+### <a id="toc-scopes"></a>Rozsahy (Scopes)
 
 Next let's introduce the concept of a [**scope**](https://en.wikipedia.org/wiki/Scope_(computer_science)). JavaScript has [lexical scoping](https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scoping_vs._dynamic_scoping), which is a tree structure where blocks create new scope.
 
@@ -837,7 +837,7 @@ defineType("BinaryExpression", {
 });
 ```
 
-### <a id="toc-builders"></a>Builders
+### <a id="toc-builders"></a>Stavitelia (Builders)
 
 You'll notice the above definition for `BinaryExpression` has a field for a `builder`.
 
@@ -876,7 +876,7 @@ a * b
 
 Builders will also validate the nodes they are creating and throw descriptive errors if used improperly. Which leads into the next type of method.
 
-### <a id="toc-validators"></a>Validators
+### <a id="toc-validators"></a>Validátory
 
 The definition for `BinaryExpression` also includes information on the `fields` of a node and how to validate them.
 
@@ -914,7 +914,7 @@ t.assertBinaryExpression(maybeBinaryExpressionNode, { operator: "*" });
 // Error: Expected type "BinaryExpression" with option { "operator": "*" }
 ```
 
-### <a id="toc-converters"></a>Converters
+### <a id="toc-converters"></a>Konvertory
 
 > [WIP]
 
@@ -988,7 +988,7 @@ console.log(generate(ast).code);
 var myModule = require("my-module");
 ```
 
-# <a id="toc-writing-your-first-babel-plugin"></a>Writing your first Babel Plugin
+# <a id="toc-writing-your-first-babel-plugin"></a>Písanie tvojho prvého Babel pluginu
 
 Now that you're familiar with all the basics of Babel, let's tie it together with the plugin API.
 
@@ -1113,11 +1113,11 @@ Awesome! Our very first Babel plugin.
 
 * * *
 
-# <a id="toc-transformation-operations"></a>Transformation Operations
+# <a id="toc-transformation-operations"></a>Transformačné operácie
 
-## <a id="toc-visiting"></a>Visiting
+## <a id="toc-visiting"></a>Inšpekcie (Visiting)
 
-### <a id="toc-check-if-a-node-is-a-certain-type"></a>Check if a node is a certain type
+### <a id="toc-check-if-a-node-is-a-certain-type"></a>Kontrola, či je uzol určitého typu
 
 If you want to check what the type of a node is, the preferred way to do so is:
 
@@ -1153,7 +1153,7 @@ BinaryExpression(path) {
 }
 ```
 
-### <a id="toc-check-if-an-identifier-is-referenced"></a>Check if an identifier is referenced
+### <a id="toc-check-if-an-identifier-is-referenced"></a>Kontrola, či je identifikátor referencovaný
 
 ```js
 Identifier(path) {
@@ -1173,9 +1173,9 @@ Identifier(path) {
 }
 ```
 
-## <a id="toc-manipulation"></a>Manipulation
+## <a id="toc-manipulation"></a>Manipulácia
 
-### <a id="toc-replacing-a-node"></a>Replacing a node
+### <a id="toc-replacing-a-node"></a>Nahradenie uzlu
 
 ```js
 BinaryExpression(path) {
@@ -1192,7 +1192,7 @@ BinaryExpression(path) {
   }
 ```
 
-### <a id="toc-replacing-a-node-with-multiple-nodes"></a>Replacing a node with multiple nodes
+### <a id="toc-replacing-a-node-with-multiple-nodes"></a>Nahradenie uzlu viacerými uzlami
 
 ```js
 ReturnStatement(path) {
@@ -1215,7 +1215,7 @@ ReturnStatement(path) {
 
 > **Note:** When replacing an expression with multiple nodes, they must be statements. This is because Babel uses heuristics extensively when replacing nodes which means that you can do some pretty crazy transformations that would be extremely verbose otherwise.
 
-### <a id="toc-replacing-a-node-with-a-source-string"></a>Replacing a node with a source string
+### <a id="toc-replacing-a-node-with-a-source-string"></a>Nahradenie uzlu zdrojovým reťazcom
 
 ```js
 FunctionDeclaration(path) {
@@ -1235,7 +1235,7 @@ FunctionDeclaration(path) {
 
 > **Note:** It's not recommended to use this API unless you're dealing with dynamic source strings, otherwise it's more efficient to parse the code outside of the visitor.
 
-### <a id="toc-inserting-a-sibling-node"></a>Inserting a sibling node
+### <a id="toc-inserting-a-sibling-node"></a>Vloženie susedného uzlu
 
 ```js
 FunctionDeclaration(path) {
@@ -1254,7 +1254,7 @@ FunctionDeclaration(path) {
 
 > **Note:** This should always be a statement or an array of statements. This uses the same heuristics mentioned in [Replacing a node with multiple nodes](#replacing-a-node-with-multiple-nodes).
 
-### <a id="toc-removing-a-node"></a>Removing a node
+### <a id="toc-removing-a-node"></a>Odstránenie uzlu
 
 ```js
 FunctionDeclaration(path) {
@@ -1268,7 +1268,7 @@ FunctionDeclaration(path) {
 - }
 ```
 
-### <a id="toc-replacing-a-parent"></a>Replacing a parent
+### <a id="toc-replacing-a-parent"></a>Nahradenie rodiča
 
 ```js
 BinaryExpression(path) {
@@ -1285,7 +1285,7 @@ BinaryExpression(path) {
   }
 ```
 
-### <a id="toc-removing-a-parent"></a>Removing a parent
+### <a id="toc-removing-a-parent"></a>Odstránenie rodiča
 
 ```js
 BinaryExpression(path) {
@@ -1299,9 +1299,9 @@ BinaryExpression(path) {
   }
 ```
 
-## <a id="toc-scope"></a>Scope
+## <a id="toc-scope"></a>Rozsah (Scope)
 
-### <a id="toc-checking-if-a-local-variable-is-bound"></a>Checking if a local variable is bound
+### <a id="toc-checking-if-a-local-variable-is-bound"></a>Kontrola, či je lokálna premenná viazaná
 
 ```js
 FunctionDeclaration(path) {
@@ -1323,7 +1323,7 @@ FunctionDeclaration(path) {
 }
 ```
 
-### <a id="toc-generating-a-uid"></a>Generating a UID
+### <a id="toc-generating-a-uid"></a>Generovanie UID
 
 This will generate an identifier that doesn't collide with any locally defined variables.
 
@@ -1336,7 +1336,7 @@ FunctionDeclaration(path) {
 }
 ```
 
-### <a id="toc-pushing-a-variable-declaration-to-a-parent-scope"></a>Pushing a variable declaration to a parent scope
+### <a id="toc-pushing-a-variable-declaration-to-a-parent-scope"></a>Strčenie deklarácie premennej do rodičovského rozsahu (scopu)
 
 Sometimes you may want to push a `VariableDeclaration` so you can assign to it.
 
@@ -1356,7 +1356,7 @@ FunctionDeclaration(path) {
 + };
 ```
 
-### <a id="toc-rename-a-binding-and-its-references"></a>Rename a binding and its references
+### <a id="toc-rename-a-binding-and-its-references"></a>Premenovanie väzby a jej referencií
 
 ```js
 FunctionDeclaration(path) {
@@ -1390,7 +1390,7 @@ FunctionDeclaration(path) {
 
 * * *
 
-# <a id="toc-plugin-options"></a>Plugin Options
+# <a id="toc-plugin-options"></a>Možnosti pluginov
 
 If you would like to let your users customize the behavior of your Babel plugin you can accept plugin specific options which users can specify like this:
 
@@ -1424,7 +1424,7 @@ These options are plugin-specific and you cannot access options from other plugi
 
 * * *
 
-# <a id="toc-building-nodes"></a>Building Nodes
+# <a id="toc-building-nodes"></a>Stavba uzlov
 
 When writing transformations you'll often want to build up some nodes to insert into the AST. As mentioned previously, you can do this using the [builder](#builder) methods in the [`babel-types`](#babel-types) package.
 
@@ -1535,17 +1535,17 @@ You can find all of the actual [definitions here](https://github.com/babel/babel
 
 * * *
 
-# <a id="toc-best-practices"></a>Best Practices
+# <a id="toc-best-practices"></a>Osvedčené postupy
 
 > I'll be working on this section over the coming weeks.
 
-## <a id="toc-avoid-traversing-the-ast-as-much-as-possible"></a>Avoid traversing the AST as much as possible
+## <a id="toc-avoid-traversing-the-ast-as-much-as-possible"></a>Vyhni sa čo najviac prechádzaniu AST
 
 Traversing the AST is expensive, and it's easy to accidentally traverse the AST more than necessary. This could be thousands if not tens of thousands of extra operations.
 
 Babel optimizes this as much as possible, merging visitors together if it can in order to do everything in a single traversal.
 
-### <a id="toc-merge-visitors-whenever-possible"></a>Merge visitors whenever possible
+### <a id="toc-merge-visitors-whenever-possible"></a>Zlučuj inšpektory kedykoľvek je to možné
 
 When writing visitors, it may be tempting to call `path.traverse` in multiple places where they are logically necessary.
 
@@ -1576,7 +1576,7 @@ path.traverse({
 });
 ```
 
-### <a id="toc-do-not-traverse-when-manual-lookup-will-do"></a>Do not traverse when manual lookup will do
+### <a id="toc-do-not-traverse-when-manual-lookup-will-do"></a>Neprechádzaj stromom, ak to zvládne manuálne prehľadávanie
 
 It may also be tempting to call `path.traverse` when looking for a particular node type.
 
@@ -1606,7 +1606,7 @@ const MyVisitor = {
 };
 ```
 
-## <a id="toc-optimizing-nested-visitors"></a>Optimizing nested visitors
+## <a id="toc-optimizing-nested-visitors"></a>Optimalizácia vnorených návštevníkov
 
 When you are nesting visitors, it might make sense to write them nested in your code.
 
@@ -1675,7 +1675,7 @@ const MyVisitor = {
 };
 ```
 
-## <a id="toc-being-aware-of-nested-structures"></a>Being aware of nested structures
+## <a id="toc-being-aware-of-nested-structures"></a>Uvedom si vnorené štruktúry
 
 Sometimes when thinking about a given transform, you might forget that the given structure can be nested.
 
