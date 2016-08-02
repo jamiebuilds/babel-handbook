@@ -187,7 +187,7 @@ Premièrement, nous allons créer un fichier `index.js` dans notre projet.
 console.log("Hello world!");
 ```
 
-Si nous devions exécuter ceci avec `node index.js`, ce ne serait pas compilé avec Babel. Ainsi, au lieu de faire cela, nous allons configurer `babel-register`.
+Si nous devions exécuter ceci avec `node index.js`, ce ne serait pas compilé avec Babel. Donc, au lieu de faire cela, nous allons configurer `babel-register`.
 
 Tout d’abord installez `babel-register`.
 
@@ -202,7 +202,7 @@ require("babel-register");
 require("./index.js");
 ```
 
-Ce qu’il fait, c'est d'*inscrire* Babel dans le système de module de node et de commencer à compiler tous les fichiers qui sont exigés (require).
+Ce qu’il fait, c'est d'*inscrire* Babel dans le système de module de Node et de commencer à compiler tous les fichiers qui sont exigés (require).
 
 Maintenant, au lieu d’exécuter `node index.js`, nous pouvons utiliser à la place `register.js`.
 
@@ -258,7 +258,7 @@ Dans le cas contraire, vous devrez écrire vous-même le chemin d’accès à `b
 
 Si vous devez utiliser Babel par programmation, pour une raison quelconque, vous pouvez utiliser le package `babel-core`.
 
-Tout d’abord installez `babel-register`.
+Tout d’abord installez `babel-core`.
 
 ```sh
 $ npm install babel-core
@@ -305,7 +305,7 @@ Pour toutes les méthodes ci-dessus, les `options` se réfèrent à http://babel
 
 Vous avez peut-être remarqué qu’en exécutant Babel sur lui-même, il ne semble pas faire autre chose que de la copie de fichier JavaScript d’un endroit à un autre.
 
-C’est parce que nous n’avons pas dit Babel de faire quoi que ce soit pour le moment.
+C’est parce que nous n’avons pas dit à Babel de faire quoi que ce soit pour le moment.
 
 > Comme Babel est un compilateur polyvalent, et qu'il est utilisé de plusieurs façons différentes, il ne fait rien par défaut. Vous devez indiquer explicitement ce que Babel doit faire.
 
@@ -313,7 +313,7 @@ Vous pouvez donner des instructions Babel sur ce qu’il doit faire en installan
 
 ## <a id="toc-babelrc"></a>`.babelrc`
 
-Avant de commencer à dire Babel ce qu'il doit faire. Nous devons créer un fichier de configuration. Tout ce que vous devez faire, c'est créer un fichier `.babelrc` à la racine de votre projet. Commencez le comme ceci :
+Avant de commencer à dire à Babel ce qu'il doit faire. Nous devons créer un fichier de configuration. Tout ce que vous devez faire, c'est créer un fichier `.babelrc` à la racine de votre projet. Commencez le comme ceci :
 
 ```js
 {
@@ -328,7 +328,7 @@ Ce fichier explique comment configurer Babel pour faire ce que vous voulez.
 
 ## <a id="toc-babel-preset-es2015"></a>`babel-preset-es2015`
 
-Commençons par dire Babel de compiler ES2015 (la version la plus récente de la norme JavaScript, également connu sous le nom de ES6) en ES5 (la version aujourd'hui disponible dans la plupart des environnements de JavaScript).
+Commençons par dire à Babel de compiler ES2015 (la version la plus récente de la norme JavaScript, également connu sous le nom de ES6) en ES5 (la version aujourd'hui disponible dans la plupart des environnements de JavaScript).
 
 Nous ferons cela en installant le preset de Babel "es2015" :
 
@@ -438,7 +438,7 @@ Malgré cela, le code ne fonctionnera encore pas partout parce que `Array.from` 
 
 Pour résoudre ce problème, nous utilisons ce qu’on appelle un [Polyfill](https://remysharp.com/2010/10/08/what-is-a-polyfill). Autrement dit, un polyfill est un morceau de code qui reproduit une api native qui n’existe pas dans le runtime actuel. Cela vous permet d’utiliser des API telles que `Array.from` avant qu’elles ne soient disponibles.
 
-Babel utilise l' excellent [core-js](https://github.com/zloirock/core-js) comme son polyfill, ainsi qu’un runtime personnalisé [regenerator](https://github.com/facebook/regenerator) pour obtenir des générateurs et des fonctions async qui fonctionnent.
+Babel utilise l'excellent [core-js](https://github.com/zloirock/core-js) comme son polyfill, ainsi qu’un runtime personnalisé [regenerator](https://github.com/facebook/regenerator) pour obtenir des générateurs et des fonctions async qui fonctionnent.
 
 Pour inclure le polyfill Babel, veuillez d’abord l’installez avec npm :
 
@@ -504,7 +504,7 @@ let Foo = function () {
 }();
 ```
 
-Au lieu de mettre les aides `_classCallCheck` et `_createClass` dans chaque fichier, là où elles sont nécessaires.
+Au lieu de mettre les aides `_classCallCheck` et `_createClass` dans chaque fichier, Babel les mettra où elles sont nécessaires.
 
 * * *
 
@@ -671,7 +671,7 @@ Tout d’abord installer `eslint` et `babel-eslint`.
 $ npm install --save-dev eslint babel-eslint
 ```
 
-Ensuite, créez ou utilisez le fichier `.eslintrc` existant dans votre projet et définissez `parser` à `babel-eslint`.
+Ensuite, créez ou utilisez le fichier `.eslintrc` existant dans votre projet et définissez `parser` avec la valeur `babel-eslint`.
 
 ```diff
   {
@@ -733,7 +733,7 @@ Pour plus d’informations, consultez la documentation de [`babel-jscs`](https:/
 
 ### <a id="toc-documentation"></a>Documentation
 
-À l’aide de Babel, ES2015 et Flow vous pouvez en déduire beaucoup sur votre code. L'utilisation de [documentation.js](http://documentation.js.org) vous permet de générer une documentation détaillée de l'API très facilement.
+En utilisant Babel, ES2015 et Flow, vous pouvez prélever beaucoup de choses sur votre code. L'utilisation de [documentation.js](http://documentation.js.org) vous permet de générer une documentation détaillée de l'API très facilement.
 
 Documentation.js utilise Babel en arrière plan pour prendre en charge l’ensemble de la syntaxe la plus récente, y compris les annotations de Flow afin de déclarer les types dans votre code.
 

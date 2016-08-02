@@ -1,17 +1,17 @@
 # Podręcznik Użytkownika Babel
 
-Ten dokument obejmuje wszystko co chcesz wiedzieć o używaniu [Babel ](https://babeljs.io) i powiązanych narzędziach.
+Ten dokument obejmuje wszystko, co chciałbyś wiedzieć o [Babelu](https://babeljs.io) i powiązanych narzędziach.
 
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
-Ten podręcznik jest dostępny w innych językach, zobacz [plik README](/README.md) po pełną listę.
+Niniejszy podręcznik jest dostępny w innych językach. Zobacz [plik README](/README.md), aby zobaczyć pełną listę.
 
 # Spis treści
 
   * [Wprowadzenie](#toc-introduction)
   * [Instalacja Babel](#toc-setting-up-babel) 
       * [`babel-cli`](#toc-babel-cli)
-      * [Uruchomienie Babel CLI z poziomu projektu](#toc-running-babel-cli-from-within-a-project)
+      * [Uruchamianie Babel CLI z poziomu projektu](#toc-running-babel-cli-from-within-a-project)
       * [`babel-register`](#toc-babel-register)
       * [`babel-node`](#toc-babel-node)
       * [`babel-core`](#toc-babel-core)
@@ -45,100 +45,100 @@ Ten podręcznik jest dostępny w innych językach, zobacz [plik README](/README.
 
 # <a id="toc-introduction"></a>Wprowadzenie
 
-Babel jest ogólnym wielo-zadaniowym kompilatorem dla JavaScriptu. Korzystając z Babel możesz używać (i tworzyć) w oparciu o przyszłe wydania JavaScriptu, a także wykorzystując nowe narzędzia.
+Babel jest ogólnym, wielozadaniowym kompilatorem JavaScriptu. Korzystając z Babela, otwierasz sobie drogę do możliwości korzystania (i tworzenia) nowoczesnego kodu w oparciu o przyszłe wydania JavaScriptu, a także otrzymujesz dostęp do najnowocześniejszych rozwiązań języka.
 
-JavaScript jako język stale się rozwija, wychodząc z nową specyfikacją, propozycjami i nowymi możliwościami cały czas. Korzystając z Babel masz możliwość używać nowych funkcjonalności, lata przez ich ogólną dostępnością.
+JavaScript stale się rozwija. Nowe specyfikacje, propozycje oraz możliwości pojawiają się w zastraszającym tempie. Używając Babela, możesz korzystać z tych wszystkich udogodnień już teraz - lata przed tym, nim staną się powszechną praktyką.
 
-Babel robi to poprzez kompilowanie kodu JavaScript, napisanego zgodnie z najnowszymi standardami do wersji która będzie działać wszędzie dzisiaj. Ten proces znany jest jako kopmilowanie źródło-do-źródła, znane jako transpiling.
+Babel daje taką możliwość dzięki kompilowaniu kodu JavaScriptu, napisanego zgodnie z najnowszymi standardami, do postaci, która jest kompatybilna z dzisiejszymi interpreterami. Proces ten jest nazywany jako kompilowanie źródła-do-źródła (ang. source-to-source) czy powszechniej "transpiling".
 
 Na przykład Babel może przekształcić nową składnię funkcji ES2015 z takiej:
 
 ```js
-const kwadrat= n => n * n;
+const square = n => n * n;
 ```
 
 Do następującej:
 
 ```js
-const kwadrat= function kwadrat(n) {
+const square = function square(n) {
   return n * n;
 };
 ```
 
-However, Babel can do much more than this as Babel has support for syntax extensions such as the JSX syntax for React and Flow syntax support for static type checking.
+Babel daje oczywiście wiele innych możliwości. Wspiera między innymi składnię JSX dostępną w React oraz składnię Flow dla statycznego sprawdzania zgodności typów.
 
-Further than that, everything in Babel is simply a plugin and anyone can go out and create their own plugins using the full power of Babel to do whatever they want.
+Ponadto, każdy komponent Babela jest wtyczką (ang. plugin). Każdy, w dowolnej chwili, może stworzyć własną wtyczkę, korzystając z całej mocy oferowanej przez Babel.
 
-*Even further* than that, Babel is broken down into a number of core modules that anyone can use to build the next generation of JavaScript tooling.
+*Idąc dalej podjętą retoryką*, struktura Babela została rozbita do postaci kilku głównych modułów. Dzięki nim, możliwe jest tworzenie nowoczesnego kodu JavaScript.
 
-Many people do too, the ecosystem that has sprung up around Babel is massive and very diverse. Throughout this handbook I'll be covering both how built-in Babel tools work as well as some useful things from around the community.
+Wielu ludzi już zaczęło to robić. Społeczność, która urosła wokół Babela, jest naprawdę piorunująca i różnorodna. W tym podręczniku omówię narzędzia wbudowane w Babela, ale skupię się także na wtyczkach stworzonych przez naszą społeczność.
 
-> ***Po więcej informacji, śledź [@thejameskyle](https://twitter.com/thejameskyle) na Twitterze.***
+> ***Aby uzyskać więcej informacji na ten temat, sprawdź wpisy <https://twitter.com/thejameskyle> na Twitterze.***
 
 * * *
 
 # <a id="toc-setting-up-babel"></a>Instalacja Babel
 
-Since the JavaScript community has no single build tool, framework, platform, etc., Babel has official integrations for all of the major tooling. Everything from Gulp to Browserify, from Ember to Meteor, no matter what your setup looks like there is probably an official integration.
+Biorąc pod uwagę, że społeczność JavaScriptu nie skupia się wyłącznie wokół jednego taskera, frameworka, platformy itp., Babel udostępnia oficjalne wsparcie do integracji z różnymi, wiodącymi narzędziami. Wszystko, począwszy od Gulpa i kończąc na Browserify; od Embera po Meteora; nie ma znaczenia jak wygląda twoje środowisko pracy - prawdopodobnie i tak posiada ono oficjalne wsparcie.
 
-For the purposes of this handbook, we're just going to cover the built-in ways of setting up Babel, but you can also visit the interactive [setup page](http://babeljs.io/docs/setup) for all of the integrations.
+Na potrzeby tego podręcnzika, omówimy standardowe metody na instalację Babela. Możesz takze odwiedzić bardziej interaktywny [generator instalatora](http://babeljs.io/docs/setup), gdzie dostępne są wszelkie możliwe metody integracji do twoich potrzeb.
 
-> **Note:** This guide is going to refer to command line tools like `node` and `npm`. Before continuing any further you should be comfortable with these tools.
+> **Uwaga:** Ten poradnik nie będzie tłumaczył jak działają polecenia linii komend takie jak `node` lub `npm`. Autor poradnika zakłada, że jesteś już zaznajomiony z tymi technologiami.
 
 ## <a id="toc-babel-cli"></a>`babel-cli`
 
-Babel's CLI is a simple way to compile files with Babel from the command line.
+CLI Babela jest najprostszą metodą na skompilowanie plików do postaci Babela bezpośrednio z linii poleceń.
 
-Let's first install it globally to learn the basics.
+Zainstalujmy go globalnie, aby poznać podstawowe zasady jego działania.
 
 ```sh
 $ npm install --global babel-cli
 ```
 
-We can compile our first file like so:
+Możemy podjąć naszą pierwszą próbę kompilacji w następujący sposób:
 
 ```sh
 $ babel my-file.js
 ```
 
-This will dump the compiled output directly into your terminal. To write it to a file we'll specify an `--out-file` or `-o`.
+Zwróci to skompilowaną zawartość pliku bezpośrednio do okienka terminala. Aby zapisać zawartość do pliku, musimy dopisać `--out-file` lub `-o`.
 
 ```sh
 $ babel example.js --out-file compiled.js
-# or
+# lub
 $ babel example.js -o compiled.js
 ```
 
-If we want to compile a whole directory into a new directory we can do so using `--out-dir` or `-d`.
+Jeśli chcielibyśmy skompilować cały katalog, aby pliki wynikowe przenieść do innego katalogu, możemy to zrobić korzystając z paremetru `--out-dir` lub `-d`.
 
 ```sh
 $ babel src --out-dir lib
-# or
+# lub
 $ babel src -d lib
 ```
 
-### <a id="toc-running-babel-cli-from-within-a-project"></a>Uruchomienie Babel CLI z poziomu projektu
+### <a id="toc-running-babel-cli-from-within-a-project"></a>Uruchamianie Babel CLI z poziomu projektu
 
-While you *can* install Babel CLI globally on your machine, it's much better to install it **locally** project by project.
+O ile *możliwe jest* zainstalowanie CLI Babela globalnie, bardziej preferowaną formą jest zainstalowanie go **lokalnie** dla każdego projektu.
 
-There are two primary reasons for this.
+Powody tego są dwa:
 
-  1. Different projects on the same machine can depend on different versions of Babel allowing you to update one at a time.
-  2. It means you do not have an implicit dependency on the environment you are working in. Making your project far more portable and easier to setup.
+  1. Różne projekty na tym samym komputerze mogą bazowac na innych wersjach Babela. Dzięki temu istnieje możliwość aktualizowania ich z osobna.
+  2. Oznacza to, że nie będziesz musiał zgadywać, jakie składowe zostały już zainstalowane bezpośrednio na twoim środowisku. Dzięki temu twój projekt staje się bardziej "przenośny".
 
-We can install Babel CLI locally by running:
+Można zainstalować Babela lokalnie wywołując polecenie:
 
 ```sh
 $ npm install --save-dev babel-cli
 ```
 
-> **Note:** Since it's generally a bad idea to run Babel globally you may want to uninstall the global copy by running:
+> **Uwaga:** Biorąc pod uwagę, że uruchamianie Babela globalnie nie jest dobrym pomysłem, możesz chcieć odinstalować globalną kopię wywołując polecenie:
 > 
 > ```sh
 $ npm uninstall --global babel-cli
 ```
 
-After that finishes installing, your `package.json` file should look like this:
+Kiedy instalacja zakończy się, plik `package.json` powinien wyglądać następująco:
 
 ```json
 {

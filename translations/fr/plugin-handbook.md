@@ -57,7 +57,7 @@ Ce manuel est disponible dans d'autres langues, consulter le [README](/README.md
   * [Meilleures pratiques](#toc-best-practices) 
       * [Éviter de traverser l'AST autant que possible](#toc-avoid-traversing-the-ast-as-much-as-possible)
       * [Fusionner les visiteurs quand c'est possible](#toc-merge-visitors-whenever-possible)
-      * [Do not traverse when manual lookup will do](#toc-do-not-traverse-when-manual-lookup-will-do)
+      * [N'utilisez pas "traverse" lorsqu'une lecture manuelle est possible](#toc-do-not-traverse-when-manual-lookup-will-do)
       * [Optimisation des visiteurs imbriqués](#toc-optimizing-nested-visitors)
       * [Etre conscient des structures imbriqués](#toc-being-aware-of-nested-structures)
 
@@ -990,9 +990,9 @@ var myModule = require("my-module");
 
 # <a id="toc-writing-your-first-babel-plugin"></a>Écriture de votre premier plugin de Babel
 
-Now that you're familiar with all the basics of Babel, let's tie it together with the plugin API.
+Maintenant que vous êtes familiarisé avec les bases de Babel, nous allons les attacher ensemble avec l'API de plugin.
 
-Start off with a `function` that gets passed the current [`babel`](https://github.com/babel/babel/tree/master/packages/babel-core) object.
+Commencez par une `function` qui passe l’objet courant de [`babel`](https://github.com/babel/babel/tree/master/packages/babel-core).
 
 ```js
 export default function(babel) {
@@ -1000,7 +1000,7 @@ export default function(babel) {
 }
 ```
 
-Since you'll be using it so often, you'll likely want to grab just `babel.types` like so:
+Étant donné que vous allez l’utiliser souvent, vous aurez probablement envie de saisir simplement ` babel.types` comme ceci :
 
 ```js
 export default function({ types: t }) {
@@ -1008,7 +1008,7 @@ export default function({ types: t }) {
 }
 ```
 
-Then you return an object with a property `visitor` which is the primary visitor for the plugin.
+Puis vous retournez un objet avec une propriété `visitor` qui est le visiteur primaire du plugin.
 
 ```js
 export default function({ types: t }) {
@@ -1020,13 +1020,13 @@ export default function({ types: t }) {
 };
 ```
 
-Let's write a quick plugin to show off how it works. Here's our source code:
+Nous allons écrire un plugin rapide pour montrer comment il fonctionne. Voici notre code source :
 
 ```js
 foo === bar;
 ```
 
-Or in AST form:
+Ou sous forme d'un AST  :
 
 ```js
 {
@@ -1043,7 +1043,7 @@ Or in AST form:
 }
 ```
 
-We'll start off by adding a `BinaryExpression` visitor method.
+Nous allons commencer en ajoutant une méthode visiteur `BinaryExpression`.
 
 ```js
 export default function({ types: t }) {
@@ -1057,7 +1057,7 @@ export default function({ types: t }) {
 }
 ```
 
-Then let's narrow it down to just `BinaryExpression`s that are using the `===` operator.
+Ensuite, nous allons restreindre `BinaryExpression` pour qu'il utilise uniquement l'opérateur `===`.
 
 ```js
 visitor: {
@@ -1071,7 +1071,7 @@ visitor: {
 }
 ```
 
-Now let's replace the `left` property with a new identifier:
+Maintenant nous allons remplacer la propriété `left` avec un nouvel identificateur :
 
 ```js
 BinaryExpression(path) {
@@ -1084,13 +1084,13 @@ BinaryExpression(path) {
 }
 ```
 
-Already if we run this plugin we would get:
+Déjà si nous exécutons ce plugin que nous obtiendrions :
 
 ```js
 sebmck === bar;
 ```
 
-Now let's just replace the `right` property.
+Maintenant, nous allons remplacer la propriété `right`.
 
 ```js
 BinaryExpression(path) {
@@ -1103,13 +1103,13 @@ BinaryExpression(path) {
 }
 ```
 
-And now for our final result:
+Et voici notre résultat final :
 
 ```js
 sebmck === dork;
 ```
 
-Awesome! Our very first Babel plugin.
+Génial ! Notre tout premier plugin Babel.
 
 * * *
 
@@ -1129,7 +1129,7 @@ BinaryExpression(path) {
 }
 ```
 
-You can also do a shallow check for properties on that node:
+Vous pouvez également faire une vérification peu profonde pour les propriétés de ce nœud :
 
 ```js
 BinaryExpression(path) {
@@ -1372,7 +1372,7 @@ FunctionDeclaration(path) {
   }
 ```
 
-Alternatively, you can rename a binding to a generated unique identifier:
+Alternativement, vous pouvez renommer une liaison vers un identificateur unique généré :
 
 ```js
 FunctionDeclaration(path) {

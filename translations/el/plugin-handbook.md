@@ -274,13 +274,13 @@ n * n;
 
 ### <a id="toc-generate"></a>Παραγωγή
 
-The [code generation](https://en.wikipedia.org/wiki/Code_generation_(compiler)) stage takes the final AST and turns it back into a string of code, also creating [source maps](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/).
+Το στάδιο [παραγωγής κώδικα](https://en.wikipedia.org/wiki/Code_generation_(compiler)) λαμβάνει το τελικό AST και το μετατρέπει σε μια συμβολοσειρά κώδικα δημιουργώντας και [χάρτες προέλευσης](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/).
 
 Η παραγωγή του κώδικα είναι πολύ απλή: η διεισδυση του ΑΣΔ γίνεται με τον αλγόριθμο "βάθος πρώτα" (depth-first) χτίζοντας μια συμβολοσειρά η οποία αναπαρειστά τον μετασχηματισμένο κώδικα.
 
 ## <a id="toc-traversal"></a>Διάσχιση
 
-Όταν θελεις να μετασχηματίσετε ένα ΑΣΔ πρέπει να [διασχίσεις το δέντρο](https://en.wikipedia.org/wiki/Tree_traversal) αναδρομικά.
+Όταν θέλετε να μετασχηματίσετε ένα AST πρέπει να [διασχίσετε το δέντρο](https://en.wikipedia.org/wiki/Tree_traversal) αναδρομικά.
 
 Ας υποθέσουμε ότι έχουμε τον τύπο `ΔήλωσηΣυνάρτησης`. Έχει μερικές ιδιότητες `διακριτικό`. `παράμετροι`, και `σώμα`. Κάθενα από αυτά έχει εμφωλευμένους κόμβους.
 
@@ -332,9 +332,9 @@ The [code generation](https://en.wikipedia.org/wiki/Code_generation_(compiler)) 
 
 ### <a id="toc-visitors"></a>Επισκέπτες
 
-Όταν μιλάμε σχετικά "να πάμε" σε ένα κόμβο, εννοούμε πραγματικά ότι τον **επισκεπτόμαστε**. The reason we use that term is because there is this concept of a [**visitor**](https://en.wikipedia.org/wiki/Visitor_pattern).
+Όταν μιλάμε σχετικά "να πάμε" σε ένα κόμβο, εννοούμε πραγματικά ότι τον **επισκεπτόμαστε**. Ο λόγος που χρησιμοποιούμε αυτόν τον όρο είναι γιατί υπάρχει αυτή η έννοια ενός [**επισκέπτη**](https://en.wikipedia.org/wiki/Visitor_pattern).
 
-Visitors are a pattern used in AST traversal across languages. Simply put they are an object with methods defined for accepting particular node types in a tree. That's a bit abstract so let's look at an example.
+Οι επισκέπτες είναι ένα μοτίβο που χρησιμοποιείται στην AST traversal διαγλωσσικά. Με απλά λόγια είναι ένα αντικείμενο με μεθόδους που ορίζονται για την αποδοχή συγκεκριμένων τύπων node σε ένα δέντρο. Αυτό είναι λίγο αφηρημένο, οπότε ας δούμε ένα παράδειγμα.
 
 ```js
 const MyVisitor = {
@@ -344,11 +344,11 @@ const MyVisitor = {
 };
 ```
 
-> **Note:** `Identifier() { ... }` is shorthand for `Identifier: { enter() { ... } }`.
+> **Σημείωση:** `Identifier() { ... }`είναι συντομογραφία για `Identifier: { enter() { ... } }`.
 
-This is a basic visitor that when used during a traversal will call the `Identifier()` method for every `Identifier` in the tree.
+Αυτός είναι ένας βασικός επισκέπτης που όταν χρησιμοποιείται κατά τη διάρκεια μιας traversal θα καλέσει της μέθοδο `Identifier()` για κάθε `Identifier` στο δέντρο.
 
-So with this code the `Identifier()` method will be called four times with each `Identifier` (including `square`).
+Έτσι με αυτόν τον κώδικα η `Identifier()` μέθοδος θα εκτελεστεί τέσσερις φορές με κάθε `Identifier` (περιλαμβάνοντας το `square`).
 
 ```js
 function square(n) {
@@ -363,9 +363,9 @@ Called!
 Called!
 ```
 
-These calls are all on node **enter**. However there is also the possibility of calling a visitor method when on **exit**.
+Αυτές οι εκτελέσεις είναι όλες στο node **enter**. Ωστόσο, υπάρχει επίσης η δυνατότητα κλήση μιας μεθόδου επισκέπτη κατά το **exit**.
 
-Imagine we have this tree structure:
+Φανταστείτε πως έχουμε αυτή τη δομή δέντρου:
 
 ```js
 - FunctionDeclaration
