@@ -45,7 +45,7 @@ Este manual está disponível em outros idiomas, consulte o [arquivo Leia-me](/R
 
 # <a id="toc-introduction"></a>Introdução
 
-Babel é um compilador genérico multifuncional de JavaScript. Usando o Babel, você pode usar (e criar) a próxima geração do JavaScript, além da próxima geração da ferramenta do JavaScript.
+Babel é um compilador genérico multifuncional de JavaScript. Usando o Babel, você pode usar (e criar) a próxima geração do JavaScript, além da próxima geração de ferramentas para JavaScript.
 
 JavaScript é uma linguagem que está em constante desenvolvimento, com novas especificações e propostas vindas com novas funcionalidades o tempo todo. A utilização do Babel vai lhe auxiliar na utilização de muitas funcionalidades muito antes de elas estarem disponíveis de forma abrangente.
 
