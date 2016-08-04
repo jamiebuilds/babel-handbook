@@ -378,9 +378,9 @@ Called!
         - Identifier (right)
 ```
 
-As we traverse down each branch of the tree we eventually hit dead ends where we need to traverse back up the tree to get to the next node. Going down the tree we **enter** each node, then going back up we **exit** each node.
+Καθώς διασχίζουμε το κάθε κλαδί του δέντρου από πάνω προς τα κάτω βρίσκουμε εν τέλει ένα τέλος και χρειάζεται να το ξαναδιασχίσουμε προς την άλλη κατεύθυνση για να βρούμε το επόμενο node. Κατεβαίνοντας το δέντρο κάνουμε **enter** το κάθε node και ανεβαίνοντάς το κάνουμε **exit** το κάθε node.
 
-Let's *walk* through what this process looks like for the above tree.
+Ας δούμε πως μοιάζει αυτή η διαδικασία για το παραπάνω δέντρο.
 
   * Enter `FunctionDeclaration` 
       * Enter `Identifier (id)`
@@ -403,7 +403,7 @@ Let's *walk* through what this process looks like for the above tree.
       * Exit `BlockStatement (body)`
   * Exit `FunctionDeclaration`
 
-So when creating a visitor you have two opportunities to visit a node.
+Οπότε δημιουργώντας έναν visitor έχετε δυο ευκαιρίες να επισκεφτείτε ένα node.
 
 ```js
 const MyVisitor = {
@@ -420,7 +420,7 @@ const MyVisitor = {
 
 ### <a id="toc-paths"></a>Καθοδήγηση
 
-An AST generally has many Nodes, but how do Nodes relate to one another? We could have one giant mutable object that you manipulate and have full access to, or we can simplify this with **Paths**.
+Ένα AST γενικά έχει πολλά nodes, αλλά πώς τα Nodes σχετίζονται το ένα με το άλλο; Θα μπορούσαμε να έχουμε ένα γιγαντιαίο μεταβλητό αντικείμενο που μπορείτε να χειριστείτε και στο οποίο να έχετε πλήρη πρόσβαση, ή μπορούμε να το απλοποιήσουμε αυτό με **Paths**.
 
 A **Path** is an object representation of the link between two nodes.
 

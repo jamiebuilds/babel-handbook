@@ -5,6 +5,6 @@
   * [راهنمای کاربر](user-handbook.md) - نحوه ی آماده سازی و پیکربندی Babel و اطلاعات بیشتر.
   * [راهنمای Plugin](plugin-handbook.md) چگونه برای Babel افزونه ایجاد کنید.
 
-> For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.
+> برای به روز رسانی آینده [@thejameskyle](https://twitter.com/thejameskyle) را در توییتر دنبال کنید.
 
-If you are reading a non-english translation of this handbook you may still find english sections that have not yet been translated. If you would like to contribute to one of the translations you must do so through Crowdin. Please read the [contributing guidelines](/CONTRIBUTING.md) for more information. You will find a number of english words that are programming concepts. If these were translated to other languages there would be a lack of consistency and fluency when reading about them. In many cases you will find the literal translation followed by the english term in parenthesis `()`. For example: Abstract Syntax Trees (ASTs).
+اگر شما در حال خواندن ترجمه غیر انگلیسی این کتاب هستید، ممکن هست با بخشی مواجه شوید که هنوز ترجمه نشده باشد. اگر شما قصد دارید در کار ترجمه همکاری داشته باشید، باید از Crowdin برای اینکار استفاده کنید. لطفا [راهنمای همکاری](/CONTRIBUTING.md) را برای اطلاعات بیشتر مطالعه فرمائید. شما در حین ترجمه به تعدادی واژه انگلیسی که مفاهیم برنامه نویسی هستند، برخواهید خورد. اگر قصد ترجمه این واژه ها به زبان دیگری را داشتید، سعی کنید واژه های روان و سلیس را انتخاب کنید که خواننده به خوبی متوجه آنها شود. در بسیاری از موارد شما ترجمه تحت اللفظی از کلمه انگلیسی را در پرانتز `()` مشاهده خواهید کرد. به عنوان مثال: درخت نحو انتزاعی (ASTs).

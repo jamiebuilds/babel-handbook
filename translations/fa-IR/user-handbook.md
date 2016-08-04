@@ -73,7 +73,7 @@ Further than that, everything in Babel is simply a plugin and anyone can go out 
 
 Many people do too, the ecosystem that has sprung up around Babel is massive and very diverse. Throughout this handbook I'll be covering both how built-in Babel tools work as well as some useful things from around the community.
 
-> ***For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.***
+> ***برای به روز رسانی آینده [@thejameskyle](https://twitter.com/thejameskyle) را در توییتر دنبال کنید.***
 
 * * *
 
@@ -818,4 +818,4 @@ First, try isolating your problem. It's extremely unlikely that every part of yo
 
 * * *
 
-> ***For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.***
+> ***برای به روز رسانی آینده [@thejameskyle](https://twitter.com/thejameskyle) را در توییتر دنبال کنید.***
