@@ -1,6 +1,6 @@
-# Βαβέλ: Εγχειρίδιο για νέους χρήστες
+# Babel: Εγχειρίδιο για νέους χρήστες
 
-Σε αυτό το κείμενο θα βρείτε όσες πληροφορίες χρειάζεστε για να αρχίσετε να δημιουργείτε [βύσματα (plugins)](https://babeljs.io) για το <0>Babel</0>.
+Το παρόν έγγραφο καλύπτει πώς να δημιουργήσετε [Babel](https://babeljs.io) [plugins](https://babeljs.io/docs/advanced/plugins/).
 
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
@@ -10,7 +10,7 @@
 
   * [Εισαγωγή](#toc-introduction)
   * [Βασικά](#toc-basics) 
-      * [ΑΣΔ](#toc-asts)
+      * [ASTs](#toc-asts)
       * [Στάδια του Babel](#toc-stages-of-babel)
       * [Ανάλυση](#toc-parse) 
           * [Λεξικολογική Ανάλυση](#toc-lexical-analysis)
@@ -53,7 +53,7 @@
       * [Πιέστε τη δήλωση μεταβλητής σε ένα γονικό πεδίο](#toc-pushing-a-variable-declaration-to-a-parent-scope)
       * [Μετονομάσετε μια δέσμευση και τις αναφορές της](#toc-rename-a-binding-and-its-references)
   * [Επιλογές βυσμάτων (plugins)](#toc-plugin-options)
-  * [Building Nodes](#toc-building-nodes)
+  * [Χτίζοντας Nodes](#toc-building-nodes)
   * [Βέλτιστες πρακτικές](#toc-best-practices) 
       * [Αποφύγετε όσο το δυνατόν την διάσχιση των AST](#toc-avoid-traversing-the-ast-as-much-as-possible)
       * [Συγχωνεύστε τους επισκέπτες οπότε είναι δυνατό](#toc-merge-visitors-whenever-possible)
@@ -67,21 +67,21 @@
 
 > Στατική ανάλυση είναι η διαδικασία ανάλυσης του κώδικα χωρίς την εκτέλεση του. (Η ανάλυση του κώδικα κατα τη διάρκεια της εκτέλεσης του είναι γνωστή και ως δυναμική ανάλυση). Ο σκοπός της στατικής ανάλυσης ποικίλλει. Μπορεί να χρησιμοποιηθεί για καθάρισμα (linting), μεταγλώττιση, έμφαση (hightlighting), διαμόρφωση, βελτιστοποίηση, σμίκρυνση και πολλά άλλα.
 
-Μπορείς να χρησιμοποιήσεις το Babel για να κατασκευάσεις πολλούς διαφορετικούς τύπους εργαλείων τα οποία μπορούν να σε βοηθήσουν να γίνεις πιο παραγωγικό και να γράφεις καλύτερα προγράμματα.
+Μπορείτε να χρησιμοποιήσετε το Babel για να κατασκευάσετε πολλούς διαφορετικούς τύπους εργαλείων τα οποία μπορούν να σας βοηθήσουν να γίνετε πιο παραγωγικοί και να γράφετε καλύτερα προγράμματα.
 
-> ***Για μελλοντικές ενημερώσεις, ακολουθήστε [@thejameskyle](https://twitter.com/thejameskyle) στο Twitter.***
+> ***Για μελλοντικές ενημερώσεις μπορείτε να ακολουθήσετε τον [@thejameskyle](https://twitter.com/thejameskyle) στο Twitter.***
 
 * * *
 
-# <a id="toc-basics"></a>Βασικά
+# <a id="toc-basics"></a>Βασικά στοιχεία
 
 Το Babel είναι ένας μεταγλωττιστής για JavaScript, πιο συγκεκριμένα ένας μεταγλωττιστής από πηγαίο κώδικα σε πηγαίο κωδικα, συχνά αποκαλούμενο «transpiler». Αυτό σημαίνει ότι δίνοντας στο Babel κάποιο κώδικα JavaScript, αυτό τροποποιεί τον κώδικα και παράγει ένα νέο κώδικα.
 
 ## <a id="toc-asts"></a>AST
 
-Κάθενα από τα βήματα συμπεριλαμβάνουν την δημιουργία ή χρήση μιας [Αφηρημένης Δενδροειδούς Σύνταξης](https://en.wikipedia.org/wiki/Abstract_syntax_tree) εν συντομία ΑΣΔ.
+Κάθενα από τα βήματα συμπεριλαμβάνουν την δημιουργία ή χρήση μιας [Abstract Syntax Tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree) εν συντομία AST.
 
-> Το Babel χρησιμοποιεί ένα τροποποιημένο ΑΣΔ [ESTree](https://github.com/estree/estree), ο πυρήνας λεπτομερειών του βρίσκεται [εδώ](https://github.com/babel/babel/blob/master/doc/ast/spec.md).
+> Το Babel χρησιμοποιεί ένα AST τροποποιημένο από το [ESTree](https://github.com/estree/estree), για το οποίο οι λεπτομέρειες του βρίσκονται [εδώ](https://github.com/babel/babel/blob/master/doc/ast/spec.md).
 
 ```js
 function square(n) {
@@ -89,9 +89,9 @@ function square(n) {
 }
 ```
 
-> Ρίξτε μια ματιά [AST Explorer](http://astexplorer.net/) για να πάρετε μια καλύτερη αίσθηση των κόμβων ΑΣΔ. [Εδώ](http://astexplorer.net/#/Z1exs6BWMq) βρίσκετε ο σύνδεσμος σε αυτό με παραδείγμα κώδικα το οποίο έχει επικολληθεί παραπάνω.
+> Ρίξτε μια ματιά στο [AST Explorer](http://astexplorer.net/) για να πάρετε μια καλύτερη αίσθηση των AST nodes. [Εδώ](http://astexplorer.net/#/Z1exs6BWMq) θα βρείτε ένα παράδειγμα που περιέχει τον παραπάνω κώδικα.
 
-Το ίδιο πρόγραμμα μπορεί να αναπαρασταθεί ως μια λίστα σαν αυτή:
+Το ίδιο πρόγραμμα μπορεί να αναπαρασταθεί ως μια λίστα ως εξής:
 
 ```md
 - FunctionDeclaration:
@@ -150,7 +150,7 @@ function square(n) {
 }
 ```
 
-Θα παρατηρήσετε ότι κάθε επίπεδο του ΑΣΔ έχει παρόμοια δομή:
+Θα παρατηρήσετε ότι κάθε επίπεδο του AST έχει παρόμοια δομή:
 
 ```js
 {
@@ -179,9 +179,9 @@ function square(n) {
 
 > Σημείωση: Ορισμένες ιδιότητες έχουν αφαιρεθεί για απλότητα.
 
-Κάθενα από αυτά είναι γνωστό ως **Κόμβος**. Ένα ΑΣΔ μπορεί να σχηματιστεί από ένα μόνο Κόμβο ή από εκατοντάδες αν όχι χιλιάδες κόμβους. Μαζί είναι σε θέση να περιγράψουν την σύνταξη ενός προγράμματος, το οποίο μπορεί να χρησιμοποιηθεί για στατική ανάλυση.
+Κάθενα από αυτά είναι γνωστό ως **Node**. Ένα AST μπορεί να σχηματιστεί από ένα μόνο Node ή από εκατοντάδες αν όχι χιλιάδες Nodes. Μαζί είναι σε θέση να περιγράψουν την σύνταξη ενός προγράμματος, το οποίο μπορεί να χρησιμοποιηθεί για στατική ανάλυση.
 
-Κάθε Κόμβος έχει αυτή τη διασύνδεση:
+Κάθε Node έχει αυτή τη μορφή:
 
 ```typescript
 interface Node {
@@ -189,9 +189,9 @@ interface Node {
 }
 ```
 
-To πέδιο `type` είναι τύπου string και αντιπροσωπεύει τον τύπο του κόμβου, δηλαδή `"ΔήλωσηΣυνάρτησης"`, `"διακριτικό"`, ή `"ΔιαδικήΈκφραση"`. Κάθε τύπος Κόμβου ορίζει ένα πρόσθετο σύνολο από ιδιότητες, οι οποίες περιγράφουν το συγκεκριμένο τύπο κόμβου.
+To πέδιο `type` είναι τύπου string και αντιπροσωπεύει τον τύπο του Νοδε, δηλαδή `"FunctionDeclaration"`, `"Identifier"`, ή `"BinaryExpression"`). Κάθε τύπος Node ορίζει ένα πρόσθετο σύνολο από ιδιότητες, οι οποίες περιγράφουν το συγκεκριμένο τύπο Node.
 
-Υπάρχουν πρόσθετες ιδιότητες για κάθε Κόμβο τις οποίες το Babel παράγει και οι οποίες περιγράφουν την θέση του Κόμβου στον αρχικό πηγαίο κώδικα.
+Υπάρχουν πρόσθετες ιδιότητες για κάθε Node τις οποίες το Babel παράγει και οι οποίες περιγράφουν την θέση του Node στον αρχικό πηγαίο κώδικα.
 
 ```js
 {
@@ -212,21 +212,21 @@ To πέδιο `type` είναι τύπου string και αντιπροσωπε�
 }
 ```
 
-Αυτές οι ιδιότητες `start`, `end`, `loc`, εμφανίζονται σε κάθε Κόμβο.
+Αυτές οι ιδιότητες `start`, `end`, `loc`, εμφανίζονται σε κάθε Node.
 
-## <a id="toc-stages-of-babel"></a>Στάδια του Βαβέλ
+## <a id="toc-stages-of-babel"></a>Στάδια του Babel
 
-Τα τρια αρχικά στάδια του Babel είναι **ανάλυση**, **μετατροπή**, **παραγωγή**.
+Τα τρια αρχικά στάδια του Babel είναι **parse**, **transform**, **generate**.
 
-### <a id="toc-parse"></a>Ανάλυση
+### <a id="toc-parse"></a>Parse
 
-Το στάδιο **ανάλυση**, λαμβάνει τον κώδικα και εξάγει ένα ΑΣΔ. Υπάρχουν 2 φάσεις της ανάλυσης στο Babel: [**Λεξικολογική Ανάλύση**](https://en.wikipedia.org/wiki/Lexical_analysis) και [**Συντακτική Ανάλυση**](https://en.wikipedia.org/wiki/Parsing).
+Το στάδιο **parse**, λαμβάνει τον κώδικα και εξάγει ένα AST. Υπάρχουν 2 φάσεις της ανάλυσης στο Babel: [**Λεξικολογική Ανάλύση**](https://en.wikipedia.org/wiki/Lexical_analysis) και [**Συντακτική Ανάλυση**](https://en.wikipedia.org/wiki/Parsing).
 
 #### <a id="toc-lexical-analysis"></a>Λεξικολογική Ανάλυση
 
-Η λεξικολογική ανάλυση θα λάβει μια συμβολοσειρά κώδικα (string) και θα την μετατρέψει σε ένα ρεύμα **μαρκών**.
+Η λεξικολογική ανάλυση θα λάβει μια συμβολοσειρά κώδικα (string) και θα την μετατρέψει σε ένα ρεύμα **tokens**.
 
-Μπορείτε να σκεφτείτε τις μάρκες ως μια επίπεδη σειρά από συντακτικά γλωσσικά κομμάτια.
+Μπορείτε να σκεφτείτε τα tokens ως μια επίπεδη σειρά από συντακτικά γλωσσικά κομμάτια.
 
 ```js
 n * n;
@@ -241,7 +241,7 @@ n * n;
 ]
 ```
 
-Κάθε ένας από τους `τύπους` έχει ένα σύνολογ από ιδιότητες, οι οποίες περιγράφουν την κάθε μάρκα:
+Κάθε ένας από τους `τύπους` έχει ένα σύνολο από ιδιότητες, οι οποίες περιγράφουν το κάθε token:
 
 ```js
 {
@@ -262,27 +262,27 @@ n * n;
 }
 ```
 
-Επίσης οι κόμβοι ΑΣΔ έχουν `start`, `end`, και `loc`.
+Τα AST nodes επίσης έχουν `start`, `end`, και `loc`.
 
 #### <a id="toc-syntactic-analysis"></a>Συντακτική Ανάλυση
 
-Η συντακτική ανάλυση θα πάρει ένα ρεύμα από μάρκες και θα τις μετατρέψει σε μια αναπαράσταση ενός ΑΣΔ. Χρησιμοποιώντας τις πληροφορίες από τις μάρκες, αυτή η φάση θα τις μορφοποιησεί σε ένα ΑΣΔ το οποίο αναπαρηστά την δομή του κώδικα με τέτοιο τρόπο ώστε να γίνεται ευκολότερη η διαδικασία εργασίας με αυτό.
+Η συντακτική ανάλυση θα πάρει ένα ρεύμα από tokens και θα τις μετατρέψει σε μια αναπαράσταση ενός AST. Χρησιμοποιώντας τις πληροφορίες από τα tokens, αυτή η φάση θα τις μορφοποιησεί σε ένα AST το οποίο αναπαρηστά την δομή του κώδικα με τέτοιο τρόπο ώστε να γίνεται ευκολότερη η διαδικασία εργασίας με αυτό.
 
-### <a id="toc-transform"></a>Μετατροπή
+### <a id="toc-transform"></a>Transform
 
-Το στάδιο [μετατροπή](https://en.wikipedia.org/wiki/Program_transformation) λαμβάνει ένα ΑΣΔ και διεισδύει μέσω αυτού στην προσθήκη, ενημέρωση και αφαίρεση κόμβων κατα μήκος της διείσδυσης. Μακράν είναι το πιο περίπλοκο μέρος του Babel ή οποιοδήποτε μεταγλωττιστή. Αυτό είναι το σημείο όπου τα βύσματα (plugins) λειτουργούν και αυτό θα είναι το μεγαλύτερο θέμα που θα ασχοληθούμε σε αυτό το εγχειρίδιο. Για αυτό το λόγο δεν μπορούμε να εμβαθύνουμε αυτή τη στιγμή.
+Το στάδιο [transform](https://en.wikipedia.org/wiki/Program_transformation) λαμβάνει ένα AST και διεισδύει μέσω αυτού στην προσθήκη, ενημέρωση και αφαίρεση nodes κατα μήκος της διείσδυσης. Αυτό είναι μακράν το πιο περίπλοκο μέρος του Babel ή οποιουδήποτε μεταγλωττιστή. Αυτό είναι το σημείο όπου τα βύσματα (plugins) λειτουργούν και αυτό θα είναι το μεγαλύτερο θέμα με το οποίο θα ασχοληθούμε σε αυτό το εγχειρίδιο. Για αυτό το λόγο δεν μπορούμε να εμβαθύνουμε αυτή τη στιγμή.
 
-### <a id="toc-generate"></a>Παραγωγή
+### <a id="toc-generate"></a>Generate
 
 Το στάδιο [παραγωγής κώδικα](https://en.wikipedia.org/wiki/Code_generation_(compiler)) λαμβάνει το τελικό AST και το μετατρέπει σε μια συμβολοσειρά κώδικα δημιουργώντας και [χάρτες προέλευσης](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/).
 
-Η παραγωγή του κώδικα είναι πολύ απλή: η διεισδυση του ΑΣΔ γίνεται με τον αλγόριθμο "βάθος πρώτα" (depth-first) χτίζοντας μια συμβολοσειρά η οποία αναπαρειστά τον μετασχηματισμένο κώδικα.
+Η παραγωγή του κώδικα είναι πολύ απλή: η διεισδυση του AST γίνεται με τον αλγόριθμο "βάθος πρώτα" (depth-first) χτίζοντας μια συμβολοσειρά η οποία αναπαρειστά τον μετασχηματισμένο κώδικα.
 
 ## <a id="toc-traversal"></a>Διάσχιση
 
 Όταν θέλετε να μετασχηματίσετε ένα AST πρέπει να [διασχίσετε το δέντρο](https://en.wikipedia.org/wiki/Tree_traversal) αναδρομικά.
 
-Ας υποθέσουμε ότι έχουμε τον τύπο `ΔήλωσηΣυνάρτησης`. Έχει μερικές ιδιότητες `διακριτικό`. `παράμετροι`, και `σώμα`. Κάθενα από αυτά έχει εμφωλευμένους κόμβους.
+Ας υποθέσουμε ότι έχουμε τον τύπο `ΔήλωσηΣυνάρτησης`. Έχει μερικές ιδιότητες `id`. `params`, και `body`. Κάθενα από αυτά έχει εμφωλευμένους nodes.
 
 ```js
 {
@@ -316,25 +316,25 @@ n * n;
 }
 ```
 
-Έτσι ξεκινάμε από την `ΔήλωσηΣυνάρτησης` και γνωρίζουμε τις εσωτερικές ιδιότητες ώστε να επισκευτούμε σε σειρά κάθε μια από αυτές και τα παιδιά τους.
+Έτσι ξεκινάμε από την `FunctionDeclaration` και γνωρίζουμε τις εσωτερικές ιδιότητες ώστε να επισκευτούμε σε σειρά κάθε μια από αυτές και τα παιδιά τους.
 
-Επείτα πάμε στο `διακριτικό` το οποίο είναι ένα απλό `διακριτικό`. Τα `διακριτικα` δεν έχουν ιδιότητες παιδιών κόμβών, οπότε μπορούμε να προχωρήσουμε.
+Επείτα πάμε στο `id` το οποίο είναι ένα απλό `identifier`. Τα `identifiers` δεν έχουν ιδιότητες παιδιών node, οπότε μπορούμε να προχωρήσουμε.
 
-Μετέπειτα αυτού έχουμε τις `παραμέτρους` οι οποίες είναι μια σειρά από κόμβους τους οποίους επισκεπτόμαστε.
+Μετέπειτα αυτού έχουμε τις `params` οι οποίες είναι μια σειρά από nodes τους οποίους επισκεπτόμαστε. Σε αυτήν την περίπτωση πρόκειται για ένα μόνο node που είναι ταυτόχρονα και `Identifier` οπότε μπρούμε να προχωρήσουμε.
 
-Μετά βρίσκουμε το `σώμα` το οποίο είναι ένα `ΚομμάτιΔήλωσης` με την ιδιότητα `σώμα` η οποία είναι μια σειρά από κόμβους έτσι πηγαίνουμε σε καθένα από αυτούς.
+Μετά βρίσκουμε το `body` το οποίο είναι ένα `BlockStatement` με την ιδιότητα `body` η οποία είναι μια σειρά από nodes έτσι πηγαίνουμε σε καθένα από αυτούς.
 
-Το μόνο στοιχείο εδώ είναι ένας κόμβος `ReturnStatement`, ο οποίος έχει ένα `argument`, πηγαίνοντας στο `argument` βρίσκουμε ένα `BinaryExpression`.
+Το μόνο στοιχείο εδώ είναι ένα `ReturnStatement` node, το οποίο έχει ένα `argument`. Πηγαίνοντας στο `argument` βρίσκουμε ένα `BinaryExpression`.
 
-Το `BinaryExpression` έχει ένα `χειριστής`, έναν `αριστερά` και έναν `δεξιά`. Ο χειριστής δεν είναι κόμβος, αλλά μια μεταβλητή, έτσι δεν χρειάζεται να πάμε σε αυτόν, αντίθετα να επισκεφτούμε `αριστερά` και `δεξιά`.
+Το `BinaryExpression` έχει έναν `operator`, έναν `αριστερά` και έναν `δεξιά`. Ο operator δεν είναι node, αλλά μια μεταβλητή, έτσι δεν χρειάζεται να πάμε σε αυτόν, αντίθετα επισκεπτόμαστε τον `αριστερά` και τον `δεξιά`.
 
 Η διαδικασία αυτή της διάσχισης συμβαίνει σε όλο το στάδιο μετασχηματισμού της Βαβέλ.
 
-### <a id="toc-visitors"></a>Επισκέπτες
+### <a id="toc-visitors"></a>Visitors
 
-Όταν μιλάμε σχετικά "να πάμε" σε ένα κόμβο, εννοούμε πραγματικά ότι τον **επισκεπτόμαστε**. Ο λόγος που χρησιμοποιούμε αυτόν τον όρο είναι γιατί υπάρχει αυτή η έννοια ενός [**επισκέπτη**](https://en.wikipedia.org/wiki/Visitor_pattern).
+Όταν λέμε "να πάμε" σε ένα κόμβο, εννοούμε πραγματικά ότι τον **επισκεπτόμαστε**. Ο λόγος που χρησιμοποιούμε αυτόν τον όρο είναι γιατί υπάρχει αυτή η έννοια ενός [**επισκέπτη**](https://en.wikipedia.org/wiki/Visitor_pattern).
 
-Οι επισκέπτες είναι ένα μοτίβο που χρησιμοποιείται στην AST traversal διαγλωσσικά. Με απλά λόγια είναι ένα αντικείμενο με μεθόδους που ορίζονται για την αποδοχή συγκεκριμένων τύπων node σε ένα δέντρο. Αυτό είναι λίγο αφηρημένο, οπότε ας δούμε ένα παράδειγμα.
+Οι visitors είναι ένα μοτίβο που χρησιμοποιείται στην AST traversal διαγλωσσικά. Με απλά λόγια είναι ένα αντικείμενο με μεθόδους που ορίζονται για την αποδοχή συγκεκριμένων τύπων node σε ένα δέντρο. Αυτό είναι λίγο αφηρημένο, οπότε ας δούμε ένα παράδειγμα.
 
 ```js
 const MyVisitor = {
@@ -346,7 +346,7 @@ const MyVisitor = {
 
 > **Σημείωση:** `Identifier() { ... }`είναι συντομογραφία για `Identifier: { enter() { ... } }`.
 
-Αυτός είναι ένας βασικός επισκέπτης που όταν χρησιμοποιείται κατά τη διάρκεια μιας traversal θα καλέσει της μέθοδο `Identifier()` για κάθε `Identifier` στο δέντρο.
+Αυτός είναι ένας βασικός visitor που όταν χρησιμοποιείται κατά τη διάρκεια μιας traversal θα καλέσει τη μέθοδο `Identifier()` για κάθε `Identifier` στο δέντρο.
 
 Έτσι με αυτόν τον κώδικα η `Identifier()` μέθοδος θα εκτελεστεί τέσσερις φορές με κάθε `Identifier` (περιλαμβάνοντας το `square`).
 
@@ -363,7 +363,7 @@ Called!
 Called!
 ```
 
-Αυτές οι εκτελέσεις είναι όλες στο node **enter**. Ωστόσο, υπάρχει επίσης η δυνατότητα κλήση μιας μεθόδου επισκέπτη κατά το **exit**.
+Αυτές οι εκτελέσεις είναι όλες στο node **enter**. Ωστόσο, υπάρχει επίσης η δυνατότητα κλήση μιας visitor μέθοδο κατά το **exit**.
 
 Φανταστείτε πως έχουμε αυτή τη δομή δέντρου:
 
@@ -422,9 +422,9 @@ const MyVisitor = {
 
 Ένα AST γενικά έχει πολλά nodes, αλλά πώς τα Nodes σχετίζονται το ένα με το άλλο; Θα μπορούσαμε να έχουμε ένα γιγαντιαίο μεταβλητό αντικείμενο που μπορείτε να χειριστείτε και στο οποίο να έχετε πλήρη πρόσβαση, ή μπορούμε να το απλοποιήσουμε αυτό με **Paths**.
 
-A **Path** is an object representation of the link between two nodes.
+Ένα **Path** είναι μια αναπαράσταση του αντικειμένου από τη σύνδεση μεταξύ δύο node.
 
-For example if we take the following node and its child:
+Για παράδειγμα, αν πάρουμε το ακόλουθο κόμβο και το παιδί του:
 
 ```js
 {
@@ -437,7 +437,7 @@ For example if we take the following node and its child:
 }
 ```
 
-And represent the child `Identifier` as a path, it looks something like this:
+Και εμφανίζει το παιδί `Identifier` ως ένα path, που φαίνεται κάτι σαν αυτό:
 
 ```js
 {
@@ -453,7 +453,7 @@ And represent the child `Identifier` as a path, it looks something like this:
 }
 ```
 
-It also has additional metadata about the path:
+Έχει, επίσης, πρόσθετα μεταδεδομένα σχετικά με τη διαδρομή:
 
 ```js
 {
@@ -481,13 +481,13 @@ It also has additional metadata about the path:
 }
 ```
 
-As well as tons and tons of methods related to adding, updating, moving, and removing nodes, but we'll get into those later.
+Καθώς επίσης και τόνοι από μεθόδους που σχετίζονται με την προσθήκη, ενημέρωση, κίνηση, και κατάργηση των nodes, αλλά εμείς θα ασχοληθούμε με αυτά αργότερα.
 
-In a sense, paths are a **reactive** representation of a node's position in the tree and all sorts of information about the node. Whenever you call a method that modifies the tree, this information is updated. Babel manages all of this for you to make working with nodes easy and as stateless as possible.
+Κατά μία έννοια, τα paths είναι μια **reactive** αναπαράσταση της θέσης ενός node στο δέντρο και κάθε λογής πληροφορία για τo node. Κάθε φορά που καλείτε μια μέθοδο που τροποποιεί το δέντρο, οι πληροφορίες αυτές ενημερώνονται. Το Babel διαχειρίζεται όλα αυτά για να κάνουν την εργασία με τα nodes εύκολα και όσο το δυνατόν πιο stateless.
 
-#### <a id="toc-paths-in-visitors"></a>Καθοδήγηση για τους επισκέπτες
+#### <a id="toc-paths-in-visitors"></a>Paths στους Visitors
 
-When you have a visitor that has a `Identifier()` method, you're actually visiting the path instead of the node. This way you are mostly working with the reactive representation of a node instead of the node itself.
+Όταν έχετε έναν visitor που έχει μια `Identifier()` μέθοδο, στην πραγματικότητα επισκέπτεστε τη διαδρομή (path) αντί για το node. Με αυτό τον τρόπο εργάζεστε ως επί το πλείστον με την αντιδραστική αναπαράσταση ενός node αντί με το ίδιο το node.
 
 ```js
 const MyVisitor = {
@@ -507,11 +507,11 @@ Visiting: b
 Visiting: c
 ```
 
-### <a id="toc-state"></a>Κατάσταση
+### <a id="toc-state"></a>State
 
-State is the enemy of AST transformation. State will bite you over and over again and your assumptions about state will almost always be proven wrong by some syntax that you didn't consider.
+Το state είναι ο εχθρός του AST μετασχηματισμού. Το state θα σας δαγκώσει ξανά και ξανά και οι υποθέσεις σας σχετικά με το state σχεδόν πάντα θα αποδειχθούν λάθος από κάποια σύνταξη που δεν σκεφτήκατε.
 
-Take the following code:
+Πάρτε τον ακόλουθο κώδικα:
 
 ```js
 function square(n) {
@@ -519,7 +519,7 @@ function square(n) {
 }
 ```
 
-Let's write a quick hacky visitor that will rename `n` to `x`.
+Ας γράψουμε ένα γρήγορο hacky επισκέπτη που θα μετονομάσει το `n` σε `x`.
 
 ```js
 let paramName;
@@ -539,7 +539,7 @@ const MyVisitor = {
 };
 ```
 
-This might work for the above code, but we can easily break that by doing this:
+Αυτό θα μπορούσε να λειτουργήσει για τον παραπάνω κώδικα, αλλά μπορεί να σπάσει εύκολα με τον τρόπο αυτό:
 
 ```js
 function square(n) {
@@ -548,7 +548,7 @@ function square(n) {
 n;
 ```
 
-The better way to deal with this is recursion. So let's make like a Christopher Nolan film and put a visitor inside of a visitor.
+Ο καλύτερος τρόπος για να το αντιμετωπίσουμε αυτό είναι η αναδρομή (recursion). Οπότε ας κάνουμε σαν μια ταινία του Christopher Nolan και να βάλουμε έναν επισκέπτη στο εσωτερικό ενός άλλου επισκέπτη.
 
 ```js
 const updateParamNameVisitor = {
@@ -570,11 +570,11 @@ const MyVisitor = {
 };
 ```
 
-Of course, this is a contrived example but it demonstrates how to eliminate global state from your visitors.
+Φυσικά, αυτό είναι ένα σκηνοθετημένο παράδειγμα, αλλά δείχνει πώς να εξαλείψουμε την καθολική κατάσταση(state) από τους visitors σας.
 
-### <a id="toc-scopes"></a>Εμβέλειες
+### <a id="toc-scopes"></a>Scopes
 
-Next let's introduce the concept of a [**scope**](https://en.wikipedia.org/wiki/Scope_(computer_science)). JavaScript has [lexical scoping](https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scoping_vs._dynamic_scoping), which is a tree structure where blocks create new scope.
+Επόμενο ας εισαγάγουμε την έννοια ενός [**scope**](https://en.wikipedia.org/wiki/Scope_(computer_science)). Η JavaScript έχει [lexical scoping](https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scoping_vs._dynamic_scoping), που είναι μια δομή δέντρου όπου blocks δημιουργούνε νέο πεδίο.
 
 ```js
 // global scope
@@ -588,7 +588,7 @@ function scopeOne() {
 }
 ```
 
-Whenever you create a reference in JavaScript, whether that be by a variable, function, class, param, import, label, etc., it belongs to the current scope.
+Κάθε φορά που δημιουργείτε μια αναφορά σε JavaScript(reference), είτε πρόκειται για μια μεταβλητή, συνάρτηση, class, param, import, label, κλπ., ανήκει στο τρέχον state.
 
 ```js
 var global = "I am in the global scope";
@@ -602,7 +602,7 @@ function scopeOne() {
 }
 ```
 
-Code within a deeper scope may use a reference from a higher scope.
+Κώδικας μέσα σε ένα βαθύτερο scope μπορεί να χρησιμοποιήσει μια αναφορά(reference) από ένα ψηλότερο scope.
 
 ```js
 function scopeOne() {
@@ -614,7 +614,7 @@ function scopeOne() {
 }
 ```
 
-A lower scope might also create a reference of the same name without modifying it.
+Ένα χαμηλότερο scope μπορεί επίσης να δημιουργήσει μια αναφορά για το ίδιο όνομα χωρίς να το τροποποιήσει.
 
 ```js
 function scopeOne() {
@@ -626,11 +626,11 @@ function scopeOne() {
 }
 ```
 
-When writing a transform, we want to be wary of scope. We need to make sure we don't break existing code while modifying different parts of it.
+Όταν γράφετε ένα μετασχηματισμό, θέλουμε να είμαστε επιφυλακτικοί του scope. Θα πρέπει να βεβαιωθούμε ότι δεν χαλάμε υπάρχοντα κώδικα τροποποιώντας διάφορα τμήματά της.
 
-We may want to add new references and make sure they don't collide with existing ones. Or maybe we just want to find where a variable is referenced. We want to be able to track these references within a given scope.
+Μπορεί να θέλουμε να προσθέσουμε νέες αναφορές και να βεβαιωθούμε ότι δεν συγκρούονται με τις ήδη υπάρχοντες. Ή ίσως απλά θέλουμε να βρουμε που αναφέρεται μια μεταβλητή. Θέλουμε να είμαστε σε θέση να παρακολουθούμε αυτές τις αναφορές μέσα σε ένα δεδομένο scope.
 
-A scope can be represented as:
+Ένα scope μπορεί να αντιπροσωπευθεί ως εξής:
 
 ```js
 {
@@ -642,13 +642,13 @@ A scope can be represented as:
 }
 ```
 
-When you create a new scope you do so by giving it a path and a parent scope. Then during the traversal process it collects all the references ("bindings") within that scope.
+Όταν δημιουργείτε ένα νέο scope το κάνετε προσδίδοντάς του μια διαδρομή(path) και ένα γονικό state. Στη συνέχεια, κατά τη διαδικασία της διάσχισης συλλέγει όλες τις αναφορές («bindings») στο εν λόγω scope.
 
-Once that's done, there's all sorts of methods you can use on scopes. We'll get into those later though.
+Μόλις γίνει αυτό, υπάρχει κάθε λογής μεθόδους που μπορείτε να χρησιμοποιήσετε στα scopes. Εμείς θα τα αναλύσουμε αυτά αργότερα όμως.
 
-#### <a id="toc-bindings"></a>Συνδέσεις
+#### <a id="toc-bindings"></a>Bindings
 
-References all belong to a particular scope; this relationship is known as a **binding**.
+Οι αναφορές όλες ανήκουν σε ένα συγκεκριμένο scope. H σχέση αυτή είναι γνωστή ως ένα **binding**.
 
 ```js
 function scopeOnce() {
@@ -662,7 +662,7 @@ function scopeOnce() {
 }
 ```
 
-A single binding looks like this:
+Ένα binding μοιάζει με αυτό:
 
 ```js
 {
@@ -680,9 +680,9 @@ A single binding looks like this:
 }
 ```
 
-With this information you can find all the references to a binding, see what type of binding it is (parameter, declaration, etc.), lookup what scope it belongs to, or get a copy of its identifier. You can even tell if it's constant and if not, see what paths are causing it to be non-constant.
+Με αυτές τις πληροφορίες μπορείτε να βρείτε όλες τις αναφορές(references) σε ένα binding, να δούμε τι είδους binding είναι(παράμετρος, δήλωση, κ.λπ.), αναζητήσουμε σε ποιο scope ανήκει, ή να πάρουμε ένα αντίγραφο του identifier του. Μπορείτε ακόμα να δείτε αν είναι σταθερές ή όχι και ποιες διαδρομές προκαλούν να είναι μη σταθερές.
 
-Being able to tell if a binding is constant is useful for many purposes, the largest of which is minification.
+Το να είναι κανείς σε θέση να πει εάν ένα binding είναι σταθερό είναι χρήσιμο για πολλούς λόγους, ο μεγαλύτερος των οποίων είναι το minification.
 
 ```js
 function scopeOne() {
@@ -699,23 +699,23 @@ function scopeOne() {
 
 * * *
 
-# <a id="toc-api"></a>Διασύνδεση Προγραμματισμού Εφαρμογών
+# <a id="toc-api"></a>API
 
-Babel is actually a collection of modules. In this section we'll walk through the major ones, explaining what they do and how to use them.
+Το Babel είναι στην πραγματικότητα μια συλλογή από modules. Σε αυτήν την ενότητα θα δούμε τα μεγαλύτερα από αυτά, εξηγώντας τι κάνουν και πώς να τα χρησιμοποιούμε.
 
-> Note: This is not a replacement for detailed API documentation which will be available elsewhere shortly.
+> Σημείωση: Αυτό δεν είναι αντικατάσταση της λεπτομερής τεκμηρίωση του API που θα είναι διαθέσιμο αλλού σύντομα.
 
 ## <a id="toc-babylon"></a>[`babylon`](https://github.com/babel/babylon)
 
-Babylon is Babel's parser. Started as a fork of Acorn, it's fast, simple to use, has plugin-based architecture for non-standard features (as well as future standards).
+Το Babylon είναι το parser του Babel. Ξεκίνησε ως ένα fork του Acorn, είναι γρήγορο, απλό στη χρήση, έχει αρχιτεκτονική βασισμένη σε plugins για μη τυποποιημένα χαρακτηριστικά (καθώς και μελλοντικά πρότυπα).
 
-First, let's install it.
+Κατ ' αρχάς, ας το εγκαταστήσουμε.
 
 ```sh
 $ npm install --save babylon
 ```
 
-Let's start by simply parsing a string of code:
+Ας ξεκινήσουμε απλά με μια συμβολοσειρά κώδικα:
 
 ```js
 import * as babylon from "babylon";
@@ -736,7 +736,7 @@ babylon.parse(code);
 // }
 ```
 
-We can also pass options to `parse()` like so:
+Μπορούμε επίσης να περάσουμε επιλογές στο `parse()` με τον εξής τρόπο:
 
 ```js
 babylon.parse(code, {
@@ -745,25 +745,25 @@ babylon.parse(code, {
 });
 ```
 
-`sourceType` can either be `"module"` or `"script"` which is the mode that Babylon should parse in. `"module"` will parse in strict mode and allow module declarations, `"script"` will not.
+`sourceType` μπορεί να είναι είτε `"module"` ή `"script"` το οποίο είναι ο τρόπος με τον οποίο το Babylon θα πρέπει να το αναλύσει. `"module"` θα αναλύσει σε αυστηρή λειτουργία και θα επιτρέψει δηλώσεις ενοτήτων(modules), πράγμα που δεν θα κάνει το `"script"`.
 
-> **Note:** `sourceType` defaults to `"script"` and will error when it finds `import` or `export`. Pass `sourceType: "module"` to get rid of these errors.
+> **Σημείωση:** Το `sourceType` έχει ως προεπιλογή το `"script"` και θα εμφανίσει σφάλμα όταν βρει `import` ή `export`. Περάστε `sourceType: "module"` για να απαλλαγείτε από αυτά τα σφάλματα.
 
-Since Babylon is built with a plugin-based architecture, there is also a `plugins` option which will enable the internal plugins. Note that Babylon has not yet opened this API to external plugins, although may do so in the future.
+Δεδομένου ότι το Babylon είναι χτισμένο με αρχιτεκτονική βασισμένη σε plugin, υπάρχει επίσης μια επιλογή `plugins` που θα ενεργοποιήσει τα εσωτερικά plugins. Σημειώστε ότι το Babylon δεν έχει ακόμη ανοίξει αυτό το API σε εξωτερικά plugins, παρόλο που μπορεί να το πράξει στο μέλλον.
 
-To see a full list of plugins, see the [Babylon README](https://github.com/babel/babylon/blob/master/README.md#plugins).
+Για να δείτε μια πλήρη λίστα των plugins, δείτε το [Αρχείο README του Babylon](https://github.com/babel/babylon/blob/master/README.md#plugins).
 
 ## <a id="toc-babel-traverse"></a>[`babel-traverse`](https://github.com/babel/babel/tree/master/packages/babel-traverse)
 
-The Babel Traverse module maintains the overall tree state, and is responsible for replacing, removing, and adding nodes.
+Η Babel Traverse ενότητα διατηρεί το συνολικό state του δέντρου και είναι υπεύθυνη για την αντικατάσταση, αφαίρεση και προσθήκη node.
 
-Install it by running:
+Εγκαταστήσετε εκτελώντας:
 
 ```sh
 $ npm install --save babel-traverse
 ```
 
-We can use it alongside Babylon to traverse and update nodes:
+Μπορούμε να το χρησιμοποιήσουμε παράλληλα με το Babylon και να ενημερώσουμε τα nodes:
 
 ```js
 import * as babylon from "babylon";
@@ -789,15 +789,15 @@ traverse(ast, {
 
 ## <a id="toc-babel-types"></a>[`babel-types`](https://github.com/babel/babel/tree/master/packages/babel-types)
 
-Babel Types is a Lodash-esque utility library for AST nodes. It contains methods for building, validating, and converting AST nodes. It's useful for cleaning up AST logic with well thought out utility methods.
+Τo Babel Types είναι μια Lodash-esque βοηθητική βιβλιοθήκη για τα AST nodes. Περιέχει μεθόδους για την οικοδόμηση, την επικύρωση και τη μετατροπή AST nodes. Είναι χρήσιμο για τον καθαρισμό της AST λογικής με καλά μελετημένες μεθόδους.
 
-You can install it by running:
+Μπορείτε να το εγκαταστήσετε εκτελώντας:
 
 ```sh
 $ npm install --save babel-types
 ```
 
-Then start using it:
+Στη συνέχεια αρχίσετε να το χρησιμοποιείτε:
 
 ```js
 import traverse from "babel-traverse";
@@ -814,9 +814,9 @@ traverse(ast, {
 
 ### <a id="toc-definitions"></a>Ορισμοί
 
-Babel Types has definitions for every single type of node, with information on what properties belong where, what values are valid, how to build that node, how the node should be traversed, and aliases of the Node.
+Τα Babel Types έχουν ορισμούς για κάθε τύπο node, με πληροφορίες σχετικές με το ποιες ιδιότητες ανήκουν που, τι τιμές είναι έγκυρες, πώς να χτίσει κανείς αυτόν το node, πώς πρέπει να διέλθει το node και ψευδώνυμα του node.
 
-A single node type definition looks like this:
+Ένας node type ορισμός μοιάζει με αυτό:
 
 ```js
 defineType("BinaryExpression", {
@@ -837,21 +837,21 @@ defineType("BinaryExpression", {
 });
 ```
 
-### <a id="toc-builders"></a>Οικοδόμοι
+### <a id="toc-builders"></a>Builders
 
-You'll notice the above definition for `BinaryExpression` has a field for a `builder`.
+Θα παρατηρήσετε στον παραπάνω ορισμό του `BinaryExpression` ότι έχει ένα πεδίο για έναν `builder`.
 
 ```js
 builder: ["operator", "left", "right"]
 ```
 
-This is because each node type gets a builder method, which when used looks like this:
+Αυτό συμβαίνει επειδή κάθε τύπος node παίρνει μια μέθοδο builder, που όταν χρησιμοποιείται μοιάζει με αυτό:
 
 ```js
 t.binaryExpression("*", t.identifier("a"), t.identifier("b"));
 ```
 
-Which creates an AST like this:
+Που δημιουργεί ένα AST σαν αυτό:
 
 ```js
 {
@@ -868,17 +868,17 @@ Which creates an AST like this:
 }
 ```
 
-Which when printed looks like this:
+Που όταν εκτυπωθεί μοιάζει με αυτό:
 
 ```js
 a * b
 ```
 
-Builders will also validate the nodes they are creating and throw descriptive errors if used improperly. Which leads into the next type of method.
+Οι builders επίσης θα επικυρώσουν τα nodes που δημιουργούν και θα στείλουν περιγραφικά σφάλματα εάν δεν χρησιμοποιηθούν σωστά. Το οποίο οδηγεί στην επόμενη μέθοδο node.
 
 ### <a id="toc-validators"></a>Διαδικασίες επικύρωσης
 
-The definition for `BinaryExpression` also includes information on the `fields` of a node and how to validate them.
+Ο ορισμός για το `BinaryExpression` περιλαμβάνει επίσης πληροφορίες σχετικά με τα `fields` ενός node και πώς να τα επικυρώσει.
 
 ```js
 fields: {
@@ -894,19 +894,19 @@ fields: {
 }
 ```
 
-This is used to create two types of validating methods. The first of which is `isX`.
+Αυτό χρησιμοποιείται για να δημιουργήσουμε δύο τύπους μεθόδων επικύρωσης. Ο πρώτος των οποίων είναι `isX`.
 
 ```js
 t.isBinaryExpression(maybeBinaryExpressionNode);
 ```
 
-This tests to make sure that the node is a binary expression, but you can also pass a second parameter to ensure that the node contains certain properties and values.
+Αυτό ελέγχει αν το node είναι μια δυαδική παράσταση, αλλά μπορείτε επίσης να περάσετε μια δεύτερη παράμετρο για να βεβαιωθείτε ότι tο νοδε περιέχει ορισμένες ιδιότητες και τιμές.
 
 ```js
 t.isBinaryExpression(maybeBinaryExpressionNode, { operator: "*" });
 ```
 
-There is also the more, *ehem*, assertive version of these methods, which will throw errors instead of returning `true` or `false`.
+Υπάρχει επίσης η περισσότερο, *ehem*, διεκδικητική μορφή αυτών των μεθόδων, η οποία θα επιστρέψει σφάλματα αντί `true` ή `false`.
 
 ```js
 t.assertBinaryExpression(maybeBinaryExpressionNode);
@@ -920,15 +920,15 @@ t.assertBinaryExpression(maybeBinaryExpressionNode, { operator: "*" });
 
 ## <a id="toc-babel-generator"></a>[`babel-generator`](https://github.com/babel/babel/tree/master/packages/babel-generator)
 
-Babel Generator is the code generator for Babel. It takes an AST and turns it into code with sourcemaps.
+Ο Babel μετατροπέας είναι η γεννήτρια κώδικα για το Babel. Παίρνει ένα AST και το μετατρέπει σε κώδικα με sourcemaps.
 
-Run the following to install it:
+Εκτελέστε το ακόλουθο για να το εγκαταστήσετε:
 
 ```sh
 $ npm install --save babel-generator
 ```
 
-Then use it
+Στη συνέχεια, χρησιμοποιήστε το
 
 ```js
 import * as babylon from "babylon";
@@ -947,7 +947,7 @@ generate(ast, null, code);
 // }
 ```
 
-You can also pass options to `generate()`.
+Μπορείτε να περάσετε επίσης επιλογές για να κάνετε `generate()`.
 
 ```js
 generate(ast, {
@@ -961,7 +961,7 @@ generate(ast, {
 
 ## <a id="toc-babel-template"></a>[`babel-template`](https://github.com/babel/babel/tree/master/packages/babel-template)
 
-Babel Template is another tiny but incredibly useful module. It allows you to write strings of code with placeholders that you can use instead of manually building up a massive AST. In computer science, this capability is called quasiquotes.
+Το Babel Template είναι μια άλλη λειτουργική μονάδα, μικρή αλλά απίστευτα χρήσιμη. Σας επιτρέπει να γράφετε κώδικα με placeholders που μπορείτε να χρησιμοποιήσετε αντί για δημιουργείτε με μη αυτόματο τρόπο ένα τεράστιο AST. Στην επιστήμη των υπολογιστών, η δυνατότητα αυτή ονομάζεται quasiquotes.
 
 ```sh
 $ npm install --save babel-template
@@ -990,9 +990,9 @@ var myModule = require("my-module");
 
 # <a id="toc-writing-your-first-babel-plugin"></a>Γράφοντας το πρώτο σας Babel Plugin
 
-Now that you're familiar with all the basics of Babel, let's tie it together with the plugin API.
+Τώρα που είστε εξοικειωμένοι με όλα τα βασικά του Babel, ας το ενώσουμε με το plugin API.
 
-Start off with a `function` that gets passed the current [`babel`](https://github.com/babel/babel/tree/master/packages/babel-core) object.
+Ξεκινήστε με μια `συνάρτηση` που παίρνει το τρέχον αντικείμενο [`babel`](https://github.com/babel/babel/tree/master/packages/babel-core).
 
 ```js
 export default function(babel) {
@@ -1000,7 +1000,7 @@ export default function(babel) {
 }
 ```
 
-Since you'll be using it so often, you'll likely want to grab just `babel.types` like so:
+Δεδομένου ότι θα το χρησιμοποιείτε τόσο συχνά, θα θελήσετε πιθανώς να πάρετε μόνο το `babel.types` με αυτόν τον τρόπο:
 
 ```js
 export default function({ types: t }) {
@@ -1008,7 +1008,7 @@ export default function({ types: t }) {
 }
 ```
 
-Then you return an object with a property `visitor` which is the primary visitor for the plugin.
+Στη συνέχεια, μπορείτε να επιστρέψετε ένα αντικείμενο με ιδιότητα `visitor` που είναι ο κύριος visitor για το plugin.
 
 ```js
 export default function({ types: t }) {
@@ -1020,13 +1020,13 @@ export default function({ types: t }) {
 };
 ```
 
-Let's write a quick plugin to show off how it works. Here's our source code:
+Ας γράψουμε ένα γρήγορο plugin για να δούμε πώς λειτουργεί. Ακολουθεί ο πηγαίος κώδικα μας:
 
 ```js
 foo === bar;
 ```
 
-Or in AST form:
+Ή σε AST φτιάχνουν:
 
 ```js
 {
@@ -1043,7 +1043,7 @@ Or in AST form:
 }
 ```
 
-We'll start off by adding a `BinaryExpression` visitor method.
+Θα ξεκινήσουμε προσθέτοντας μια visitor μέθοδo `BinaryExpression`.
 
 ```js
 export default function({ types: t }) {
@@ -1057,7 +1057,7 @@ export default function({ types: t }) {
 }
 ```
 
-Then let's narrow it down to just `BinaryExpression`s that are using the `===` operator.
+Στη συνέχεια ας τα περιορίσουμε σε μόλις `BinaryExpression` s που χρησιμοποιούν τον τελεστή `===`.
 
 ```js
 visitor: {
@@ -1071,7 +1071,7 @@ visitor: {
 }
 ```
 
-Now let's replace the `left` property with a new identifier:
+Τώρα ας αντικαταστήσουμε τη `left` ιδιότητα με ένα νέο identifier:
 
 ```js
 BinaryExpression(path) {
@@ -1084,13 +1084,13 @@ BinaryExpression(path) {
 }
 ```
 
-Already if we run this plugin we would get:
+Ήδη αν τρέξουμε αυτό το plugin θα έχουμε:
 
 ```js
 sebmck === bar;
 ```
 
-Now let's just replace the `right` property.
+Τώρα ας αντικαταστήσουμε μόνο την `right` ιδιότητα.
 
 ```js
 BinaryExpression(path) {
@@ -1103,23 +1103,23 @@ BinaryExpression(path) {
 }
 ```
 
-And now for our final result:
+Και τώρα για το τελικό μας αποτέλεσμα:
 
 ```js
 sebmck === dork;
 ```
 
-Awesome! Our very first Babel plugin.
+Φοβερό! Το πρώτο μας Babel plugin.
 
 * * *
 
 # <a id="toc-transformation-operations"></a>Λειτουργίες μετατροπής
 
-## <a id="toc-visiting"></a>Επισκεψιμότητα
+## <a id="toc-visiting"></a>Visiting
 
-### <a id="toc-check-if-a-node-is-a-certain-type"></a>Ελέγξτε αν ο κόμβος ανήκει σε κάποιο συγκεκριμένο είδος
+### <a id="toc-check-if-a-node-is-a-certain-type"></a>Ελέγξτε αν το node ανήκει σε κάποιο συγκεκριμένο είδος
 
-If you want to check what the type of a node is, the preferred way to do so is:
+Αν θέλετε να ελέγξετε τι τον τύπο node, ο προτιμώμενος τρόπος για να γίνει αυτό είναι:
 
 ```js
 BinaryExpression(path) {
@@ -1129,7 +1129,7 @@ BinaryExpression(path) {
 }
 ```
 
-You can also do a shallow check for properties on that node:
+Μπορείτε επίσης να κάνετε ένα ρηχό έλεγχο για ιδιότητες σε αυτό το node:
 
 ```js
 BinaryExpression(path) {
@@ -1139,7 +1139,7 @@ BinaryExpression(path) {
 }
 ```
 
-This is functionally equivalent to:
+Αυτό είναι λειτουργικά ισοδύναμο με:
 
 ```js
 BinaryExpression(path) {
@@ -1153,7 +1153,7 @@ BinaryExpression(path) {
 }
 ```
 
-### <a id="toc-check-if-an-identifier-is-referenced"></a>Ελέγξτε αν αναφέρεται κάποια άλλη ταυτοποίηση
+### <a id="toc-check-if-an-identifier-is-referenced"></a>Ελέγξτε αν αναφέρεται ένας identifier
 
 ```js
 Identifier(path) {
@@ -1163,7 +1163,7 @@ Identifier(path) {
 }
 ```
 
-Alternatively:
+Εναλλακτικά:
 
 ```js
 Identifier(path) {
@@ -1173,9 +1173,9 @@ Identifier(path) {
 }
 ```
 
-## <a id="toc-manipulation"></a>Χειρισμός
+## <a id="toc-manipulation"></a>Manipulation
 
-### <a id="toc-replacing-a-node"></a>Αντικατάσταση κόμβου
+### <a id="toc-replacing-a-node"></a>Αντικατάσταση ενός node
 
 ```js
 BinaryExpression(path) {
@@ -1192,7 +1192,7 @@ BinaryExpression(path) {
   }
 ```
 
-### <a id="toc-replacing-a-node-with-multiple-nodes"></a>Αντικατάσταση κόμβου με πολλούς κόμβους
+### <a id="toc-replacing-a-node-with-multiple-nodes"></a>Αντικατάσταση ενός node με πολλά nodes
 
 ```js
 ReturnStatement(path) {
@@ -1213,9 +1213,9 @@ ReturnStatement(path) {
   }
 ```
 
-> **Note:** When replacing an expression with multiple nodes, they must be statements. This is because Babel uses heuristics extensively when replacing nodes which means that you can do some pretty crazy transformations that would be extremely verbose otherwise.
+> **Σημείωση:** Όταν αντικαθιστάτε μια έκφραση (expression) με πολλαπλά nodes, πρέπει να είναι statements. Αυτό συμβαίνει επειδή το Babel χρησιμοποιεί heuristics εκτενώς κατά την αντικατάσταση των nodes που σημαίνει ότι μπορείτε να κάνετε κάποιους αρκετά τρελούς μετασχηματισμούς που διαφορετικά θα ήταν εξαιρετικά δύσκολο.
 
-### <a id="toc-replacing-a-node-with-a-source-string"></a>Αντικατάσταση κόμβου με πηγαία στοιχειοσειρά
+### <a id="toc-replacing-a-node-with-a-source-string"></a>Αντικατάσταση node με πηγαία στοιχειοσειρά
 
 ```js
 FunctionDeclaration(path) {
@@ -1233,9 +1233,9 @@ FunctionDeclaration(path) {
   }
 ```
 
-> **Note:** It's not recommended to use this API unless you're dealing with dynamic source strings, otherwise it's more efficient to parse the code outside of the visitor.
+> **Σημείωση:** Δεν συνιστάται να χρησιμοποιείτε αυτό το API, εκτός αν ασχολείστε με δυναμικά source strings. Είναι πιο αποτελεσματικό να αναλύετε τον κώδικα έξω από τον visitor.
 
-### <a id="toc-inserting-a-sibling-node"></a>Εισαγωγή όμοιου κόμβου
+### <a id="toc-inserting-a-sibling-node"></a>Εισαγωγή sibling node
 
 ```js
 FunctionDeclaration(path) {
@@ -1252,9 +1252,9 @@ FunctionDeclaration(path) {
 + "A little high, little low.";
 ```
 
-> **Note:** This should always be a statement or an array of statements. This uses the same heuristics mentioned in [Replacing a node with multiple nodes](#replacing-a-node-with-multiple-nodes).
+> **Σημείωση:** Αυτό πρέπει πάντα να είναι μια δήλωση(statement) ή μια σειρά από δηλώσεις (array of statements). Αυτό χρησιμοποιεί το ίδιο heuristics που αναφέραμε στην [αντικατάσταση ενός node με πολλα nodes](#replacing-a-node-with-multiple-nodes).
 
-### <a id="toc-removing-a-node"></a>Αφαίρεση κόμβου
+### <a id="toc-removing-a-node"></a>Αφαίρεση ενός node
 
 ```js
 FunctionDeclaration(path) {
@@ -1268,7 +1268,7 @@ FunctionDeclaration(path) {
 - }
 ```
 
-### <a id="toc-replacing-a-parent"></a>Αντικατάσταση κόμβου
+### <a id="toc-replacing-a-parent"></a>Αντικατάσταση ενός γονέα
 
 ```js
 BinaryExpression(path) {
@@ -1285,7 +1285,7 @@ BinaryExpression(path) {
   }
 ```
 
-### <a id="toc-removing-a-parent"></a>Αφαίρεση γονικής μονάδας
+### <a id="toc-removing-a-parent"></a>Αφαίρεση ενός γονέα
 
 ```js
 BinaryExpression(path) {
@@ -1299,7 +1299,7 @@ BinaryExpression(path) {
   }
 ```
 
-## <a id="toc-scope"></a>Πλαίσια
+## <a id="toc-scope"></a>Scope
 
 ### <a id="toc-checking-if-a-local-variable-is-bound"></a>Έλεγχος σύνδεσης τοπικής μεταβλητής 
 
@@ -1311,9 +1311,9 @@ FunctionDeclaration(path) {
 }
 ```
 
-This will walk up the scope tree and check for that particular binding.
+Αυτό θα περάσει το scope δέντρο και θα ελέγξει για τη σθγκεκριμένη σύνδεση.
 
-You can also check if a scope has its **own** binding:
+Μπορείτε επίσης να ελέγξετε εάν ένα πεδίο έχει τη **δική** του δεσμευτική:
 
 ```js
 FunctionDeclaration(path) {
@@ -1323,9 +1323,9 @@ FunctionDeclaration(path) {
 }
 ```
 
-### <a id="toc-generating-a-uid"></a>Κατασκευή αναγνωριστικού χρήστη
+### <a id="toc-generating-a-uid"></a>Κατασκευή ενός UID
 
-This will generate an identifier that doesn't collide with any locally defined variables.
+Αυτό θα δημιουργήσει ένα identifier που δεν θα έρχεται σε διένεξη με οποιαδήποτε τοπικά καθορισμένη μεταβλητή.
 
 ```js
 FunctionDeclaration(path) {
@@ -1336,9 +1336,9 @@ FunctionDeclaration(path) {
 }
 ```
 
-### <a id="toc-pushing-a-variable-declaration-to-a-parent-scope"></a>Πιέστε τη δήλωση μεταβλητής σε ένα γονικό πεδίο
+### <a id="toc-pushing-a-variable-declaration-to-a-parent-scope"></a>Περνώντας τη δήλωση μεταβλητής σε ένα γονικό state
 
-Sometimes you may want to push a `VariableDeclaration` so you can assign to it.
+Μερικές φορές μπορεί να θέλετε να ωθήσετε ένα `VariableDeclaration`, έτσι ώστε να μπορείτε να το αντιστοιχίσετε σε αυτό.
 
 ```js
 FunctionDeclaration(path) {
@@ -1372,7 +1372,7 @@ FunctionDeclaration(path) {
   }
 ```
 
-Alternatively, you can rename a binding to a generated unique identifier:
+Εναλλακτικά, μπορείτε να μετονομάσετε μια σύνδεση σε ένα δημιουργημένο μοναδικό identifier:
 
 ```js
 FunctionDeclaration(path) {
@@ -1392,7 +1392,7 @@ FunctionDeclaration(path) {
 
 # <a id="toc-plugin-options"></a>Επιλογές βυσμάτων (plugins)
 
-If you would like to let your users customize the behavior of your Babel plugin you can accept plugin specific options which users can specify like this:
+Αν θέλετε να αφήσετε τους χρήστες σας να επηρεάζουν τη συμπεριφορά του Babel plugin σας μπορείτε να αποδεχτείτε συγκεκριμένες επιλογές plugin που οι χρήστες μπορούν να διευκρινίσουν σαν αυτό:
 
 ```js
 {
@@ -1405,7 +1405,7 @@ If you would like to let your users customize the behavior of your Babel plugin 
 }
 ```
 
-These options then get passed into plugin visitors through the `state` object:
+Αυτές οι επιλογές στη συνέχεια ππερνάνε plugin visitors μέσω του αντικειμένου του `state`:
 
 ```js
 export default function({ types: t }) {
@@ -1420,19 +1420,19 @@ export default function({ types: t }) {
 }
 ```
 
-These options are plugin-specific and you cannot access options from other plugins.
+Οι επιλογές αυτές είναι συγκεκριμένες για τα plugin και δεν έχετε πρόσβαση στις επιλογές από άλλα plugins.
 
 * * *
 
-# <a id="toc-building-nodes"></a>Building Nodes
+# <a id="toc-building-nodes"></a>Χτίζοντας Nodes
 
-When writing transformations you'll often want to build up some nodes to insert into the AST. As mentioned previously, you can do this using the [builder](#builder) methods in the [`babel-types`](#babel-types) package.
+Όταν γράφετε μετασχηματισμούς συχνά θα θέλετε να δημιουργείτε ορισμένα nodes για να τα εισάγετε στο AST. Όπως αναφέρθηκε προηγουμένως, μπορείτε να το κάνετε αυτό χρησιμοποιώντας τις μεθόδους [builder](#builder) στο πακέτο [`babel-types`](#babel-types).
 
-The method name for a builder is simply the name of the node type you want to build except with the first letter lowercased. For example if you wanted to build a `MemberExpression` you would use `t.memberExpression(...)`.
+Το όνομα μεθόδου για ένα builder είναι απλώς το όνομα του τύπου του node που θέλετε να χτίσετε εκτός από το πρώτο γράμμα που δεν το βάζετε κεφαλαίο. Για παράδειγμα αν θέλετε να χτίσετε ένα `MemberExpression` μπορείτε να χρησιμοποιήσετε `t.memberExpression(...)`.
 
-The arguments of these builders are decided by the node definition. There's some work that's being done to generate easy-to-read documentation on the definitions, but for now they can all be found [here](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions).
+Τα arguments αυτών των builders αποφασίζονται από τον ορισμό του node. Υπάρχει κάποια εργασία που γίνεται για τη δημιουργία ευκολοδιάβαστης τεκμηρίωσης σχετικά με τους ορισμούς, αλλά για τώρα μπορούν όλα να βρεθούν [εδώ](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions).
 
-A node definition looks like the following:
+Ένας node ορισμός μοιάζει με το ακόλουθο:
 
 ```js
 defineType("MemberExpression", {
@@ -1456,17 +1456,17 @@ defineType("MemberExpression", {
 });
 ```
 
-Here you can see all the information about this particular node type, including how to build it, traverse it, and validate it.
+Εδώ μπορείτε να δείτε όλες τις πληροφορίες σχετικά με αυτό το node type, συμπεριλαμβανομένου του πώς να το χτίσετε, να τον διαπεράσετε και να το επικυρώσετε.
 
-By looking at the `builder` property, you can see the 3 arguments that will be needed to call the builder method (`t.memberExpression`).
+Εξετάζοντας τον `builder`, μπορείτε να δείτε 3 arguments που θα χρειαστείτε για να καλέσετε τη builder μέθοδο (`t.memberExpression`).
 
 ```js
 builder: ["object", "property", "computed"],
 ```
 
-> Note that sometimes there are more properties that you can customize on the node than the `builder` array contains. This is to keep the builder from having too many arguments. In these cases you need to set the properties manually. An example of this is [`ClassMethod`](https://github.com/babel/babel/blob/bbd14f88c4eea88fa584dd877759dd6b900bf35e/packages/babel-types/src/definitions/es2015.js#L238-L276).
+> Σημειώστε ότι μερικές φορές υπάρχουν περισσότερα propperties που μπορείτε να προσαρμόσετε στο node σε σχέση με αυτά που περιέχει η σειρά `builder`. Αυτό είναι για να κρατήσουμε τον builder μακριά από το να έχει πολλά arguments. Σε αυτές τις περιπτώσεις θα πρέπει να ρυθμίσετε με μη αυτόματο τρόπο τις ιδιότητες. Ένα παράδειγμα αυτού είναι το [`ClassMethod`](https://github.com/babel/babel/blob/bbd14f88c4eea88fa584dd877759dd6b900bf35e/packages/babel-types/src/definitions/es2015.js#L238-L276).
 
-You can see the validation for the builder arguments with the `fields` object.
+Μπορείτε να δείτε την επικύρωση για τα builder arguments με το `fields` αντικείμενο.
 
 ```js
 fields: {
@@ -1485,9 +1485,9 @@ fields: {
 }
 ```
 
-You can see that `object` needs to be an `Expression`, `property` either needs to be an `Expression` or an `Identifier` depending on if the member expression is `computed` or not and `computed` is simply a boolean that defaults to `false`.
+Μπορείτε να δείτε ότι `το αντικείμενο` πρέπει να είναι μια `Expression`, `property` είτε πρέπει να είναι μια `Expression` ή ένα `Identifier` ανάλογα με εάν το μέλος έκφραση είναι `computed` ή όχι και `computed` είναι απλά μια τιμή boolean που έχει από προεπιλογή στην τιμή `false`.
 
-So we can construct a `MemberExpression` by doing the following:
+Έτσι μπορούμε να κατασκευάσουμε ένα `MemberExpression`, κάνοντας το εξής:
 
 ```js
 t.memberExpression(
@@ -1497,21 +1497,21 @@ t.memberExpression(
 );
 ```
 
-Which will result in:
+Το οποίο θα οδηγήσει σε:
 
 ```js
 object.property
 ```
 
-However, we said that `object` needed to be an `Expression` so why is `Identifier` valid?
+Ωστόσο, έχουμε πει ότι το `object` έπρεπε να είναι ένα `Expression`, οπότε γιατί είναι το `Identifier` έγκυρο;
 
-Well if we look at the definition of `Identifier` we can see that it has an `aliases` property which states that it is also an expression.
+Λοιπόν, αν κοιτάξουμε τον ορισμό του `Identifier` μπορούμε να δούμε ότι έχει μια ιδιότητα `aliases` που δηλώνει ότι είναι επίσης ένα expression.
 
 ```js
 aliases: ["Expression", "LVal"],
 ```
 
-So since `MemberExpression` is a type of `Expression`, we could set it as the `object` of another `MemberExpression`:
+Έτσι δεδομένου ότι `MemberExpression` είναι ένα είδος `Expression`, μπορούμε να το ρυθμίσουμε ως `object` μιας άλλης `MemberExpression`:
 
 ```js
 t.memberExpression(
@@ -1523,31 +1523,31 @@ t.memberExpression(
 )
 ```
 
-Which will result in:
+Το οποίο θα οδηγήσει σε:
 
 ```js
 member.expression.property
 ```
 
-It's very unlikely that you will ever memorize the builder method signatures for every node type. So you should take some time and understand how they are generated from the node definitions.
+Είναι πολύ απίθανο ότι ποτέ θα απομνημονεύει τις υπογραφές των builder methods για κάθε node type. Έτσι θα πρέπει να πάρετε κάποιο χρόνο και να καταλάβετε πώς δημιουργούνται από τους ορισμούς του node.
 
-You can find all of the actual [definitions here](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions) and you can see them [documented here](https://github.com/babel/babel/blob/master/doc/ast/spec.md)
+Μπορείτε να βρείτε όλους τους [ορισμούς εδώ](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions) και μπορείτε να τους δείτε [τεκμηριωμένους εδώ](https://github.com/babel/babel/blob/master/doc/ast/spec.md)
 
 * * *
 
 # <a id="toc-best-practices"></a>Βέλτιστες πρακτικές
 
-> I'll be working on this section over the coming weeks.
+> Θα εργάζομαι σε αυτό το τμήμα τις επόμενες εβδομάδες.
 
 ## <a id="toc-avoid-traversing-the-ast-as-much-as-possible"></a>Αποφύγετε όσο το δυνατόν την διάσχιση των AST
 
-Traversing the AST is expensive, and it's easy to accidentally traverse the AST more than necessary. This could be thousands if not tens of thousands of extra operations.
+Το να διασχίζουμε το AST είναι ακριβό, και είναι εύκολο να διασχίσει το AST περισσότερο από όσο χρειάζεται. Αυτό θα μπορούσε να είναι χιλιάδες, αν όχι δεκάδες χιλιάδες επιπλέον λειτουργίες.
 
-Babel optimizes this as much as possible, merging visitors together if it can in order to do everything in a single traversal.
+Το Babel βελτιστοποιεί αυτό όσο πιο πολύ γίνεται, συγχωνεύοντας visitors μαζί αν μπορεί προκειμένου na γίνουν όλα σε μια ενιαία διάσχιση.
 
-### <a id="toc-merge-visitors-whenever-possible"></a>Συγχωνεύστε τους επισκέπτες οπότε είναι δυνατό
+### <a id="toc-merge-visitors-whenever-possible"></a>Συγχωνεύετε τους επισκέπτες οπότε είναι δυνατό
 
-When writing visitors, it may be tempting to call `path.traverse` in multiple places where they are logically necessary.
+Όταν γράφετε visitors, μπορεί να είναι δελεαστικό να καλέσετε `path.traverse` σε πολλά σημεία όπου είναι λογικά απαραίτητο.
 
 ```js
 path.traverse({
@@ -1563,7 +1563,7 @@ path.traverse({
 });
 ```
 
-However, it is far better to write these as a single visitor that only gets run once. Otherwise you are traversing the same tree multiple times for no reason.
+Ωστόσο, είναι πολύ καλύτερο να τα γράφετε ως έναν ενιαίο επισκέπτη που εκτελείται μόνο μία φορά. Διαφορετικά διασχίζετε το ίδιο δέντρο πολλές φορές χωρίς λόγο.
 
 ```js
 path.traverse({
@@ -1578,7 +1578,7 @@ path.traverse({
 
 ### <a id="toc-do-not-traverse-when-manual-lookup-will-do"></a>Μην εκτελείτε την διαδικασία διάσχισης όταν εκτελείται χειροκίνητη αναζήτηση
 
-It may also be tempting to call `path.traverse` when looking for a particular node type.
+Επίσης μπορεί να είναι δελεαστικό να καλέσετε `path.traverse` όταν ψάχνετε για ένα συγκεκριμένο node type.
 
 ```js
 const visitorOne = {
@@ -1594,7 +1594,7 @@ const MyVisitor = {
 };
 ```
 
-However, if you are looking for something specific and shallow, there is a good chance you can manually lookup the nodes you need without performing a costly traversal.
+Ωστόσο, αν ψάχνετε για κάτι συγκεκριμένο και ρηχά, είναι μια καλή ευκαιρία να κάνετε μη αυτόματο lookup τα nodes που χρειάζεστε χωρίς να εκτελέσετε μια δαπανηρή διάσχιση.
 
 ```js
 const MyVisitor = {
@@ -1606,9 +1606,9 @@ const MyVisitor = {
 };
 ```
 
-## <a id="toc-optimizing-nested-visitors"></a>Βελτιστοποίηση των ένθετων επισκέπτών
+## <a id="toc-optimizing-nested-visitors"></a>Βελτιστοποίηση των ένθετων visitors
 
-When you are nesting visitors, it might make sense to write them nested in your code.
+Όταν κάνετε ένθεση επισκέπτες, θα μπορούσε να έχει νόημα να τους γράψετε ένθετα στον κώδικά σας.
 
 ```js
 const MyVisitor = {
@@ -1622,7 +1622,7 @@ const MyVisitor = {
 };
 ```
 
-However, this creates a new visitor object everytime `FunctionDeclaration()` is called above, which Babel then needs to explode and validate every single time. This can be costly, so it is better to hoist the visitor up.
+Ωστόσο, αυτό δημιουργεί ένα νέο visitor object κάθε φορά που το `FunctionDeclaration()` καλείται παραπάνω, το οποίο το Babel θα πρέπει να εκραγεί για το να επικυρώνει κάθε φορά. Αυτό μπορεί να είναι δαπανηρό, οπότε είναι καλύτερο να υψώσουμε τον visitor.
 
 ```js
 const visitorOne = {
@@ -1638,7 +1638,7 @@ const MyVisitor = {
 };
 ```
 
-If you need some state within the nested visitor, like so:
+Εάν χρειάζεστε κάποιο state στο εσωτερικό του ένθετου visitor, όπως:
 
 ```js
 const MyVisitor = {
@@ -1656,7 +1656,7 @@ const MyVisitor = {
 };
 ```
 
-You can pass it in as state to the `traverse()` method and have access to it on `this` in the visitor.
+Μπορείτε να το περάσετε ως state με τη μέθοδο `traverse()` και να έχουν πρόσβαση σε αυτό στο `this` στον επισκέπτη.
 
 ```js
 const visitorOne = {
@@ -1677,9 +1677,9 @@ const MyVisitor = {
 
 ## <a id="toc-being-aware-of-nested-structures"></a>Έχοντας επίγνωση των ένθετων δομών
 
-Sometimes when thinking about a given transform, you might forget that the given structure can be nested.
+Μερικές φορές, όταν σκεφτόμαστε έναν δεδομένο μετασχηματισμό, μπορεί να ξεχνάμε ότι η συγκεκριμένη δομή μπορεί να είναι ένθετη.
 
-For example, imagine we want to lookup the `constructor` `ClassMethod` from the `Foo` `ClassDeclaration`.
+Φανταστείτε για παράδειγμα, ότι θέλουμε να κάνουμε lookup του `constructor` `ClassMethod` από το `Foo` `ClassDeclaration`.
 
 ```js
 class Foo {
@@ -1707,7 +1707,7 @@ const MyVisitor = {
 }
 ```
 
-We are ignoring the fact that classes can be nested and using the traversal above we will hit a nested `constructor` as well:
+Αγνωούμε το γεγονός ότι οι τάξεις μπορούν να είναι ένθετες και χρησιμοποιώντας το παραπάνω traversal θα πέσουμε πάνω σε ένα ένθετο `constructor`:
 
 ```js
 class Foo {

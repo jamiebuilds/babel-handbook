@@ -328,7 +328,7 @@ babel.transformFromAst(ast, code, options);
 
 ## <a id="toc-babel-preset-es2015"></a>`babel-preset-es2015`
 
-Let's start by telling Babel to compile ES2015 (the newest version of the JavaScript standard, also known as ES6) to ES5 (the version available in most JavaScript environments today).
+Начнем с того, что укажем Babel компилировать ES2015 ( современную версию стандарта JavaScript, также известную как ES6) в ES5 ( наиболее доступную на сегодня версию в большинстве средах JavaScript).
 
 We'll do this by installing the "es2015" Babel preset:
 
