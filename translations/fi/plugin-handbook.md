@@ -6,22 +6,22 @@ This document covers how to create [Babel](https://babeljs.io) [plugins](https:/
 
 This handbook is available in other languages, see the [README](/README.md) for a complete list.
 
-# Table of Contents
+# Sisällysluettelo
 
-  * [Introduction](#toc-introduction)
-  * [Basics](#toc-basics) 
-      * [ASTs](#toc-asts)
-      * [Stages of Babel](#toc-stages-of-babel)
-      * [Parse](#toc-parse) 
-          * [Lexical Analysis](#toc-lexical-analysis)
-          * [Syntactic Analysis](#toc-syntactic-analysis)
-      * [Transform](#toc-transform)
-      * [Generate](#toc-generate)
-      * [Traversal](#toc-traversal)
-      * [Visitors](#toc-visitors)
-      * [Paths](#toc-paths) 
-          * [Paths in Visitors](#toc-paths-in-visitors)
-      * [State](#toc-state)
+  * [Johdanto](#toc-introduction)
+  * [Perusteet](#toc-basics) 
+      * [AST-puut](#toc-asts)
+      * [Babel-käännöksen vaiheet](#toc-stages-of-babel)
+      * [Parsiminen](#toc-parse) 
+          * [Leksikaalinen analyysi](#toc-lexical-analysis)
+          * [Syntaktinen analyysi](#toc-syntactic-analysis)
+      * [Muunnos](#toc-transform)
+      * [Luominen](#toc-generate)
+      * [Läpikäynti](#toc-traversal)
+      * [Vierailijat](#toc-visitors)
+      * [Polut](#toc-paths) 
+          * [Polut vierailijoissa](#toc-paths-in-visitors)
+      * [Tila](#toc-state)
       * [Scopes](#toc-scopes) 
           * [Bindings](#toc-bindings)
   * [API](#toc-api) 
@@ -61,27 +61,27 @@ This handbook is available in other languages, see the [README](/README.md) for 
       * [Optimizing nested visitors](#toc-optimizing-nested-visitors)
       * [Being aware of nested structures](#toc-being-aware-of-nested-structures)
 
-# <a id="toc-introduction"></a>Introduction
+# <a id="toc-introduction"></a>Johdanto
 
-Babel is a generic multi-purpose compiler for JavaScript. More than that it is a collection of modules that can be used for many different forms of static analysis.
+Babel on monikäyttöinen kääntäjä JavaScriptille. Ennenkaikkea se on kokoelma moduleja joita voi käyttää monenlaiseen staattiseen analyysiin.
 
-> Static analysis is the process of analyzing code without executing it. (Analysis of code while executing it is known as dynamic analysis). The purpose of static analysis varies greatly. It can be used for linting, compiling, code highlighting, code transformation, optimization, minification, and much more.
+> Staattinen analyysi tarkoittaa koodin analysointia ilman koodin suorittamista. (Jos analyysi tehtäisiin koodin ajon aikana, kyseessä olisi dynaaminen analyysi). Staattista analyysiä voidaan tehdä monesta syystä. Analyysillä voidaan mm. syntaksitarkistaa koodia, kääntää, värjätä koodia, muuntaa koodia, optimoida, ja kompressoida sitä.
 
-You can use Babel to build many different types of tools that can help you be more productive and write better programs.
+Babelin avulla voit itse rakentaa monenlaisia työkaluja jotka auttavat sekä ohjelmoinnin tuottavuudessa että ohjelmakoodin laadun parantamisessa.
 
-> ***For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.***
+> ***Jos haluat pysyä ajantasalla, seuraa Twitterissä käyttäjää: [@thejameskyle](https://twitter.com/thejameskyle).***
 
 * * *
 
-# <a id="toc-basics"></a>Basics
+# <a id="toc-basics"></a>Perusteet
 
-Babel is a JavaScript compiler, specifically a source-to-source compiler, often called a "transpiler". This means that you give Babel some JavaScript code, Babel modifies the code, and generates the new code back out.
+Babel on JavaScript-kääntäjä, tarkemmin ottaen lähdekoodista-lähdekoodiin -kääntäjä, jollaisia kutsutaan usein nimellä "transpiler". Käytännössä kun siis annat Babelille pätkän JavaScript -koodia, Babel analysoi koodin, ja tuottaa uutta koodia tulosteena.
 
-## <a id="toc-asts"></a>ASTs
+## <a id="toc-asts"></a>AST-puut
 
-Each of these steps involve creating or working with an [Abstract Syntax Tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree) or AST.
+Jokaisessa allaolevassa esimerkissä sinun tulee joko luoda tai käsitellä [Abstrakteja syntaksipuita](https://en.wikipedia.org/wiki/Abstract_syntax_tree) (ts. AST:ia).
 
-> Babel uses an AST modified from [ESTree](https://github.com/estree/estree), with the core spec located [here](https://github.com/babel/babel/blob/master/doc/ast/spec.md).
+> Babel käyttää [ESTree](https://github.com/estree/estree) -projektista muokattua AST-puuta; ESTree:n speksit ovat [täällä](https://github.com/babel/babel/blob/master/doc/ast/spec.md).
 
 ```js
 function square(n) {
@@ -89,9 +89,9 @@ function square(n) {
 }
 ```
 
-> Check out [AST Explorer](http://astexplorer.net/) to get a better sense of the AST nodes. [Here](http://astexplorer.net/#/Z1exs6BWMq) is a link to it with the example code above pasted in.
+> AST:n rakenteesta voit saada parempaa näppituntumaa tutustumalla projektiin [AST Explorer](http://astexplorer.net/). [Tässä](http://astexplorer.net/#/Z1exs6BWMq) on siihen linkki - sisältäen myös aiemmin mainitun esimerkkikoodin. 
 
-This same program can be represented as a list like this:
+Edellämainittu ohjelma voidaan esittää myös tällaisena listana:
 
 ```md
 - FunctionDeclaration:
@@ -116,7 +116,7 @@ This same program can be represented as a list like this:
                   - name: n
 ```
 
-Or as a JavaScript Object like this:
+Tai JavaScriptin objektina:
 
 ```js
 {
@@ -150,7 +150,7 @@ Or as a JavaScript Object like this:
 }
 ```
 
-You'll notice that each level of the AST has a similar structure:
+Huomaa, että jokaisella AST puun tasolla on vastaava rakenne:
 
 ```js
 {
@@ -177,11 +177,11 @@ You'll notice that each level of the AST has a similar structure:
 }
 ```
 
-> Note: Some properties have been removed for simplicity.
+> Huom: jotkin avain-arvoparit on poistettu esimerkin lyhentämiseksi.
 
-Each of these are known as a **Node**. An AST can be made up of a single Node, or hundreds if not thousands of Nodes. Together they are able to describe the syntax of a program that can be used for static analysis.
+Jokainen tällainen on tyyppiä **Solmu**. AST:ssä voi olla yksi aino solmu, tai useita satoja - tai tuhansia - solmuja. Yhdessä ne kuvaavat täysin ohjelman syntaksin, ja solmujen avulla voidaan tehdä staattinen analyysi.
 
-Every Node has this interface:
+Jokaisella solmulla on seuraava rajapinta:
 
 ```typescript
 interface Node {
@@ -189,9 +189,9 @@ interface Node {
 }
 ```
 
-The `type` field is a string representing the type of Node the object is (ie. `"FunctionDeclaration"`, `"Identifier"`, or `"BinaryExpression"`). Each type of Node defines an additional set of properties that describe that particular node type.
+`type` -kenttä on merkkijono joka kertoo solmun tyypin, esim. `"FunctionDeclaration"`, `"Identifier"`, tai `"BinaryExpression"`). Jokaisella solmutyypillä on tarkentavia, tyyppikohtaisia lisäominaisuuksia.
 
-There are additional properties on every Node that Babel generates which describe the position of the Node in the original source code.
+Babel lisää myös jokaiseen solmuun omat ominaisuutensa, jotka tallentavat solmun esiintymiskohdan alkuperäisessä lähdekoodissa.
 
 ```js
 {
@@ -212,21 +212,21 @@ There are additional properties on every Node that Babel generates which describ
 }
 ```
 
-These properties `start`, `end`, `loc`, appear in every single Node.
+Ominaisuudet `start`, `end`, `loc` ovat kaikissa solmuissa.
 
-## <a id="toc-stages-of-babel"></a>Stages of Babel
+## <a id="toc-stages-of-babel"></a>Babelin suorituksen vaiheet
 
-The three primary stages of Babel are **parse**, **transform**, **generate**.
+Babelin kolme päävaihetta ovat **parsiminen**, **muuntaminen**, ja **generointi**.
 
-### <a id="toc-parse"></a>Parse
+### <a id="toc-parse"></a>Parsiminen
 
-The **parse** stage, takes code and outputs an AST. There are two phases of parsing in Babel: [**Lexical Analysis**](https://en.wikipedia.org/wiki/Lexical_analysis) and [**Syntactic Analysis**](https://en.wikipedia.org/wiki/Parsing).
+**Parsimisessa** syötteenä on koodia ja tuotoksena AST. Babelin parsinta tapahtuu kahdessa vaiheessa: [**Leksikaalinen analyysi**](https://en.wikipedia.org/wiki/Lexical_analysis) ja [**Syntaksianalyysi**](https://en.wikipedia.org/wiki/Parsing).
 
-#### <a id="toc-lexical-analysis"></a>Lexical Analysis
+#### <a id="toc-lexical-analysis"></a>Leksikaalinen analyysi
 
-Lexical Analysis will take a string of code and turn it into a stream of **tokens**.
+Leksikaalinen analyysi ottaa syötteenä merkkijonon koodia ja tuottaa sarjan **alkionimiä**.
 
-You can think of tokens as a flat array of language syntax pieces.
+Alkionimet ovat jotakuinkin yksiulotteinen taulukko kyseisen ohjelmointikielen syntaksin osasia.
 
 ```js
 n * n;
@@ -241,7 +241,7 @@ n * n;
 ]
 ```
 
-Each of the `type`s here have a set of properties describing the token:
+Jokaisella esimerkin `tyypillä` on joukko ominaisuuksia jotka kuvaavat alkionimen:
 
 ```js
 {
@@ -264,21 +264,21 @@ Each of the `type`s here have a set of properties describing the token:
 
 Like AST nodes they also have a `start`, `end`, and `loc`.
 
-#### <a id="toc-syntactic-analysis"></a>Syntactic Analysis
+#### <a id="toc-syntactic-analysis"></a>Syntaktinen analyysi
 
 Syntactic Analysis will take a stream of tokens and turn it into an AST representation. Using the information in the tokens, this phase will reformat them as an AST which represents the structure of the code in a way that makes it easier to work with.
 
-### <a id="toc-transform"></a>Transform
+### <a id="toc-transform"></a>Muunnos
 
 The [transform](https://en.wikipedia.org/wiki/Program_transformation) stage takes an AST and traverses through it, adding, updating, and removing nodes as it goes along. This is by far the most complex part of Babel or any compiler. This is where plugins operate and so it will be the subject of most of this handbook. So we won't dive too deep right now.
 
-### <a id="toc-generate"></a>Generate
+### <a id="toc-generate"></a>Luominen
 
 The [code generation](https://en.wikipedia.org/wiki/Code_generation_(compiler)) stage takes the final AST and turns it back into a string of code, also creating [source maps](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/).
 
 Code generation is pretty simple: you traverse through the AST depth-first, building a string that represents the transformed code.
 
-## <a id="toc-traversal"></a>Traversal
+## <a id="toc-traversal"></a>Läpikäynti
 
 When you want to transform an AST you have to [traverse the tree](https://en.wikipedia.org/wiki/Tree_traversal) recursively.
 
@@ -330,7 +330,7 @@ The `BinaryExpression` has an `operator`, a `left`, and a `right`. The operator 
 
 This traversal process happens throughout the Babel transform stage.
 
-### <a id="toc-visitors"></a>Visitors
+### <a id="toc-visitors"></a>Vierailijat
 
 When we talk about "going" to a node, we actually mean we are **visiting** them. The reason we use that term is because there is this concept of a [**visitor**](https://en.wikipedia.org/wiki/Visitor_pattern).
 
@@ -418,7 +418,7 @@ const MyVisitor = {
 };
 ```
 
-### <a id="toc-paths"></a>Paths
+### <a id="toc-paths"></a>Polut
 
 An AST generally has many Nodes, but how do Nodes relate to one another? We could have one giant mutable object that you manipulate and have full access to, or we can simplify this with **Paths**.
 
@@ -485,7 +485,7 @@ As well as tons and tons of methods related to adding, updating, moving, and rem
 
 In a sense, paths are a **reactive** representation of a node's position in the tree and all sorts of information about the node. Whenever you call a method that modifies the tree, this information is updated. Babel manages all of this for you to make working with nodes easy and as stateless as possible.
 
-#### <a id="toc-paths-in-visitors"></a>Paths in Visitors
+#### <a id="toc-paths-in-visitors"></a>Polut vierailijoissa
 
 When you have a visitor that has a `Identifier()` method, you're actually visiting the path instead of the node. This way you are mostly working with the reactive representation of a node instead of the node itself.
 
@@ -507,7 +507,7 @@ Visiting: b
 Visiting: c
 ```
 
-### <a id="toc-state"></a>State
+### <a id="toc-state"></a>Tila
 
 State is the enemy of AST transformation. State will bite you over and over again and your assumptions about state will almost always be proven wrong by some syntax that you didn't consider.
 
@@ -1721,4 +1721,4 @@ class Foo {
 }
 ```
 
-> ***For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.***
+> ***Jos haluat pysyä ajantasalla, seuraa Twitterissä: [@thejameskyle](https://twitter.com/thejameskyle).***

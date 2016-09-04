@@ -6,9 +6,9 @@ This document covers everything you ever wanted to know about using [Babel](http
 
 This handbook is available in other languages, see the [README](/README.md) for a complete list.
 
-# Table of Contents
+# Sisällysluettelo
 
-  * [Introduction](#toc-introduction)
+  * [Johdanto](#toc-introduction)
   * [Setting up Babel](#toc-setting-up-babel) 
       * [`babel-cli`](#toc-babel-cli)
       * [Running Babel CLI from within a project](#toc-running-babel-cli-from-within-a-project)
@@ -43,13 +43,13 @@ This handbook is available in other languages, see the [README](/README.md) for 
       * [Babel Issues](#toc-babel-issues)
       * [Creating an awesome Babel bug report](#toc-creating-an-awesome-babel-bug-report)
 
-# <a id="toc-introduction"></a>Introduction
+# <a id="toc-introduction"></a>Johdanto
 
-Babel is a generic multi-purpose compiler for JavaScript. Using Babel you can use (and create) the next generation of JavaScript, as well as the next generation of JavaScript tooling.
+Babel on geneerinen ja monikäyttöinen kääntäjä JavaScriptille. Babelin avulla voit käyttää (ja luoda) seuraavan sukupolven Javascript-koodia ja sitä tukevia apuohjelmia.
 
-JavaScript as a language is constantly evolving, with new specs and proposals coming out with new features all the time. Using Babel will allow you to use many of these features years before they are available everywhere.
+JavaScript uudistuu kielenä jatkuvasti, niin standardien, ehdotettujen ominaisuuksien kuin uusien ominaisuuksien toteutuksen myötä. Babel mahdollistaa uusimpien ominaisuuksien käyttöönoton vuosia ennen niiden ilmestymistä selaimiin.
 
-Babel does this by compiling down JavaScript code written with the latest standards into a version that will work everywhere today. This process is known as source-to-source compiling, also known as transpiling.
+Babel mahdollistaa tämän kääntämällä upouuden JavaScriptin sellaiseksi versioksi, joka toimii kaikkialla. Tällaistä käännöstä kutsutaan lähdekielestä toiseen kääntämiseksi, tai termillä 'transpiling'.
 
 For example, Babel could transform the new ES2015 arrow function syntax from this:
 
@@ -73,43 +73,43 @@ Further than that, everything in Babel is simply a plugin and anyone can go out 
 
 Many people do too, the ecosystem that has sprung up around Babel is massive and very diverse. Throughout this handbook I'll be covering both how built-in Babel tools work as well as some useful things from around the community.
 
-> ***For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.***
+> ***Jos haluat pysyä ajantasalla, seuraa Twitterissä: [@thejameskyle](https://twitter.com/thejameskyle).***
 
 * * *
 
 # <a id="toc-setting-up-babel"></a>Setting up Babel
 
-Since the JavaScript community has no single build tool, framework, platform, etc., Babel has official integrations for all of the major tooling. Everything from Gulp to Browserify, from Ember to Meteor, no matter what your setup looks like there is probably an official integration.
+Koska JavaScript -yhteisöllä ei ole mitään "ainoaa ja oikeaa" kääntäjää, sovelluskehikkoa, alustaa, jne., Babelista on viralliset integroinnit kaikkiin suurimpiin työkaluihin. Olipa käytössäsi Gulp, Browserify, Ember, Meteor tai jotain noiden väliltä, voit odottaa silti löytäväsi virallisen integroinnin Babeliin.
 
-For the purposes of this handbook, we're just going to cover the built-in ways of setting up Babel, but you can also visit the interactive [setup page](http://babeljs.io/docs/setup) for all of the integrations.
+Tässä perehdymme vain Babelin sisäänrakennettuihin asennusmahdollisuuksiin, mutta voit halutessasi käydä [asennusohjesivulla](http://babeljs.io/docs/setup) tutustumassa kaikkiin vaihtoehtoihin.
 
-> **Note:** This guide is going to refer to command line tools like `node` and `npm`. Before continuing any further you should be comfortable with these tools.
+> **Huom!** Oppaassa oletetaan että tunnet komentorivityökalut kuten `node` ja `npm`. Tutustu näihin ennen kuin jatkat lukemista.
 
 ## <a id="toc-babel-cli"></a>`babel-cli`
 
-Babel's CLI is a simple way to compile files with Babel from the command line.
+Babel CLI tarjoaa yksinkertaisen tavan kääntää JS-tiedostoja komentoriviltä.
 
-Let's first install it globally to learn the basics.
+Asennetaan ensin babel-cli globaalisti.
 
 ```sh
 $ npm install --global babel-cli
 ```
 
-We can compile our first file like so:
+Nyt voimme kääntää kokeeksi:
 
 ```sh
 $ babel my-file.js
 ```
 
-This will dump the compiled output directly into your terminal. To write it to a file we'll specify an `--out-file` or `-o`.
+Babel tulostaa käännetyn koodin terminaaliin. Jos haluat sen menevän tiedostoon, anna parametri `--out-file` tai `-o`.
 
 ```sh
 $ babel example.js --out-file compiled.js
-# or
+# tai
 $ babel example.js -o compiled.js
 ```
 
-If we want to compile a whole directory into a new directory we can do so using `--out-dir` or `-d`.
+Jos haluamme kääntää koko hakemiston sisällön uuteen hakemistoon, voimme tehdä sen parametrilla `-out-dir` tai `-d`.
 
 ```sh
 $ babel src --out-dir lib
@@ -117,22 +117,22 @@ $ babel src --out-dir lib
 $ babel src -d lib
 ```
 
-### <a id="toc-running-babel-cli-from-within-a-project"></a>Running Babel CLI from within a project
+### <a id="toc-running-babel-cli-from-within-a-project"></a>Babel CLI :n käyttö projektikansiosta
 
-While you *can* install Babel CLI globally on your machine, it's much better to install it **locally** project by project.
+Vaikka Babel CLI *voidaan* asentaa globaalisti (-g), se kannattaa asentaa **paikallisesti** aina kulloisenkin projektin yhteyteen.
 
-There are two primary reasons for this.
+Paikallisella asennuksella on kaksi etua.
 
-  1. Different projects on the same machine can depend on different versions of Babel allowing you to update one at a time.
-  2. It means you do not have an implicit dependency on the environment you are working in. Making your project far more portable and easier to setup.
+  1. Samalla koneella voi olla projekteja, jotka haluavat tietyn Babel -version, jolloin voit päivittää niitä erikseen (paikallisesti).
+  2. Projektisi ei enää riipu omasta työympäristöstäsi. Se tekee projektistasi helpommin siirrettävän ja helpomman asentaa.
 
-We can install Babel CLI locally by running:
+Voimme asentaa Babel CLI paikallisesti antamalla: 
 
 ```sh
 $ npm install --save-dev babel-cli
 ```
 
-> **Note:** Since it's generally a bad idea to run Babel globally you may want to uninstall the global copy by running:
+> **Huom:** Koska Babelin suoritus koneen globaalista versiosta on huono idea, voit varmuuden vuoksi poistaa globaalin asennuksen:
 > 
 > ```sh
 $ npm uninstall --global babel-cli
@@ -818,4 +818,4 @@ First, try isolating your problem. It's extremely unlikely that every part of yo
 
 * * *
 
-> ***For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.***
+> ***Jos haluat pysyä ajantasalla, seuraa Twitterissä: [@thejameskyle](https://twitter.com/thejameskyle).***
