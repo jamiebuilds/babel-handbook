@@ -818,4 +818,4 @@ First, try isolating your problem. It's extremely unlikely that every part of yo
 
 * * *
 
-> ***For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.***
+> ***Voor toekomstige updates, volg [@thejameskyle](https://twitter.com/thejameskyle) op Twitter.***

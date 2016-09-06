@@ -1,10 +1,10 @@
 # Babel Plugin Handbook
 
-This document covers how to create [Babel](https://babeljs.io) [plugins](https://babeljs.io/docs/advanced/plugins/).
+Tässä ohjeessa käsitellään [Babel](https://babeljs.io) [lisäosien](https://babeljs.io/docs/advanced/plugins/) eli plugin:ien luomista.
 
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
-This handbook is available in other languages, see the [README](/README.md) for a complete list.
+Ohje löytyy myös muille kielille, kts. [README](/README.md) (näet koko luettelon).
 
 # Sisällysluettelo
 
@@ -23,33 +23,33 @@ This handbook is available in other languages, see the [README](/README.md) for 
           * [Polut vierailijoissa](#toc-paths-in-visitors)
       * [Tila](#toc-state)
       * [Scopes](#toc-scopes) 
-          * [Bindings](#toc-bindings)
+          * [Sidonnat](#toc-bindings)
   * [API](#toc-api) 
       * [babylon](#toc-babylon)
       * [babel-traverse](#toc-babel-traverse)
       * [babel-types](#toc-babel-types)
-      * [Definitions](#toc-definitions)
-      * [Builders](#toc-builders)
-      * [Validators](#toc-validators)
-      * [Converters](#toc-converters)
+      * [Määritelmät](#toc-definitions)
+      * [Build-mekanismit](#toc-builders)
+      * [Validoijat](#toc-validators)
+      * [Muuntajat](#toc-converters)
       * [babel-generator](#toc-babel-generator)
       * [babel-template](#toc-babel-template)
-  * [Writing your first Babel Plugin](#toc-writing-your-first-babel-plugin)
-  * [Transformation Operations](#toc-transformation-operations) 
+  * [Ensimmäinen Babel -lisäosasi](#toc-writing-your-first-babel-plugin)
+  * [Muunnosoperaatiot](#toc-transformation-operations) 
       * [Visiting](#toc-visiting)
-      * [Check if a node is a certain type](#toc-check-if-a-node-is-a-certain-type)
-      * [Check if an identifier is referenced](#toc-check-if-an-identifier-is-referenced)
-      * [Manipulation](#toc-manipulation)
-      * [Replacing a node](#toc-replacing-a-node)
-      * [Replacing a node with multiple nodes](#toc-replacing-a-node-with-multiple-nodes)
-      * [Replacing a node with a source string](#toc-replacing-a-node-with-a-source-string)
-      * [Inserting a sibling node](#toc-inserting-a-sibling-node)
-      * [Removing a node](#toc-removing-a-node)
-      * [Replacing a parent](#toc-replacing-a-parent)
-      * [Removing a parent](#toc-removing-a-parent)
-      * [Scope](#toc-scope)
+      * [Tarkista onko solmu tietyntyyppinen](#toc-check-if-a-node-is-a-certain-type)
+      * [Tarkista onko tunnisteeseen viitattu](#toc-check-if-an-identifier-is-referenced)
+      * [Muokkaus](#toc-manipulation)
+      * [Solmun korvaaminen](#toc-replacing-a-node)
+      * [Solmun korvaaminen useilla solmuilla](#toc-replacing-a-node-with-multiple-nodes)
+      * [Solmun korvaaminen lähdekoodisella merkkijonolla](#toc-replacing-a-node-with-a-source-string)
+      * [Sisarsolmun lisääminen](#toc-inserting-a-sibling-node)
+      * [Solmun poistaminen](#toc-removing-a-node)
+      * [Isäsolmun korvaaminen](#toc-replacing-a-parent)
+      * [Isäsolmun poistaminen](#toc-removing-a-parent)
+      * [Skooppi](#toc-scope)
       * [Checking if a local variable is bound](#toc-checking-if-a-local-variable-is-bound)
-      * [Generating a UID](#toc-generating-a-uid)
+      * [UID:n generointi](#toc-generating-a-uid)
       * [Pushing a variable declaration to a parent scope](#toc-pushing-a-variable-declaration-to-a-parent-scope)
       * [Rename a binding and its references](#toc-rename-a-binding-and-its-references)
   * [Plugin Options](#toc-plugin-options)
@@ -179,7 +179,7 @@ Huomaa, että jokaisella AST puun tasolla on vastaava rakenne:
 
 > Huom: jotkin avain-arvoparit on poistettu esimerkin lyhentämiseksi.
 
-Jokainen tällainen on tyyppiä **Solmu**. AST:ssä voi olla yksi aino solmu, tai useita satoja - tai tuhansia - solmuja. Yhdessä ne kuvaavat täysin ohjelman syntaksin, ja solmujen avulla voidaan tehdä staattinen analyysi.
+Jokainen tällainen on tyyppiä **Solmu**. AST:ssä voi olla yksi ainoa solmu, tai useita satoja - tai tuhansia - solmuja. Yhdessä ne kuvaavat täysin ohjelman syntaksin, ja jo pelkästään solmujen avulla voidaan tehdä staattinen analyysi.
 
 Jokaisella solmulla on seuraava rajapinta:
 
@@ -262,7 +262,7 @@ Jokaisella esimerkin `tyypillä` on joukko ominaisuuksia jotka kuvaavat alkionim
 }
 ```
 
-Like AST nodes they also have a `start`, `end`, and `loc`.
+Kuten AST:n solmuilla, näillä on myös ominaisuudet `start`, `end` ja `loc`.
 
 #### <a id="toc-syntactic-analysis"></a>Syntaktinen analyysi
 
@@ -272,7 +272,7 @@ Syntactic Analysis will take a stream of tokens and turn it into an AST represen
 
 The [transform](https://en.wikipedia.org/wiki/Program_transformation) stage takes an AST and traverses through it, adding, updating, and removing nodes as it goes along. This is by far the most complex part of Babel or any compiler. This is where plugins operate and so it will be the subject of most of this handbook. So we won't dive too deep right now.
 
-### <a id="toc-generate"></a>Luominen
+### <a id="toc-generate"></a>Koodin luominen
 
 The [code generation](https://en.wikipedia.org/wiki/Code_generation_(compiler)) stage takes the final AST and turns it back into a string of code, also creating [source maps](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/).
 
@@ -646,7 +646,7 @@ When you create a new scope you do so by giving it a path and a parent scope. Th
 
 Once that's done, there's all sorts of methods you can use on scopes. We'll get into those later though.
 
-#### <a id="toc-bindings"></a>Bindings
+#### <a id="toc-bindings"></a>Sidonnat
 
 References all belong to a particular scope; this relationship is known as a **binding**.
 
@@ -812,7 +812,7 @@ traverse(ast, {
 });
 ```
 
-### <a id="toc-definitions"></a>Definitions
+### <a id="toc-definitions"></a>Määritelmät
 
 Babel Types has definitions for every single type of node, with information on what properties belong where, what values are valid, how to build that node, how the node should be traversed, and aliases of the Node.
 
@@ -837,7 +837,7 @@ defineType("BinaryExpression", {
 });
 ```
 
-### <a id="toc-builders"></a>Builders
+### <a id="toc-builders"></a>Build-mekanismit
 
 You'll notice the above definition for `BinaryExpression` has a field for a `builder`.
 
@@ -876,7 +876,7 @@ a * b
 
 Builders will also validate the nodes they are creating and throw descriptive errors if used improperly. Which leads into the next type of method.
 
-### <a id="toc-validators"></a>Validators
+### <a id="toc-validators"></a>Validoijat
 
 The definition for `BinaryExpression` also includes information on the `fields` of a node and how to validate them.
 
@@ -914,7 +914,7 @@ t.assertBinaryExpression(maybeBinaryExpressionNode, { operator: "*" });
 // Error: Expected type "BinaryExpression" with option { "operator": "*" }
 ```
 
-### <a id="toc-converters"></a>Converters
+### <a id="toc-converters"></a>Muuntajat
 
 > [WIP]
 
@@ -988,7 +988,7 @@ console.log(generate(ast).code);
 var myModule = require("my-module");
 ```
 
-# <a id="toc-writing-your-first-babel-plugin"></a>Writing your first Babel Plugin
+# <a id="toc-writing-your-first-babel-plugin"></a>Ensimmäinen Babel -lisäosasi
 
 Now that you're familiar with all the basics of Babel, let's tie it together with the plugin API.
 
@@ -1113,11 +1113,11 @@ Awesome! Our very first Babel plugin.
 
 * * *
 
-# <a id="toc-transformation-operations"></a>Transformation Operations
+# <a id="toc-transformation-operations"></a>Muunnosoperaatiot
 
 ## <a id="toc-visiting"></a>Visiting
 
-### <a id="toc-check-if-a-node-is-a-certain-type"></a>Check if a node is a certain type
+### <a id="toc-check-if-a-node-is-a-certain-type"></a>Tarkista onko solmu tietyntyyppinen
 
 If you want to check what the type of a node is, the preferred way to do so is:
 
@@ -1153,7 +1153,7 @@ BinaryExpression(path) {
 }
 ```
 
-### <a id="toc-check-if-an-identifier-is-referenced"></a>Check if an identifier is referenced
+### <a id="toc-check-if-an-identifier-is-referenced"></a>Tarkista onko tunnisteeseen viitattu
 
 ```js
 Identifier(path) {
@@ -1173,9 +1173,9 @@ Identifier(path) {
 }
 ```
 
-## <a id="toc-manipulation"></a>Manipulation
+## <a id="toc-manipulation"></a>Muokkaus
 
-### <a id="toc-replacing-a-node"></a>Replacing a node
+### <a id="toc-replacing-a-node"></a>Solmun korvaaminen
 
 ```js
 BinaryExpression(path) {
@@ -1192,7 +1192,7 @@ BinaryExpression(path) {
   }
 ```
 
-### <a id="toc-replacing-a-node-with-multiple-nodes"></a>Replacing a node with multiple nodes
+### <a id="toc-replacing-a-node-with-multiple-nodes"></a>Solmun korvaaminen useilla solmuilla
 
 ```js
 ReturnStatement(path) {
@@ -1215,7 +1215,7 @@ ReturnStatement(path) {
 
 > **Note:** When replacing an expression with multiple nodes, they must be statements. This is because Babel uses heuristics extensively when replacing nodes which means that you can do some pretty crazy transformations that would be extremely verbose otherwise.
 
-### <a id="toc-replacing-a-node-with-a-source-string"></a>Replacing a node with a source string
+### <a id="toc-replacing-a-node-with-a-source-string"></a>Solmun korvaaminen lähdekoodisella merkkijonolla
 
 ```js
 FunctionDeclaration(path) {
@@ -1235,7 +1235,7 @@ FunctionDeclaration(path) {
 
 > **Note:** It's not recommended to use this API unless you're dealing with dynamic source strings, otherwise it's more efficient to parse the code outside of the visitor.
 
-### <a id="toc-inserting-a-sibling-node"></a>Inserting a sibling node
+### <a id="toc-inserting-a-sibling-node"></a>Sisarsolmun lisääminen
 
 ```js
 FunctionDeclaration(path) {
@@ -1254,7 +1254,7 @@ FunctionDeclaration(path) {
 
 > **Note:** This should always be a statement or an array of statements. This uses the same heuristics mentioned in [Replacing a node with multiple nodes](#replacing-a-node-with-multiple-nodes).
 
-### <a id="toc-removing-a-node"></a>Removing a node
+### <a id="toc-removing-a-node"></a>Solmun poistaminen
 
 ```js
 FunctionDeclaration(path) {
@@ -1268,7 +1268,7 @@ FunctionDeclaration(path) {
 - }
 ```
 
-### <a id="toc-replacing-a-parent"></a>Replacing a parent
+### <a id="toc-replacing-a-parent"></a>Isäsolmun korvaaminen
 
 ```js
 BinaryExpression(path) {
@@ -1285,7 +1285,7 @@ BinaryExpression(path) {
   }
 ```
 
-### <a id="toc-removing-a-parent"></a>Removing a parent
+### <a id="toc-removing-a-parent"></a>Isäsolmun poistaminen
 
 ```js
 BinaryExpression(path) {
@@ -1299,7 +1299,7 @@ BinaryExpression(path) {
   }
 ```
 
-## <a id="toc-scope"></a>Scope
+## <a id="toc-scope"></a>Skooppi
 
 ### <a id="toc-checking-if-a-local-variable-is-bound"></a>Checking if a local variable is bound
 
@@ -1323,7 +1323,7 @@ FunctionDeclaration(path) {
 }
 ```
 
-### <a id="toc-generating-a-uid"></a>Generating a UID
+### <a id="toc-generating-a-uid"></a>UID:n generointi
 
 This will generate an identifier that doesn't collide with any locally defined variables.
 

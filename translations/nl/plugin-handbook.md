@@ -1,16 +1,16 @@
-# Babel Plugin Handbook
+# Babel Plugin Handleiding
 
 Dit document beschrijft hoe [Babel](https://babeljs.io) [plugins](https://babeljs.io/docs/advanced/plugins/) te maken.
 
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
-This handbook is available in other languages, see the [README](/README.md) for a complete list.
+Deze gebruikershandleiding is beschikbaar in andere talen, zie de [README](/README.md) voor een volledige lijst.
 
-# Table of Contents
+# Inhoudsopgave
 
-  * [Introduction](#toc-introduction)
-  * [Basics](#toc-basics) 
-      * [ASTs](#toc-asts)
+  * [Introductie](#toc-introduction)
+  * [Basis](#toc-basics) 
+      * [Abstracte syntaxisbomen (AST)](#toc-asts)
       * [Stages of Babel](#toc-stages-of-babel)
       * [Parse](#toc-parse) 
           * [Lexical Analysis](#toc-lexical-analysis)
@@ -61,7 +61,7 @@ This handbook is available in other languages, see the [README](/README.md) for 
       * [Optimizing nested visitors](#toc-optimizing-nested-visitors)
       * [Being aware of nested structures](#toc-being-aware-of-nested-structures)
 
-# <a id="toc-introduction"></a>Introduction
+# <a id="toc-introduction"></a>Introductie
 
 Babel is a generic multi-purpose compiler for JavaScript. More than that it is a collection of modules that can be used for many different forms of static analysis.
 
@@ -69,19 +69,19 @@ Babel is a generic multi-purpose compiler for JavaScript. More than that it is a
 
 You can use Babel to build many different types of tools that can help you be more productive and write better programs.
 
-> ***For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.***
+> ***Voor toekomstige updates, volg [@thejameskyle](https://twitter.com/thejameskyle) op Twitter.***
 
 * * *
 
-# <a id="toc-basics"></a>Basics
+# <a id="toc-basics"></a>Basis
 
 Babel is a JavaScript compiler, specifically a source-to-source compiler, often called a "transpiler". This means that you give Babel some JavaScript code, Babel modifies the code, and generates the new code back out.
 
-## <a id="toc-asts"></a>ASTs
+## <a id="toc-asts"></a>Abstracte syntaxisbomen (AST)
 
-Each of these steps involve creating or working with an [Abstract Syntax Tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree) or AST.
+Elk van deze stappen heeft te maken met[Abstracte Syntaxis-bomen](https://en.wikipedia.org/wiki/Abstract_syntax_tree), in het Engels afgekort als AST.
 
-> Babel uses an AST modified from [ESTree](https://github.com/estree/estree), with the core spec located [here](https://github.com/babel/babel/blob/master/doc/ast/spec.md).
+> Babel gebruikt een AST afgeleid van [ESTree](https://github.com/estree/estree), de beschrijving daarvan kan je [hier](https://github.com/babel/babel/blob/master/doc/ast/spec.md) vinden.
 
 ```js
 function square(n) {
@@ -89,9 +89,9 @@ function square(n) {
 }
 ```
 
-> Check out [AST Explorer](http://astexplorer.net/) to get a better sense of the AST nodes. [Here](http://astexplorer.net/#/Z1exs6BWMq) is a link to it with the example code above pasted in.
+> Je kan [AST Explorer](http://astexplorer.net/) bekijken om wat meer inzicht in AST-bomen. [Hier](http://astexplorer.net/#/Z1exs6BWMq) kan je een voorbeeld met deze code bekijken.
 
-This same program can be represented as a list like this:
+Ditzelfde programma kan worden weergegeven als een lijst:
 
 ```md
 - FunctionDeclaration:
@@ -116,7 +116,7 @@ This same program can be represented as a list like this:
                   - name: n
 ```
 
-Or as a JavaScript Object like this:
+Of als een JavaScript Object zoals hier:
 
 ```js
 {
@@ -150,7 +150,7 @@ Or as a JavaScript Object like this:
 }
 ```
 
-You'll notice that each level of the AST has a similar structure:
+Je zal merken dat elk niveau van de AST een gelijkaardige structuur heeft:
 
 ```js
 {
@@ -177,7 +177,7 @@ You'll notice that each level of the AST has a similar structure:
 }
 ```
 
-> Note: Some properties have been removed for simplicity.
+> Noot: enkele properties zijn weggelaten voor de eenvoudigheid.
 
 Each of these are known as a **Node**. An AST can be made up of a single Node, or hundreds if not thousands of Nodes. Together they are able to describe the syntax of a program that can be used for static analysis.
 
@@ -1721,4 +1721,4 @@ class Foo {
 }
 ```
 
-> ***For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.***
+> ***Voor toekomstige updates, volg [@thejameskyle](https://twitter.com/thejameskyle) op Twitter.***

@@ -4,7 +4,7 @@ This document covers everything you ever wanted to know about using [Babel](http
 
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
-This handbook is available in other languages, see the [README](/README.md) for a complete list.
+Ohje löytyy myös muille kielille, kts. [README](/README.md) (näet koko luettelon).
 
 # Sisällysluettelo
 
