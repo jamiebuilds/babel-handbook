@@ -4,7 +4,7 @@ A guided handbook on how to use Babel and how to create plugins for Babel.
 
 **Translations**
 
-- [English](/translations/en/README.md)
+- [English](translations/en/README.md)
 - [Afrikaans](/translations/af/README.md)
 - [العربية](/translations/ar/README.md)
 - [Català](/translations/ca/README.md)
