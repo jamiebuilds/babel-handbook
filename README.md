@@ -6,7 +6,7 @@ A guided handbook on how to use Babel and how to create plugins for Babel.
 
 - [English](https://github.com/thejameskyle/babel-handbook/tree/master/translations/en/README.md)
 - [Afrikaans](https://github.com/thejameskyle/babel-handbook/tree/master/translations/af/README.md)
-- [العربية](https://github.com/thejameskyle/babel-handbooktree/master//translations/ar/README.md)
+- [العربية](https://github.com/thejameskyle/babel-handbook/tree/master/translations/ar/README.md)
 - [Català](https://github.com/thejameskyle/babel-handbook/tree/master/translations/ca/README.md)
 - [Čeština](https://github.com/thejameskyle/babel-handbook/tree/master/translations/cs/README.md)
 - [Dansk](https://github.com/thejameskyle/babel-handbook/tree/master/translations/da/README.md)
