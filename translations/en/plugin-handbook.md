@@ -39,6 +39,7 @@ a complete list.
 - [Writing your first Babel Plugin](#toc-writing-your-first-babel-plugin)
 - [Transformation Operations](#toc-transformation-operations)
   - [Visiting](#toc-visiting)
+    - [Get the Path of Sub-Node](#toc-get-the-path-of-a-sub-node)
     - [Check if a node is a certain type](#toc-check-if-a-node-is-a-certain-type)
     - [Check if an identifier is referenced](#toc-check-if-an-identifier-is-referenced)
   - [Manipulation](#toc-manipulation)
