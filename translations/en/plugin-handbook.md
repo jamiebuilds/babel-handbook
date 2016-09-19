@@ -1228,6 +1228,27 @@ Awesome! Our very first Babel plugin.
 
 ## <a id="toc-visiting"></a>Visiting
 
+### <a id="toc-get-the-path-of-a-sub-node"></a>Get the Path of Sub-Node
+
+To access an AST node's property you normally access the node and then the property. `path.node.property`
+
+```js
+BinaryExpression(path) {
+  path.node.left;
+}
+```
+
+If you need to access the path of that property instead, use the `get` method of a path, passing in the string to the property.
+
+```js
+BinaryExpression(path) {
+  path.get('left');
+}
+Program(path) {
+  path.get('body[0]');
+}
+```
+
 ### <a id="toc-check-if-a-node-is-a-certain-type"></a>Check if a node is a certain type
 
 If you want to check what the type of a node is, the preferred way to do so is:
