@@ -37,22 +37,22 @@ Acest manual este disponibil și în alte limbi, a se vedea [README](/README.md)
   * [Scrierea primului Plugin Babel](#toc-writing-your-first-babel-plugin)
   * [Operații de Transformare](#toc-transformation-operations) 
       * [Vizitare (Visiting)](#toc-visiting)
-      * [Get the Path of Sub-Node](#toc-get-the-path-of-a-sub-node)
-      * [Check if a node is a certain type](#toc-check-if-a-node-is-a-certain-type)
-      * [Check if an identifier is referenced](#toc-check-if-an-identifier-is-referenced)
+      * [Aflarea căii unui sub-nod](#toc-get-the-path-of-a-sub-node)
+      * [Verificare dacă un nod este de un anumit tip](#toc-check-if-a-node-is-a-certain-type)
+      * [Verificare dacă un identificator are referință](#toc-check-if-an-identifier-is-referenced)
       * [Manipulare](#toc-manipulation)
-      * [Replacing a node](#toc-replacing-a-node)
-      * [Replacing a node with multiple nodes](#toc-replacing-a-node-with-multiple-nodes)
-      * [Replacing a node with a source string](#toc-replacing-a-node-with-a-source-string)
-      * [Inserting a sibling node](#toc-inserting-a-sibling-node)
-      * [Removing a node](#toc-removing-a-node)
-      * [Replacing a parent](#toc-replacing-a-parent)
-      * [Removing a parent](#toc-removing-a-parent)
+      * [Înlocuirea unui nod](#toc-replacing-a-node)
+      * [Înlocuirea unui nod cu mai multe noduri](#toc-replacing-a-node-with-multiple-nodes)
+      * [Înlocuirea unui nod cu un șir de caractere sursă](#toc-replacing-a-node-with-a-source-string)
+      * [Inserarea unui nod pe același nivel](#toc-inserting-a-sibling-node)
+      * [Ștergerea unui nod](#toc-removing-a-node)
+      * [Înlocuirea unui părinte](#toc-replacing-a-parent)
+      * [Ștergerea unui părinte](#toc-removing-a-parent)
       * [Domeniu (Scope)](#toc-scope)
-      * [Checking if a local variable is bound](#toc-checking-if-a-local-variable-is-bound)
-      * [Generating a UID](#toc-generating-a-uid)
-      * [Pushing a variable declaration to a parent scope](#toc-pushing-a-variable-declaration-to-a-parent-scope)
-      * [Rename a binding and its references](#toc-rename-a-binding-and-its-references)
+      * [Verificare dacă o variabilă locală are legatură](#toc-checking-if-a-local-variable-is-bound)
+      * [Generarea unui UID](#toc-generating-a-uid)
+      * [Mutarea unei declarații de variabilă într-un domeniu părinte](#toc-pushing-a-variable-declaration-to-a-parent-scope)
+      * [Redenumirea unei legături și a referințelor sale](#toc-rename-a-binding-and-its-references)
   * [Opțiuni de plugin](#toc-plugin-options)
   * [Construirea nodurilor](#toc-building-nodes)
   * [Practici preferate](#toc-best-practices) 
@@ -1118,9 +1118,9 @@ Super mișto! Primul nostru plugin pentru Babel.
 
 ## <a id="toc-visiting"></a>Vizitare (Visiting)
 
-### <a id="toc-get-the-path-of-a-sub-node"></a>Get the Path of Sub-Node
+### <a id="toc-get-the-path-of-a-sub-node"></a>Aflarea căii unui sub-nod
 
-To access an AST node's property you normally access the node and then the property. `path.node.property`
+Pentru a accesa proprietatea unui nod AST în mod normal se accesează nodul şi apoi proprietatea. `path.node.property`
 
 ```js
 BinaryExpression(path) {
@@ -1128,7 +1128,7 @@ BinaryExpression(path) {
 }
 ```
 
-If you need to access the path of that property instead, use the `get` method of a path, passing in the string to the property.
+În cazul în care aveţi nevoie să accesați calea proprietății, utilizaţi metoda `get` a traseului, pasându-i numele proprietății.
 
 ```js
 BinaryExpression(path) {
@@ -1139,9 +1139,9 @@ Program(path) {
 }
 ```
 
-### <a id="toc-check-if-a-node-is-a-certain-type"></a>Check if a node is a certain type
+### <a id="toc-check-if-a-node-is-a-certain-type"></a>Verificare dacă un nod este de un anumit tip
 
-If you want to check what the type of a node is, the preferred way to do so is:
+Dacă doriţi să verificaţi de ce tip este un anumit nod, modul preferat de a face acest lucru este:
 
 ```js
 BinaryExpression(path) {
@@ -1151,7 +1151,7 @@ BinaryExpression(path) {
 }
 ```
 
-You can also do a shallow check for properties on that node:
+De asemenea, puteţi face o verificare superficială pentru proprietăţile acelui nod:
 
 ```js
 BinaryExpression(path) {
@@ -1161,7 +1161,7 @@ BinaryExpression(path) {
 }
 ```
 
-This is functionally equivalent to:
+Aceasta este echivalentă cu:
 
 ```js
 BinaryExpression(path) {
@@ -1175,7 +1175,7 @@ BinaryExpression(path) {
 }
 ```
 
-### <a id="toc-check-if-an-identifier-is-referenced"></a>Check if an identifier is referenced
+### <a id="toc-check-if-an-identifier-is-referenced"></a>Verificare dacă un identificator are referință
 
 ```js
 Identifier(path) {
@@ -1185,7 +1185,7 @@ Identifier(path) {
 }
 ```
 
-Alternatively:
+Alternativ:
 
 ```js
 Identifier(path) {
@@ -1197,7 +1197,7 @@ Identifier(path) {
 
 ## <a id="toc-manipulation"></a>Manipulare
 
-### <a id="toc-replacing-a-node"></a>Replacing a node
+### <a id="toc-replacing-a-node"></a>Înlocuirea unui nod
 
 ```js
 BinaryExpression(path) {
@@ -1214,7 +1214,7 @@ BinaryExpression(path) {
   }
 ```
 
-### <a id="toc-replacing-a-node-with-multiple-nodes"></a>Replacing a node with multiple nodes
+### <a id="toc-replacing-a-node-with-multiple-nodes"></a>Înlocuirea unui nod cu mai multe noduri
 
 ```js
 ReturnStatement(path) {
@@ -1237,7 +1237,7 @@ ReturnStatement(path) {
 
 > **Notă:** Când se înlocuieşte o expresie cu mai multe noduri, acestea trebuie să fie declaraţii. Acest lucru este necesar deoarece Babel utilizează euristică pe scară largă la înlocuirea nodurilor, ceea ce înseamnă că puteţi face unele transformări destul de complexe, care altfel ar fi extrem de detaliate.
 
-### <a id="toc-replacing-a-node-with-a-source-string"></a>Replacing a node with a source string
+### <a id="toc-replacing-a-node-with-a-source-string"></a>Înlocuirea unui nod cu un șir de caractere sursă
 
 ```js
 FunctionDeclaration(path) {
@@ -1257,7 +1257,7 @@ FunctionDeclaration(path) {
 
 > **Notă:** Nu este recomandat să utilizaţi acest API dacă nu aveți de a face cu șiruri de caractere sursă dinamice, altfel este mult mai eficient pentru a analiza codul în afara vizitatorului.
 
-### <a id="toc-inserting-a-sibling-node"></a>Inserting a sibling node
+### <a id="toc-inserting-a-sibling-node"></a>Inserarea unui nod pe același nivel
 
 ```js
 FunctionDeclaration(path) {
@@ -1276,7 +1276,7 @@ FunctionDeclaration(path) {
 
 > **Notă:** Acesta ar trebui să fie întotdeauna o declaraţie sau o serie de declaraţii. Aceasta utilizează aceleaşi euristici menţionate în [Înlocuirea unui nod cu mai multe noduri](#replacing-a-node-with-multiple-nodes).
 
-### <a id="toc-removing-a-node"></a>Removing a node
+### <a id="toc-removing-a-node"></a>Ștergerea unui nod
 
 ```js
 FunctionDeclaration(path) {
@@ -1290,7 +1290,7 @@ FunctionDeclaration(path) {
 - }
 ```
 
-### <a id="toc-replacing-a-parent"></a>Replacing a parent
+### <a id="toc-replacing-a-parent"></a>Înlocuirea unui părinte
 
 ```js
 BinaryExpression(path) {
@@ -1307,7 +1307,7 @@ BinaryExpression(path) {
   }
 ```
 
-### <a id="toc-removing-a-parent"></a>Removing a parent
+### <a id="toc-removing-a-parent"></a>Ștergerea unui părinte
 
 ```js
 BinaryExpression(path) {
@@ -1323,7 +1323,7 @@ BinaryExpression(path) {
 
 ## <a id="toc-scope"></a>Domeniu (Scope)
 
-### <a id="toc-checking-if-a-local-variable-is-bound"></a>Checking if a local variable is bound
+### <a id="toc-checking-if-a-local-variable-is-bound"></a>Verificare dacă o variabilă locală are legatură
 
 ```js
 FunctionDeclaration(path) {
@@ -1333,9 +1333,9 @@ FunctionDeclaration(path) {
 }
 ```
 
-This will walk up the scope tree and check for that particular binding.
+Aceasta va parcurge arborele şi va căuta acea legatură anume.
 
-You can also check if a scope has its **own** binding:
+Puteţi verifica și dacă un domeniu are o legătură proprie (**own**):
 
 ```js
 FunctionDeclaration(path) {
@@ -1345,9 +1345,9 @@ FunctionDeclaration(path) {
 }
 ```
 
-### <a id="toc-generating-a-uid"></a>Generating a UID
+### <a id="toc-generating-a-uid"></a>Generarea unui UID
 
-This will generate an identifier that doesn't collide with any locally defined variables.
+Următorul cod va genera un identificator fără coliziuni cu nicio variabilă definită local.
 
 ```js
 FunctionDeclaration(path) {
@@ -1358,9 +1358,9 @@ FunctionDeclaration(path) {
 }
 ```
 
-### <a id="toc-pushing-a-variable-declaration-to-a-parent-scope"></a>Pushing a variable declaration to a parent scope
+### <a id="toc-pushing-a-variable-declaration-to-a-parent-scope"></a>Mutarea unei declarații de variabilă într-un domeniu părinte
 
-Sometimes you may want to push a `VariableDeclaration` so you can assign to it.
+Uneori, poate doriţi să mutați un `VariableDeclaration`, pentru a-i putea asocia o valoare.
 
 ```js
 FunctionDeclaration(path) {
@@ -1378,7 +1378,7 @@ FunctionDeclaration(path) {
 + };
 ```
 
-### <a id="toc-rename-a-binding-and-its-references"></a>Rename a binding and its references
+### <a id="toc-rename-a-binding-and-its-references"></a>Redenumirea unei legături și a referințelor sale
 
 ```js
 FunctionDeclaration(path) {
@@ -1394,7 +1394,7 @@ FunctionDeclaration(path) {
   }
 ```
 
-Alternatively, you can rename a binding to a generated unique identifier:
+Alternativ, puteţi redenumi o legătură cu un identificator unic generat:
 
 ```js
 FunctionDeclaration(path) {
@@ -1414,7 +1414,7 @@ FunctionDeclaration(path) {
 
 # <a id="toc-plugin-options"></a>Opțiuni de plugin
 
-If you would like to let your users customize the behavior of your Babel plugin you can accept plugin specific options which users can specify like this:
+Dacă doriţi să lăsați utilizatorii să particularizeze comportamentul plugin-ul vostru Babel, puteţi accepta opţiuni de plugin specifice, pe care utilizatorii le pot specifica în felul următor:
 
 ```js
 {
@@ -1427,7 +1427,7 @@ If you would like to let your users customize the behavior of your Babel plugin 
 }
 ```
 
-These options then get passed into plugin visitors through the `state` object:
+Aceste opţiuni sunt pasate apoi vizitatorilor plugin-ului prin obiectul `state`:
 
 ```js
 export default function({ types: t }) {
@@ -1442,19 +1442,19 @@ export default function({ types: t }) {
 }
 ```
 
-These options are plugin-specific and you cannot access options from other plugins.
+Aceste opţiuni sunt specifice plugin-ului şi nu puteţi accesa opţiuni din alte plugin-uri.
 
 * * *
 
 # <a id="toc-building-nodes"></a>Construirea nodurilor
 
-When writing transformations you'll often want to build up some nodes to insert into the AST. As mentioned previously, you can do this using the [builder](#builder) methods in the [`babel-types`](#babel-types) package.
+Când scrieţi transformări veţi dori adesea să construiți unele noduri pentru a le insera în AST. Aşa cum am menţionat anterior, puteţi face acest lucru folosind metodele [builder](#builder) din pachetul [`babel-types`](#babel-types).
 
-The method name for a builder is simply the name of the node type you want to build except with the first letter lowercased. For example if you wanted to build a `MemberExpression` you would use `t.memberExpression(...)`.
+Numele metodei pentru un constructor este pur şi simplu numele tipului de nod pe care doriţi să-l construiți cu excepţia că prima literă trebuie sa fie mică. De exemplu dacă doriți să construiți `MemberExpression` ar trebui să utilizaţi `t.memberExpression(...)`.
 
-The arguments of these builders are decided by the node definition. There's some work that's being done to generate easy-to-read documentation on the definitions, but for now they can all be found [here](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions).
+Argumentele acestor constructori sunt stabilite prin definiţia nodului. În momentul de față se lucrează pentru a genera documentaţie uşor de citit pentru definiţii, dar pentru moment toate pot fi găsite [aici](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions).
 
-A node definition looks like the following:
+O definiţie de nod arată în felul următor:
 
 ```js
 defineType("MemberExpression", {
@@ -1478,9 +1478,9 @@ defineType("MemberExpression", {
 });
 ```
 
-Here you can see all the information about this particular node type, including how to build it, traverse it, and validate it.
+Aici puteţi vedea toate informaţiile despre acest tip de nod, inclusiv modul de construcție, traversare şi validare.
 
-By looking at the `builder` property, you can see the 3 arguments that will be needed to call the builder method (`t.memberExpression`).
+Uitându-ne la proprietatea `builder`, putem vedea 3 argumente care vor fi necesare pentru a apela metoda constructor (`t.memberExpression`).
 
 ```js
 builder: ["object", "property", "computed"],
@@ -1488,7 +1488,7 @@ builder: ["object", "property", "computed"],
 
 > Reţineţi că, uneori, există mai multe proprietăţi care le puteți particulariza, decât cele conținute în seria constructorului (`builder`). Acest lucru se întâmplă pentru a evita prea multe argumente pe constructor. În aceste cazuri, trebuie să setaţi proprietăţile manual. Un exemplu este [`ClassMethod`](https://github.com/babel/babel/blob/bbd14f88c4eea88fa584dd877759dd6b900bf35e/packages/babel-types/src/definitions/es2015.js#L238-L276).
 
-You can see the validation for the builder arguments with the `fields` object.
+Puteţi vedea validarea pentru argumentele constructorului cu obiectul `fields`.
 
 ```js
 fields: {
@@ -1507,9 +1507,9 @@ fields: {
 }
 ```
 
-You can see that `object` needs to be an `Expression`, `property` either needs to be an `Expression` or an `Identifier` depending on if the member expression is `computed` or not and `computed` is simply a boolean that defaults to `false`.
+Puteţi vedea că `object` trebuie să fie `Expression`, `property` trebuie să fie `Expression` sau `Identifier` depinzând dacă expresia membru este calculată (`computed`) sau nu, iar `computed` este pur şi simplu un boolean care implicit este `false`.
 
-So we can construct a `MemberExpression` by doing the following:
+Aşadar putem construi un `MemberExpression` în felul următor:
 
 ```js
 t.memberExpression(
@@ -1519,21 +1519,21 @@ t.memberExpression(
 );
 ```
 
-Which will result in:
+Ceea ce va rezulta în:
 
 ```js
 object.property
 ```
 
-However, we said that `object` needed to be an `Expression` so why is `Identifier` valid?
+Cu toate acestea, am spus că `object` să fie `Expression`, așadar de ce `Identifier` este valid?
 
-Well if we look at the definition of `Identifier` we can see that it has an `aliases` property which states that it is also an expression.
+Ei bine, dacă ne uităm la definiţia pentru `Identifier` putem vedea că are o proprietate `aliases` care declară că este, de asemenea, o expresie.
 
 ```js
 aliases: ["Expression", "LVal"],
 ```
 
-So since `MemberExpression` is a type of `Expression`, we could set it as the `object` of another `MemberExpression`:
+Așadar, din moment ce `MemberExpression` este de tip `Expression`, l-am putea seta ca un `object` pentru alt `MemberExpression`:
 
 ```js
 t.memberExpression(
@@ -1545,15 +1545,15 @@ t.memberExpression(
 )
 ```
 
-Which will result in:
+Ceea ce va rezulta în:
 
 ```js
 member.expression.property
 ```
 
-It's very unlikely that you will ever memorize the builder method signatures for every node type. So you should take some time and understand how they are generated from the node definitions.
+Este foarte puţin probabil că veți memora vreodată semnăturile metodei constructor pentru fiecare tip de nod. Așadar, ar trebui să vă rezervați ceva timp să înţelegeți cum sunt generate acestea din definiţiile nodului.
 
-You can find all of the actual [definitions here](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions) and you can see them [documented here](https://github.com/babel/babel/blob/master/doc/ast/spec.md)
+Puteţi găsi toate [definiţiile aici](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions) şi le puteţi vedea [documentate aici](https://github.com/babel/babel/blob/master/doc/ast/spec.md)
 
 * * *
 
@@ -1563,13 +1563,13 @@ You can find all of the actual [definitions here](https://github.com/babel/babel
 
 ## <a id="toc-avoid-traversing-the-ast-as-much-as-possible"></a>Evitați traversarea AST pe cât posibil
 
-Traversing the AST is expensive, and it's easy to accidentally traverse the AST more than necessary. This could be thousands if not tens of thousands of extra operations.
+Traversarea AST este scumpă, şi este uşor să traversați accidental AST mai mult decât este necesar. Acest lucru ar putea însemna mii daca nu zeci de mii de operaţiuni suplimentare.
 
-Babel optimizes this as much as possible, merging visitors together if it can in order to do everything in a single traversal.
+Babel optimizează acest lucru cât mai mult posibil, prin îmbinarea vizitatorilor împreună, dacă este posibil, pentru a face totul într-o singură traversare.
 
 ### <a id="toc-merge-visitors-whenever-possible"></a>Îmbinarea vizitatorilor ori de câte ori este posibil
 
-When writing visitors, it may be tempting to call `path.traverse` in multiple places where they are logically necessary.
+Când scrieţi vizitatori, poate fi tentant să apelați `path.traverse` în mai multe locuri unde sunt necesare în mod logic.
 
 ```js
 path.traverse({
@@ -1585,7 +1585,7 @@ path.traverse({
 });
 ```
 
-However, it is far better to write these as a single visitor that only gets run once. Otherwise you are traversing the same tree multiple times for no reason.
+Cu toate acestea, este mult mai bine să scrieți toate acestea ca un vizitator unic care este rulat doar o singură dată. Altfel veți traversa acelaşi arbore mai multe ori pentru niciun motiv.
 
 ```js
 path.traverse({
@@ -1600,7 +1600,7 @@ path.traverse({
 
 ### <a id="toc-do-not-traverse-when-manual-lookup-will-do"></a>Evitați traversarea când o căutare manuală este suficientă
 
-It may also be tempting to call `path.traverse` when looking for a particular node type.
+De asemenea, poate fi tentant să apelați `path.traverse` atunci când căutați un anumit tip de nod.
 
 ```js
 const visitorOne = {
@@ -1616,7 +1616,7 @@ const MyVisitor = {
 };
 ```
 
-However, if you are looking for something specific and shallow, there is a good chance you can manually lookup the nodes you need without performing a costly traversal.
+Așadar, în cazul în care căutați ceva specific, este o şansă bună să gasiți nodurile respective printr-o căutare manuală, fără a efectua vreo traversare costisitoare.
 
 ```js
 const MyVisitor = {
@@ -1630,7 +1630,7 @@ const MyVisitor = {
 
 ## <a id="toc-optimizing-nested-visitors"></a>Optimizarea vizitatorilor imbricați
 
-When you are nesting visitors, it might make sense to write them nested in your code.
+Atunci când aveți vizitatori imbricați, ar putea avea mai mult sens să-i scrieți imbricat și în codul dumneavoastră.
 
 ```js
 const MyVisitor = {
@@ -1644,7 +1644,7 @@ const MyVisitor = {
 };
 ```
 
-However, this creates a new visitor object everytime `FunctionDeclaration()` is called above, which Babel then needs to explode and validate every single time. This can be costly, so it is better to hoist the visitor up.
+Însă acest lucru creează un nou obiect vizitator de fiecare dată când `FunctionDeclaration()` este apelată, iar Babel trebuie să o spargă şi să o valideze de fiecare dată. Acest lucru poate fi costisitor, așadar este mai bine să declarați vizitatorul înainte.
 
 ```js
 const visitorOne = {
@@ -1660,7 +1660,7 @@ const MyVisitor = {
 };
 ```
 
-If you need some state within the nested visitor, like so:
+Dacă aveţi nevoie de stare în cadrul vizitatorilor imbricați, astfel:
 
 ```js
 const MyVisitor = {
@@ -1678,7 +1678,7 @@ const MyVisitor = {
 };
 ```
 
-You can pass it in as state to the `traverse()` method and have access to it on `this` in the visitor.
+Puteţi să-l pasați ca stare metodei `traverse()` şi să aveți acces la ea pe obiectul `this` al vizitatorului.
 
 ```js
 const visitorOne = {
@@ -1699,9 +1699,9 @@ const MyVisitor = {
 
 ## <a id="toc-being-aware-of-nested-structures"></a>Atenție la structuri imbricate
 
-Sometimes when thinking about a given transform, you might forget that the given structure can be nested.
+Uneori când ne gândim la o transformare, am putea uita că structura poate fi imbricată.
 
-For example, imagine we want to lookup the `constructor` `ClassMethod` from the `Foo` `ClassDeclaration`.
+De exemplu, imaginaţi-vă că dorim să căutăm `constructor` `ClassMethod` din `Foo` `ClassDeclaration`.
 
 ```js
 class Foo {
@@ -1729,7 +1729,7 @@ const MyVisitor = {
 }
 ```
 
-We are ignoring the fact that classes can be nested and using the traversal above we will hit a nested `constructor` as well:
+Putem ușor ignora faptul că clasele pot fi imbricate şi folosind traversarea mai sus ne vom lovi de un `constructor` imbricat, precum:
 
 ```js
 class Foo {
