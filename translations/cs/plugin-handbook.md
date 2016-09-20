@@ -37,20 +37,21 @@ Tato příručka je k dispozici i v dalších jazycích, úplný seznam naleznet
   * [Psaní prvního pluginu pro Babel](#toc-writing-your-first-babel-plugin)
   * [Transformační operace](#toc-transformation-operations) 
       * [Inspekce](#toc-visiting)
-      * [Kontrola, zda uzel je určitého typu](#toc-check-if-a-node-is-a-certain-type)
-      * [Kontrola, zda je identifikátor referencován](#toc-check-if-an-identifier-is-referenced)
+      * [Get the Path of Sub-Node](#toc-get-the-path-of-a-sub-node)
+      * [Check if a node is a certain type](#toc-check-if-a-node-is-a-certain-type)
+      * [Check if an identifier is referenced](#toc-check-if-an-identifier-is-referenced)
       * [Manipulace](#toc-manipulation)
-      * [Nahrazení uzlu](#toc-replacing-a-node)
-      * [Nahrazení uzlu více uzly](#toc-replacing-a-node-with-multiple-nodes)
+      * [Replacing a node](#toc-replacing-a-node)
+      * [Replacing a node with multiple nodes](#toc-replacing-a-node-with-multiple-nodes)
       * [Replacing a node with a source string](#toc-replacing-a-node-with-a-source-string)
-      * [Vložení uzlu na stejnou úroveň](#toc-inserting-a-sibling-node)
-      * [Odebrání uzlu](#toc-removing-a-node)
-      * [Náhrada předka](#toc-replacing-a-parent)
-      * [Odstranění předka](#toc-removing-a-parent)
+      * [Inserting a sibling node](#toc-inserting-a-sibling-node)
+      * [Removing a node](#toc-removing-a-node)
+      * [Replacing a parent](#toc-replacing-a-parent)
+      * [Removing a parent](#toc-removing-a-parent)
       * [Rozsah](#toc-scope)
-      * [Kontrola, zda je lokální proměnná vázána](#toc-checking-if-a-local-variable-is-bound)
-      * [Generování UID](#toc-generating-a-uid)
-      * [Strčení deklarace proměnné do nadřazeného rozsahu](#toc-pushing-a-variable-declaration-to-a-parent-scope)
+      * [Checking if a local variable is bound](#toc-checking-if-a-local-variable-is-bound)
+      * [Generating a UID](#toc-generating-a-uid)
+      * [Pushing a variable declaration to a parent scope](#toc-pushing-a-variable-declaration-to-a-parent-scope)
       * [Rename a binding and its references](#toc-rename-a-binding-and-its-references)
   * [Plugin Options](#toc-plugin-options)
   * [Building Nodes](#toc-building-nodes)
@@ -1117,7 +1118,28 @@ Awesome! Our very first Babel plugin.
 
 ## <a id="toc-visiting"></a>Inspekce
 
-### <a id="toc-check-if-a-node-is-a-certain-type"></a>Kontrola, zda uzel je určitého typu
+### <a id="toc-get-the-path-of-a-sub-node"></a>Get the Path of Sub-Node
+
+To access an AST node's property you normally access the node and then the property. `path.node.property`
+
+```js
+BinaryExpression(path) {
+  path.node.left;
+}
+```
+
+If you need to access the path of that property instead, use the `get` method of a path, passing in the string to the property.
+
+```js
+BinaryExpression(path) {
+  path.get('left');
+}
+Program(path) {
+  path.get('body[0]');
+}
+```
+
+### <a id="toc-check-if-a-node-is-a-certain-type"></a>Check if a node is a certain type
 
 If you want to check what the type of a node is, the preferred way to do so is:
 
@@ -1153,7 +1175,7 @@ BinaryExpression(path) {
 }
 ```
 
-### <a id="toc-check-if-an-identifier-is-referenced"></a>Kontrola, zda je identifikátor referencován
+### <a id="toc-check-if-an-identifier-is-referenced"></a>Check if an identifier is referenced
 
 ```js
 Identifier(path) {
@@ -1175,7 +1197,7 @@ Identifier(path) {
 
 ## <a id="toc-manipulation"></a>Manipulace
 
-### <a id="toc-replacing-a-node"></a>Nahrazení uzlu
+### <a id="toc-replacing-a-node"></a>Replacing a node
 
 ```js
 BinaryExpression(path) {
@@ -1192,7 +1214,7 @@ BinaryExpression(path) {
   }
 ```
 
-### <a id="toc-replacing-a-node-with-multiple-nodes"></a>Nahrazení uzlu více uzly
+### <a id="toc-replacing-a-node-with-multiple-nodes"></a>Replacing a node with multiple nodes
 
 ```js
 ReturnStatement(path) {
@@ -1235,7 +1257,7 @@ FunctionDeclaration(path) {
 
 > **Note:** It's not recommended to use this API unless you're dealing with dynamic source strings, otherwise it's more efficient to parse the code outside of the visitor.
 
-### <a id="toc-inserting-a-sibling-node"></a>Vložení uzlu na stejnou úroveň
+### <a id="toc-inserting-a-sibling-node"></a>Inserting a sibling node
 
 ```js
 FunctionDeclaration(path) {
@@ -1254,7 +1276,7 @@ FunctionDeclaration(path) {
 
 > **Note:** This should always be a statement or an array of statements. This uses the same heuristics mentioned in [Replacing a node with multiple nodes](#replacing-a-node-with-multiple-nodes).
 
-### <a id="toc-removing-a-node"></a>Odebrání uzlu
+### <a id="toc-removing-a-node"></a>Removing a node
 
 ```js
 FunctionDeclaration(path) {
@@ -1268,7 +1290,7 @@ FunctionDeclaration(path) {
 - }
 ```
 
-### <a id="toc-replacing-a-parent"></a>Náhrada předka
+### <a id="toc-replacing-a-parent"></a>Replacing a parent
 
 ```js
 BinaryExpression(path) {
@@ -1285,7 +1307,7 @@ BinaryExpression(path) {
   }
 ```
 
-### <a id="toc-removing-a-parent"></a>Odstranění předka
+### <a id="toc-removing-a-parent"></a>Removing a parent
 
 ```js
 BinaryExpression(path) {
@@ -1301,7 +1323,7 @@ BinaryExpression(path) {
 
 ## <a id="toc-scope"></a>Rozsah
 
-### <a id="toc-checking-if-a-local-variable-is-bound"></a>Kontrola, zda je lokální proměnná vázána
+### <a id="toc-checking-if-a-local-variable-is-bound"></a>Checking if a local variable is bound
 
 ```js
 FunctionDeclaration(path) {
@@ -1323,7 +1345,7 @@ FunctionDeclaration(path) {
 }
 ```
 
-### <a id="toc-generating-a-uid"></a>Generování UID
+### <a id="toc-generating-a-uid"></a>Generating a UID
 
 This will generate an identifier that doesn't collide with any locally defined variables.
 
@@ -1336,7 +1358,7 @@ FunctionDeclaration(path) {
 }
 ```
 
-### <a id="toc-pushing-a-variable-declaration-to-a-parent-scope"></a>Strčení deklarace proměnné do nadřazeného rozsahu
+### <a id="toc-pushing-a-variable-declaration-to-a-parent-scope"></a>Pushing a variable declaration to a parent scope
 
 Sometimes you may want to push a `VariableDeclaration` so you can assign to it.
 

@@ -37,21 +37,22 @@ This handbook is available in other languages, see the [README](/README.md) for 
   * [Scrivere il primo plugin per Babel](#toc-writing-your-first-babel-plugin)
   * [Operazioni di trasformazione](#toc-transformation-operations) 
       * [Navigazione AST](#toc-visiting)
-      * [Verificare se un nodo è di uno specifico tipo](#toc-check-if-a-node-is-a-certain-type)
-      * [Verificare se esistono referenze ad un identifier](#toc-check-if-an-identifier-is-referenced)
+      * [Get the Path of Sub-Node](#toc-get-the-path-of-a-sub-node)
+      * [Check if a node is a certain type](#toc-check-if-a-node-is-a-certain-type)
+      * [Check if an identifier is referenced](#toc-check-if-an-identifier-is-referenced)
       * [Manipolazione AST](#toc-manipulation)
-      * [Sostituire un nodo](#toc-replacing-a-node)
-      * [Sostituire un nodo con più nodi](#toc-replacing-a-node-with-multiple-nodes)
-      * [Sostituire un nodo con una stringa di codice](#toc-replacing-a-node-with-a-source-string)
-      * [Inserire un nodo adiacente](#toc-inserting-a-sibling-node)
-      * [Rimuovere un nodo](#toc-removing-a-node)
-      * [Sostituire un nodo padre](#toc-replacing-a-parent)
-      * [Rimuovere un nodo padre](#toc-removing-a-parent)
+      * [Replacing a node](#toc-replacing-a-node)
+      * [Replacing a node with multiple nodes](#toc-replacing-a-node-with-multiple-nodes)
+      * [Replacing a node with a source string](#toc-replacing-a-node-with-a-source-string)
+      * [Inserting a sibling node](#toc-inserting-a-sibling-node)
+      * [Removing a node](#toc-removing-a-node)
+      * [Replacing a parent](#toc-replacing-a-parent)
+      * [Removing a parent](#toc-removing-a-parent)
       * [Scope (e variabili)](#toc-scope)
-      * [Verificare se una variabile locale è associata ad uno scope](#toc-checking-if-a-local-variable-is-bound)
-      * [Generare un nuovo nome di variabile (UID)](#toc-generating-a-uid)
-      * [Promuovere la dichiarazione di una variabile ad uno scope padre](#toc-pushing-a-variable-declaration-to-a-parent-scope)
-      * [Rinominare una variabile (e tutte le sue referenze)](#toc-rename-a-binding-and-its-references)
+      * [Checking if a local variable is bound](#toc-checking-if-a-local-variable-is-bound)
+      * [Generating a UID](#toc-generating-a-uid)
+      * [Pushing a variable declaration to a parent scope](#toc-pushing-a-variable-declaration-to-a-parent-scope)
+      * [Rename a binding and its references](#toc-rename-a-binding-and-its-references)
   * [Opzioni per i propri plugin](#toc-plugin-options)
   * [Generare nodi (per inserimenti e trasformazioni)](#toc-building-nodes)
   * [Best practice](#toc-best-practices) 
@@ -1117,7 +1118,28 @@ Awesome! Our very first Babel plugin.
 
 ## <a id="toc-visiting"></a>Navigazione AST
 
-### <a id="toc-check-if-a-node-is-a-certain-type"></a>Verificare se un nodo è di uno specifico tipo
+### <a id="toc-get-the-path-of-a-sub-node"></a>Get the Path of Sub-Node
+
+To access an AST node's property you normally access the node and then the property. `path.node.property`
+
+```js
+BinaryExpression(path) {
+  path.node.left;
+}
+```
+
+If you need to access the path of that property instead, use the `get` method of a path, passing in the string to the property.
+
+```js
+BinaryExpression(path) {
+  path.get('left');
+}
+Program(path) {
+  path.get('body[0]');
+}
+```
+
+### <a id="toc-check-if-a-node-is-a-certain-type"></a>Check if a node is a certain type
 
 If you want to check what the type of a node is, the preferred way to do so is:
 
@@ -1153,7 +1175,7 @@ BinaryExpression(path) {
 }
 ```
 
-### <a id="toc-check-if-an-identifier-is-referenced"></a>Verificare se esistono referenze ad un identifier
+### <a id="toc-check-if-an-identifier-is-referenced"></a>Check if an identifier is referenced
 
 ```js
 Identifier(path) {
@@ -1175,7 +1197,7 @@ Identifier(path) {
 
 ## <a id="toc-manipulation"></a>Manipolazione AST
 
-### <a id="toc-replacing-a-node"></a>Sostituire un nodo
+### <a id="toc-replacing-a-node"></a>Replacing a node
 
 ```js
 BinaryExpression(path) {
@@ -1192,7 +1214,7 @@ BinaryExpression(path) {
   }
 ```
 
-### <a id="toc-replacing-a-node-with-multiple-nodes"></a>Sostituire un nodo con più nodi
+### <a id="toc-replacing-a-node-with-multiple-nodes"></a>Replacing a node with multiple nodes
 
 ```js
 ReturnStatement(path) {
@@ -1215,7 +1237,7 @@ ReturnStatement(path) {
 
 > **Note:** When replacing an expression with multiple nodes, they must be statements. This is because Babel uses heuristics extensively when replacing nodes which means that you can do some pretty crazy transformations that would be extremely verbose otherwise.
 
-### <a id="toc-replacing-a-node-with-a-source-string"></a>Sostituire un nodo con una stringa di codice
+### <a id="toc-replacing-a-node-with-a-source-string"></a>Replacing a node with a source string
 
 ```js
 FunctionDeclaration(path) {
@@ -1235,7 +1257,7 @@ FunctionDeclaration(path) {
 
 > **Note:** It's not recommended to use this API unless you're dealing with dynamic source strings, otherwise it's more efficient to parse the code outside of the visitor.
 
-### <a id="toc-inserting-a-sibling-node"></a>Inserire un nodo adiacente
+### <a id="toc-inserting-a-sibling-node"></a>Inserting a sibling node
 
 ```js
 FunctionDeclaration(path) {
@@ -1254,7 +1276,7 @@ FunctionDeclaration(path) {
 
 > **Note:** This should always be a statement or an array of statements. This uses the same heuristics mentioned in [Replacing a node with multiple nodes](#replacing-a-node-with-multiple-nodes).
 
-### <a id="toc-removing-a-node"></a>Rimuovere un nodo
+### <a id="toc-removing-a-node"></a>Removing a node
 
 ```js
 FunctionDeclaration(path) {
@@ -1268,7 +1290,7 @@ FunctionDeclaration(path) {
 - }
 ```
 
-### <a id="toc-replacing-a-parent"></a>Sostituire un nodo padre
+### <a id="toc-replacing-a-parent"></a>Replacing a parent
 
 ```js
 BinaryExpression(path) {
@@ -1285,7 +1307,7 @@ BinaryExpression(path) {
   }
 ```
 
-### <a id="toc-removing-a-parent"></a>Rimuovere un nodo padre
+### <a id="toc-removing-a-parent"></a>Removing a parent
 
 ```js
 BinaryExpression(path) {
@@ -1301,7 +1323,7 @@ BinaryExpression(path) {
 
 ## <a id="toc-scope"></a>Scope (e variabili)
 
-### <a id="toc-checking-if-a-local-variable-is-bound"></a>Verificare se una variabile locale è associata ad uno scope
+### <a id="toc-checking-if-a-local-variable-is-bound"></a>Checking if a local variable is bound
 
 ```js
 FunctionDeclaration(path) {
@@ -1323,7 +1345,7 @@ FunctionDeclaration(path) {
 }
 ```
 
-### <a id="toc-generating-a-uid"></a>Generare un nuovo nome di variabile (UID)
+### <a id="toc-generating-a-uid"></a>Generating a UID
 
 This will generate an identifier that doesn't collide with any locally defined variables.
 
@@ -1336,7 +1358,7 @@ FunctionDeclaration(path) {
 }
 ```
 
-### <a id="toc-pushing-a-variable-declaration-to-a-parent-scope"></a>Promuovere la dichiarazione di una variabile ad uno scope padre
+### <a id="toc-pushing-a-variable-declaration-to-a-parent-scope"></a>Pushing a variable declaration to a parent scope
 
 Sometimes you may want to push a `VariableDeclaration` so you can assign to it.
 
@@ -1356,7 +1378,7 @@ FunctionDeclaration(path) {
 + };
 ```
 
-### <a id="toc-rename-a-binding-and-its-references"></a>Rinominare una variabile (e tutte le sue referenze)
+### <a id="toc-rename-a-binding-and-its-references"></a>Rename a binding and its references
 
 ```js
 FunctionDeclaration(path) {

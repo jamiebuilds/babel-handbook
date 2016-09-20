@@ -198,7 +198,7 @@ $ npm install --save-dev babel-register
 Наступним кроком необхідно створити файл `register.js` в нашому проекті з наступним кодом всередині:
 
 ```js
-require("babel-register");
+require("babel-register"); 
 require("./index.js");
 ```
 

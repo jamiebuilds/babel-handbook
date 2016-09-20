@@ -37,21 +37,22 @@ Este manual está disponível em outros idiomas, consulte o [arquivo Leia-me](/R
   * [Escrevendo seu primeiro Plugin do Babel](#toc-writing-your-first-babel-plugin)
   * [Operações de transformação](#toc-transformation-operations) 
       * [Visitando](#toc-visiting)
-      * [Verificar se um nó é um certo tipo](#toc-check-if-a-node-is-a-certain-type)
-      * [Verifique se um identificador é referenciado](#toc-check-if-an-identifier-is-referenced)
+      * [Get the Path of Sub-Node](#toc-get-the-path-of-a-sub-node)
+      * [Check if a node is a certain type](#toc-check-if-a-node-is-a-certain-type)
+      * [Check if an identifier is referenced](#toc-check-if-an-identifier-is-referenced)
       * [Manipulação](#toc-manipulation)
-      * [Substituindo um nó](#toc-replacing-a-node)
-      * [Substituindo um nó com vários nós](#toc-replacing-a-node-with-multiple-nodes)
-      * [Substituindo um nó com uma string](#toc-replacing-a-node-with-a-source-string)
-      * [Inserir um nó irmão](#toc-inserting-a-sibling-node)
-      * [Remoção de um nó](#toc-removing-a-node)
-      * [Substituindo um pai](#toc-replacing-a-parent)
-      * [Removendo um pai](#toc-removing-a-parent)
+      * [Replacing a node](#toc-replacing-a-node)
+      * [Replacing a node with multiple nodes](#toc-replacing-a-node-with-multiple-nodes)
+      * [Replacing a node with a source string](#toc-replacing-a-node-with-a-source-string)
+      * [Inserting a sibling node](#toc-inserting-a-sibling-node)
+      * [Removing a node](#toc-removing-a-node)
+      * [Replacing a parent](#toc-replacing-a-parent)
+      * [Removing a parent](#toc-removing-a-parent)
       * [Escopo](#toc-scope)
-      * [Verificando se uma variável local está vinculada](#toc-checking-if-a-local-variable-is-bound)
-      * [Gerando um UID](#toc-generating-a-uid)
-      * [Empurrando uma declaração de variável para um escopo de pai](#toc-pushing-a-variable-declaration-to-a-parent-scope)
-      * [Renomear um binding e suas referências](#toc-rename-a-binding-and-its-references)
+      * [Checking if a local variable is bound](#toc-checking-if-a-local-variable-is-bound)
+      * [Generating a UID](#toc-generating-a-uid)
+      * [Pushing a variable declaration to a parent scope](#toc-pushing-a-variable-declaration-to-a-parent-scope)
+      * [Rename a binding and its references](#toc-rename-a-binding-and-its-references)
   * [Opções do plugin](#toc-plugin-options)
   * [Construindo nós](#toc-building-nodes)
   * [Melhores práticas](#toc-best-practices) 
@@ -1116,9 +1117,30 @@ Incrível! Criamos nosso primeiro plugin para o Babel.
 
 ## <a id="toc-visiting"></a>Visitando
 
-### <a id="toc-check-if-a-node-is-a-certain-type"></a>Verificar se um nó é um certo tipo
+### <a id="toc-get-the-path-of-a-sub-node"></a>Get the Path of Sub-Node
 
-Se você deseja verificar qual é o tipo de um nó, a melhor maneira de fazê-lo é:
+To access an AST node's property you normally access the node and then the property. `path.node.property`
+
+```js
+BinaryExpression(path) {
+  path.node.left;
+}
+```
+
+If you need to access the path of that property instead, use the `get` method of a path, passing in the string to the property.
+
+```js
+BinaryExpression(path) {
+  path.get('left');
+}
+Program(path) {
+  path.get('body[0]');
+}
+```
+
+### <a id="toc-check-if-a-node-is-a-certain-type"></a>Check if a node is a certain type
+
+If you want to check what the type of a node is, the preferred way to do so is:
 
 ```js
 BinaryExpression(path) {
@@ -1128,7 +1150,7 @@ BinaryExpression(path) {
 }
 ```
 
-Você também pode fazer uma verificação superficial das propriedades desse nó:
+You can also do a shallow check for properties on that node:
 
 ```js
 BinaryExpression(path) {
@@ -1138,7 +1160,7 @@ BinaryExpression(path) {
 }
 ```
 
-Isso é funcionalmente equivalente à:
+This is functionally equivalent to:
 
 ```js
 BinaryExpression(path) {
@@ -1152,7 +1174,7 @@ BinaryExpression(path) {
 }
 ```
 
-### <a id="toc-check-if-an-identifier-is-referenced"></a>Verifique se um identificador é referenciado
+### <a id="toc-check-if-an-identifier-is-referenced"></a>Check if an identifier is referenced
 
 ```js
 Identifier(path) {
@@ -1162,7 +1184,7 @@ Identifier(path) {
 }
 ```
 
-Alternativa:
+Alternatively:
 
 ```js
 Identifier(path) {
@@ -1174,7 +1196,7 @@ Identifier(path) {
 
 ## <a id="toc-manipulation"></a>Manipulação
 
-### <a id="toc-replacing-a-node"></a>Substituindo um nó
+### <a id="toc-replacing-a-node"></a>Replacing a node
 
 ```js
 BinaryExpression(path) {
@@ -1191,7 +1213,7 @@ BinaryExpression(path) {
   }
 ```
 
-### <a id="toc-replacing-a-node-with-multiple-nodes"></a>Substituindo um nó com vários nós
+### <a id="toc-replacing-a-node-with-multiple-nodes"></a>Replacing a node with multiple nodes
 
 ```js
 ReturnStatement(path) {
@@ -1214,7 +1236,7 @@ ReturnStatement(path) {
 
 > **Nota:** Quando você substituir uma expressão com vários nós, eles devem ser declarações. Isso ocorre porque o Babel usa a heurística das declarações para simplificar as transformações malucas que você venha há criar. De outro modo, elas seriam extremamente verbosas e complicadas.
 
-### <a id="toc-replacing-a-node-with-a-source-string"></a>Substituindo um nó com uma string
+### <a id="toc-replacing-a-node-with-a-source-string"></a>Replacing a node with a source string
 
 ```js
 FunctionDeclaration(path) {
@@ -1234,7 +1256,7 @@ FunctionDeclaration(path) {
 
 > **Nota:** Não é recomendado usar esta API, a menos que você esteja lidando com seqüências de caracteres de forma dinâmica, caso contrário, é mais eficiente analisar o código fora o visitante.
 
-### <a id="toc-inserting-a-sibling-node"></a>Inserir um nó irmão
+### <a id="toc-inserting-a-sibling-node"></a>Inserting a sibling node
 
 ```js
 FunctionDeclaration(path) {
@@ -1253,7 +1275,7 @@ FunctionDeclaration(path) {
 
 > **Nota:** Isso deve sempre uma declaração ou uma matriz de declarações. Ele usa a mesma heurística mencionada na [substituição de um nó com vários nós](#replacing-a-node-with-multiple-nodes).
 
-### <a id="toc-removing-a-node"></a>Remoção de um nó
+### <a id="toc-removing-a-node"></a>Removing a node
 
 ```js
 FunctionDeclaration(path) {
@@ -1267,7 +1289,7 @@ FunctionDeclaration(path) {
 - }
 ```
 
-### <a id="toc-replacing-a-parent"></a>Substituindo um pai
+### <a id="toc-replacing-a-parent"></a>Replacing a parent
 
 ```js
 BinaryExpression(path) {
@@ -1284,7 +1306,7 @@ BinaryExpression(path) {
   }
 ```
 
-### <a id="toc-removing-a-parent"></a>Removendo um pai
+### <a id="toc-removing-a-parent"></a>Removing a parent
 
 ```js
 BinaryExpression(path) {
@@ -1300,7 +1322,7 @@ BinaryExpression(path) {
 
 ## <a id="toc-scope"></a>Escopo
 
-### <a id="toc-checking-if-a-local-variable-is-bound"></a>Verificando se uma variável local está vinculada
+### <a id="toc-checking-if-a-local-variable-is-bound"></a>Checking if a local variable is bound
 
 ```js
 FunctionDeclaration(path) {
@@ -1310,9 +1332,9 @@ FunctionDeclaration(path) {
 }
 ```
 
-Isto irá percorrer até a árvore do escopo e verificar se existe essa ligação específica.
+This will walk up the scope tree and check for that particular binding.
 
-Você também pode verificar se um escopo tem sua **própria** ligação:
+You can also check if a scope has its **own** binding:
 
 ```js
 FunctionDeclaration(path) {
@@ -1322,9 +1344,9 @@ FunctionDeclaration(path) {
 }
 ```
 
-### <a id="toc-generating-a-uid"></a>Gerando um UID
+### <a id="toc-generating-a-uid"></a>Generating a UID
 
-Isso irá gerar um identificador único, garantido que não irá colidir com qualquer variáveis definidas localmente.
+This will generate an identifier that doesn't collide with any locally defined variables.
 
 ```js
 FunctionDeclaration(path) {
@@ -1335,9 +1357,9 @@ FunctionDeclaration(path) {
 }
 ```
 
-### <a id="toc-pushing-a-variable-declaration-to-a-parent-scope"></a>Empurrando uma declaração de variável para um escopo de pai
+### <a id="toc-pushing-a-variable-declaration-to-a-parent-scope"></a>Pushing a variable declaration to a parent scope
 
-Às vezes você pode querer adicionar uma `VariableDeclaration`, então você pode atribuir a ele:
+Sometimes you may want to push a `VariableDeclaration` so you can assign to it.
 
 ```js
 FunctionDeclaration(path) {
@@ -1355,7 +1377,7 @@ FunctionDeclaration(path) {
 + };
 ```
 
-### <a id="toc-rename-a-binding-and-its-references"></a>Renomear um binding e suas referências
+### <a id="toc-rename-a-binding-and-its-references"></a>Rename a binding and its references
 
 ```js
 FunctionDeclaration(path) {
@@ -1371,7 +1393,7 @@ FunctionDeclaration(path) {
   }
 ```
 
-Como alternativa, você pode renomear uma ligação para um identificador único já gerado:
+Alternatively, you can rename a binding to a generated unique identifier:
 
 ```js
 FunctionDeclaration(path) {
@@ -1391,7 +1413,7 @@ FunctionDeclaration(path) {
 
 # <a id="toc-plugin-options"></a>Opções do plugin
 
-Se você gostaria de permitir que os usuários personalizem o comportamento do seu plugin do Babel, você pode aceitar opções específicas, através do:
+If you would like to let your users customize the behavior of your Babel plugin you can accept plugin specific options which users can specify like this:
 
 ```js
 {
@@ -1404,7 +1426,7 @@ Se você gostaria de permitir que os usuários personalizem o comportamento do s
 }
 ```
 
-Essas opções serão passadas para o visitors do seu plugin através do objeto `state`:
+These options then get passed into plugin visitors through the `state` object:
 
 ```js
 export default function({ types: t }) {
@@ -1419,19 +1441,19 @@ export default function({ types: t }) {
 }
 ```
 
-Essas opções são específicas do seu plugin, e você não pode acessar as opções de outros plugins.
+These options are plugin-specific and you cannot access options from other plugins.
 
 * * *
 
 # <a id="toc-building-nodes"></a>Construindo nós
 
-Ao escrever suas transformações, você muitas vezes vai querer construir alguns nós para inserir em uma AST. Como mencionado anteriormente, você pode fazer isso usando o método [builder](#builder) do pacote [`babel-types`](#babel-types).
+When writing transformations you'll often want to build up some nodes to insert into the AST. As mentioned previously, you can do this using the [builder](#builder) methods in the [`babel-types`](#babel-types) package.
 
-O nome do método para um builder é simplesmente o nome do tipo de nó que você deseja compilar, exceto pela primeira letra minúscula. Por exemplo, se você quiser construir um `MemberExpression` você usaria `t.memberExpression(...)`.
+The method name for a builder is simply the name of the node type you want to build except with the first letter lowercased. For example if you wanted to build a `MemberExpression` you would use `t.memberExpression(...)`.
 
-Os argumentos destes construtores são decididos pela definição do nó. Estamos trabalhando para melhorar e facilitar a documentação em torno das definições, mas para agora, todos podem ser encontrados [aqui](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions).
+The arguments of these builders are decided by the node definition. There's some work that's being done to generate easy-to-read documentation on the definitions, but for now they can all be found [here](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions).
 
-Uma definição de nó tem a seguinte aparência:
+A node definition looks like the following:
 
 ```js
 defineType("MemberExpression", {
@@ -1455,9 +1477,9 @@ defineType("MemberExpression", {
 });
 ```
 
-Aqui você pode ver todas as informações sobre este tipo de nó, inclusive sobre como construí-lo, atravessá-lo e validá-lo.
+Here you can see all the information about this particular node type, including how to build it, traverse it, and validate it.
 
-Examinando a propriedade do `builder`, você pode ver os 3 argumentos que serão necessárias para chamar o método builder (`t.memberExpression`).
+By looking at the `builder` property, you can see the 3 arguments that will be needed to call the builder method (`t.memberExpression`).
 
 ```js
 builder: ["object", "property", "computed"],
@@ -1465,7 +1487,7 @@ builder: ["object", "property", "computed"],
 
 > Observe que, às vezes, há mais propriedades que você pode personalizar no nó, do que a matriz de opções do `builder` contém. Isso é para manter o builder simples, sem muitos argumentos. Nesse caso, você precisa definir as propriedades manualmente. Um exemplo disso é o [`ClassMethod`](https://github.com/babel/babel/blob/bbd14f88c4eea88fa584dd877759dd6b900bf35e/packages/babel-types/src/definitions/es2015.js#L238-L276).
 
-Você pode ver a validação para os argumentos do builder com o objeto `fields`.
+You can see the validation for the builder arguments with the `fields` object.
 
 ```js
 fields: {
@@ -1484,9 +1506,9 @@ fields: {
 }
 ```
 
-Você pode ver que o `object` precisa ser uma `expression`, `property` que também devem ser uma `expression` ou um `Identifier`, dependendo se a expressão é `computed` ou não, e `computed` é simplesmente um booleano, tendo como valor padrão `false`.
+You can see that `object` needs to be an `Expression`, `property` either needs to be an `Expression` or an `Identifier` depending on if the member expression is `computed` or not and `computed` is simply a boolean that defaults to `false`.
 
-Então nós podemos construir um `MemberExpression` da seguinte maneira:
+So we can construct a `MemberExpression` by doing the following:
 
 ```js
 t.memberExpression(
@@ -1496,21 +1518,21 @@ t.memberExpression(
 );
 ```
 
-Que irá resultar em:
+Which will result in:
 
 ```js
 object.property
 ```
 
-No entanto, dissemos que `object` precisar para ser uma `expression`, então porque `Identifier` é válido?
+However, we said that `object` needed to be an `Expression` so why is `Identifier` valid?
 
-Bem, se olharmos para a definição do `Identifier`, podemos ver que tem uma propriedade `aliases`, que afirma que ele também é uma expressão.
+Well if we look at the definition of `Identifier` we can see that it has an `aliases` property which states that it is also an expression.
 
 ```js
 aliases: ["Expression", "LVal"],
 ```
 
-Então, `MemberExpression` é um tipo de `expression`, nós poderíamos defini-lo como o `object` de outro `MemberExpression`:
+So since `MemberExpression` is a type of `Expression`, we could set it as the `object` of another `MemberExpression`:
 
 ```js
 t.memberExpression(
@@ -1522,15 +1544,15 @@ t.memberExpression(
 )
 ```
 
-Que irá resultar em:
+Which will result in:
 
 ```js
 member.expression.property
 ```
 
-É muito improvável que memorize as assinaturas de métodos construtores para cada tipo de nó. Então você deve levar algum tempo e entender como eles são gerados a partir das definições de nó.
+It's very unlikely that you will ever memorize the builder method signatures for every node type. So you should take some time and understand how they are generated from the node definitions.
 
-Você pode encontrar todas as reais [definições aqui](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions) e você pode vê-los [documentados aqui](https://github.com/babel/babel/blob/master/doc/ast/spec.md)
+You can find all of the actual [definitions here](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions) and you can see them [documented here](https://github.com/babel/babel/blob/master/doc/ast/spec.md)
 
 * * *
 
@@ -1540,13 +1562,13 @@ Você pode encontrar todas as reais [definições aqui](https://github.com/babel
 
 ## <a id="toc-avoid-traversing-the-ast-as-much-as-possible"></a>Evitar cruzar o máximo possível o AST
 
-Atravessar a AST é caro, e é acidentalmente fácil atravessa-la mais do que necessário. Isto pode custar milhares de operações extras.
+Traversing the AST is expensive, and it's easy to accidentally traverse the AST more than necessary. This could be thousands if not tens of thousands of extra operations.
 
-Babel otimiza isso o tanto quanto possível, unindo visitors, quando possível, para fazer tudo em uma única passagem.
+Babel optimizes this as much as possible, merging visitors together if it can in order to do everything in a single traversal.
 
 ### <a id="toc-merge-visitors-whenever-possible"></a>Mesclar os visitantes sempre que possível
 
-Ao escrever os visitors, pode ser fácil chamar `path.traverse` em vários lugares onde eles são logicamente necessários.
+When writing visitors, it may be tempting to call `path.traverse` in multiple places where they are logically necessary.
 
 ```js
 path.traverse({
@@ -1562,7 +1584,7 @@ path.traverse({
 });
 ```
 
-No entanto, é muito melhor escrever isso em um único visitor, caso contrário, você estará atravessando a mesma Ast várias vezes, sem motivo.
+However, it is far better to write these as a single visitor that only gets run once. Otherwise you are traversing the same tree multiple times for no reason.
 
 ```js
 path.traverse({
@@ -1577,7 +1599,7 @@ path.traverse({
 
 ### <a id="toc-do-not-traverse-when-manual-lookup-will-do"></a>Não cruzar quando farão pesquisa manual
 
-Também pode ser chamar `path.traverse` quando você procura por um tipo de nó específico.
+It may also be tempting to call `path.traverse` when looking for a particular node type.
 
 ```js
 const visitorOne = {
@@ -1593,7 +1615,7 @@ const MyVisitor = {
 };
 ```
 
-No entanto, se você estiver procurando por algo específico e superficial, há uma boa chance de você poder, manualmente, pesquisar os nós que você precisa sem executar uma passagem completa.
+However, if you are looking for something specific and shallow, there is a good chance you can manually lookup the nodes you need without performing a costly traversal.
 
 ```js
 const MyVisitor = {
@@ -1607,7 +1629,7 @@ const MyVisitor = {
 
 ## <a id="toc-optimizing-nested-visitors"></a>Otimizando os visitantes aninhados
 
-Quando você está aninhando visitors, pode fazer sentido escrevê-los aninhado-os em seu código.
+When you are nesting visitors, it might make sense to write them nested in your code.
 
 ```js
 const MyVisitor = {
@@ -1621,7 +1643,7 @@ const MyVisitor = {
 };
 ```
 
-No entanto, isso cria um novo objeto visitor sempre que `FunctionDeclaration()` é chamada, e então, o Babel precisa executa-lo e valida-lo toda vez. Isto pode ser caro, então é melhor armazenar o visitante em um escopo superior.
+However, this creates a new visitor object everytime `FunctionDeclaration()` is called above, which Babel then needs to explode and validate every single time. This can be costly, so it is better to hoist the visitor up.
 
 ```js
 const visitorOne = {
@@ -1637,7 +1659,7 @@ const MyVisitor = {
 };
 ```
 
-Se você precisa de algum estado dentro do visitor aninhado, faça da seguinte forma:
+If you need some state within the nested visitor, like so:
 
 ```js
 const MyVisitor = {
@@ -1655,7 +1677,7 @@ const MyVisitor = {
 };
 ```
 
-Você pode passá-lo em como parâmetro para o método `traverse()` e ter acesso a ele através do `this` no objeto visitor.
+You can pass it in as state to the `traverse()` method and have access to it on `this` in the visitor.
 
 ```js
 const visitorOne = {
@@ -1676,9 +1698,9 @@ const MyVisitor = {
 
 ## <a id="toc-being-aware-of-nested-structures"></a>Estando ciente das estruturas aninhadas
 
-As vezes, quando pensamos em uma determinada transformação, podemos esquecer que a estrutura de dados fornecida, pode ser aninhada.
+Sometimes when thinking about a given transform, you might forget that the given structure can be nested.
 
-Por exemplo, imagine que vamos consultar o `constructor` `ClassMethod` da `classe declarada` `Foo`.
+For example, imagine we want to lookup the `constructor` `ClassMethod` from the `Foo` `ClassDeclaration`.
 
 ```js
 class Foo {
@@ -1706,7 +1728,7 @@ const MyVisitor = {
 }
 ```
 
-Nós estão ignorando o fato de que as classes podem ser aninhadas e com o código acima, vamos acabar encontrando um `construtor` aninhado, veja:
+We are ignoring the fact that classes can be nested and using the traversal above we will hit a nested `constructor` as well:
 
 ```js
 class Foo {

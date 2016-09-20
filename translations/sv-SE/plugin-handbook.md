@@ -37,6 +37,7 @@ Handboken finns på andra språk, se [README](/README.md) för en komplett lista
   * [Writing your first Babel Plugin](#toc-writing-your-first-babel-plugin)
   * [Transformation Operations](#toc-transformation-operations) 
       * [Visiting](#toc-visiting)
+      * [Get the Path of Sub-Node](#toc-get-the-path-of-a-sub-node)
       * [Check if a node is a certain type](#toc-check-if-a-node-is-a-certain-type)
       * [Check if an identifier is referenced](#toc-check-if-an-identifier-is-referenced)
       * [Manipulation](#toc-manipulation)
@@ -1116,6 +1117,27 @@ Awesome! Our very first Babel plugin.
 # <a id="toc-transformation-operations"></a>Transformation Operations
 
 ## <a id="toc-visiting"></a>Visiting
+
+### <a id="toc-get-the-path-of-a-sub-node"></a>Get the Path of Sub-Node
+
+To access an AST node's property you normally access the node and then the property. `path.node.property`
+
+```js
+BinaryExpression(path) {
+  path.node.left;
+}
+```
+
+If you need to access the path of that property instead, use the `get` method of a path, passing in the string to the property.
+
+```js
+BinaryExpression(path) {
+  path.get('left');
+}
+Program(path) {
+  path.get('body[0]');
+}
+```
 
 ### <a id="toc-check-if-a-node-is-a-certain-type"></a>Check if a node is a certain type
 

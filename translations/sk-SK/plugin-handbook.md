@@ -37,21 +37,22 @@ Táto príručka je k dispozícii v iných jazykoch, pozri [README](/README.md) 
   * [Písanie tvojho prvého Babel pluginu](#toc-writing-your-first-babel-plugin)
   * [Transformačné operácie](#toc-transformation-operations) 
       * [Inšpekcie (Visiting)](#toc-visiting)
-      * [Kontrola, či je uzol určitého typu](#toc-check-if-a-node-is-a-certain-type)
-      * [Kontrola, či je identifikátor referencovaný](#toc-check-if-an-identifier-is-referenced)
+      * [Get the Path of Sub-Node](#toc-get-the-path-of-a-sub-node)
+      * [Check if a node is a certain type](#toc-check-if-a-node-is-a-certain-type)
+      * [Check if an identifier is referenced](#toc-check-if-an-identifier-is-referenced)
       * [Manipulácia](#toc-manipulation)
-      * [Nahradenie uzlu](#toc-replacing-a-node)
-      * [Nahradenie uzlu viacerými uzlami](#toc-replacing-a-node-with-multiple-nodes)
-      * [Nahradenie uzlu zdrojovým reťazcom](#toc-replacing-a-node-with-a-source-string)
-      * [Vloženie susedného uzlu](#toc-inserting-a-sibling-node)
-      * [Odstránenie uzlu](#toc-removing-a-node)
-      * [Nahradenie rodiča](#toc-replacing-a-parent)
-      * [Odstránenie rodiča](#toc-removing-a-parent)
+      * [Replacing a node](#toc-replacing-a-node)
+      * [Replacing a node with multiple nodes](#toc-replacing-a-node-with-multiple-nodes)
+      * [Replacing a node with a source string](#toc-replacing-a-node-with-a-source-string)
+      * [Inserting a sibling node](#toc-inserting-a-sibling-node)
+      * [Removing a node](#toc-removing-a-node)
+      * [Replacing a parent](#toc-replacing-a-parent)
+      * [Removing a parent](#toc-removing-a-parent)
       * [Rozsah (Scope)](#toc-scope)
-      * [Kontrola, či je lokálna premenná viazaná](#toc-checking-if-a-local-variable-is-bound)
-      * [Generovanie UID](#toc-generating-a-uid)
-      * [Strčenie deklarácie premennej do rodičovského rozsahu (scopu)](#toc-pushing-a-variable-declaration-to-a-parent-scope)
-      * [Premenovanie väzby a jej referencií](#toc-rename-a-binding-and-its-references)
+      * [Checking if a local variable is bound](#toc-checking-if-a-local-variable-is-bound)
+      * [Generating a UID](#toc-generating-a-uid)
+      * [Pushing a variable declaration to a parent scope](#toc-pushing-a-variable-declaration-to-a-parent-scope)
+      * [Rename a binding and its references](#toc-rename-a-binding-and-its-references)
   * [Možnosti pluginov](#toc-plugin-options)
   * [Stavba uzlov](#toc-building-nodes)
   * [Osvedčené postupy](#toc-best-practices) 
@@ -1117,7 +1118,28 @@ Awesome! Our very first Babel plugin.
 
 ## <a id="toc-visiting"></a>Inšpekcie (Visiting)
 
-### <a id="toc-check-if-a-node-is-a-certain-type"></a>Kontrola, či je uzol určitého typu
+### <a id="toc-get-the-path-of-a-sub-node"></a>Get the Path of Sub-Node
+
+To access an AST node's property you normally access the node and then the property. `path.node.property`
+
+```js
+BinaryExpression(path) {
+  path.node.left;
+}
+```
+
+If you need to access the path of that property instead, use the `get` method of a path, passing in the string to the property.
+
+```js
+BinaryExpression(path) {
+  path.get('left');
+}
+Program(path) {
+  path.get('body[0]');
+}
+```
+
+### <a id="toc-check-if-a-node-is-a-certain-type"></a>Check if a node is a certain type
 
 If you want to check what the type of a node is, the preferred way to do so is:
 
@@ -1153,7 +1175,7 @@ BinaryExpression(path) {
 }
 ```
 
-### <a id="toc-check-if-an-identifier-is-referenced"></a>Kontrola, či je identifikátor referencovaný
+### <a id="toc-check-if-an-identifier-is-referenced"></a>Check if an identifier is referenced
 
 ```js
 Identifier(path) {
@@ -1175,7 +1197,7 @@ Identifier(path) {
 
 ## <a id="toc-manipulation"></a>Manipulácia
 
-### <a id="toc-replacing-a-node"></a>Nahradenie uzlu
+### <a id="toc-replacing-a-node"></a>Replacing a node
 
 ```js
 BinaryExpression(path) {
@@ -1192,7 +1214,7 @@ BinaryExpression(path) {
   }
 ```
 
-### <a id="toc-replacing-a-node-with-multiple-nodes"></a>Nahradenie uzlu viacerými uzlami
+### <a id="toc-replacing-a-node-with-multiple-nodes"></a>Replacing a node with multiple nodes
 
 ```js
 ReturnStatement(path) {
@@ -1215,7 +1237,7 @@ ReturnStatement(path) {
 
 > **Note:** When replacing an expression with multiple nodes, they must be statements. This is because Babel uses heuristics extensively when replacing nodes which means that you can do some pretty crazy transformations that would be extremely verbose otherwise.
 
-### <a id="toc-replacing-a-node-with-a-source-string"></a>Nahradenie uzlu zdrojovým reťazcom
+### <a id="toc-replacing-a-node-with-a-source-string"></a>Replacing a node with a source string
 
 ```js
 FunctionDeclaration(path) {
@@ -1235,7 +1257,7 @@ FunctionDeclaration(path) {
 
 > **Note:** It's not recommended to use this API unless you're dealing with dynamic source strings, otherwise it's more efficient to parse the code outside of the visitor.
 
-### <a id="toc-inserting-a-sibling-node"></a>Vloženie susedného uzlu
+### <a id="toc-inserting-a-sibling-node"></a>Inserting a sibling node
 
 ```js
 FunctionDeclaration(path) {
@@ -1254,7 +1276,7 @@ FunctionDeclaration(path) {
 
 > **Note:** This should always be a statement or an array of statements. This uses the same heuristics mentioned in [Replacing a node with multiple nodes](#replacing-a-node-with-multiple-nodes).
 
-### <a id="toc-removing-a-node"></a>Odstránenie uzlu
+### <a id="toc-removing-a-node"></a>Removing a node
 
 ```js
 FunctionDeclaration(path) {
@@ -1268,7 +1290,7 @@ FunctionDeclaration(path) {
 - }
 ```
 
-### <a id="toc-replacing-a-parent"></a>Nahradenie rodiča
+### <a id="toc-replacing-a-parent"></a>Replacing a parent
 
 ```js
 BinaryExpression(path) {
@@ -1285,7 +1307,7 @@ BinaryExpression(path) {
   }
 ```
 
-### <a id="toc-removing-a-parent"></a>Odstránenie rodiča
+### <a id="toc-removing-a-parent"></a>Removing a parent
 
 ```js
 BinaryExpression(path) {
@@ -1301,7 +1323,7 @@ BinaryExpression(path) {
 
 ## <a id="toc-scope"></a>Rozsah (Scope)
 
-### <a id="toc-checking-if-a-local-variable-is-bound"></a>Kontrola, či je lokálna premenná viazaná
+### <a id="toc-checking-if-a-local-variable-is-bound"></a>Checking if a local variable is bound
 
 ```js
 FunctionDeclaration(path) {
@@ -1323,7 +1345,7 @@ FunctionDeclaration(path) {
 }
 ```
 
-### <a id="toc-generating-a-uid"></a>Generovanie UID
+### <a id="toc-generating-a-uid"></a>Generating a UID
 
 This will generate an identifier that doesn't collide with any locally defined variables.
 
@@ -1336,7 +1358,7 @@ FunctionDeclaration(path) {
 }
 ```
 
-### <a id="toc-pushing-a-variable-declaration-to-a-parent-scope"></a>Strčenie deklarácie premennej do rodičovského rozsahu (scopu)
+### <a id="toc-pushing-a-variable-declaration-to-a-parent-scope"></a>Pushing a variable declaration to a parent scope
 
 Sometimes you may want to push a `VariableDeclaration` so you can assign to it.
 
@@ -1356,7 +1378,7 @@ FunctionDeclaration(path) {
 + };
 ```
 
-### <a id="toc-rename-a-binding-and-its-references"></a>Premenovanie väzby a jej referencií
+### <a id="toc-rename-a-binding-and-its-references"></a>Rename a binding and its references
 
 ```js
 FunctionDeclaration(path) {

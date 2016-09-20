@@ -37,6 +37,7 @@ Este manual está disponible en otros idiomas, mira el archivo [README](/README.
   * [Escribiendo tu primer plugin para Babel](#toc-writing-your-first-babel-plugin)
   * [Transformation Operations](#toc-transformation-operations) 
       * [Visiting](#toc-visiting)
+      * [Get the Path of Sub-Node](#toc-get-the-path-of-a-sub-node)
       * [Check if a node is a certain type](#toc-check-if-a-node-is-a-certain-type)
       * [Check if an identifier is referenced](#toc-check-if-an-identifier-is-referenced)
       * [Manipulation](#toc-manipulation)
@@ -1117,6 +1118,27 @@ Awesome! Our very first Babel plugin.
 
 ## <a id="toc-visiting"></a>Visiting
 
+### <a id="toc-get-the-path-of-a-sub-node"></a>Get the Path of Sub-Node
+
+To access an AST node's property you normally access the node and then the property. `path.node.property`
+
+```js
+BinaryExpression(path) {
+  path.node.left;
+}
+```
+
+If you need to access the path of that property instead, use the `get` method of a path, passing in the string to the property.
+
+```js
+BinaryExpression(path) {
+  path.get('left');
+}
+Program(path) {
+  path.get('body[0]');
+}
+```
+
 ### <a id="toc-check-if-a-node-is-a-certain-type"></a>Check if a node is a certain type
 
 If you want to check what the type of a node is, the preferred way to do so is:
@@ -1432,7 +1454,7 @@ The method name for a builder is simply the name of the node type you want to bu
 
 The arguments of these builders are decided by the node definition. There's some work that's being done to generate easy-to-read documentation on the definitions, but for now they can all be found [here](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions).
 
-Una definición de nodo se parece a lo siguiente:
+A node definition looks like the following:
 
 ```js
 defineType("MemberExpression", {
@@ -1638,7 +1660,7 @@ const MyVisitor = {
 };
 ```
 
-Si usted necesita algún estado dentro del visitante anidado, seria algo así:
+If you need some state within the nested visitor, like so:
 
 ```js
 const MyVisitor = {
@@ -1656,7 +1678,7 @@ const MyVisitor = {
 };
 ```
 
-Usted puede pasar coo estado el método `traverse()` y tener acceso a `this` en el visitante.
+You can pass it in as state to the `traverse()` method and have access to it on `this` in the visitor.
 
 ```js
 const visitorOne = {
@@ -1677,9 +1699,9 @@ const MyVisitor = {
 
 ## <a id="toc-being-aware-of-nested-structures"></a>Estando consciente sobre estructuras anidadas
 
-A veces cuando pensamos sobre una transformación dada, usted podría olvidar que la estructura dada puede ser anidada.
+Sometimes when thinking about a given transform, you might forget that the given structure can be nested.
 
-Por ejemplo, imagina que nosotros queremos buscar el `constructor`` ClassMethod` para `Foo` `ClassDeclaration`.
+For example, imagine we want to lookup the `constructor` `ClassMethod` from the `Foo` `ClassDeclaration`.
 
 ```js
 class Foo {
@@ -1707,7 +1729,7 @@ const MyVisitor = {
 }
 ```
 
-Estamos ignorando el echo que las clases pueden ser anidadas usando el transversal, arriba nosotros vamos impactar un `constructor` anidado también:
+We are ignoring the fact that classes can be nested and using the traversal above we will hit a nested `constructor` as well:
 
 ```js
 class Foo {

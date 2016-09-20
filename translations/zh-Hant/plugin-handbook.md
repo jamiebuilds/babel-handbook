@@ -37,6 +37,7 @@
   * [撰寫你的第一個 Babel 外掛](#toc-writing-your-first-babel-plugin)
   * [Transformation Operations](#toc-transformation-operations) 
       * [Visiting](#toc-visiting)
+      * [Get the Path of Sub-Node](#toc-get-the-path-of-a-sub-node)
       * [Check if a node is a certain type](#toc-check-if-a-node-is-a-certain-type)
       * [Check if an identifier is referenced](#toc-check-if-an-identifier-is-referenced)
       * [Manipulation](#toc-manipulation)
@@ -1117,6 +1118,27 @@ Awesome! Our very first Babel plugin.
 
 ## <a id="toc-visiting"></a>Visiting
 
+### <a id="toc-get-the-path-of-a-sub-node"></a>Get the Path of Sub-Node
+
+To access an AST node's property you normally access the node and then the property. `path.node.property`
+
+```js
+BinaryExpression(path) {
+  path.node.left;
+}
+```
+
+If you need to access the path of that property instead, use the `get` method of a path, passing in the string to the property.
+
+```js
+BinaryExpression(path) {
+  path.get('left');
+}
+Program(path) {
+  path.get('body[0]');
+}
+```
+
 ### <a id="toc-check-if-a-node-is-a-certain-type"></a>Check if a node is a certain type
 
 If you want to check what the type of a node is, the preferred way to do so is:
@@ -1356,7 +1378,7 @@ FunctionDeclaration(path) {
 + };
 ```
 
-### <a id="toc-rename-a-binding-and-its-references"></a>重新為綁定命名與參照
+### <a id="toc-rename-a-binding-and-its-references"></a>Rename a binding and its references
 
 ```js
 FunctionDeclaration(path) {
@@ -1372,7 +1394,7 @@ FunctionDeclaration(path) {
   }
 ```
 
-或者，你可以重新為綁定命名並給予一個獨特的身份。
+Alternatively, you can rename a binding to a generated unique identifier:
 
 ```js
 FunctionDeclaration(path) {
@@ -1608,7 +1630,7 @@ const MyVisitor = {
 
 ## <a id="toc-optimizing-nested-visitors"></a>優化巢狀的尋訪
 
-當你是在尋訪巢狀結構，較有意義的方式是以巢狀模式寫在代碼中
+When you are nesting visitors, it might make sense to write them nested in your code.
 
 ```js
 const MyVisitor = {
@@ -1638,7 +1660,7 @@ const MyVisitor = {
 };
 ```
 
-如果你需要一些狀態給予 nested visitor，就像：
+If you need some state within the nested visitor, like so:
 
 ```js
 const MyVisitor = {
@@ -1656,7 +1678,7 @@ const MyVisitor = {
 };
 ```
 
-你可以將它作為狀態傳遞給 `traverse()` 方法並且同意`this`尋訪
+You can pass it in as state to the `traverse()` method and have access to it on `this` in the visitor.
 
 ```js
 const visitorOne = {
@@ -1677,9 +1699,9 @@ const MyVisitor = {
 
 ## <a id="toc-being-aware-of-nested-structures"></a>根據巢狀結構
 
-有時候直覺思考著如何轉換，也許可能會因而忽略掉這是可以建構成巢狀的結構。
+Sometimes when thinking about a given transform, you might forget that the given structure can be nested.
 
-舉個例子來說，想像我們正從`Foo` `ClassDeclaration `尋找著`節構``函式`。.
+For example, imagine we want to lookup the `constructor` `ClassMethod` from the `Foo` `ClassDeclaration`.
 
 ```js
 class Foo {

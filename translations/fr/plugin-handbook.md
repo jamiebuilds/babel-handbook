@@ -37,21 +37,22 @@ Ce manuel est disponible dans d'autres langues, consulter le [README](/README.md
   * [Écriture de votre premier plugin de Babel](#toc-writing-your-first-babel-plugin)
   * [Opérations de transformations](#toc-transformation-operations) 
       * [Visite](#toc-visiting)
-      * [Vérifier si un nœud est un certain type](#toc-check-if-a-node-is-a-certain-type)
-      * [Vérifie si un identificateur est référencé](#toc-check-if-an-identifier-is-referenced)
+      * [Get the Path of Sub-Node](#toc-get-the-path-of-a-sub-node)
+      * [Check if a node is a certain type](#toc-check-if-a-node-is-a-certain-type)
+      * [Check if an identifier is referenced](#toc-check-if-an-identifier-is-referenced)
       * [Manipulation](#toc-manipulation)
       * [Remplacement d’un nœud](#toc-replacing-a-node)
-      * [Remplacement d’un nœud par plusieurs nœuds](#toc-replacing-a-node-with-multiple-nodes)
-      * [Remplacement d’un nœud avec une chaîne source](#toc-replacing-a-node-with-a-source-string)
-      * [Insertion d'un nœud enfant](#toc-inserting-a-sibling-node)
+      * [Replacing a node with multiple nodes](#toc-replacing-a-node-with-multiple-nodes)
+      * [Replacing a node with a source string](#toc-replacing-a-node-with-a-source-string)
+      * [Inserting a sibling node](#toc-inserting-a-sibling-node)
       * [Suppression d'un nœud](#toc-removing-a-node)
       * [Remplacement d'un parent](#toc-replacing-a-parent)
       * [Suppression d'un parent](#toc-removing-a-parent)
       * [Portée](#toc-scope)
-      * [Vérifier si une variable locale est liée](#toc-checking-if-a-local-variable-is-bound)
+      * [Checking if a local variable is bound](#toc-checking-if-a-local-variable-is-bound)
       * [Génération d'un UID](#toc-generating-a-uid)
-      * [Pousser une déclaration de variable vers un scope parent](#toc-pushing-a-variable-declaration-to-a-parent-scope)
-      * [Renommer une liaison et ses références](#toc-rename-a-binding-and-its-references)
+      * [Pushing a variable declaration to a parent scope](#toc-pushing-a-variable-declaration-to-a-parent-scope)
+      * [Rename a binding and its references](#toc-rename-a-binding-and-its-references)
   * [Options du plugin](#toc-plugin-options)
   * [Nœuds de création](#toc-building-nodes)
   * [Meilleures pratiques](#toc-best-practices) 
@@ -1117,9 +1118,30 @@ Génial ! Notre tout premier plugin Babel.
 
 ## <a id="toc-visiting"></a>Visite
 
-### <a id="toc-check-if-a-node-is-a-certain-type"></a>Vérifier si un nœud est un certain type
+### <a id="toc-get-the-path-of-a-sub-node"></a>Get the Path of Sub-Node
 
-Si vous voulez vérifier le type d'un noeud, la meilleure façon de procéder est la suivante :
+To access an AST node's property you normally access the node and then the property. `path.node.property`
+
+```js
+BinaryExpression(path) {
+  path.node.left;
+}
+```
+
+If you need to access the path of that property instead, use the `get` method of a path, passing in the string to the property.
+
+```js
+BinaryExpression(path) {
+  path.get('left');
+}
+Program(path) {
+  path.get('body[0]');
+}
+```
+
+### <a id="toc-check-if-a-node-is-a-certain-type"></a>Check if a node is a certain type
+
+If you want to check what the type of a node is, the preferred way to do so is:
 
 ```js
 BinaryExpression(path) {
@@ -1129,7 +1151,7 @@ BinaryExpression(path) {
 }
 ```
 
-Vous pouvez également faire une vérification peu profonde pour les propriétés de ce nœud :
+You can also do a shallow check for properties on that node:
 
 ```js
 BinaryExpression(path) {
@@ -1139,7 +1161,7 @@ BinaryExpression(path) {
 }
 ```
 
-C’est fonctionnellement équivalent à :
+This is functionally equivalent to:
 
 ```js
 BinaryExpression(path) {
@@ -1153,7 +1175,7 @@ BinaryExpression(path) {
 }
 ```
 
-### <a id="toc-check-if-an-identifier-is-referenced"></a>Vérifier si un identificateur est référencé
+### <a id="toc-check-if-an-identifier-is-referenced"></a>Check if an identifier is referenced
 
 ```js
 Identifier(path) {
@@ -1192,7 +1214,7 @@ BinaryExpression(path) {
   }
 ```
 
-### <a id="toc-replacing-a-node-with-multiple-nodes"></a>Remplacement d’un nœud par plusieurs nœuds
+### <a id="toc-replacing-a-node-with-multiple-nodes"></a>Replacing a node with multiple nodes
 
 ```js
 ReturnStatement(path) {
@@ -1215,7 +1237,7 @@ ReturnStatement(path) {
 
 > **Note:** When replacing an expression with multiple nodes, they must be statements. This is because Babel uses heuristics extensively when replacing nodes which means that you can do some pretty crazy transformations that would be extremely verbose otherwise.
 
-### <a id="toc-replacing-a-node-with-a-source-string"></a>Remplacement d’un nœud avec une chaîne source
+### <a id="toc-replacing-a-node-with-a-source-string"></a>Replacing a node with a source string
 
 ```js
 FunctionDeclaration(path) {
@@ -1235,7 +1257,7 @@ FunctionDeclaration(path) {
 
 > **Remarque :** Il n'est pas recommandé d'utiliser cette API, à moins que votre source de données soit une chaîne de caractère dynamique. Dans un cas nominal, il est plus efficace d'analyser le code à l'extérieur du visiteur.
 
-### <a id="toc-inserting-a-sibling-node"></a>Insertion d'un nœud enfant
+### <a id="toc-inserting-a-sibling-node"></a>Inserting a sibling node
 
 ```js
 FunctionDeclaration(path) {
@@ -1301,7 +1323,7 @@ BinaryExpression(path) {
 
 ## <a id="toc-scope"></a>Portée
 
-### <a id="toc-checking-if-a-local-variable-is-bound"></a>Vérifier si une variable locale est liée
+### <a id="toc-checking-if-a-local-variable-is-bound"></a>Checking if a local variable is bound
 
 ```js
 FunctionDeclaration(path) {
@@ -1336,7 +1358,7 @@ FunctionDeclaration(path) {
 }
 ```
 
-### <a id="toc-pushing-a-variable-declaration-to-a-parent-scope"></a>Pousser une déclaration de variable vers un scope parent
+### <a id="toc-pushing-a-variable-declaration-to-a-parent-scope"></a>Pushing a variable declaration to a parent scope
 
 Sometimes you may want to push a `VariableDeclaration` so you can assign to it.
 
@@ -1356,7 +1378,7 @@ FunctionDeclaration(path) {
 + };
 ```
 
-### <a id="toc-rename-a-binding-and-its-references"></a>Renommer une liaison et ses références
+### <a id="toc-rename-a-binding-and-its-references"></a>Rename a binding and its references
 
 ```js
 FunctionDeclaration(path) {
@@ -1372,7 +1394,7 @@ FunctionDeclaration(path) {
   }
 ```
 
-Alternativement, vous pouvez renommer une liaison vers un identificateur unique généré :
+Alternatively, you can rename a binding to a generated unique identifier:
 
 ```js
 FunctionDeclaration(path) {
@@ -1392,7 +1414,7 @@ FunctionDeclaration(path) {
 
 # <a id="toc-plugin-options"></a>Options du plugin
 
-Si vous désirez permettre à l'utilisateur de personnaliser le comportement de votre plugin Babel, vous pouvez accepter des options de plugin spécifiques que les utilisateurs définissent de cette façon :
+If you would like to let your users customize the behavior of your Babel plugin you can accept plugin specific options which users can specify like this:
 
 ```js
 {
@@ -1405,7 +1427,7 @@ Si vous désirez permettre à l'utilisateur de personnaliser le comportement de 
 }
 ```
 
-Ces options sont alors passées au plugin à travers l'objet `state` :
+These options then get passed into plugin visitors through the `state` object:
 
 ```js
 export default function({ types: t }) {
@@ -1420,7 +1442,7 @@ export default function({ types: t }) {
 }
 ```
 
-Ces options sont spécifiques au plugin et vous ne pouvez pas accéder aux options d'autres plugins.
+These options are plugin-specific and you cannot access options from other plugins.
 
 * * *
 
@@ -1541,13 +1563,13 @@ You can find all of the actual [definitions here](https://github.com/babel/babel
 
 ## <a id="toc-avoid-traversing-the-ast-as-much-as-possible"></a>Éviter de parcourir l'AST autant que possible
 
-Parcourir l'AST est coûteux, et il est facile de parcourir accidentellement l'AST plus que nécessaire. Cela pourrait être la source de milliers, voire de dizaines de milliers d'opérations supplémentaires.
+Traversing the AST is expensive, and it's easy to accidentally traverse the AST more than necessary. This could be thousands if not tens of thousands of extra operations.
 
-Babel optimise ces parcours le plus possible, en fusionnant les visiteurs ensemble si possible afin de tout faire en un seul parcours.
+Babel optimizes this as much as possible, merging visitors together if it can in order to do everything in a single traversal.
 
-### <a id="toc-merge-visitors-whenever-possible"></a>Fusionner les visiteurs lorsque c'est possible
+### <a id="toc-merge-visitors-whenever-possible"></a>Fusionner les visiteurs quand c'est possible
 
-Lorsque vous écrivez des visiteurs, il peut être tentant d’appeler `path.traverse` à plusieurs endroits où ils sont logiquement nécessaires.
+When writing visitors, it may be tempting to call `path.traverse` in multiple places where they are logically necessary.
 
 ```js
 path.traverse({
@@ -1563,7 +1585,7 @@ path.traverse({
 });
 ```
 
-Cependant, il est bien plus efficace d'écrire un seul visiteur qui n'est appelé qu'une seule fois. Dans le cas contraire, vous visiteriez le même arbre plusieurs fois sans raison.
+However, it is far better to write these as a single visitor that only gets run once. Otherwise you are traversing the same tree multiple times for no reason.
 
 ```js
 path.traverse({
@@ -1578,7 +1600,7 @@ path.traverse({
 
 ### <a id="toc-do-not-traverse-when-manual-lookup-will-do"></a>N'utilisez pas "traverse" lorsqu'une lecture manuelle est possible
 
-Il peut être tentant d'utiliser `path.traverse` pour rechercher un type de nœud particulier.
+It may also be tempting to call `path.traverse` when looking for a particular node type.
 
 ```js
 const visitorOne = {
@@ -1594,7 +1616,7 @@ const MyVisitor = {
 };
 ```
 
-Cependant, lorsque vous recherchez quelque chose de précis et peu profond dans l'arbre, il est souvent possible de récupérer manuellement des nœuds fils sans effectuer une traversée coûteuse.
+However, if you are looking for something specific and shallow, there is a good chance you can manually lookup the nodes you need without performing a costly traversal.
 
 ```js
 const MyVisitor = {
@@ -1608,7 +1630,7 @@ const MyVisitor = {
 
 ## <a id="toc-optimizing-nested-visitors"></a>Optimisation des visiteurs imbriqués
 
-Lorsque vous imbriquez un visiteur dans un autre, il paraît sensé de les imbriquer également dans votre code.
+When you are nesting visitors, it might make sense to write them nested in your code.
 
 ```js
 const MyVisitor = {
@@ -1638,7 +1660,7 @@ const MyVisitor = {
 };
 ```
 
-Si vous avez besoin d'enregistrer un état à l'intérieur d'un visiteur imbriqué, comme ceci :
+If you need some state within the nested visitor, like so:
 
 ```js
 const MyVisitor = {
@@ -1656,7 +1678,7 @@ const MyVisitor = {
 };
 ```
 
-Vous pouvez le fournir en paramètre de la méthode `traverse()`, puis y accéder grâce à l'opérateur `this` au sein du visiteur.
+You can pass it in as state to the `traverse()` method and have access to it on `this` in the visitor.
 
 ```js
 const visitorOne = {

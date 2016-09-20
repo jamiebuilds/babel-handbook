@@ -37,21 +37,22 @@
   * [Создание вашего первого плагина Babel](#toc-writing-your-first-babel-plugin)
   * [Операции преобразования](#toc-transformation-operations) 
       * [Посещение](#toc-visiting)
-      * [Проверка типа узла](#toc-check-if-a-node-is-a-certain-type)
-      * [Проверка, есть ли ссылка на идентификатор](#toc-check-if-an-identifier-is-referenced)
+      * [Get the Path of Sub-Node](#toc-get-the-path-of-a-sub-node)
+      * [Check if a node is a certain type](#toc-check-if-a-node-is-a-certain-type)
+      * [Check if an identifier is referenced](#toc-check-if-an-identifier-is-referenced)
       * [Манипуляция](#toc-manipulation)
-      * [Замена узла](#toc-replacing-a-node)
-      * [Замена узла несколькими узлами](#toc-replacing-a-node-with-multiple-nodes)
-      * [Замена узла исходной строкой](#toc-replacing-a-node-with-a-source-string)
-      * [Добавление узла-потомка](#toc-inserting-a-sibling-node)
-      * [Удаление узла](#toc-removing-a-node)
-      * [Замена родителя](#toc-replacing-a-parent)
-      * [Удаление родителя](#toc-removing-a-parent)
+      * [Replacing a node](#toc-replacing-a-node)
+      * [Replacing a node with multiple nodes](#toc-replacing-a-node-with-multiple-nodes)
+      * [Replacing a node with a source string](#toc-replacing-a-node-with-a-source-string)
+      * [Inserting a sibling node](#toc-inserting-a-sibling-node)
+      * [Removing a node](#toc-removing-a-node)
+      * [Replacing a parent](#toc-replacing-a-parent)
+      * [Removing a parent](#toc-removing-a-parent)
       * [Область видимости](#toc-scope)
-      * [Проверка, привязана ли локальная переменная](#toc-checking-if-a-local-variable-is-bound)
-      * [Создание UID](#toc-generating-a-uid)
-      * [Отправка объявления переменной в родительскую область видимости](#toc-pushing-a-variable-declaration-to-a-parent-scope)
-      * [Переименование привязки и ссылок на нее](#toc-rename-a-binding-and-its-references)
+      * [Checking if a local variable is bound](#toc-checking-if-a-local-variable-is-bound)
+      * [Generating a UID](#toc-generating-a-uid)
+      * [Pushing a variable declaration to a parent scope](#toc-pushing-a-variable-declaration-to-a-parent-scope)
+      * [Rename a binding and its references](#toc-rename-a-binding-and-its-references)
   * [Параметры плагина](#toc-plugin-options)
   * [Построение узлов](#toc-building-nodes)
   * [Лучшие практики](#toc-best-practices) 
@@ -1117,9 +1118,30 @@ sebmck === dork;
 
 ## <a id="toc-visiting"></a>Посещение
 
-### <a id="toc-check-if-a-node-is-a-certain-type"></a>Проверка типа узла
+### <a id="toc-get-the-path-of-a-sub-node"></a>Get the Path of Sub-Node
 
-Если вы хотите проверить тип узла, то лучше всего сделать это следующим образом:
+To access an AST node's property you normally access the node and then the property. `path.node.property`
+
+```js
+BinaryExpression(path) {
+  path.node.left;
+}
+```
+
+If you need to access the path of that property instead, use the `get` method of a path, passing in the string to the property.
+
+```js
+BinaryExpression(path) {
+  path.get('left');
+}
+Program(path) {
+  path.get('body[0]');
+}
+```
+
+### <a id="toc-check-if-a-node-is-a-certain-type"></a>Check if a node is a certain type
+
+If you want to check what the type of a node is, the preferred way to do so is:
 
 ```js
 BinaryExpression(path) {
@@ -1129,7 +1151,7 @@ BinaryExpression(path) {
 }
 ```
 
-Вы также можете сделать поверхностную проверку свойств в этом узле:
+You can also do a shallow check for properties on that node:
 
 ```js
 BinaryExpression(path) {
@@ -1139,7 +1161,7 @@ BinaryExpression(path) {
 }
 ```
 
-Это функционально эквивалентно:
+This is functionally equivalent to:
 
 ```js
 BinaryExpression(path) {
@@ -1153,7 +1175,7 @@ BinaryExpression(path) {
 }
 ```
 
-### <a id="toc-check-if-an-identifier-is-referenced"></a>Проверка, есть ли ссылка на идентификатор
+### <a id="toc-check-if-an-identifier-is-referenced"></a>Check if an identifier is referenced
 
 ```js
 Identifier(path) {
@@ -1163,7 +1185,7 @@ Identifier(path) {
 }
 ```
 
-В качестве альтернативы:
+Alternatively:
 
 ```js
 Identifier(path) {
@@ -1175,7 +1197,7 @@ Identifier(path) {
 
 ## <a id="toc-manipulation"></a>Манипуляция
 
-### <a id="toc-replacing-a-node"></a>Замена узла
+### <a id="toc-replacing-a-node"></a>Replacing a node
 
 ```js
 BinaryExpression(path) {
@@ -1192,7 +1214,7 @@ BinaryExpression(path) {
   }
 ```
 
-### <a id="toc-replacing-a-node-with-multiple-nodes"></a>Замена узла несколькими узлами
+### <a id="toc-replacing-a-node-with-multiple-nodes"></a>Replacing a node with multiple nodes
 
 ```js
 ReturnStatement(path) {
@@ -1215,7 +1237,7 @@ ReturnStatement(path) {
 
 > **Примечание:** При замене выражения с несколькими узлами, они должны быть выражениями. Это потому, что Babel широко использует эвристику, при замене узлов, что означает, что вы можете сделать некоторые довольно сумасшедшие преобразования, которые в противном случае были бы чрезвычайно многословные.
 
-### <a id="toc-replacing-a-node-with-a-source-string"></a>Замена узла исходной строкой
+### <a id="toc-replacing-a-node-with-a-source-string"></a>Replacing a node with a source string
 
 ```js
 FunctionDeclaration(path) {
@@ -1235,7 +1257,7 @@ FunctionDeclaration(path) {
 
 > **Примечание:** Не рекомендуется использовать этот API, если вы имеете дело с динамическим источником строк, в противном случае это более эффективно для разбора кода вне посетителя.
 
-### <a id="toc-inserting-a-sibling-node"></a>Добавление узла-потомка
+### <a id="toc-inserting-a-sibling-node"></a>Inserting a sibling node
 
 ```js
 FunctionDeclaration(path) {
@@ -1254,7 +1276,7 @@ FunctionDeclaration(path) {
 
 > **Note:** This should always be a statement or an array of statements. This uses the same heuristics mentioned in [Replacing a node with multiple nodes](#replacing-a-node-with-multiple-nodes).
 
-### <a id="toc-removing-a-node"></a>Удаление узла
+### <a id="toc-removing-a-node"></a>Removing a node
 
 ```js
 FunctionDeclaration(path) {
@@ -1268,7 +1290,7 @@ FunctionDeclaration(path) {
 - }
 ```
 
-### <a id="toc-replacing-a-parent"></a>Замена родителя
+### <a id="toc-replacing-a-parent"></a>Replacing a parent
 
 ```js
 BinaryExpression(path) {
@@ -1285,7 +1307,7 @@ BinaryExpression(path) {
   }
 ```
 
-### <a id="toc-removing-a-parent"></a>Удаление родителя
+### <a id="toc-removing-a-parent"></a>Removing a parent
 
 ```js
 BinaryExpression(path) {
@@ -1301,7 +1323,7 @@ BinaryExpression(path) {
 
 ## <a id="toc-scope"></a>Область видимости
 
-### <a id="toc-checking-if-a-local-variable-is-bound"></a>Проверка, привязана ли локальная переменная
+### <a id="toc-checking-if-a-local-variable-is-bound"></a>Checking if a local variable is bound
 
 ```js
 FunctionDeclaration(path) {
@@ -1323,9 +1345,9 @@ FunctionDeclaration(path) {
 }
 ```
 
-### <a id="toc-generating-a-uid"></a>Создание UID
+### <a id="toc-generating-a-uid"></a>Generating a UID
 
-Следующий код сгенерирует идентификатор, который не конфликтует ни содной из локально определенных переменных.
+This will generate an identifier that doesn't collide with any locally defined variables.
 
 ```js
 FunctionDeclaration(path) {
@@ -1336,7 +1358,7 @@ FunctionDeclaration(path) {
 }
 ```
 
-### <a id="toc-pushing-a-variable-declaration-to-a-parent-scope"></a>Отправка объявления переменной в родительскую область видимости
+### <a id="toc-pushing-a-variable-declaration-to-a-parent-scope"></a>Pushing a variable declaration to a parent scope
 
 Sometimes you may want to push a `VariableDeclaration` so you can assign to it.
 
@@ -1356,7 +1378,7 @@ FunctionDeclaration(path) {
 + };
 ```
 
-### <a id="toc-rename-a-binding-and-its-references"></a>Переименование привязки и ссылок на нее
+### <a id="toc-rename-a-binding-and-its-references"></a>Rename a binding and its references
 
 ```js
 FunctionDeclaration(path) {
@@ -1392,7 +1414,7 @@ FunctionDeclaration(path) {
 
 # <a id="toc-plugin-options"></a>Параметры плагина
 
-Если вы хотите позволить пользователям настраивать поведение вашего плагина для Babel, вы можете принимать параметры, специфичные для этого плагина, которые пользователи могут указать следующим образом:
+If you would like to let your users customize the behavior of your Babel plugin you can accept plugin specific options which users can specify like this:
 
 ```js
 {
@@ -1405,7 +1427,7 @@ FunctionDeclaration(path) {
 }
 ```
 
-Затем эти параметры передаются в посетителей через объект `state`:
+These options then get passed into plugin visitors through the `state` object:
 
 ```js
 export default function({ types: t }) {
@@ -1420,19 +1442,19 @@ export default function({ types: t }) {
 }
 ```
 
-Эти параметры зависят от плагина, и вам не удается получить доступ к параметрам от других плагинов.
+These options are plugin-specific and you cannot access options from other plugins.
 
 * * *
 
 # <a id="toc-building-nodes"></a>Построение узлов
 
-При написании преобразования часто вы хотите построить некоторые узлы для вставки в AST. Как упоминалось ранее, вы можете сделать это с помощью методов [builder](#builder) в пакете [`babel-types`](#babel-types).
+When writing transformations you'll often want to build up some nodes to insert into the AST. As mentioned previously, you can do this using the [builder](#builder) methods in the [`babel-types`](#babel-types) package.
 
-Имя метода для builder это просто имя типа узла, который вы хотите построить за исключением того, что первая буква в нижнем регистре. For example if you wanted to build a `MemberExpression` you would use `t.memberExpression(...)`.
+The method name for a builder is simply the name of the node type you want to build except with the first letter lowercased. For example if you wanted to build a `MemberExpression` you would use `t.memberExpression(...)`.
 
 The arguments of these builders are decided by the node definition. There's some work that's being done to generate easy-to-read documentation on the definitions, but for now they can all be found [here](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions).
 
-Определение узла выглядит следующим образом:
+A node definition looks like the following:
 
 ```js
 defineType("MemberExpression", {
@@ -1456,7 +1478,7 @@ defineType("MemberExpression", {
 });
 ```
 
-Здесь вы можете увидеть всю информацию об этом конкретном типе узла, включая то как построить его, пройти по нему и проверить его.
+Here you can see all the information about this particular node type, including how to build it, traverse it, and validate it.
 
 By looking at the `builder` property, you can see the 3 arguments that will be needed to call the builder method (`t.memberExpression`).
 
@@ -1466,7 +1488,7 @@ builder: ["object", "property", "computed"],
 
 > Note that sometimes there are more properties that you can customize on the node than the `builder` array contains. This is to keep the builder from having too many arguments. In these cases you need to set the properties manually. An example of this is [`ClassMethod`](https://github.com/babel/babel/blob/bbd14f88c4eea88fa584dd877759dd6b900bf35e/packages/babel-types/src/definitions/es2015.js#L238-L276).
 
-Вы можете увидеть проверки для строителя аргументов с объектом `fields`.
+You can see the validation for the builder arguments with the `fields` object.
 
 ```js
 fields: {
@@ -1487,7 +1509,7 @@ fields: {
 
 You can see that `object` needs to be an `Expression`, `property` either needs to be an `Expression` or an `Identifier` depending on if the member expression is `computed` or not and `computed` is simply a boolean that defaults to `false`.
 
-Поэтому мы можем создать `MemberExpression`, выполнив следующие действия:
+So we can construct a `MemberExpression` by doing the following:
 
 ```js
 t.memberExpression(
@@ -1497,21 +1519,21 @@ t.memberExpression(
 );
 ```
 
-Которое приведёт к:
+Which will result in:
 
 ```js
 object.property
 ```
 
-Однако мы сказали, что `объект` должен быть `выражением`, так почему же `идентификатор` является допустимым?
+However, we said that `object` needed to be an `Expression` so why is `Identifier` valid?
 
-Всё дело в том, что если мы посмотрим на определение `идентификатора` мы сможем увидеть, что он имеет свойство `aliases`, которое гласит, что это также является выражением.
+Well if we look at the definition of `Identifier` we can see that it has an `aliases` property which states that it is also an expression.
 
 ```js
 aliases: ["Expression", "LVal"],
 ```
 
-Поскольку `MemberExpression` является типом `выражения`, мы сможем установить его как `объект` другого `MemberExpression`:
+So since `MemberExpression` is a type of `Expression`, we could set it as the `object` of another `MemberExpression`:
 
 ```js
 t.memberExpression(
@@ -1523,15 +1545,15 @@ t.memberExpression(
 )
 ```
 
-Которое приведет к:
+Which will result in:
 
 ```js
 member.expression.property
 ```
 
-Скорее всего, Вам когда-либо удастся запомнить все возможные подписи метода создателя для каждого типа узла. Поэтому лучше потратить некоторое время чтобы понять, как они создаются из определений узла.
+It's very unlikely that you will ever memorize the builder method signatures for every node type. So you should take some time and understand how they are generated from the node definitions.
 
-Вы можете найти все актуальные [определения здесь](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions) и вы можете увидеть их [документацию здесь](https://github.com/babel/babel/blob/master/doc/ast/spec.md)
+You can find all of the actual [definitions here](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions) and you can see them [documented here](https://github.com/babel/babel/blob/master/doc/ast/spec.md)
 
 * * *
 
@@ -1541,13 +1563,13 @@ member.expression.property
 
 ## <a id="toc-avoid-traversing-the-ast-as-much-as-possible"></a>Избегайте обхода AST насколько это возможно
 
-Обход AST - это достаточно затратное занятие, и зачастую можно сделать далеко не то, что планировалось. И в итоге повлечь тысячи, если не десятки тысяч дополнительных операций.
+Traversing the AST is expensive, and it's easy to accidentally traverse the AST more than necessary. This could be thousands if not tens of thousands of extra operations.
 
-Babel оптимизирует это насколько, насколько это возможно, объединения посетителей вместе, чтобы сделать все в одном обходе.
+Babel optimizes this as much as possible, merging visitors together if it can in order to do everything in a single traversal.
 
 ### <a id="toc-merge-visitors-whenever-possible"></a>Слияние посетителей, когда это возможно
 
-При написании посетителей, может быть достаточно заманчиво вызвать `path.traverse` в нескольких местах, где они логически необходимым.
+When writing visitors, it may be tempting to call `path.traverse` in multiple places where they are logically necessary.
 
 ```js
 path.traverse({
@@ -1563,7 +1585,7 @@ path.traverse({
 });
 ```
 
-Однако, это гораздо лучше реализовать одним посетителем, который будет запускаться лишь один раз. В противном-же случае будет происходить обход одного дерева, при этом несколько раз и без причины.
+However, it is far better to write these as a single visitor that only gets run once. Otherwise you are traversing the same tree multiple times for no reason.
 
 ```js
 path.traverse({
@@ -1576,9 +1598,9 @@ path.traverse({
 });
 ```
 
-### <a id="toc-do-not-traverse-when-manual-lookup-will-do"></a>Практикуйте ручной обход
+### <a id="toc-do-not-traverse-when-manual-lookup-will-do"></a>Do not traverse when manual lookup will do
 
-При поиске конкретного типа узла так и хочется вызвать `path.traverse`.
+It may also be tempting to call `path.traverse` when looking for a particular node type.
 
 ```js
 const visitorOne = {
@@ -1594,7 +1616,7 @@ const MyVisitor = {
 };
 ```
 
-Однако, если Вы ищете для что-то конкретные и не глубоко, то это должно намекнуть, что в данном случае можно воспользоваться и ручной подстановкой, избегая выполнения дорогостоящих обходов различных узлов.
+However, if you are looking for something specific and shallow, there is a good chance you can manually lookup the nodes you need without performing a costly traversal.
 
 ```js
 const MyVisitor = {
@@ -1608,7 +1630,7 @@ const MyVisitor = {
 
 ## <a id="toc-optimizing-nested-visitors"></a>Оптимизация вложенности посетителей
 
-Когда появляется вложенность посетителей, всё-же имеет смысл переносить эту вложенность и в Ваш код.
+When you are nesting visitors, it might make sense to write them nested in your code.
 
 ```js
 const MyVisitor = {
@@ -1622,7 +1644,7 @@ const MyVisitor = {
 };
 ```
 
-Однако, это создает новый объект посетителя каждый раз когда вызывается `FunctionDeclaration()`, который Babel затем должен каждый раз проверять. Это может быть достаточно затратным, так что лучше посетителя подвинуть в коде чуть выше.
+However, this creates a new visitor object everytime `FunctionDeclaration()` is called above, which Babel then needs to explode and validate every single time. This can be costly, so it is better to hoist the visitor up.
 
 ```js
 const visitorOne = {
@@ -1638,7 +1660,7 @@ const MyVisitor = {
 };
 ```
 
-Если вам нужно некоторое состояние в пределах вложенного посетителя, как:
+If you need some state within the nested visitor, like so:
 
 ```js
 const MyVisitor = {
@@ -1656,7 +1678,7 @@ const MyVisitor = {
 };
 ```
 
-То можно передать его в качестве состояния в метод `traverse()` и иметь доступ к нему через `this` в посетителе.
+You can pass it in as state to the `traverse()` method and have access to it on `this` in the visitor.
 
 ```js
 const visitorOne = {
@@ -1677,9 +1699,9 @@ const MyVisitor = {
 
 ## <a id="toc-being-aware-of-nested-structures"></a>Избегайте вложенных структур
 
-Иногда, когда думаете о данном преобразовании, вы можете забыть, что данная структура может быть вложенной.
+Sometimes when thinking about a given transform, you might forget that the given structure can be nested.
 
-Например, Вы хотите найти `конструктор` `ClassMethod` в `Foo` `ClassDeclaration`.
+For example, imagine we want to lookup the `constructor` `ClassMethod` from the `Foo` `ClassDeclaration`.
 
 ```js
 class Foo {
@@ -1707,7 +1729,7 @@ const MyVisitor = {
 }
 ```
 
-Игнорируя то, что классы могут быть вложены, Вы будете использлвать обход выше, который также достучиться и до вложенного `конструктора`:
+We are ignoring the fact that classes can be nested and using the traversal above we will hit a nested `constructor` as well:
 
 ```js
 class Foo {

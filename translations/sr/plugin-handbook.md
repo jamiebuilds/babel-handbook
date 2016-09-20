@@ -37,21 +37,22 @@ This handbook is available in other languages, see the [README](/README.md) for 
   * [Kreiranje vašeg prvog Babel plugina](#toc-writing-your-first-babel-plugin)
   * [Operacije transformisanja](#toc-transformation-operations) 
       * [Posećivanje (visiting)](#toc-visiting)
-      * [Proverite da li je čvor određenog tipa](#toc-check-if-a-node-is-a-certain-type)
-      * [Proverite da li neko referencira identifikator](#toc-check-if-an-identifier-is-referenced)
+      * [Get the Path of Sub-Node](#toc-get-the-path-of-a-sub-node)
+      * [Check if a node is a certain type](#toc-check-if-a-node-is-a-certain-type)
+      * [Check if an identifier is referenced](#toc-check-if-an-identifier-is-referenced)
       * [Manipulacija](#toc-manipulation)
-      * [Zamena čvora](#toc-replacing-a-node)
-      * [Zamenjivanje čvora sa više čvorova](#toc-replacing-a-node-with-multiple-nodes)
-      * [Zamenjivanje čvorova sa stringom koda](#toc-replacing-a-node-with-a-source-string)
-      * [Umetanje susednih čvorova](#toc-inserting-a-sibling-node)
-      * [Uklanjanje čvora](#toc-removing-a-node)
-      * [Zamena nadčvora (parent)](#toc-replacing-a-parent)
-      * [Uklanjanje nadčvora (parent)](#toc-removing-a-parent)
+      * [Replacing a node](#toc-replacing-a-node)
+      * [Replacing a node with multiple nodes](#toc-replacing-a-node-with-multiple-nodes)
+      * [Replacing a node with a source string](#toc-replacing-a-node-with-a-source-string)
+      * [Inserting a sibling node](#toc-inserting-a-sibling-node)
+      * [Removing a node](#toc-removing-a-node)
+      * [Replacing a parent](#toc-replacing-a-parent)
+      * [Removing a parent](#toc-removing-a-parent)
       * [Domen](#toc-scope)
-      * [Proveravanje da li je lokalna promenljiva "vezana" (bounded)](#toc-checking-if-a-local-variable-is-bound)
-      * [Generisanje UID-a](#toc-generating-a-uid)
-      * [Pomeranje deklaracije promenljive na naddomen (parent scope)](#toc-pushing-a-variable-declaration-to-a-parent-scope)
-      * [Promena imena "vezivanja" i njegovih referenci](#toc-rename-a-binding-and-its-references)
+      * [Checking if a local variable is bound](#toc-checking-if-a-local-variable-is-bound)
+      * [Generating a UID](#toc-generating-a-uid)
+      * [Pushing a variable declaration to a parent scope](#toc-pushing-a-variable-declaration-to-a-parent-scope)
+      * [Rename a binding and its references](#toc-rename-a-binding-and-its-references)
   * [Plagin opcije](#toc-plugin-options)
   * [Kreiranje čvorova](#toc-building-nodes)
   * [Praktični saveti](#toc-best-practices) 
@@ -1117,9 +1118,30 @@ Neviđeno! Naš prvi Babel plagin.
 
 ## <a id="toc-visiting"></a>Posećivanje (visiting)
 
-### <a id="toc-check-if-a-node-is-a-certain-type"></a>Proverite da li je čvor određenog tipa
+### <a id="toc-get-the-path-of-a-sub-node"></a>Get the Path of Sub-Node
 
-Ako želite da proverite koga je tipa dati čvor, najbolji način da to uradite je:
+To access an AST node's property you normally access the node and then the property. `path.node.property`
+
+```js
+BinaryExpression(path) {
+  path.node.left;
+}
+```
+
+If you need to access the path of that property instead, use the `get` method of a path, passing in the string to the property.
+
+```js
+BinaryExpression(path) {
+  path.get('left');
+}
+Program(path) {
+  path.get('body[0]');
+}
+```
+
+### <a id="toc-check-if-a-node-is-a-certain-type"></a>Check if a node is a certain type
+
+If you want to check what the type of a node is, the preferred way to do so is:
 
 ```js
 BinaryExpression(path) {
@@ -1129,7 +1151,7 @@ BinaryExpression(path) {
 }
 ```
 
-Takođe, možete uradite brzu proveru nad vrednostima polja datog čvora:
+You can also do a shallow check for properties on that node:
 
 ```js
 BinaryExpression(path) {
@@ -1139,7 +1161,7 @@ BinaryExpression(path) {
 }
 ```
 
-Funkcionalno, ovo je ekvivalentno sledećem kodu:
+This is functionally equivalent to:
 
 ```js
 BinaryExpression(path) {
@@ -1153,7 +1175,7 @@ BinaryExpression(path) {
 }
 ```
 
-### <a id="toc-check-if-an-identifier-is-referenced"></a>Proverite da li neko referencira identifikator
+### <a id="toc-check-if-an-identifier-is-referenced"></a>Check if an identifier is referenced
 
 ```js
 Identifier(path) {
@@ -1163,7 +1185,7 @@ Identifier(path) {
 }
 ```
 
-Drugi način da to učinite je:
+Alternatively:
 
 ```js
 Identifier(path) {
@@ -1175,7 +1197,7 @@ Identifier(path) {
 
 ## <a id="toc-manipulation"></a>Manipulacija
 
-### <a id="toc-replacing-a-node"></a>Zamena čvora
+### <a id="toc-replacing-a-node"></a>Replacing a node
 
 ```js
 BinaryExpression(path) {
@@ -1192,7 +1214,7 @@ BinaryExpression(path) {
   }
 ```
 
-### <a id="toc-replacing-a-node-with-multiple-nodes"></a>Zamenjivanje čvora sa više čvorova
+### <a id="toc-replacing-a-node-with-multiple-nodes"></a>Replacing a node with multiple nodes
 
 ```js
 ReturnStatement(path) {
@@ -1215,7 +1237,7 @@ ReturnStatement(path) {
 
 > **Napomena:** Kad zamenjujete izraz sa više čvorovan, oni moraju biti izrazi (statements). Razlog za ovo je što Babel intenzivno koristi heuristiku kada zamenjuje čvorove, što znači da možete da uradite prilično neobične transformacije koje bi u suprotnom tražile jako veliko broj linija koda.
 
-### <a id="toc-replacing-a-node-with-a-source-string"></a>Zamenjivanje čvorova sa stringom koda
+### <a id="toc-replacing-a-node-with-a-source-string"></a>Replacing a node with a source string
 
 ```js
 FunctionDeclaration(path) {
@@ -1235,7 +1257,7 @@ FunctionDeclaration(path) {
 
 > **Napomena:** Nije preporučljivo koristit ovaj API ukoliko ne radite sa izvorom dinamičkih stringova. U suprotnom, mnogo je efikasnije da se kod parsira izvan "posetioca".
 
-### <a id="toc-inserting-a-sibling-node"></a>Umetanje susednih čvorova
+### <a id="toc-inserting-a-sibling-node"></a>Inserting a sibling node
 
 ```js
 FunctionDeclaration(path) {
@@ -1254,7 +1276,7 @@ FunctionDeclaration(path) {
 
 > **Napomena:** Ovo uvek treba da bude izraz ili niz izraza. Ovde se koristi ista heuristika kao i u [Zamenjivanje čvora sa više čvorova](#replacing-a-node-with-multiple-nodes).
 
-### <a id="toc-removing-a-node"></a>Uklanjanje čvora
+### <a id="toc-removing-a-node"></a>Removing a node
 
 ```js
 FunctionDeclaration(path) {
@@ -1268,7 +1290,7 @@ FunctionDeclaration(path) {
 - }
 ```
 
-### <a id="toc-replacing-a-parent"></a>Zamena nadčvora (parent)
+### <a id="toc-replacing-a-parent"></a>Replacing a parent
 
 ```js
 BinaryExpression(path) {
@@ -1285,7 +1307,7 @@ BinaryExpression(path) {
   }
 ```
 
-### <a id="toc-removing-a-parent"></a>Uklanjanje nadčvora (parent)
+### <a id="toc-removing-a-parent"></a>Removing a parent
 
 ```js
 BinaryExpression(path) {
@@ -1301,7 +1323,7 @@ BinaryExpression(path) {
 
 ## <a id="toc-scope"></a>Domen
 
-### <a id="toc-checking-if-a-local-variable-is-bound"></a>Proveravanje da li je lokalna promenljiva "vezana" (bounded)
+### <a id="toc-checking-if-a-local-variable-is-bound"></a>Checking if a local variable is bound
 
 ```js
 FunctionDeclaration(path) {
@@ -1311,9 +1333,9 @@ FunctionDeclaration(path) {
 }
 ```
 
-Ovim se prolazi uz stablo domena i proverava da li postoji "vezivanje".
+This will walk up the scope tree and check for that particular binding.
 
-Možete, takođe, da proverite da li postoji "vezivanje" unutar samog domena:
+You can also check if a scope has its **own** binding:
 
 ```js
 FunctionDeclaration(path) {
@@ -1323,9 +1345,9 @@ FunctionDeclaration(path) {
 }
 ```
 
-### <a id="toc-generating-a-uid"></a>Generisanje UID-a
+### <a id="toc-generating-a-uid"></a>Generating a UID
 
-Ovo će da generiše identifikator koji se ne sudara sa identifikatorom ni jedne lokalno definisane promenljive.
+This will generate an identifier that doesn't collide with any locally defined variables.
 
 ```js
 FunctionDeclaration(path) {
@@ -1336,9 +1358,9 @@ FunctionDeclaration(path) {
 }
 ```
 
-### <a id="toc-pushing-a-variable-declaration-to-a-parent-scope"></a>Pomeranje deklaracije promenljive na naddomen (parent scope)
+### <a id="toc-pushing-a-variable-declaration-to-a-parent-scope"></a>Pushing a variable declaration to a parent scope
 
-Ponekad je potrebno da pomerite `VariableDeclaration` tako da datoj promenljivoj možete da pridružite vrednost.
+Sometimes you may want to push a `VariableDeclaration` so you can assign to it.
 
 ```js
 FunctionDeclaration(path) {
@@ -1356,7 +1378,7 @@ FunctionDeclaration(path) {
 + };
 ```
 
-### <a id="toc-rename-a-binding-and-its-references"></a>Promena imena "vezivanja" i njegovih referenci
+### <a id="toc-rename-a-binding-and-its-references"></a>Rename a binding and its references
 
 ```js
 FunctionDeclaration(path) {
@@ -1372,7 +1394,7 @@ FunctionDeclaration(path) {
   }
 ```
 
-Isto tako, možete da promenite ime "vezivanja" tako što ćete generisati unikatni indetifikator:
+Alternatively, you can rename a binding to a generated unique identifier:
 
 ```js
 FunctionDeclaration(path) {
@@ -1392,7 +1414,7 @@ FunctionDeclaration(path) {
 
 # <a id="toc-plugin-options"></a>Plagin opcije
 
-Ako želite da omogućite vašim korisnicima da menjaju ponašanje vaših Babel plaginova možete da prihvatite posebne opcije plagina koje korisnik može da specificira na sledeći način:
+If you would like to let your users customize the behavior of your Babel plugin you can accept plugin specific options which users can specify like this:
 
 ```js
 {
@@ -1405,7 +1427,7 @@ Ako želite da omogućite vašim korisnicima da menjaju ponašanje vaših Babel 
 }
 ```
 
-Ove opcije se prenose u "posetioce" plagina kroz `state` objekat:
+These options then get passed into plugin visitors through the `state` object:
 
 ```js
 export default function({ types: t }) {
@@ -1420,19 +1442,19 @@ export default function({ types: t }) {
 }
 ```
 
-Ove opcije su dodeljene samo pojedinačnim plaginovima i nije im moguće pristupiti iz ostalih plaginova.
+These options are plugin-specific and you cannot access options from other plugins.
 
 * * *
 
 # <a id="toc-building-nodes"></a>Kreiranje čvorova
 
-Pri pisanju transformacija često je potrebno da dodamo nove čvorove u AST stablo. Kao što je prethodno rečeno, ovo je moguće izvesti korišćenjem metoda [gradioca](#builder) (builders) definisanih u [`babel-types`](#babel-types) paketu.
+When writing transformations you'll often want to build up some nodes to insert into the AST. As mentioned previously, you can do this using the [builder](#builder) methods in the [`babel-types`](#babel-types) package.
 
-Naziv metoda "gradioca" je prosto ime tipa čvora koji želite da kreirate, pri čemu je prvo slovo naziva metoda malo slovo. Na primer, ako želite da kreirate čvor tipa `MemberExpression` treba da koristite `t.memberExpression(...)`.
+The method name for a builder is simply the name of the node type you want to build except with the first letter lowercased. For example if you wanted to build a `MemberExpression` you would use `t.memberExpression(...)`.
 
-Parametri ovih "gradioca" su odreženi definicijom čvora. Potrebno je još raditi na generisanju upotrebljive dokumentacije za ove definicije, a trenutno je možete naći [ovde](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions).
+The arguments of these builders are decided by the node definition. There's some work that's being done to generate easy-to-read documentation on the definitions, but for now they can all be found [here](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions).
 
-Definicija čvora izgleda ovako:
+A node definition looks like the following:
 
 ```js
 defineType("MemberExpression", {
@@ -1456,9 +1478,9 @@ defineType("MemberExpression", {
 });
 ```
 
-Ove možete da vidite sve informacije o datom tipu čvora, uključujući i kako da ga kreirate, kako da se krećete kroz njega i kako da ga validirate.
+Here you can see all the information about this particular node type, including how to build it, traverse it, and validate it.
 
-Gledajući polja `builder`, možete da zapazite 3 argumenta koja su potrebna pri pozivanju metode "gradioca" (`t.memberExpression`)).
+By looking at the `builder` property, you can see the 3 arguments that will be needed to call the builder method (`t.memberExpression`).
 
 ```js
 builder: ["object", "property", "computed"],
@@ -1466,7 +1488,7 @@ builder: ["object", "property", "computed"],
 
 > Treba da znate da ponekad u čvoru postoji više polja koje je moguće definisati nego što ih sadrži niz pridružen polju `builder`. Razlog za ovo je da se izbegne prevelik broj parametara pri pozivanju metode "gradioca". Ako je to slučaj, potrebno je da ručno postavite vrednosti preostalih polja. Kao primer imamo [`ClassMethod`](https://github.com/babel/babel/blob/bbd14f88c4eea88fa584dd877759dd6b900bf35e/packages/babel-types/src/definitions/es2015.js#L238-L276).
 
-Unutar `fields` objekta se nalaze validator za parametre metode "gradioca".
+You can see the validation for the builder arguments with the `fields` object.
 
 ```js
 fields: {
@@ -1485,9 +1507,9 @@ fields: {
 }
 ```
 
-Vidimo da `object` treba da bude `Expression`, `property` može da bude `Expression` ili `Identifier` zavisno od vrednosti izraza `computed`. Polje `computed` ima podrazumevanu vrednost `false`.
+You can see that `object` needs to be an `Expression`, `property` either needs to be an `Expression` or an `Identifier` depending on if the member expression is `computed` or not and `computed` is simply a boolean that defaults to `false`.
 
-Sledeći primer pokazuje kako možemo kreirati `MemberExpression`:
+So we can construct a `MemberExpression` by doing the following:
 
 ```js
 t.memberExpression(
@@ -1497,21 +1519,21 @@ t.memberExpression(
 );
 ```
 
-Ovo rezultira izrazom:
+Which will result in:
 
 ```js
 object.property
 ```
 
-Međutim, rekli smo da `object` treba da bude `Expression` pa se pitamo zašto je `Identifier` validan?
+However, we said that `object` needed to be an `Expression` so why is `Identifier` valid?
 
-Ako pogledamo definiciju `Identifier` videćemo da postoji `aliases` polje koji kaže da je identfikator takođe i izraz (expression).
+Well if we look at the definition of `Identifier` we can see that it has an `aliases` property which states that it is also an expression.
 
 ```js
 aliases: ["Expression", "LVal"],
 ```
 
-Kako je `MemberExpression` tipa `Expression`, možemo da ga posmatramo kao `object` drugog `MemberExpression`:
+So since `MemberExpression` is a type of `Expression`, we could set it as the `object` of another `MemberExpression`:
 
 ```js
 t.memberExpression(
@@ -1523,15 +1545,15 @@ t.memberExpression(
 )
 ```
 
-Ovo rezultira izrazom:
+Which will result in:
 
 ```js
 member.expression.property
 ```
 
-Malo je verovatno da ćete moći da upamtite oblik metoda "gradioca" za svaki od tipova čvora. Zato je bolje da uložite malo vremena i truda i razumete kako su oni generisani na osnovu definicija čvora.
+It's very unlikely that you will ever memorize the builder method signatures for every node type. So you should take some time and understand how they are generated from the node definitions.
 
-Definicije čvorova možete da nađete [ovde](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions), a prateća dokumentacija se nalazi [ovde](https://github.com/babel/babel/blob/master/doc/ast/spec.md)
+You can find all of the actual [definitions here](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions) and you can see them [documented here](https://github.com/babel/babel/blob/master/doc/ast/spec.md)
 
 * * *
 
@@ -1541,13 +1563,13 @@ Definicije čvorova možete da nađete [ovde](https://github.com/babel/babel/tre
 
 ## <a id="toc-avoid-traversing-the-ast-as-much-as-possible"></a>Izbegavajte prolazak kroz AST što je više moguće
 
-Prolaženje kroz AST je veoma skupa operacija, i lako se dešava da slučajno prolazite kroz AST više nego što je pogrebno. To dovodi do izvršavanja hiljade ako ne i desetine hiljada dodatnih operacija.
+Traversing the AST is expensive, and it's easy to accidentally traverse the AST more than necessary. This could be thousands if not tens of thousands of extra operations.
 
-Babel ovo optimizuje koliko god može, spajajući "posetioce" zajedno kad je to moguće u cilju da se ceo posao završi u samo jednom prolasku.
+Babel optimizes this as much as possible, merging visitors together if it can in order to do everything in a single traversal.
 
 ### <a id="toc-merge-visitors-whenever-possible"></a>Spajanje "posetioca" kad je to moguće
 
-Kad pišemo posetioce, može biti pogodno da se `path.traverse` poziva na više mesta gde to logika problema nalaže.
+When writing visitors, it may be tempting to call `path.traverse` in multiple places where they are logically necessary.
 
 ```js
 path.traverse({
@@ -1563,7 +1585,7 @@ path.traverse({
 });
 ```
 
-Međutim, mnogo je bolje koristiti pojedinačne "posetioce" koji se pozivaju samo jedan put. U suprotnom, dešava se da se isto stablo prolazi više puta bez razloga za to.
+However, it is far better to write these as a single visitor that only gets run once. Otherwise you are traversing the same tree multiple times for no reason.
 
 ```js
 path.traverse({
@@ -1578,7 +1600,7 @@ path.traverse({
 
 ### <a id="toc-do-not-traverse-when-manual-lookup-will-do"></a>Izbegavajte prolaske kada može da se upotrebi ručno prolaženje (kroz čvorove)
 
-Kada tražimo koga je tipa određeni čvor, može doći do pozivanja metoda `path.traverse`.
+It may also be tempting to call `path.traverse` when looking for a particular node type.
 
 ```js
 const visitorOne = {
@@ -1594,7 +1616,7 @@ const MyVisitor = {
 };
 ```
 
-Međutim, ako tražite nešto specifično i ne suviše zahtevno, postoji šansa da umesto skupog pozivanja "prolaska" (traversal) ručno pretražite neke čvorove.
+However, if you are looking for something specific and shallow, there is a good chance you can manually lookup the nodes you need without performing a costly traversal.
 
 ```js
 const MyVisitor = {
@@ -1608,7 +1630,7 @@ const MyVisitor = {
 
 ## <a id="toc-optimizing-nested-visitors"></a>Optimizacija ugnežđenih "posetioca"
 
-Kada je potrebno da koristite ugnežđene "posetioce", ima smisla da ih napišete ugnežđeno u vašem kodu.
+When you are nesting visitors, it might make sense to write them nested in your code.
 
 ```js
 const MyVisitor = {
@@ -1622,7 +1644,7 @@ const MyVisitor = {
 };
 ```
 
-Međutim, na ovaj način se kreira novi "posetioc" pri svakom pozivu metoda `FunctionDeclaration()` u gornjem primeru, pri čemu Babel treba da proanalizira i da ga validira svaki put. Ovo može da bude veoma skupo (po pitanju vremena izvršavanja i korišćenja resorsa), pa je bolje prebaciti "posetioce" iznad definicije objekta MyVisitor.
+However, this creates a new visitor object everytime `FunctionDeclaration()` is called above, which Babel then needs to explode and validate every single time. This can be costly, so it is better to hoist the visitor up.
 
 ```js
 const visitorOne = {
@@ -1638,7 +1660,7 @@ const MyVisitor = {
 };
 ```
 
-Ukoliko vam je potrebno da znate stanje unutar ugnežđenog "posetioca", iskoristite sledeću ideju:
+If you need some state within the nested visitor, like so:
 
 ```js
 const MyVisitor = {
@@ -1656,7 +1678,7 @@ const MyVisitor = {
 };
 ```
 
-Možete da ga prosledite kao stanje u `traverse()` metod i u "posetiocu" mu pristupite kroz `this` promenljivu.
+You can pass it in as state to the `traverse()` method and have access to it on `this` in the visitor.
 
 ```js
 const visitorOne = {
@@ -1677,9 +1699,9 @@ const MyVisitor = {
 
 ## <a id="toc-being-aware-of-nested-structures"></a>Obratite pažnju na ugnežđene strukture
 
-Ponekad kad razmišljamo o datim transformacijama, možemo da zaboravimo da date strukture mogu biti ugnežđene.
+Sometimes when thinking about a given transform, you might forget that the given structure can be nested.
 
-Na primer, zamislimo da želio da nađemo `constructor` od `ClassMethod` datog u `Foo` `ClassDeclaration`.
+For example, imagine we want to lookup the `constructor` `ClassMethod` from the `Foo` `ClassDeclaration`.
 
 ```js
 class Foo {
@@ -1707,7 +1729,7 @@ const MyVisitor = {
 }
 ```
 
-Ignorisali smo činjenicu da klase mogu biti ugnežđene, pa će prethodni prolazak, između ostalog, da naiđe i na ugnežđeni `konstruktor`:
+We are ignoring the fact that classes can be nested and using the traversal above we will hit a nested `constructor` as well:
 
 ```js
 class Foo {

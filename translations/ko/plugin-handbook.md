@@ -37,21 +37,22 @@
   * [첫 Babel 플러그인 작성](#toc-writing-your-first-babel-plugin)
   * [변환 작업](#toc-transformation-operations) 
       * [방문하기(Visiting)](#toc-visiting)
-      * [노드가 특정 타입인지 확인하자](#toc-check-if-a-node-is-a-certain-type)
-      * [식별자가 참조인지를 확인하자](#toc-check-if-an-identifier-is-referenced)
+      * [Get the Path of Sub-Node](#toc-get-the-path-of-a-sub-node)
+      * [Check if a node is a certain type](#toc-check-if-a-node-is-a-certain-type)
+      * [Check if an identifier is referenced](#toc-check-if-an-identifier-is-referenced)
       * [조작(Manipulation)](#toc-manipulation)
-      * [노드 교체하기](#toc-replacing-a-node)
-      * [노드 하나를 여러개의 노드로 교체하기](#toc-replacing-a-node-with-multiple-nodes)
-      * [노드를 소스 코드로 교체하기](#toc-replacing-a-node-with-a-source-string)
-      * [형제 노드(sibling node) 삽입하기](#toc-inserting-a-sibling-node)
-      * [노드 삭제하기](#toc-removing-a-node)
-      * [부모 교체하기](#toc-replacing-a-parent)
-      * [부모 삭제하기](#toc-removing-a-parent)
+      * [Replacing a node](#toc-replacing-a-node)
+      * [Replacing a node with multiple nodes](#toc-replacing-a-node-with-multiple-nodes)
+      * [Replacing a node with a source string](#toc-replacing-a-node-with-a-source-string)
+      * [Inserting a sibling node](#toc-inserting-a-sibling-node)
+      * [Removing a node](#toc-removing-a-node)
+      * [Replacing a parent](#toc-replacing-a-parent)
+      * [Removing a parent](#toc-removing-a-parent)
       * [범위(Scope)](#toc-scope)
-      * [지역 변수가 scope 안에 있는지 확인하기](#toc-checking-if-a-local-variable-is-bound)
-      * [UID 생성하기](#toc-generating-a-uid)
-      * [부모 스코프에 변수 선언 밀어 넣기](#toc-pushing-a-variable-declaration-to-a-parent-scope)
-      * [바인딩과 참조의 이름 변경하기](#toc-rename-a-binding-and-its-references)
+      * [Checking if a local variable is bound](#toc-checking-if-a-local-variable-is-bound)
+      * [Generating a UID](#toc-generating-a-uid)
+      * [Pushing a variable declaration to a parent scope](#toc-pushing-a-variable-declaration-to-a-parent-scope)
+      * [Rename a binding and its references](#toc-rename-a-binding-and-its-references)
   * [플러그인 옵션](#toc-plugin-options)
   * [노드 만들기(Building Nodes)](#toc-building-nodes)
   * [모범 사례](#toc-best-practices) 
@@ -1117,9 +1118,30 @@ sebmck === dork;
 
 ## <a id="toc-visiting"></a>방문하기(Visiting)
 
-### <a id="toc-check-if-a-node-is-a-certain-type"></a>노드가 어떤 type인지 확인하자
+### <a id="toc-get-the-path-of-a-sub-node"></a>Get the Path of Sub-Node
 
-노드 타입을 확인하기 원한다면, 우선 이런 방법을 쓸 수 있습니다:
+To access an AST node's property you normally access the node and then the property. `path.node.property`
+
+```js
+BinaryExpression(path) {
+  path.node.left;
+}
+```
+
+If you need to access the path of that property instead, use the `get` method of a path, passing in the string to the property.
+
+```js
+BinaryExpression(path) {
+  path.get('left');
+}
+Program(path) {
+  path.get('body[0]');
+}
+```
+
+### <a id="toc-check-if-a-node-is-a-certain-type"></a>Check if a node is a certain type
+
+If you want to check what the type of a node is, the preferred way to do so is:
 
 ```js
 BinaryExpression(path) {
@@ -1129,7 +1151,7 @@ BinaryExpression(path) {
 }
 ```
 
-또한 해당 노드의 속성에 대해 얕은 검사(shallow check) 를 할 수도 있습니다.
+You can also do a shallow check for properties on that node:
 
 ```js
 BinaryExpression(path) {
@@ -1139,7 +1161,7 @@ BinaryExpression(path) {
 }
 ```
 
-이 코드는 아래의 코드와 똑같은 기능을 합니다.
+This is functionally equivalent to:
 
 ```js
 BinaryExpression(path) {
@@ -1153,7 +1175,7 @@ BinaryExpression(path) {
 }
 ```
 
-### <a id="toc-check-if-an-identifier-is-referenced"></a>식별자가 참조인지를 확인하자
+### <a id="toc-check-if-an-identifier-is-referenced"></a>Check if an identifier is referenced
 
 ```js
 Identifier(path) {
@@ -1163,7 +1185,7 @@ Identifier(path) {
 }
 ```
 
-또는:
+Alternatively:
 
 ```js
 Identifier(path) {
@@ -1175,7 +1197,7 @@ Identifier(path) {
 
 ## <a id="toc-manipulation"></a>조작(Manipulation)
 
-### <a id="toc-replacing-a-node"></a>노드 교체하기
+### <a id="toc-replacing-a-node"></a>Replacing a node
 
 ```js
 BinaryExpression(path) {
@@ -1192,7 +1214,7 @@ BinaryExpression(path) {
   }
 ```
 
-### <a id="toc-replacing-a-node-with-multiple-nodes"></a>노드 하나를 여러개의 노드로 교체하기
+### <a id="toc-replacing-a-node-with-multiple-nodes"></a>Replacing a node with multiple nodes
 
 ```js
 ReturnStatement(path) {
@@ -1215,7 +1237,7 @@ ReturnStatement(path) {
 
 > **주의:** 하나의 expression을 여러개의 노드로 대체할땐, 반드시 statements 여야 합니다. Babel 은 노드를 변환할때 휴리스틱(heuristics) 방법을 광범위하게 사용하는데, 이를 지키지 않으면 매우 이상한(crazy) 변환들이 엄청나게 발생 할 수도 있기 때문입니다.
 
-### <a id="toc-replacing-a-node-with-a-source-string"></a>노드를 소스 코드로 교체하기
+### <a id="toc-replacing-a-node-with-a-source-string"></a>Replacing a node with a source string
 
 ```js
 FunctionDeclaration(path) {
@@ -1235,7 +1257,7 @@ FunctionDeclaration(path) {
 
 > **주의:** 동적 소스 코드 문자열을 사용하지 않는한 이 API는 권장하지 않지만, 방문자 밖에서 코드를 분석할 수 있는 효율적인 방법입니다.
 
-### <a id="toc-inserting-a-sibling-node"></a>형제 노드(sibling node) 삽입하기
+### <a id="toc-inserting-a-sibling-node"></a>Inserting a sibling node
 
 ```js
 FunctionDeclaration(path) {
@@ -1254,7 +1276,7 @@ FunctionDeclaration(path) {
 
 > **주의:** 반드시 statement 또는 statement의 array 어야 합니다. [하나의 노드를 여러 노드로 대체하기](#replacing-a-node-with-multiple-nodes)에서 언급했던 같은 휴리스틱 방식을 사용합니다..
 
-### <a id="toc-removing-a-node"></a>노드 삭제하기
+### <a id="toc-removing-a-node"></a>Removing a node
 
 ```js
 FunctionDeclaration(path) {
@@ -1268,7 +1290,7 @@ FunctionDeclaration(path) {
 - }
 ```
 
-### <a id="toc-replacing-a-parent"></a>부모 교체하기
+### <a id="toc-replacing-a-parent"></a>Replacing a parent
 
 ```js
 BinaryExpression(path) {
@@ -1285,7 +1307,7 @@ BinaryExpression(path) {
   }
 ```
 
-### <a id="toc-removing-a-parent"></a>부모 삭제하기
+### <a id="toc-removing-a-parent"></a>Removing a parent
 
 ```js
 BinaryExpression(path) {
@@ -1301,7 +1323,7 @@ BinaryExpression(path) {
 
 ## <a id="toc-scope"></a>범위(Scope)
 
-### <a id="toc-checking-if-a-local-variable-is-bound"></a>지역 변수가 scope 안에 있는지 확인하기
+### <a id="toc-checking-if-a-local-variable-is-bound"></a>Checking if a local variable is bound
 
 ```js
 FunctionDeclaration(path) {
@@ -1311,9 +1333,9 @@ FunctionDeclaration(path) {
 }
 ```
 
-이 코드는 scope 트리를 상위로 거슬러 올라가며 특정 바인딩이 있는지 확인 할 것입니다. (역자주: javascript 에서는 상위 scope에 있는 변수에도 접근 가능)
+This will walk up the scope tree and check for that particular binding.
 
-또한 scope **자신이** 가지고 있는 바인딩인지 검사 할 수도 있습니다.
+You can also check if a scope has its **own** binding:
 
 ```js
 FunctionDeclaration(path) {
@@ -1323,9 +1345,9 @@ FunctionDeclaration(path) {
 }
 ```
 
-### <a id="toc-generating-a-uid"></a>UID 생성하기
+### <a id="toc-generating-a-uid"></a>Generating a UID
 
-이 코드는 어떤 지역 변수 선언과도 충돌하지 않는 식별자를 생성할 것입니다.
+This will generate an identifier that doesn't collide with any locally defined variables.
 
 ```js
 FunctionDeclaration(path) {
@@ -1336,9 +1358,9 @@ FunctionDeclaration(path) {
 }
 ```
 
-### <a id="toc-pushing-a-variable-declaration-to-a-parent-scope"></a>부모 스코프에 변수 선언 밀어 넣기
+### <a id="toc-pushing-a-variable-declaration-to-a-parent-scope"></a>Pushing a variable declaration to a parent scope
 
-때로는 `VariableDeclaration` 을 밀어넣어 할당하고 하고 싶을 수 있습니다.
+Sometimes you may want to push a `VariableDeclaration` so you can assign to it.
 
 ```js
 FunctionDeclaration(path) {
@@ -1356,7 +1378,7 @@ FunctionDeclaration(path) {
 + };
 ```
 
-### <a id="toc-rename-a-binding-and-its-references"></a>바인딩과 참조의 이름 변경하기
+### <a id="toc-rename-a-binding-and-its-references"></a>Rename a binding and its references
 
 ```js
 FunctionDeclaration(path) {
@@ -1372,7 +1394,7 @@ FunctionDeclaration(path) {
   }
 ```
 
-또는, 고유 식별자를 생성하여 바인딩의 이름을 변경할 수 있습니다.
+Alternatively, you can rename a binding to a generated unique identifier:
 
 ```js
 FunctionDeclaration(path) {
@@ -1392,7 +1414,7 @@ FunctionDeclaration(path) {
 
 # <a id="toc-plugin-options"></a>플러그인 옵션
 
-플러그인에 사용자정의 기능을 넣기 원한다면 유저가 명시할 수 있는 특정 옵션을 허용 해 줄수 있습니다:
+If you would like to let your users customize the behavior of your Babel plugin you can accept plugin specific options which users can specify like this:
 
 ```js
 {
@@ -1405,7 +1427,7 @@ FunctionDeclaration(path) {
 }
 ```
 
-이 옵션들은 `state` 객체를 통해 플러그인 방문자로 전달됩니다.
+These options then get passed into plugin visitors through the `state` object:
 
 ```js
 export default function({ types: t }) {
@@ -1420,19 +1442,19 @@ export default function({ types: t }) {
 }
 ```
 
-이 옵션들은 해당 플러그인에 한정되며 다른 플러그인에서 접근 할 수 없습니다.
+These options are plugin-specific and you cannot access options from other plugins.
 
 * * *
 
 # <a id="toc-building-nodes"></a>노드 만들기(Building Nodes)
 
-변환 작업을 할때 노드들을 AST에 삽입하고 싶을때가 자주 있었을 것입니다. 이전에 언급한 것처럼, [`babel-types`](#babel-types)패키지 안의 [builder](#builder)메소드를 사용하여 할 수 있습니다.
+When writing transformations you'll often want to build up some nodes to insert into the AST. As mentioned previously, you can do this using the [builder](#builder) methods in the [`babel-types`](#babel-types) package.
 
-빌더의 메소드 이름은 간단하게 첫 문자가 소문자 라는 것만 제외하고는 만들고 싶은 노드의 타입 이름입니다. 예를 들어 `MemberExpression` 을 만들고 싶다면 `t.memberExpression(...)`을 사용하면 됩니다..
+The method name for a builder is simply the name of the node type you want to build except with the first letter lowercased. For example if you wanted to build a `MemberExpression` you would use `t.memberExpression(...)`.
 
-이 빌더들의 인자들은 노드 정의에 의해 결정됩니다. 이 정의와 관련해서 좀 더 가독성이 뛰어난 문서를 작성 중이긴 하지만 그때까진 일단 [여기](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions)서 모든 내용을 볼 수 있습니다..
+The arguments of these builders are decided by the node definition. There's some work that's being done to generate easy-to-read documentation on the definitions, but for now they can all be found [here](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions).
 
-노드 정의는 아래와 같이 생겼습니다:
+A node definition looks like the following:
 
 ```js
 defineType("MemberExpression", {
@@ -1456,9 +1478,9 @@ defineType("MemberExpression", {
 });
 ```
 
-여기에서 특정 노드 타입에 대해 어떻게 만들고, 탐색하고, 검사하는 방법을 포함한 모두 정보를 알수 있습니다.
+Here you can see all the information about this particular node type, including how to build it, traverse it, and validate it.
 
-`builder`속성을 보면, builder 메소드(`t.memberExpression`) 를 호출할때 필요한 3개의 인자를 볼수 있습니다.).
+By looking at the `builder` property, you can see the 3 arguments that will be needed to call the builder method (`t.memberExpression`).
 
 ```js
 builder: ["object", "property", "computed"],
@@ -1467,7 +1489,7 @@ builder: ["object", "property", "computed"],
 > 이 노드는 `builder` 배열이 포함하는 것보다 더 많은 커스터마이징한 당신만의 속성을 가질수 있다는 것을 주의하세요. builder 가 너무 많은 인자를 가지는 것을 방지하기 위함입니다. 이러한 경우엔 수동으로 속성을 셋팅 해줘야 합니다. `ClassMethod<0>의 예제입니다.</p>
 </blockquote>
 
-<p><code>fields`객체에서 builder 인자들을 위한 validation 을 확인할 수 있습니다.</p> 
+<p>You can see the validation for the builder arguments with the <code>fields` object.</p> 
 > 
 > ```js
 fields: {
@@ -1486,9 +1508,9 @@ fields: {
 }
 ```
 
-`object`는 `Expression`이 되야하고, `property`는 member expression이 `computed` 인지 아닌지에 따라 `Expression` 또는 ` Identifier`가 되야하며, `computed`는 간단하게 기본값을 `false`로 갖는 boolean 인것을 볼 수 있습니다..
+You can see that `object` needs to be an `Expression`, `property` either needs to be an `Expression` or an `Identifier` depending on if the member expression is `computed` or not and `computed` is simply a boolean that defaults to `false`.
 
-`MemberExpression`을 아래와 같이 구현할 수 있습니다:
+So we can construct a `MemberExpression` by doing the following:
 
 ```js
 t.memberExpression(
@@ -1498,21 +1520,21 @@ t.memberExpression(
 );
 ```
 
-이것의 결과는:
+Which will result in:
 
 ```js
 object.property
 ```
 
-하지만, `object` 는 `Expression` 이어야한다고 말했는데 왜 `Identifier` 로 검사하는 걸까요?
+However, we said that `object` needed to be an `Expression` so why is `Identifier` valid?
 
-`Identifier`의 정의를 잘 보면 `aliases`속성을 가지고 있는 것을 볼수 있는데 고로 이는 동시에 expression 이기도 합니다.
+Well if we look at the definition of `Identifier` we can see that it has an `aliases` property which states that it is also an expression.
 
 ```js
 aliases: ["Expression", "LVal"],
 ```
 
-그래서 `MemberExpression`이 `Expression` 타입이기 때문에, 또 다른 `MemberExpression`의 `object` 로 셋팅 할수 있습니다.
+So since `MemberExpression` is a type of `Expression`, we could set it as the `object` of another `MemberExpression`:
 
 ```js
 t.memberExpression(
@@ -1524,15 +1546,15 @@ t.memberExpression(
 )
 ```
 
-이것의 결과는:
+Which will result in:
 
 ```js
 member.expression.property
 ```
 
-모든 노드 타입의 대해 builder 메소드 특징을 기억해야하는것은 매우 별로입니다. 그래서 그들이 어떻게 노드 정의로부터 생성되는지를 이해하는데 시간을 투자해야합니다.
+It's very unlikely that you will ever memorize the builder method signatures for every node type. So you should take some time and understand how they are generated from the node definitions.
 
-실제 모든 [정의](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions) 들과 [문서들을](https://github.com/babel/babel/blob/master/doc/ast/spec.md) 확인할 수 있습니다.
+You can find all of the actual [definitions here](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions) and you can see them [documented here](https://github.com/babel/babel/blob/master/doc/ast/spec.md)
 
 * * *
 
@@ -1542,13 +1564,13 @@ member.expression.property
 
 ## <a id="toc-avoid-traversing-the-ast-as-much-as-possible"></a>가능한 AST 탐색을 피하라
 
-AST를 탐색하는 것은 고비용이며, 의도치 않게 필요한 것 보다 더 많은 탐색을 하기 쉽습니다. 이런 추가 수행이 수천 또는 수만번이 될 수 있습니다.
+Traversing the AST is expensive, and it's easy to accidentally traverse the AST more than necessary. This could be thousands if not tens of thousands of extra operations.
 
-Babel은 단일 탐색으로 모든 것을 할 수 있다면 방문자들을 병합(merging) 함으로써, 가능한 이것을 최적화 합니다.
+Babel optimizes this as much as possible, merging visitors together if it can in order to do everything in a single traversal.
 
 ### <a id="toc-merge-visitors-whenever-possible"></a>가능하다면 방문자들을 병합(merge) 하라
 
-방문자를 작성할때, 논리적으로 필요한 여러 위치에서 `path.traverse`를 호출하고 싶을 수 있습니다.
+When writing visitors, it may be tempting to call `path.traverse` in multiple places where they are logically necessary.
 
 ```js
 path.traverse({
@@ -1564,7 +1586,7 @@ path.traverse({
 });
 ```
 
-그러나, 오직 1번만 실행되는 단일 방문자로 작성하는게 더 좋습니다. 그렇지 않으면 이유없이 같은 트리를 여러번 탐색 할 수 있습니다.
+However, it is far better to write these as a single visitor that only gets run once. Otherwise you are traversing the same tree multiple times for no reason.
 
 ```js
 path.traverse({
@@ -1579,7 +1601,7 @@ path.traverse({
 
 ### <a id="toc-do-not-traverse-when-manual-lookup-will-do"></a>수동 조회할 땐 탐색하지 마라
 
-특정 노드 타입을 찾을때 역시 `path.traverse` 을 호출하고 싶을 것입니다.
+It may also be tempting to call `path.traverse` when looking for a particular node type.
 
 ```js
 const visitorOne = {
@@ -1595,7 +1617,7 @@ const MyVisitor = {
 };
 ```
 
-그러나, 뭔가 특정하고 얕은 검사로 찾을수 있는 것을 찾고 있다면, 비싼 탐색을 수행하지 않고 수동으로 필요한 노드를 수동으로 찾을수 있는 좋은 기회입니다.
+However, if you are looking for something specific and shallow, there is a good chance you can manually lookup the nodes you need without performing a costly traversal.
 
 ```js
 const MyVisitor = {
@@ -1609,7 +1631,7 @@ const MyVisitor = {
 
 ## <a id="toc-optimizing-nested-visitors"></a>중첩된 방문자들 최적화하기
 
-방문자들을 중첩하고 싶을때, 코드 안에 작성하는 것도 일리가 있습니다.
+When you are nesting visitors, it might make sense to write them nested in your code.
 
 ```js
 const MyVisitor = {
@@ -1623,7 +1645,7 @@ const MyVisitor = {
 };
 ```
 
-하지만, 이는 위에서 `FunctionDeclaration()`가 호출 될때마다 새로운 방문자 객체를 생성하며, 이때마다 Babel이 엄청나게 일을하며 유효성을 확인해야합니다. 이건 매우 고비용이라, 방문자를 끌어 올리는 것(hoist up) 이 낫습니다.
+However, this creates a new visitor object everytime `FunctionDeclaration()` is called above, which Babel then needs to explode and validate every single time. This can be costly, so it is better to hoist the visitor up.
 
 ```js
 const visitorOne = {
@@ -1639,7 +1661,7 @@ const MyVisitor = {
 };
 ```
 
-내부 방문자 안에 어떤 상태(state) 를 필요로 하는 경우, 다음과 같이:
+If you need some state within the nested visitor, like so:
 
 ```js
 const MyVisitor = {
@@ -1657,7 +1679,7 @@ const MyVisitor = {
 };
 ```
 
-`traverse()`메소드에 상태를 넘겨줄 수 잇고 방문자안의 `this`를 통해 접근 할수 있습니다.
+You can pass it in as state to the `traverse()` method and have access to it on `this` in the visitor.
 
 ```js
 const visitorOne = {
@@ -1678,9 +1700,9 @@ const MyVisitor = {
 
 ## <a id="toc-being-aware-of-nested-structures"></a>중첩된 구조(nested structures) 인지하기
 
-때로는 어떤 변환(transform) 에 대해 생각할때, 주어진 구조가 중첩 구조일 일수 있다는 것을 망각할수 있습니다.
+Sometimes when thinking about a given transform, you might forget that the given structure can be nested.
 
-예를 들어, `Foo` `ClassDeclaration` 으로부터 `constructor` `ClassMethod` 를 조회하기 원한다고 가정해봅시다..
+For example, imagine we want to lookup the `constructor` `ClassMethod` from the `Foo` `ClassDeclaration`.
 
 ```js
 class Foo {
@@ -1708,7 +1730,7 @@ const MyVisitor = {
 }
 ```
 
-클래스들이 중첩되어 있을수 있고 위의 코드대로 탐색을 할때, 사용하 중첩된`constructor` 까지 도달할 수 있다는 사실을 망각하고 있습니다.
+We are ignoring the fact that classes can be nested and using the traversal above we will hit a nested `constructor` as well:
 
 ```js
 class Foo {

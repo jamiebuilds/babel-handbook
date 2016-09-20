@@ -37,21 +37,22 @@
   * [Γράφοντας το πρώτο σας Babel Plugin](#toc-writing-your-first-babel-plugin)
   * [Λειτουργίες μετατροπής](#toc-transformation-operations) 
       * [Επισκεψιμότητα](#toc-visiting)
-      * [Ελέγξτε αν ο κόμβος ανήκει σε κάποιο συγκεκριμένο είδος](#toc-check-if-a-node-is-a-certain-type)
-      * [Ελέγξτε αν αναφέρεται κάποια άλλη ταυτοποίηση](#toc-check-if-an-identifier-is-referenced)
-      * [Χειρισμός](#toc-manipulation)
-      * [Αντικατάσταση κόμβου](#toc-replacing-a-node)
-      * [Αντικατάσταση κόμβου με πολλούς κόμβους](#toc-replacing-a-node-with-multiple-nodes)
-      * [Αντικατάσταση κόμβου με πηγαία στοιχειοσειρά](#toc-replacing-a-node-with-a-source-string)
-      * [Εισαγωγή όμοιου κόμβου](#toc-inserting-a-sibling-node)
-      * [Αφαίρεση κόμβου](#toc-removing-a-node)
-      * [Αντικατάσταση κόμβου](#toc-replacing-a-parent)
-      * [Αφαίρεση γονικής μονάδας](#toc-removing-a-parent)
-      * [Πλαίσια](#toc-scope)
-      * [Έλεγχος σύνδεσης τοπικής μεταβλητής ](#toc-checking-if-a-local-variable-is-bound)
-      * [Κατασκευή αναγνωριστικού χρήστη](#toc-generating-a-uid)
-      * [Πιέστε τη δήλωση μεταβλητής σε ένα γονικό πεδίο](#toc-pushing-a-variable-declaration-to-a-parent-scope)
-      * [Μετονομάσετε μια δέσμευση και τις αναφορές της](#toc-rename-a-binding-and-its-references)
+      * [Get the Path of Sub-Node](#toc-get-the-path-of-a-sub-node)
+      * [Check if a node is a certain type](#toc-check-if-a-node-is-a-certain-type)
+      * [Check if an identifier is referenced](#toc-check-if-an-identifier-is-referenced)
+      * [Manipulation](#toc-manipulation)
+      * [Replacing a node](#toc-replacing-a-node)
+      * [Replacing a node with multiple nodes](#toc-replacing-a-node-with-multiple-nodes)
+      * [Replacing a node with a source string](#toc-replacing-a-node-with-a-source-string)
+      * [Inserting a sibling node](#toc-inserting-a-sibling-node)
+      * [Removing a node](#toc-removing-a-node)
+      * [Replacing a parent](#toc-replacing-a-parent)
+      * [Removing a parent](#toc-removing-a-parent)
+      * [Scope](#toc-scope)
+      * [Checking if a local variable is bound](#toc-checking-if-a-local-variable-is-bound)
+      * [Generating a UID](#toc-generating-a-uid)
+      * [Pushing a variable declaration to a parent scope](#toc-pushing-a-variable-declaration-to-a-parent-scope)
+      * [Rename a binding and its references](#toc-rename-a-binding-and-its-references)
   * [Επιλογές βυσμάτων (plugins)](#toc-plugin-options)
   * [Χτίζοντας Nodes](#toc-building-nodes)
   * [Βέλτιστες πρακτικές](#toc-best-practices) 
@@ -1117,9 +1118,30 @@ sebmck === dork;
 
 ## <a id="toc-visiting"></a>Visiting
 
-### <a id="toc-check-if-a-node-is-a-certain-type"></a>Ελέγξτε αν το node ανήκει σε κάποιο συγκεκριμένο είδος
+### <a id="toc-get-the-path-of-a-sub-node"></a>Get the Path of Sub-Node
 
-Αν θέλετε να ελέγξετε τι τον τύπο node, ο προτιμώμενος τρόπος για να γίνει αυτό είναι:
+To access an AST node's property you normally access the node and then the property. `path.node.property`
+
+```js
+BinaryExpression(path) {
+  path.node.left;
+}
+```
+
+If you need to access the path of that property instead, use the `get` method of a path, passing in the string to the property.
+
+```js
+BinaryExpression(path) {
+  path.get('left');
+}
+Program(path) {
+  path.get('body[0]');
+}
+```
+
+### <a id="toc-check-if-a-node-is-a-certain-type"></a>Check if a node is a certain type
+
+If you want to check what the type of a node is, the preferred way to do so is:
 
 ```js
 BinaryExpression(path) {
@@ -1129,7 +1151,7 @@ BinaryExpression(path) {
 }
 ```
 
-Μπορείτε επίσης να κάνετε ένα ρηχό έλεγχο για ιδιότητες σε αυτό το node:
+You can also do a shallow check for properties on that node:
 
 ```js
 BinaryExpression(path) {
@@ -1139,7 +1161,7 @@ BinaryExpression(path) {
 }
 ```
 
-Αυτό είναι λειτουργικά ισοδύναμο με:
+This is functionally equivalent to:
 
 ```js
 BinaryExpression(path) {
@@ -1153,7 +1175,7 @@ BinaryExpression(path) {
 }
 ```
 
-### <a id="toc-check-if-an-identifier-is-referenced"></a>Ελέγξτε αν αναφέρεται ένας identifier
+### <a id="toc-check-if-an-identifier-is-referenced"></a>Check if an identifier is referenced
 
 ```js
 Identifier(path) {
@@ -1163,7 +1185,7 @@ Identifier(path) {
 }
 ```
 
-Εναλλακτικά:
+Alternatively:
 
 ```js
 Identifier(path) {
@@ -1175,7 +1197,7 @@ Identifier(path) {
 
 ## <a id="toc-manipulation"></a>Manipulation
 
-### <a id="toc-replacing-a-node"></a>Αντικατάσταση ενός node
+### <a id="toc-replacing-a-node"></a>Replacing a node
 
 ```js
 BinaryExpression(path) {
@@ -1192,7 +1214,7 @@ BinaryExpression(path) {
   }
 ```
 
-### <a id="toc-replacing-a-node-with-multiple-nodes"></a>Αντικατάσταση ενός node με πολλά nodes
+### <a id="toc-replacing-a-node-with-multiple-nodes"></a>Replacing a node with multiple nodes
 
 ```js
 ReturnStatement(path) {
@@ -1215,7 +1237,7 @@ ReturnStatement(path) {
 
 > **Σημείωση:** Όταν αντικαθιστάτε μια έκφραση (expression) με πολλαπλά nodes, πρέπει να είναι statements. Αυτό συμβαίνει επειδή το Babel χρησιμοποιεί heuristics εκτενώς κατά την αντικατάσταση των nodes που σημαίνει ότι μπορείτε να κάνετε κάποιους αρκετά τρελούς μετασχηματισμούς που διαφορετικά θα ήταν εξαιρετικά δύσκολο.
 
-### <a id="toc-replacing-a-node-with-a-source-string"></a>Αντικατάσταση node με πηγαία στοιχειοσειρά
+### <a id="toc-replacing-a-node-with-a-source-string"></a>Replacing a node with a source string
 
 ```js
 FunctionDeclaration(path) {
@@ -1235,7 +1257,7 @@ FunctionDeclaration(path) {
 
 > **Σημείωση:** Δεν συνιστάται να χρησιμοποιείτε αυτό το API, εκτός αν ασχολείστε με δυναμικά source strings. Είναι πιο αποτελεσματικό να αναλύετε τον κώδικα έξω από τον visitor.
 
-### <a id="toc-inserting-a-sibling-node"></a>Εισαγωγή sibling node
+### <a id="toc-inserting-a-sibling-node"></a>Inserting a sibling node
 
 ```js
 FunctionDeclaration(path) {
@@ -1254,7 +1276,7 @@ FunctionDeclaration(path) {
 
 > **Σημείωση:** Αυτό πρέπει πάντα να είναι μια δήλωση(statement) ή μια σειρά από δηλώσεις (array of statements). Αυτό χρησιμοποιεί το ίδιο heuristics που αναφέραμε στην [αντικατάσταση ενός node με πολλα nodes](#replacing-a-node-with-multiple-nodes).
 
-### <a id="toc-removing-a-node"></a>Αφαίρεση ενός node
+### <a id="toc-removing-a-node"></a>Removing a node
 
 ```js
 FunctionDeclaration(path) {
@@ -1268,7 +1290,7 @@ FunctionDeclaration(path) {
 - }
 ```
 
-### <a id="toc-replacing-a-parent"></a>Αντικατάσταση ενός γονέα
+### <a id="toc-replacing-a-parent"></a>Replacing a parent
 
 ```js
 BinaryExpression(path) {
@@ -1285,7 +1307,7 @@ BinaryExpression(path) {
   }
 ```
 
-### <a id="toc-removing-a-parent"></a>Αφαίρεση ενός γονέα
+### <a id="toc-removing-a-parent"></a>Removing a parent
 
 ```js
 BinaryExpression(path) {
@@ -1301,7 +1323,7 @@ BinaryExpression(path) {
 
 ## <a id="toc-scope"></a>Scope
 
-### <a id="toc-checking-if-a-local-variable-is-bound"></a>Έλεγχος σύνδεσης τοπικής μεταβλητής 
+### <a id="toc-checking-if-a-local-variable-is-bound"></a>Checking if a local variable is bound
 
 ```js
 FunctionDeclaration(path) {
@@ -1311,9 +1333,9 @@ FunctionDeclaration(path) {
 }
 ```
 
-Αυτό θα περάσει το scope δέντρο και θα ελέγξει για τη σθγκεκριμένη σύνδεση.
+This will walk up the scope tree and check for that particular binding.
 
-Μπορείτε επίσης να ελέγξετε εάν ένα πεδίο έχει τη **δική** του δεσμευτική:
+You can also check if a scope has its **own** binding:
 
 ```js
 FunctionDeclaration(path) {
@@ -1323,9 +1345,9 @@ FunctionDeclaration(path) {
 }
 ```
 
-### <a id="toc-generating-a-uid"></a>Κατασκευή ενός UID
+### <a id="toc-generating-a-uid"></a>Generating a UID
 
-Αυτό θα δημιουργήσει ένα identifier που δεν θα έρχεται σε διένεξη με οποιαδήποτε τοπικά καθορισμένη μεταβλητή.
+This will generate an identifier that doesn't collide with any locally defined variables.
 
 ```js
 FunctionDeclaration(path) {
@@ -1336,9 +1358,9 @@ FunctionDeclaration(path) {
 }
 ```
 
-### <a id="toc-pushing-a-variable-declaration-to-a-parent-scope"></a>Περνώντας τη δήλωση μεταβλητής σε ένα γονικό state
+### <a id="toc-pushing-a-variable-declaration-to-a-parent-scope"></a>Pushing a variable declaration to a parent scope
 
-Μερικές φορές μπορεί να θέλετε να ωθήσετε ένα `VariableDeclaration`, έτσι ώστε να μπορείτε να το αντιστοιχίσετε σε αυτό.
+Sometimes you may want to push a `VariableDeclaration` so you can assign to it.
 
 ```js
 FunctionDeclaration(path) {
@@ -1356,7 +1378,7 @@ FunctionDeclaration(path) {
 + };
 ```
 
-### <a id="toc-rename-a-binding-and-its-references"></a>Μετονομάσετε μια δέσμευση και τις αναφορές της
+### <a id="toc-rename-a-binding-and-its-references"></a>Rename a binding and its references
 
 ```js
 FunctionDeclaration(path) {
@@ -1372,7 +1394,7 @@ FunctionDeclaration(path) {
   }
 ```
 
-Εναλλακτικά, μπορείτε να μετονομάσετε μια σύνδεση σε ένα δημιουργημένο μοναδικό identifier:
+Alternatively, you can rename a binding to a generated unique identifier:
 
 ```js
 FunctionDeclaration(path) {
@@ -1392,7 +1414,7 @@ FunctionDeclaration(path) {
 
 # <a id="toc-plugin-options"></a>Επιλογές βυσμάτων (plugins)
 
-Αν θέλετε να αφήσετε τους χρήστες σας να επηρεάζουν τη συμπεριφορά του Babel plugin σας μπορείτε να αποδεχτείτε συγκεκριμένες επιλογές plugin που οι χρήστες μπορούν να διευκρινίσουν σαν αυτό:
+If you would like to let your users customize the behavior of your Babel plugin you can accept plugin specific options which users can specify like this:
 
 ```js
 {
@@ -1405,7 +1427,7 @@ FunctionDeclaration(path) {
 }
 ```
 
-Αυτές οι επιλογές στη συνέχεια ππερνάνε plugin visitors μέσω του αντικειμένου του `state`:
+These options then get passed into plugin visitors through the `state` object:
 
 ```js
 export default function({ types: t }) {
@@ -1420,19 +1442,19 @@ export default function({ types: t }) {
 }
 ```
 
-Οι επιλογές αυτές είναι συγκεκριμένες για τα plugin και δεν έχετε πρόσβαση στις επιλογές από άλλα plugins.
+These options are plugin-specific and you cannot access options from other plugins.
 
 * * *
 
 # <a id="toc-building-nodes"></a>Χτίζοντας Nodes
 
-Όταν γράφετε μετασχηματισμούς συχνά θα θέλετε να δημιουργείτε ορισμένα nodes για να τα εισάγετε στο AST. Όπως αναφέρθηκε προηγουμένως, μπορείτε να το κάνετε αυτό χρησιμοποιώντας τις μεθόδους [builder](#builder) στο πακέτο [`babel-types`](#babel-types).
+When writing transformations you'll often want to build up some nodes to insert into the AST. As mentioned previously, you can do this using the [builder](#builder) methods in the [`babel-types`](#babel-types) package.
 
-Το όνομα μεθόδου για ένα builder είναι απλώς το όνομα του τύπου του node που θέλετε να χτίσετε εκτός από το πρώτο γράμμα που δεν το βάζετε κεφαλαίο. Για παράδειγμα αν θέλετε να χτίσετε ένα `MemberExpression` μπορείτε να χρησιμοποιήσετε `t.memberExpression(...)`.
+The method name for a builder is simply the name of the node type you want to build except with the first letter lowercased. For example if you wanted to build a `MemberExpression` you would use `t.memberExpression(...)`.
 
-Τα arguments αυτών των builders αποφασίζονται από τον ορισμό του node. Υπάρχει κάποια εργασία που γίνεται για τη δημιουργία ευκολοδιάβαστης τεκμηρίωσης σχετικά με τους ορισμούς, αλλά για τώρα μπορούν όλα να βρεθούν [εδώ](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions).
+The arguments of these builders are decided by the node definition. There's some work that's being done to generate easy-to-read documentation on the definitions, but for now they can all be found [here](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions).
 
-Ένας node ορισμός μοιάζει με το ακόλουθο:
+A node definition looks like the following:
 
 ```js
 defineType("MemberExpression", {
@@ -1456,9 +1478,9 @@ defineType("MemberExpression", {
 });
 ```
 
-Εδώ μπορείτε να δείτε όλες τις πληροφορίες σχετικά με αυτό το node type, συμπεριλαμβανομένου του πώς να το χτίσετε, να τον διαπεράσετε και να το επικυρώσετε.
+Here you can see all the information about this particular node type, including how to build it, traverse it, and validate it.
 
-Εξετάζοντας τον `builder`, μπορείτε να δείτε 3 arguments που θα χρειαστείτε για να καλέσετε τη builder μέθοδο (`t.memberExpression`).
+By looking at the `builder` property, you can see the 3 arguments that will be needed to call the builder method (`t.memberExpression`).
 
 ```js
 builder: ["object", "property", "computed"],
@@ -1466,7 +1488,7 @@ builder: ["object", "property", "computed"],
 
 > Σημειώστε ότι μερικές φορές υπάρχουν περισσότερα propperties που μπορείτε να προσαρμόσετε στο node σε σχέση με αυτά που περιέχει η σειρά `builder`. Αυτό είναι για να κρατήσουμε τον builder μακριά από το να έχει πολλά arguments. Σε αυτές τις περιπτώσεις θα πρέπει να ρυθμίσετε με μη αυτόματο τρόπο τις ιδιότητες. Ένα παράδειγμα αυτού είναι το [`ClassMethod`](https://github.com/babel/babel/blob/bbd14f88c4eea88fa584dd877759dd6b900bf35e/packages/babel-types/src/definitions/es2015.js#L238-L276).
 
-Μπορείτε να δείτε την επικύρωση για τα builder arguments με το `fields` αντικείμενο.
+You can see the validation for the builder arguments with the `fields` object.
 
 ```js
 fields: {
@@ -1485,9 +1507,9 @@ fields: {
 }
 ```
 
-Μπορείτε να δείτε ότι `το αντικείμενο` πρέπει να είναι μια `Expression`, `property` είτε πρέπει να είναι μια `Expression` ή ένα `Identifier` ανάλογα με εάν το μέλος έκφραση είναι `computed` ή όχι και `computed` είναι απλά μια τιμή boolean που έχει από προεπιλογή στην τιμή `false`.
+You can see that `object` needs to be an `Expression`, `property` either needs to be an `Expression` or an `Identifier` depending on if the member expression is `computed` or not and `computed` is simply a boolean that defaults to `false`.
 
-Έτσι μπορούμε να κατασκευάσουμε ένα `MemberExpression`, κάνοντας το εξής:
+So we can construct a `MemberExpression` by doing the following:
 
 ```js
 t.memberExpression(
@@ -1497,21 +1519,21 @@ t.memberExpression(
 );
 ```
 
-Το οποίο θα οδηγήσει σε:
+Which will result in:
 
 ```js
 object.property
 ```
 
-Ωστόσο, έχουμε πει ότι το `object` έπρεπε να είναι ένα `Expression`, οπότε γιατί είναι το `Identifier` έγκυρο;
+However, we said that `object` needed to be an `Expression` so why is `Identifier` valid?
 
-Λοιπόν, αν κοιτάξουμε τον ορισμό του `Identifier` μπορούμε να δούμε ότι έχει μια ιδιότητα `aliases` που δηλώνει ότι είναι επίσης ένα expression.
+Well if we look at the definition of `Identifier` we can see that it has an `aliases` property which states that it is also an expression.
 
 ```js
 aliases: ["Expression", "LVal"],
 ```
 
-Έτσι δεδομένου ότι `MemberExpression` είναι ένα είδος `Expression`, μπορούμε να το ρυθμίσουμε ως `object` μιας άλλης `MemberExpression`:
+So since `MemberExpression` is a type of `Expression`, we could set it as the `object` of another `MemberExpression`:
 
 ```js
 t.memberExpression(
@@ -1523,15 +1545,15 @@ t.memberExpression(
 )
 ```
 
-Το οποίο θα οδηγήσει σε:
+Which will result in:
 
 ```js
 member.expression.property
 ```
 
-Είναι πολύ απίθανο ότι ποτέ θα απομνημονεύει τις υπογραφές των builder methods για κάθε node type. Έτσι θα πρέπει να πάρετε κάποιο χρόνο και να καταλάβετε πώς δημιουργούνται από τους ορισμούς του node.
+It's very unlikely that you will ever memorize the builder method signatures for every node type. So you should take some time and understand how they are generated from the node definitions.
 
-Μπορείτε να βρείτε όλους τους [ορισμούς εδώ](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions) και μπορείτε να τους δείτε [τεκμηριωμένους εδώ](https://github.com/babel/babel/blob/master/doc/ast/spec.md)
+You can find all of the actual [definitions here](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions) and you can see them [documented here](https://github.com/babel/babel/blob/master/doc/ast/spec.md)
 
 * * *
 
@@ -1541,13 +1563,13 @@ member.expression.property
 
 ## <a id="toc-avoid-traversing-the-ast-as-much-as-possible"></a>Αποφύγετε όσο το δυνατόν την διάσχιση των AST
 
-Το να διασχίζουμε το AST είναι ακριβό, και είναι εύκολο να διασχίσει το AST περισσότερο από όσο χρειάζεται. Αυτό θα μπορούσε να είναι χιλιάδες, αν όχι δεκάδες χιλιάδες επιπλέον λειτουργίες.
+Traversing the AST is expensive, and it's easy to accidentally traverse the AST more than necessary. This could be thousands if not tens of thousands of extra operations.
 
-Το Babel βελτιστοποιεί αυτό όσο πιο πολύ γίνεται, συγχωνεύοντας visitors μαζί αν μπορεί προκειμένου na γίνουν όλα σε μια ενιαία διάσχιση.
+Babel optimizes this as much as possible, merging visitors together if it can in order to do everything in a single traversal.
 
-### <a id="toc-merge-visitors-whenever-possible"></a>Συγχωνεύετε τους επισκέπτες οπότε είναι δυνατό
+### <a id="toc-merge-visitors-whenever-possible"></a>Συγχωνεύστε τους επισκέπτες οπότε είναι δυνατό
 
-Όταν γράφετε visitors, μπορεί να είναι δελεαστικό να καλέσετε `path.traverse` σε πολλά σημεία όπου είναι λογικά απαραίτητο.
+When writing visitors, it may be tempting to call `path.traverse` in multiple places where they are logically necessary.
 
 ```js
 path.traverse({
@@ -1563,7 +1585,7 @@ path.traverse({
 });
 ```
 
-Ωστόσο, είναι πολύ καλύτερο να τα γράφετε ως έναν ενιαίο επισκέπτη που εκτελείται μόνο μία φορά. Διαφορετικά διασχίζετε το ίδιο δέντρο πολλές φορές χωρίς λόγο.
+However, it is far better to write these as a single visitor that only gets run once. Otherwise you are traversing the same tree multiple times for no reason.
 
 ```js
 path.traverse({
@@ -1578,7 +1600,7 @@ path.traverse({
 
 ### <a id="toc-do-not-traverse-when-manual-lookup-will-do"></a>Μην εκτελείτε την διαδικασία διάσχισης όταν εκτελείται χειροκίνητη αναζήτηση
 
-Επίσης μπορεί να είναι δελεαστικό να καλέσετε `path.traverse` όταν ψάχνετε για ένα συγκεκριμένο node type.
+It may also be tempting to call `path.traverse` when looking for a particular node type.
 
 ```js
 const visitorOne = {
@@ -1594,7 +1616,7 @@ const MyVisitor = {
 };
 ```
 
-Ωστόσο, αν ψάχνετε για κάτι συγκεκριμένο και ρηχά, είναι μια καλή ευκαιρία να κάνετε μη αυτόματο lookup τα nodes που χρειάζεστε χωρίς να εκτελέσετε μια δαπανηρή διάσχιση.
+However, if you are looking for something specific and shallow, there is a good chance you can manually lookup the nodes you need without performing a costly traversal.
 
 ```js
 const MyVisitor = {
@@ -1608,7 +1630,7 @@ const MyVisitor = {
 
 ## <a id="toc-optimizing-nested-visitors"></a>Βελτιστοποίηση των ένθετων visitors
 
-Όταν κάνετε ένθεση επισκέπτες, θα μπορούσε να έχει νόημα να τους γράψετε ένθετα στον κώδικά σας.
+When you are nesting visitors, it might make sense to write them nested in your code.
 
 ```js
 const MyVisitor = {
@@ -1622,7 +1644,7 @@ const MyVisitor = {
 };
 ```
 
-Ωστόσο, αυτό δημιουργεί ένα νέο visitor object κάθε φορά που το `FunctionDeclaration()` καλείται παραπάνω, το οποίο το Babel θα πρέπει να εκραγεί για το να επικυρώνει κάθε φορά. Αυτό μπορεί να είναι δαπανηρό, οπότε είναι καλύτερο να υψώσουμε τον visitor.
+However, this creates a new visitor object everytime `FunctionDeclaration()` is called above, which Babel then needs to explode and validate every single time. This can be costly, so it is better to hoist the visitor up.
 
 ```js
 const visitorOne = {
@@ -1638,7 +1660,7 @@ const MyVisitor = {
 };
 ```
 
-Εάν χρειάζεστε κάποιο state στο εσωτερικό του ένθετου visitor, όπως:
+If you need some state within the nested visitor, like so:
 
 ```js
 const MyVisitor = {
@@ -1656,7 +1678,7 @@ const MyVisitor = {
 };
 ```
 
-Μπορείτε να το περάσετε ως state με τη μέθοδο `traverse()` και να έχουν πρόσβαση σε αυτό στο `this` στον επισκέπτη.
+You can pass it in as state to the `traverse()` method and have access to it on `this` in the visitor.
 
 ```js
 const visitorOne = {
@@ -1677,9 +1699,9 @@ const MyVisitor = {
 
 ## <a id="toc-being-aware-of-nested-structures"></a>Έχοντας επίγνωση των ένθετων δομών
 
-Μερικές φορές, όταν σκεφτόμαστε έναν δεδομένο μετασχηματισμό, μπορεί να ξεχνάμε ότι η συγκεκριμένη δομή μπορεί να είναι ένθετη.
+Sometimes when thinking about a given transform, you might forget that the given structure can be nested.
 
-Φανταστείτε για παράδειγμα, ότι θέλουμε να κάνουμε lookup του `constructor` `ClassMethod` από το `Foo` `ClassDeclaration`.
+For example, imagine we want to lookup the `constructor` `ClassMethod` from the `Foo` `ClassDeclaration`.
 
 ```js
 class Foo {
@@ -1707,7 +1729,7 @@ const MyVisitor = {
 }
 ```
 
-Αγνωούμε το γεγονός ότι οι τάξεις μπορούν να είναι ένθετες και χρησιμοποιώντας το παραπάνω traversal θα πέσουμε πάνω σε ένα ένθετο `constructor`:
+We are ignoring the fact that classes can be nested and using the traversal above we will hit a nested `constructor` as well:
 
 ```js
 class Foo {

@@ -37,21 +37,22 @@ Buku pedoman ini tersedia dalam bahasa lain, lihat file [README](/README.md) unt
   * [Menulis Plugin Babel pertama Anda](#toc-writing-your-first-babel-plugin)
   * [Aperasi Transformasi](#toc-transformation-operations) 
       * [Mengunjungi](#toc-visiting)
-      * [Memeriksa apakah sebuah node jenis tertentu](#toc-check-if-a-node-is-a-certain-type)
-      * [Periksa jika pengidentifikasi yang dirujuk](#toc-check-if-an-identifier-is-referenced)
+      * [Get the Path of Sub-Node](#toc-get-the-path-of-a-sub-node)
+      * [Check if a node is a certain type](#toc-check-if-a-node-is-a-certain-type)
+      * [Check if an identifier is referenced](#toc-check-if-an-identifier-is-referenced)
       * [Manipulasi](#toc-manipulation)
-      * [Mengganti sebuah node](#toc-replacing-a-node)
-      * [Mengganti sebuah node dengan node beberapa](#toc-replacing-a-node-with-multiple-nodes)
-      * [Mengganti sebuah node dengan string sumber](#toc-replacing-a-node-with-a-source-string)
-      * [Memasukkan sebuah sibling node](#toc-inserting-a-sibling-node)
-      * [Menghapus sebuah node](#toc-removing-a-node)
-      * [Menggantikan parent](#toc-replacing-a-parent)
-      * [Menghapus parent](#toc-removing-a-parent)
+      * [Replacing a node](#toc-replacing-a-node)
+      * [Replacing a node with multiple nodes](#toc-replacing-a-node-with-multiple-nodes)
+      * [Replacing a node with a source string](#toc-replacing-a-node-with-a-source-string)
+      * [Inserting a sibling node](#toc-inserting-a-sibling-node)
+      * [Removing a node](#toc-removing-a-node)
+      * [Replacing a parent](#toc-replacing-a-parent)
+      * [Removing a parent](#toc-removing-a-parent)
       * [Ruang lingkup](#toc-scope)
-      * [Memeriksa jika variabel lokal adalah terikat](#toc-checking-if-a-local-variable-is-bound)
-      * [Menghasilkan UID](#toc-generating-a-uid)
-      * [Mendorong sebuah Deklarasi variabel untuk lingkup orangtua](#toc-pushing-a-variable-declaration-to-a-parent-scope)
-      * [Mengubah nama yang mengikat dan referensi yang](#toc-rename-a-binding-and-its-references)
+      * [Checking if a local variable is bound](#toc-checking-if-a-local-variable-is-bound)
+      * [Generating a UID](#toc-generating-a-uid)
+      * [Pushing a variable declaration to a parent scope](#toc-pushing-a-variable-declaration-to-a-parent-scope)
+      * [Rename a binding and its references](#toc-rename-a-binding-and-its-references)
   * [Plugin: Opsi](#toc-plugin-options)
   * [Bangunan node](#toc-building-nodes)
   * [Praktik terbaik](#toc-best-practices) 
@@ -1117,9 +1118,30 @@ Keren! Kami pertama plugin Babel.
 
 ## <a id="toc-visiting"></a>Mengunjungi
 
-### <a id="toc-check-if-a-node-is-a-certain-type"></a>Memeriksa apakah sebuah node jenis tertentu
+### <a id="toc-get-the-path-of-a-sub-node"></a>Get the Path of Sub-Node
 
-Jika Anda ingin memeriksa apa jenis sebuah node, cara yang lebih disukai untuk melakukannya adalah:
+To access an AST node's property you normally access the node and then the property. `path.node.property`
+
+```js
+BinaryExpression(path) {
+  path.node.left;
+}
+```
+
+If you need to access the path of that property instead, use the `get` method of a path, passing in the string to the property.
+
+```js
+BinaryExpression(path) {
+  path.get('left');
+}
+Program(path) {
+  path.get('body[0]');
+}
+```
+
+### <a id="toc-check-if-a-node-is-a-certain-type"></a>Check if a node is a certain type
+
+If you want to check what the type of a node is, the preferred way to do so is:
 
 ```js
 BinaryExpression(path) {
@@ -1129,7 +1151,7 @@ BinaryExpression(path) {
 }
 ```
 
-Anda juga dapat melakukan memeriksa dangkal untuk properti simpul tersebut:
+You can also do a shallow check for properties on that node:
 
 ```js
 BinaryExpression(path) {
@@ -1139,7 +1161,7 @@ BinaryExpression(path) {
 }
 ```
 
-Ini fungsional setara dengan:
+This is functionally equivalent to:
 
 ```js
 BinaryExpression(path) {
@@ -1153,7 +1175,7 @@ BinaryExpression(path) {
 }
 ```
 
-### <a id="toc-check-if-an-identifier-is-referenced"></a>Periksa jika pengidentifikasi yang dirujuk
+### <a id="toc-check-if-an-identifier-is-referenced"></a>Check if an identifier is referenced
 
 ```js
 Identifier(path) {
@@ -1163,7 +1185,7 @@ Identifier(path) {
 }
 ```
 
-Selain itu:
+Alternatively:
 
 ```js
 Identifier(path) {
@@ -1175,7 +1197,7 @@ Identifier(path) {
 
 ## <a id="toc-manipulation"></a>Manipulasi
 
-### <a id="toc-replacing-a-node"></a>Mengganti sebuah node
+### <a id="toc-replacing-a-node"></a>Replacing a node
 
 ```js
 BinaryExpression(path) {
@@ -1192,7 +1214,7 @@ BinaryExpression(path) {
   }
 ```
 
-### <a id="toc-replacing-a-node-with-multiple-nodes"></a>Mengganti sebuah node dengan node beberapa
+### <a id="toc-replacing-a-node-with-multiple-nodes"></a>Replacing a node with multiple nodes
 
 ```js
 ReturnStatement(path) {
@@ -1215,7 +1237,7 @@ ReturnStatement(path) {
 
 > **Catatan:** Ketika mengganti ekspresi dengan beberapa node, mereka harus pernyataan. Hal ini karena Babel menggunakan heuristik secara ekstensif ketika menggantikan node yang berarti bahwa Anda dapat melakukan beberapa transformasi yang cukup gila bahwa akan sangat verbose sebaliknya.
 
-### <a id="toc-replacing-a-node-with-a-source-string"></a>Mengganti sebuah node dengan string sumber
+### <a id="toc-replacing-a-node-with-a-source-string"></a>Replacing a node with a source string
 
 ```js
 FunctionDeclaration(path) {
@@ -1235,7 +1257,7 @@ FunctionDeclaration(path) {
 
 > **Catatan:** Tidak dianjurkan untuk menggunakan API ini kecuali Anda sedang berhadapan dengan string dinamis sumber, jika tidak lebih efisien untuk mengurai kode di luar pengunjung.
 
-### <a id="toc-inserting-a-sibling-node"></a>Memasukkan sebuah node saudara kandung
+### <a id="toc-inserting-a-sibling-node"></a>Inserting a sibling node
 
 ```js
 FunctionDeclaration(path) {
@@ -1254,7 +1276,7 @@ FunctionDeclaration(path) {
 
 > **Catatan:** Ini harus selalu pernyataan atau sebuah array dari pernyataan. Ini menggunakan heuristik sama yang disebutkan dalam [menggantikan sebuah node dengan node beberapa](#replacing-a-node-with-multiple-nodes).
 
-### <a id="toc-removing-a-node"></a>Menghapus sebuah node
+### <a id="toc-removing-a-node"></a>Removing a node
 
 ```js
 FunctionDeclaration(path) {
@@ -1268,7 +1290,7 @@ FunctionDeclaration(path) {
 - }
 ```
 
-### <a id="toc-replacing-a-parent"></a>Menggantikan orang tua
+### <a id="toc-replacing-a-parent"></a>Replacing a parent
 
 ```js
 BinaryExpression(path) {
@@ -1285,7 +1307,7 @@ BinaryExpression(path) {
   }
 ```
 
-### <a id="toc-removing-a-parent"></a>Menghapus orangtua
+### <a id="toc-removing-a-parent"></a>Removing a parent
 
 ```js
 BinaryExpression(path) {
@@ -1301,7 +1323,7 @@ BinaryExpression(path) {
 
 ## <a id="toc-scope"></a>Ruang lingkup
 
-### <a id="toc-checking-if-a-local-variable-is-bound"></a>Memeriksa jika variabel lokal adalah terikat
+### <a id="toc-checking-if-a-local-variable-is-bound"></a>Checking if a local variable is bound
 
 ```js
 FunctionDeclaration(path) {
@@ -1311,9 +1333,9 @@ FunctionDeclaration(path) {
 }
 ```
 
-Ini akan berjalan lingkup pohon dan memeriksa untuk mengikat tertentu itu.
+This will walk up the scope tree and check for that particular binding.
 
-Anda juga dapat memeriksa jika memiliki lingkup yang mengikat **sendiri**:
+You can also check if a scope has its **own** binding:
 
 ```js
 FunctionDeclaration(path) {
@@ -1323,9 +1345,9 @@ FunctionDeclaration(path) {
 }
 ```
 
-### <a id="toc-generating-a-uid"></a>Menghasilkan UID
+### <a id="toc-generating-a-uid"></a>Generating a UID
 
-Ini akan menghasilkan sebuah identifier yang tidak berbenturan dengan setiap variabel lokal didefinisikan.
+This will generate an identifier that doesn't collide with any locally defined variables.
 
 ```js
 FunctionDeclaration(path) {
@@ -1336,9 +1358,9 @@ FunctionDeclaration(path) {
 }
 ```
 
-### <a id="toc-pushing-a-variable-declaration-to-a-parent-scope"></a>Mendorong sebuah Deklarasi variabel untuk lingkup orangtua
+### <a id="toc-pushing-a-variable-declaration-to-a-parent-scope"></a>Pushing a variable declaration to a parent scope
 
-Kadang-kadang Anda mungkin ingin mendorong `VariableDeclaration` sehingga Anda dapat menetapkan untuk itu.
+Sometimes you may want to push a `VariableDeclaration` so you can assign to it.
 
 ```js
 FunctionDeclaration(path) {
@@ -1356,7 +1378,7 @@ FunctionDeclaration(path) {
 + };
 ```
 
-### <a id="toc-rename-a-binding-and-its-references"></a>Mengubah nama yang mengikat dan referensi yang
+### <a id="toc-rename-a-binding-and-its-references"></a>Rename a binding and its references
 
 ```js
 FunctionDeclaration(path) {
@@ -1372,7 +1394,7 @@ FunctionDeclaration(path) {
   }
 ```
 
-Atau, Anda dapat mengubah mengikat untuk pengenal unik yang dihasilkan:
+Alternatively, you can rename a binding to a generated unique identifier:
 
 ```js
 FunctionDeclaration(path) {
@@ -1392,7 +1414,7 @@ FunctionDeclaration(path) {
 
 # <a id="toc-plugin-options"></a>Plugin: Opsi
 
-Jika Anda ingin agar pengguna Anda menyesuaikan perilaku Anda Babel plugin Anda dapat menerima pilihan plugin tertentu yang pengguna dapat menentukan seperti ini:
+If you would like to let your users customize the behavior of your Babel plugin you can accept plugin specific options which users can specify like this:
 
 ```js
 {
@@ -1405,7 +1427,7 @@ Jika Anda ingin agar pengguna Anda menyesuaikan perilaku Anda Babel plugin Anda 
 }
 ```
 
-Pilihan ini kemudian mendapatkan melewati ke plugin pengunjung obyek `state`:
+These options then get passed into plugin visitors through the `state` object:
 
 ```js
 export default function({ types: t }) {
@@ -1420,19 +1442,19 @@ export default function({ types: t }) {
 }
 ```
 
-Pilihan ini plugin-spesifik dan Anda tidak dapat mengakses pilihan dari plugin lain.
+These options are plugin-specific and you cannot access options from other plugins.
 
 * * *
 
 # <a id="toc-building-nodes"></a>Bangunan node
 
-Saat menulis transformasi Anda akan sering ingin membangun beberapa node untuk memasukkan ke dalam AST. Seperti disebutkan sebelumnya, Anda dapat melakukannya menggunakan metode [pembangun](#builder) dalam [`babel-jenis`](#babel-types) paket.
+When writing transformations you'll often want to build up some nodes to insert into the AST. As mentioned previously, you can do this using the [builder](#builder) methods in the [`babel-types`](#babel-types) package.
 
-Nama metode bagi seorang pembangun adalah hanya nama jenis node yang Anda ingin membangun kecuali dengan huruf pertama lowercased. Misalnya jika Anda ingin membangun `MemberExpression` Anda akan menggunakan `t.memberExpression(...)`.
+The method name for a builder is simply the name of the node type you want to build except with the first letter lowercased. For example if you wanted to build a `MemberExpression` you would use `t.memberExpression(...)`.
 
-Argumen pembangun ini ditentukan oleh definisi node. Ada beberapa pekerjaan yang sedang dilakukan untuk menghasilkan mudah-untuk-membaca dokumentasi pada definisi, tetapi untuk sekarang mereka dapat semua akan ditemukan [di sini](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions).
+The arguments of these builders are decided by the node definition. There's some work that's being done to generate easy-to-read documentation on the definitions, but for now they can all be found [here](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions).
 
-Definisi node yang terlihat seperti berikut:
+A node definition looks like the following:
 
 ```js
 defineType("MemberExpression", {
@@ -1456,9 +1478,9 @@ defineType("MemberExpression", {
 });
 ```
 
-Di sini Anda dapat melihat semua informasi tentang tipe node tertentu, termasuk bagaimana untuk membangunnya, melewatinya dan memvalidasi itu.
+Here you can see all the information about this particular node type, including how to build it, traverse it, and validate it.
 
-Dengan melihat `pembangun` properti, Anda dapat melihat 3 argumen yang akan diperlukan untuk memanggil metode pembangun (`t.memberExpression`).
+By looking at the `builder` property, you can see the 3 arguments that will be needed to call the builder method (`t.memberExpression`).
 
 ```js
 builder: ["object", "property", "computed"],
@@ -1466,7 +1488,7 @@ builder: ["object", "property", "computed"],
 
 > Perhatikan bahwa kadang-kadang ada sifat lebih yang Anda dapat menyesuaikan pada node dari array `pembangun` berisi. Hal ini untuk menjaga builder dari memiliki terlalu banyak argumen. Dalam kasus ini Anda perlu untuk mengatur properti secara manual. Contoh ini adalah [`ClassMethod`](https://github.com/babel/babel/blob/bbd14f88c4eea88fa584dd877759dd6b900bf35e/packages/babel-types/src/definitions/es2015.js#L238-L276).
 
-Anda dapat melihat validasi untuk argumen pembangun dengan `bidang` objek.
+You can see the validation for the builder arguments with the `fields` object.
 
 ```js
 fields: {
@@ -1485,9 +1507,9 @@ fields: {
 }
 ```
 
-Anda dapat melihat bahwa `objek` perlu `ekspresi`, `properti` baik perlu `ekspresi` atau `pengenal` tergantung pada apakah ekspresi anggota `dihitung` atau tidak dan `dihitung` hanya boolean yang default ke `false`.
+You can see that `object` needs to be an `Expression`, `property` either needs to be an `Expression` or an `Identifier` depending on if the member expression is `computed` or not and `computed` is simply a boolean that defaults to `false`.
 
-Jadi kita dapat membangun `MemberExpression` dengan melakukan hal berikut:
+So we can construct a `MemberExpression` by doing the following:
 
 ```js
 t.memberExpression(
@@ -1497,21 +1519,21 @@ t.memberExpression(
 );
 ```
 
-Yang akan menghasilkan:
+Which will result in:
 
 ```js
 object.property
 ```
 
-Namun, kita mengatakan bahwa `objek` yang dibutuhkan untuk menjadi `ekspresi` jadi mengapa adalah `Identifier` berlaku?
+However, we said that `object` needed to be an `Expression` so why is `Identifier` valid?
 
-Baik jika kita melihat definisi `pengenal` kita dapat melihat bahwa ia memiliki properti `alias` yang menyatakan bahwa juga merupakan ekspresi.
+Well if we look at the definition of `Identifier` we can see that it has an `aliases` property which states that it is also an expression.
 
 ```js
 aliases: ["Expression", "LVal"],
 ```
 
-Jadi karena `MemberExpression` adalah jenis `ekspresi`, kita bisa mengaturnya sebagai `objek` lain `MemberExpression`:
+So since `MemberExpression` is a type of `Expression`, we could set it as the `object` of another `MemberExpression`:
 
 ```js
 t.memberExpression(
@@ -1523,15 +1545,15 @@ t.memberExpression(
 )
 ```
 
-Yang akan menghasilkan:
+Which will result in:
 
 ```js
 member.expression.property
 ```
 
-Hal ini sangat tidak mungkin bahwa Anda akan pernah mengingat metode pembangun tanda tangan untuk setiap jenis node. Jadi Anda harus mengambil beberapa waktu dan memahami bagaimana mereka dihasilkan dari definisi node.
+It's very unlikely that you will ever memorize the builder method signatures for every node type. So you should take some time and understand how they are generated from the node definitions.
 
-Anda dapat menemukan semua sebenarnya [definisi di sini](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions) dan Anda dapat melihat mereka [didokumentasikan di sini](https://github.com/babel/babel/blob/master/doc/ast/spec.md)
+You can find all of the actual [definitions here](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions) and you can see them [documented here](https://github.com/babel/babel/blob/master/doc/ast/spec.md)
 
 * * *
 
@@ -1541,13 +1563,13 @@ Anda dapat menemukan semua sebenarnya [definisi di sini](https://github.com/babe
 
 ## <a id="toc-avoid-traversing-the-ast-as-much-as-possible"></a>Menghindari melintasi AST sebanyak mungkin
 
-Melintasi AST mahal, dan mudah untuk sengaja melintasi AST lebih dari yang diperlukan. Ini bisa menjadi ribuan jika tidak puluhan ribu operasi tambahan.
+Traversing the AST is expensive, and it's easy to accidentally traverse the AST more than necessary. This could be thousands if not tens of thousands of extra operations.
 
-Babel mengoptimalkan pengunjung sebanyak mungkin, penggabungan ini bersama-sama jika itu bisa untuk melakukan semuanya dalam satu traversal.
+Babel optimizes this as much as possible, merging visitors together if it can in order to do everything in a single traversal.
 
 ### <a id="toc-merge-visitors-whenever-possible"></a>Menggabungkan pengunjung sedapat mungkin
 
-Saat menulis pengunjung, mungkin akan tergoda untuk memanggil `path.traverse` di beberapa tempat di mana mereka logiknya perlu.
+When writing visitors, it may be tempting to call `path.traverse` in multiple places where they are logically necessary.
 
 ```js
 path.traverse({
@@ -1563,7 +1585,7 @@ path.traverse({
 });
 ```
 
-Namun, itu jauh lebih baik untuk menulis ini sebagai seorang pengunjung tunggal yang hanya mendapat berjalan sekali. Sebaliknya Anda yang melintasi beberapa kali pohon yang sama tanpa alasan.
+However, it is far better to write these as a single visitor that only gets run once. Otherwise you are traversing the same tree multiple times for no reason.
 
 ```js
 path.traverse({
@@ -1578,7 +1600,7 @@ path.traverse({
 
 ### <a id="toc-do-not-traverse-when-manual-lookup-will-do"></a>Tidak melintasi ketika pencarian manual akan melakukan
 
-Mungkin juga akan tergoda untuk memanggil `path.traverse` ketika mencari jenis node tertentu.
+It may also be tempting to call `path.traverse` when looking for a particular node type.
 
 ```js
 const visitorOne = {
@@ -1594,7 +1616,7 @@ const MyVisitor = {
 };
 ```
 
-Namun, jika anda mencari sesuatu yang spesifik dan dangkal, ada kemungkinan anda dapat secara manual mencari node yang Anda butuhkan tanpa melakukan traversal yang mahal.
+However, if you are looking for something specific and shallow, there is a good chance you can manually lookup the nodes you need without performing a costly traversal.
 
 ```js
 const MyVisitor = {
@@ -1608,7 +1630,7 @@ const MyVisitor = {
 
 ## <a id="toc-optimizing-nested-visitors"></a>Mengoptimalkan pengunjung bertingkat
 
-Ketika Anda pengunjung bertingkat, hal itu mungkin masuk akal untuk menulis mereka bertingkat dalam kode Anda.
+When you are nesting visitors, it might make sense to write them nested in your code.
 
 ```js
 const MyVisitor = {
@@ -1622,7 +1644,7 @@ const MyVisitor = {
 };
 ```
 
-Namun, hal ini menciptakan baru pengunjung objek setiap kali `FunctionDeclaration()` disebut di atas, yang Babel kemudian perlu meledak dan memvalidasi setiap saat. Ini bisa menjadi mahal, sehingga lebih baik untuk mengibarkan pengunjung.
+However, this creates a new visitor object everytime `FunctionDeclaration()` is called above, which Babel then needs to explode and validate every single time. This can be costly, so it is better to hoist the visitor up.
 
 ```js
 const visitorOne = {
@@ -1638,7 +1660,7 @@ const MyVisitor = {
 };
 ```
 
-Jika Anda memerlukan beberapa state dalam pengunjung bertingkat, seperti:
+If you need some state within the nested visitor, like so:
 
 ```js
 const MyVisitor = {
@@ -1656,7 +1678,7 @@ const MyVisitor = {
 };
 ```
 
-Anda dapat melewatinya dalam sebagai state dengan metode `traverse()` dan memiliki akses ke sana pada `this` dalam pengunjung.
+You can pass it in as state to the `traverse()` method and have access to it on `this` in the visitor.
 
 ```js
 const visitorOne = {
@@ -1677,9 +1699,9 @@ const MyVisitor = {
 
 ## <a id="toc-being-aware-of-nested-structures"></a>Berhati-hati terhadap struktur bertingkat
 
-Kadang-kadang ketika berpikir tentang mengubah tertentu, Anda mungkin lupa bahwa struktur yang diberikan dapat disusun bertingkat.
+Sometimes when thinking about a given transform, you might forget that the given structure can be nested.
 
-Sebagai contoh, bayangkan kita ingin lookup `constuctor` `ClassMethod` dari `Foo` `ClassDeclaration`.
+For example, imagine we want to lookup the `constructor` `ClassMethod` from the `Foo` `ClassDeclaration`.
 
 ```js
 class Foo {
@@ -1707,7 +1729,7 @@ const MyVisitor = {
 }
 ```
 
-Kita mengabaikan fakta bahwa kelas dapat diulang dan menggunakan traversal di atas kita akan menemui `constructor` bertingkat juga:
+We are ignoring the fact that classes can be nested and using the traversal above we will hit a nested `constructor` as well:
 
 ```js
 class Foo {
