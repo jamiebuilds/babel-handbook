@@ -1246,7 +1246,7 @@ BinaryExpression(path) {
   path.get('left');
 }
 Program(path) {
-  path.get('body[0]');
+  path.get('body.0');
 }
 ```
 
