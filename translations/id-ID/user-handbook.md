@@ -51,7 +51,7 @@ JavaScript sebagai bahasa yang terus berkembang, dengan spesifikasi baru dan usu
 
 Babel melakukan ini dengan menyusun turun kode JavaScript yang ditulis dengan standar terbaru ke versi yang akan bekerja di mana-mana hari ini. Proses ini dikenal sebagai sumber-ke-sumber kompilasi, juga dikenal sebagai transpiling.
 
-Sebagai contoh, Babel bisa mengubah sintaks panah fungsi baru pada ES2015 dari:
+Sebagai contoh, Babel bisa mengubah sintaks fungsi panah baru pada ES2015 dari:
 
 ```js
 const square = n => n * n;
@@ -65,7 +65,7 @@ const square = function square(n) {
 };
 ```
 
-Namun, Babel bisa melakukan jauh lebih daripada ini. Babel memiliki dukungan untuk sintaks ekstensi seperti JSX syntax untuk React dan Flow syntax dukungan untuk memeriksa tipe statis.
+Selain itu, Babel dapat melakukan lebih banyak hal lagi karena Babel dapat mengekstensi sintaks lain seperti sintaks JSX untuk React dan sintaks Flow untuk memeriksa tipe statis.
 
 Lebih dari itu, semuanya di Babel hanya sebuah plugin dan siapa saja bisa menggunakan dan membuat plugin mereka sendiri yang menggunakan kekuatan penuh dari Babel untuk melakukan apa pun yang mereka inginkan.
 

@@ -35,24 +35,24 @@ Buku pedoman ini tersedia dalam bahasa lain, lihat file [README](/README.md) unt
       * [babel-generator](#toc-babel-generator)
       * [babel-template](#toc-babel-template)
   * [Menulis Plugin Babel pertama Anda](#toc-writing-your-first-babel-plugin)
-  * [Aperasi Transformasi](#toc-transformation-operations) 
-      * [Mengunjungi](#toc-visiting)
-      * [Get the Path of Sub-Node](#toc-get-the-path-of-a-sub-node)
-      * [Check if a node is a certain type](#toc-check-if-a-node-is-a-certain-type)
-      * [Check if an identifier is referenced](#toc-check-if-an-identifier-is-referenced)
+  * [Operasi Transformasi](#toc-transformation-operations) 
+      * [Pengunjungan](#toc-visiting)
+      * [Mendapatkan path dari Sub-Node](#toc-get-the-path-of-a-sub-node)
+      * [Memeriksa tipe dari sebuah node](#toc-check-if-a-node-is-a-certain-type)
+      * [Memeriksa apakah sebuah identifier direferensikan](#toc-check-if-an-identifier-is-referenced)
       * [Manipulasi](#toc-manipulation)
-      * [Replacing a node](#toc-replacing-a-node)
-      * [Replacing a node with multiple nodes](#toc-replacing-a-node-with-multiple-nodes)
-      * [Replacing a node with a source string](#toc-replacing-a-node-with-a-source-string)
-      * [Inserting a sibling node](#toc-inserting-a-sibling-node)
-      * [Removing a node](#toc-removing-a-node)
-      * [Replacing a parent](#toc-replacing-a-parent)
-      * [Removing a parent](#toc-removing-a-parent)
-      * [Ruang lingkup](#toc-scope)
-      * [Checking if a local variable is bound](#toc-checking-if-a-local-variable-is-bound)
-      * [Generating a UID](#toc-generating-a-uid)
-      * [Pushing a variable declaration to a parent scope](#toc-pushing-a-variable-declaration-to-a-parent-scope)
-      * [Rename a binding and its references](#toc-rename-a-binding-and-its-references)
+      * [Mengganti sebuah node](#toc-replacing-a-node)
+      * [Mengganti sebuah node dengan banyak node](#toc-replacing-a-node-with-multiple-nodes)
+      * [Mengganti sebuah node dengan source code](#toc-replacing-a-node-with-a-source-string)
+      * [Menambahkan node yang berdekatan](#toc-inserting-a-sibling-node)
+      * [Menghapus sebuah node](#toc-removing-a-node)
+      * [Mengganti parent dari sebuah node](#toc-replacing-a-parent)
+      * [Menghapus parent dari sebuah node](#toc-removing-a-parent)
+      * [Cakupan](#toc-scope)
+      * [Memeriksa apakah variabel lokal terbatasi](#toc-checking-if-a-local-variable-is-bound)
+      * [Menghasilkan UID](#toc-generating-a-uid)
+      * [Menambahkan deklarasi variable ke cakupan parent](#toc-pushing-a-variable-declaration-to-a-parent-scope)
+      * [Mengubah nama dari binding dan referensinya](#toc-rename-a-binding-and-its-references)
   * [Plugin: Opsi](#toc-plugin-options)
   * [Bangunan node](#toc-building-nodes)
   * [Praktik terbaik](#toc-best-practices) 
@@ -68,7 +68,7 @@ Babel adalah compiler JavaScript umum yang multifungsi. Selebihnya, Babel adalah
 
 > Analisis statik adalah proses menganalisa kode tanpa mengeksekusinya. (Analisis kode selama mengeksekusi biasanya disebut analisis dinamik). Tujuan dari analisis statik itu beragam. Itu dapat digunakan untuk linting, compiling, higlight kode, transformasi kode, optimisasi, minifikasi, dan masih banyak lagi.
 
-Anda dapat menggunakan Babel untuk membangun beberapa tipe perkakas yang dapat membantu anda semakun produktif dan menulis program lebih baik.
+Anda dapat menggunakan Babel untuk membangun beberapa tipe perkakas yang dapat membantu anda semakin produktif dan menulis program lebih baik.
 
 > ***Untuk pembaruan terbaru, ikuti [@thejameskyle](https://twitter.com/thejameskyle) di Twitter.***
 
@@ -1114,13 +1114,13 @@ Keren! Kami pertama plugin Babel.
 
 * * *
 
-# <a id="toc-transformation-operations"></a>Aperasi Transformasi
+# <a id="toc-transformation-operations"></a>Operasi Transformasi
 
-## <a id="toc-visiting"></a>Mengunjungi
+## <a id="toc-visiting"></a>Pengunjungan
 
-### <a id="toc-get-the-path-of-a-sub-node"></a>Get the Path of Sub-Node
+### <a id="toc-get-the-path-of-a-sub-node"></a>Mendapatkan path dari Sub-Node
 
-To access an AST node's property you normally access the node and then the property. `path.node.property`
+Untuk mengakses properti dari node AST, biasanya Anda mengakses node-nya terlebih dahulu dan kemudian propertinya. `path.node.Property`
 
 ```js
 BinaryExpression(path) {
@@ -1128,7 +1128,7 @@ BinaryExpression(path) {
 }
 ```
 
-If you need to access the path of that property instead, use the `get` method of a path, passing in the string to the property.
+Apabila kamu hendak mengakses path dari properti tersebut, gunakan method `get` dari path, lalu gunakan sebagai string di properti tersebut.
 
 ```js
 BinaryExpression(path) {
@@ -1139,9 +1139,9 @@ Program(path) {
 }
 ```
 
-### <a id="toc-check-if-a-node-is-a-certain-type"></a>Check if a node is a certain type
+### <a id="toc-check-if-a-node-is-a-certain-type"></a>Memeriksa tipe dari sebuah node
 
-If you want to check what the type of a node is, the preferred way to do so is:
+Apabila kamu ingin mengetahui tipe dari sebuah node, cara yang dianjurkan adalah sebagai berikut:
 
 ```js
 BinaryExpression(path) {
@@ -1151,7 +1151,7 @@ BinaryExpression(path) {
 }
 ```
 
-You can also do a shallow check for properties on that node:
+Kamu juga dapat melakukan pemeriksaan singkat pada properti-properti dari node tersebut:
 
 ```js
 BinaryExpression(path) {
@@ -1161,7 +1161,7 @@ BinaryExpression(path) {
 }
 ```
 
-This is functionally equivalent to:
+Hal ini secara fungsional juga sama dengan:
 
 ```js
 BinaryExpression(path) {
@@ -1175,7 +1175,7 @@ BinaryExpression(path) {
 }
 ```
 
-### <a id="toc-check-if-an-identifier-is-referenced"></a>Check if an identifier is referenced
+### <a id="toc-check-if-an-identifier-is-referenced"></a>Memeriksa apakah sebuah identifier direferensikan
 
 ```js
 Identifier(path) {
@@ -1185,7 +1185,7 @@ Identifier(path) {
 }
 ```
 
-Alternatively:
+Atau dengan cara lain:
 
 ```js
 Identifier(path) {
@@ -1197,7 +1197,7 @@ Identifier(path) {
 
 ## <a id="toc-manipulation"></a>Manipulasi
 
-### <a id="toc-replacing-a-node"></a>Replacing a node
+### <a id="toc-replacing-a-node"></a>Mengganti sebuah node
 
 ```js
 BinaryExpression(path) {
@@ -1214,7 +1214,7 @@ BinaryExpression(path) {
   }
 ```
 
-### <a id="toc-replacing-a-node-with-multiple-nodes"></a>Replacing a node with multiple nodes
+### <a id="toc-replacing-a-node-with-multiple-nodes"></a>Mengganti sebuah node dengan banyak node
 
 ```js
 ReturnStatement(path) {
@@ -1237,7 +1237,7 @@ ReturnStatement(path) {
 
 > **Catatan:** Ketika mengganti ekspresi dengan beberapa node, mereka harus pernyataan. Hal ini karena Babel menggunakan heuristik secara ekstensif ketika menggantikan node yang berarti bahwa Anda dapat melakukan beberapa transformasi yang cukup gila bahwa akan sangat verbose sebaliknya.
 
-### <a id="toc-replacing-a-node-with-a-source-string"></a>Replacing a node with a source string
+### <a id="toc-replacing-a-node-with-a-source-string"></a>Mengganti sebuah node dengan source code
 
 ```js
 FunctionDeclaration(path) {
@@ -1257,7 +1257,7 @@ FunctionDeclaration(path) {
 
 > **Catatan:** Tidak dianjurkan untuk menggunakan API ini kecuali Anda sedang berhadapan dengan string dinamis sumber, jika tidak lebih efisien untuk mengurai kode di luar pengunjung.
 
-### <a id="toc-inserting-a-sibling-node"></a>Inserting a sibling node
+### <a id="toc-inserting-a-sibling-node"></a>Menambahkan node yang berdekatan
 
 ```js
 FunctionDeclaration(path) {
@@ -1276,7 +1276,7 @@ FunctionDeclaration(path) {
 
 > **Catatan:** Ini harus selalu pernyataan atau sebuah array dari pernyataan. Ini menggunakan heuristik sama yang disebutkan dalam [menggantikan sebuah node dengan node beberapa](#replacing-a-node-with-multiple-nodes).
 
-### <a id="toc-removing-a-node"></a>Removing a node
+### <a id="toc-removing-a-node"></a>Menghapus sebuah node
 
 ```js
 FunctionDeclaration(path) {
@@ -1290,7 +1290,7 @@ FunctionDeclaration(path) {
 - }
 ```
 
-### <a id="toc-replacing-a-parent"></a>Replacing a parent
+### <a id="toc-replacing-a-parent"></a>Mengganti parent dari sebuah node
 
 ```js
 BinaryExpression(path) {
@@ -1307,7 +1307,7 @@ BinaryExpression(path) {
   }
 ```
 
-### <a id="toc-removing-a-parent"></a>Removing a parent
+### <a id="toc-removing-a-parent"></a>Menghapus parent dari sebuah node
 
 ```js
 BinaryExpression(path) {
@@ -1323,7 +1323,7 @@ BinaryExpression(path) {
 
 ## <a id="toc-scope"></a>Ruang lingkup
 
-### <a id="toc-checking-if-a-local-variable-is-bound"></a>Checking if a local variable is bound
+### <a id="toc-checking-if-a-local-variable-is-bound"></a>Memeriksa apakah variabel lokal terbatasi
 
 ```js
 FunctionDeclaration(path) {
@@ -1333,7 +1333,7 @@ FunctionDeclaration(path) {
 }
 ```
 
-This will walk up the scope tree and check for that particular binding.
+Dengan begini, Babel akan memeriksa binding tersebut dengan cakupan yang semakin tinggi.
 
 You can also check if a scope has its **own** binding:
 
@@ -1345,9 +1345,9 @@ FunctionDeclaration(path) {
 }
 ```
 
-### <a id="toc-generating-a-uid"></a>Generating a UID
+### <a id="toc-generating-a-uid"></a>Menghasilkan UID
 
-This will generate an identifier that doesn't collide with any locally defined variables.
+Fungsi berikut akan menghasilkan sebuah pengenal yang tidak akan sama dengan variabel lokal apapun yang telah didefinisikan.
 
 ```js
 FunctionDeclaration(path) {
@@ -1358,9 +1358,9 @@ FunctionDeclaration(path) {
 }
 ```
 
-### <a id="toc-pushing-a-variable-declaration-to-a-parent-scope"></a>Pushing a variable declaration to a parent scope
+### <a id="toc-pushing-a-variable-declaration-to-a-parent-scope"></a>Menambahkan deklarasi variable ke cakupan parent
 
-Sometimes you may want to push a `VariableDeclaration` so you can assign to it.
+Terkadang kamu hanya ingin menambahkan sebuah `VariableDeclaration` sehingga kamu dapat memberi nilai pada variabel tersebut.
 
 ```js
 FunctionDeclaration(path) {
@@ -1378,7 +1378,7 @@ FunctionDeclaration(path) {
 + };
 ```
 
-### <a id="toc-rename-a-binding-and-its-references"></a>Rename a binding and its references
+### <a id="toc-rename-a-binding-and-its-references"></a>Mengubah nama dari binding dan referensinya
 
 ```js
 FunctionDeclaration(path) {
@@ -1394,7 +1394,7 @@ FunctionDeclaration(path) {
   }
 ```
 
-Alternatively, you can rename a binding to a generated unique identifier:
+Atau kamu dapat mengganti nama sebuah binding dengan tanda pengenal unik yang telah dihasilkan:
 
 ```js
 FunctionDeclaration(path) {

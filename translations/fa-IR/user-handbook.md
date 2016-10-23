@@ -1,22 +1,22 @@
-# Babel User Handbook
+# کتاب راهنمای کاربر Babel
 
-This document covers everything you ever wanted to know about using [Babel](https://babeljs.io) and related tooling.
+در این نوشتار شما با تمام مفاهیم [Babel](https://babeljs.io) و همچنین ابزرهای مربوط به آن، مطلع خواهید شد.
 
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
-This handbook is available in other languages, see the [README](/README.md) for a complete list.
+این کتاب راهنما همچنین به زبان های دیگر در دسترس است، لیست کامل در [README](/README.md).
 
-# Table of Contents
+# فهرست محتویات
 
-  * [Introduction](#toc-introduction)
-  * [Setting up Babel](#toc-setting-up-babel) 
+  * [مقدمه](#toc-introduction)
+  * [راه اندازی Babel](#toc-setting-up-babel) 
       * [`babel-cli`](#toc-babel-cli)
       * [Running Babel CLI from within a project](#toc-running-babel-cli-from-within-a-project)
       * [`babel-register`](#toc-babel-register)
       * [`babel-node`](#toc-babel-node)
       * [`babel-core`](#toc-babel-core)
-  * [Configuring Babel](#toc-configuring-babel) 
-      * [`.babelrc`](#toc-babelrc)
+  * [پیکربندی Babel](#toc-configuring-babel) 
+      * [`babelrc.`](#toc-babelrc)
       * [`babel-preset-es2015`](#toc-babel-preset-es2015)
       * [`babel-preset-react`](#toc-babel-preset-react)
       * [`babel-preset-stage-x`](#toc-babel-preset-stage-x)
@@ -43,21 +43,21 @@ This handbook is available in other languages, see the [README](/README.md) for 
       * [Babel Issues](#toc-babel-issues)
       * [Creating an awesome Babel bug report](#toc-creating-an-awesome-babel-bug-report)
 
-# <a id="toc-introduction"></a>Introduction
+# <a id="toc-introduction"></a>مقدمه
 
-Babel is a generic multi-purpose compiler for JavaScript. Using Babel you can use (and create) the next generation of JavaScript, as well as the next generation of JavaScript tooling.
+Babel یک کامپایلر چند منظوره و کلی برای جاوا اسکریپت است. با استفاده از Babel شما میتوانید از نسل ها و نسخه های جلوتر جاوا اسکریپت و همچنین ابزارهای مربوط به جاوا اسکریپت استفاده (و یا تولید) کنید.
 
-JavaScript as a language is constantly evolving, with new specs and proposals coming out with new features all the time. Using Babel will allow you to use many of these features years before they are available everywhere.
+جاوا اسکریپت به عنوان یک زبان به صورت ثابت در حال تکامل است، همچنین با قابلیت های جدیدی که همراه با مشخصات و پیشنهادات جدیدیشان تماما در حال انتشار و اضافه شدن به این زبان هستند. استفاده از Babel به شما این اجازه را می دهد که از تعداد بیشماری از این قابلت ها و خاصیت ها حتی در صورتی که همه جا قابل به کار نیستند، استفاده کنید.
 
-Babel does this by compiling down JavaScript code written with the latest standards into a version that will work everywhere today. This process is known as source-to-source compiling, also known as transpiling.
+Babel این کار را فرضا با کامپایل(و یا تبدیل) کد جاوا اسکریپت نوشته شده بر اساس آخرین استاندارد ها به کد جاوا اسکریپت با نسخه ای که امروز مورد استفاده در دستگاه ها است، انجام می دهد. این فرایند به کامپایل منبع-به-منبع و همچنین ترانسپایل(از سطحی به سطح دیگر) شناخته شده است.
 
-For example, Babel could transform the new ES2015 arrow function syntax from this:
+به عنوان مثال، Babel میتواند تابع پیکان دار که در نسخه ES2015 اضافه شده را، از این کد پیش رو:
 
 ```js
-const square = n => n * n;
+;const square = n => n * n
 ```
 
-Into the following:
+به این کد ترجمه و یا تبدیل کند:
 
 ```js
 const square = function square(n) {
@@ -77,7 +77,7 @@ Many people do too, the ecosystem that has sprung up around Babel is massive and
 
 * * *
 
-# <a id="toc-setting-up-babel"></a>Setting up Babel
+# <a id="toc-setting-up-babel"></a>راه اندازی Babel
 
 Since the JavaScript community has no single build tool, framework, platform, etc., Babel has official integrations for all of the major tooling. Everything from Gulp to Browserify, from Ember to Meteor, no matter what your setup looks like there is probably an official integration.
 
@@ -301,7 +301,7 @@ For all of the above methods, `options` refers to http://babeljs.io/docs/usage/o
 
 * * *
 
-# <a id="toc-configuring-babel"></a>Configuring Babel
+# <a id="toc-configuring-babel"></a>پیکربندی Babel
 
 You may have noticed by now that running Babel on its own doesn't seem to do anything other than copy JavaScript files from one location to another.
 
