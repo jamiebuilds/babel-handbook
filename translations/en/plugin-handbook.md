@@ -1234,12 +1234,15 @@ Awesome! Our very first Babel plugin.
 To access an AST node's property you normally access the node and then the property. `path.node.property`
 
 ```js
+// the BinaryExpression AST node has properties: `left`, `right`, `operator`
 BinaryExpression(path) {
   path.node.left;
+  path.node.right;
+  path.node.operator;
 }
 ```
 
-If you need to access the path of that property instead, use the `get` method of a path, passing in the string to the property.
+If you need to access the `path` of that property instead, use the `get` method of a path, passing in the string to the property.
 
 ```js
 BinaryExpression(path) {
@@ -1249,7 +1252,6 @@ Program(path) {
   path.get('body[0]');
 }
 ```
-
 ### <a id="toc-check-if-a-node-is-a-certain-type"></a>Check if a node is a certain type
 
 If you want to check what the type of a node is, the preferred way to do so is:
@@ -1281,6 +1283,20 @@ BinaryExpression(path) {
     path.node.left.type === "Identifier" &&
     path.node.left.name === "n"
   ) {
+    // ...
+  }
+}
+```
+
+### <a id="toc-check-if-a-path-is-a-certain-type"></a>Check if a path is a certain type
+
+A path has all the type methods in `t.isX()`. You can make this check instead of getting the node
+
+Also equivalent to doing `if (t.isIdentifier(path.node.left)) {`
+
+```js
+BinaryExpression(path) {
+  if (path.get('left').isIdentifier()) {
     // ...
   }
 }
@@ -1409,6 +1425,8 @@ FunctionDeclaration(path) {
 ```
 
 ### <a id="toc-replacing-a-parent"></a>Replacing a parent
+
+Just call `replaceWith` with the parentPath: `path.parentPath`
 
 ```js
 BinaryExpression(path) {
@@ -1621,6 +1639,19 @@ builder: ["object", "property", "computed"],
 > having too many arguments. In these cases you need to set the properties
 > manually. An example of this is
 > [`ClassMethod`](https://github.com/babel/babel/blob/bbd14f88c4eea88fa584dd877759dd6b900bf35e/packages/babel-types/src/definitions/es2015.js#L238-L276).
+
+```js
+// Example
+// because the builder doesn't contain `async` as a property
+var node = t.classMethod(
+  "constructor",
+  t.identifier("constructor"),
+  params,
+  body
+)
+// set it manually after creation
+node.async = true;
+```
 
 You can see the validation for the builder arguments with the `fields` object.
 
