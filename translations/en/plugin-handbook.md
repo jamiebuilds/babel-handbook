@@ -41,6 +41,7 @@ a complete list.
   - [Visiting](#toc-visiting)
     - [Get the Path of Sub-Node](#toc-get-the-path-of-a-sub-node)
     - [Check if a node is a certain type](#toc-check-if-a-node-is-a-certain-type)
+    - [Check if a path is a certain type](#toc-check-if-a-path-is-a-certain-type)
     - [Check if an identifier is referenced](#toc-check-if-an-identifier-is-referenced)
   - [Manipulation](#toc-manipulation)
     - [Replacing a node](#toc-replacing-a-node)
@@ -1582,6 +1583,29 @@ export default function({ types: t }) {
 
 These options are plugin-specific and you cannot access options from other
 plugins.
+
+# <a id="toc-pre-and-post-in-plugins"></a> Pre and Post in Plugins
+
+Plugins can have functions that are run before or after plugins.
+They can be used for setup or cleanup/analysis purposes.
+
+```js
+export default function({ types: t }) {
+  return {
+    pre(state) {
+      this.cache = new Map();
+    },
+    visitor: {
+      StringLiteral(path) {
+        this.cache.set(path.node.value, 1);
+      }
+    },
+    post(state) {
+      console.log(this.cache);
+    }
+  };
+}
+```
 
 ----
 
