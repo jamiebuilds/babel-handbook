@@ -43,6 +43,8 @@ a complete list.
     - [Check if a node is a certain type](#toc-check-if-a-node-is-a-certain-type)
     - [Check if a path is a certain type](#toc-check-if-a-path-is-a-certain-type)
     - [Check if an identifier is referenced](#toc-check-if-an-identifier-is-referenced)
+    - [Find a specific parent path](#toc-find-a-specific-parent-path)
+    - [Get Sibling Paths](#toc-get-sibling-paths)
   - [Manipulation](#toc-manipulation)
     - [Replacing a node](#toc-replacing-a-node)
     - [Replacing a node with multiple nodes](#toc-replacing-a-node-with-multiple-nodes)
@@ -1320,6 +1322,57 @@ Identifier(path) {
   if (t.isReferenced(path.node, path.parent)) {
     // ...
   }
+}
+```
+
+### <a id="toc-find-a-specific-parent-path"></a>Find a specific parent path
+
+```js
+// Call the provided `callback` with the `NodePath`s of all the parents.
+// When the `callback` returns a truthy value, we return that node path.
+path.findParent((path) => path.isObjectExpression());
+
+// Include the current path
+path.find((path) => path.isObjectExpression());
+
+// Find the parent function or Program
+path.getFunctionParent();
+
+// Walk up the tree until we hit a parent node path in a list
+path.getStatementParent();
+```
+
+### <a id="toc-get-sibling-paths"></a>Get Sibling Paths
+
+If a path in a a list like in the body of a `Function`/`Program`, it will have "siblings".
+
+- Check if a path is part of a list with `path.inList`
+- You can get the surrounding siblings with `path.getSibling(index)`,
+- The current path's index in the container with `path.key`,
+- The path's container (an array of all sibling paths) with `path.container`
+- Get the name of the key of the list container with `path.listKey`
+
+```js
+var a = 1; // pathA, path.key = 0
+var b = 2; // pathB, path.key = 1
+var c = 3; // pathC, path.key = 2
+```
+
+```js
+export default function({ types: t }) {
+  return {
+    visitor: {
+      VariableDeclaration(path) {
+        // if the current path is pathA
+        path.inList // true
+        path.listKey // "body"
+        path.key // 0
+        path.getSibling(0) // pathA
+        path.getSibling(path.key + 1) // pathB
+        path.container // [pathA, pathB, pathC]
+      }
+    }
+  };
 }
 ```
 
