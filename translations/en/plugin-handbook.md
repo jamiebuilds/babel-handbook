@@ -393,6 +393,11 @@ const MyVisitor = {
     console.log("Called!");
   }
 };
+
+// You can also create a visitor and add methods on it later
+let visitor = {};
+visitor.MemberExpression = function() {};
+visitor.FunctionDeclaration = function() {}
 ```
 
 > **Note:** `Identifier() { ... }` is shorthand for
@@ -1129,6 +1134,19 @@ export default function({ types: t }) {
   return {
     visitor: {
       // visitor contents
+    }
+  };
+};
+```
+
+Each function in the visitor provides 2 parameters: `path` and `state`
+
+```js
+export default function({ types: t }) {
+  return {
+    visitor: {
+      Identifier(path, state) {},
+      ASTNodeTypeHere(path, state) {}
     }
   };
 };
