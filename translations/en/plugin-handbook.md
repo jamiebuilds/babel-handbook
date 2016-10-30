@@ -50,6 +50,7 @@ a complete list.
     - [Replacing a node with multiple nodes](#toc-replacing-a-node-with-multiple-nodes)
     - [Replacing a node with a source string](#toc-replacing-a-node-with-a-source-string)
     - [Inserting a sibling node](#toc-inserting-a-sibling-node)
+    - [Inserting into a container](#toc-inserting-into-a-container)
     - [Removing a node](#toc-removing-a-node)
     - [Replacing a parent](#toc-replacing-a-parent)
     - [Removing a parent](#toc-removing-a-parent)
@@ -1503,6 +1504,28 @@ FunctionDeclaration(path) {
 > **Note:** This should always be a statement or an array of statements. This
 > uses the same heuristics mentioned in
 > [Replacing a node with multiple nodes](#replacing-a-node-with-multiple-nodes).
+
+### <a id="toc-inserting-into-a-container"></a>Inserting into a container
+
+If you want to insert into a AST node property like that is an array like `body`.
+It is simialr to `insertBefore`/`insertAfter` other than you having to specify the `listKey` which is usually `body`.
+
+```js
+ClassMethod(path) {
+  path.get('body').unshiftContainer('body', t.stringLiteral('before'));
+  path.get('body').pushContainer('body', t.stringLiteral('after'));
+}
+```
+
+```diff
+ class A {
+  constructor() {
++   "before"
+    var a = 'middle';
++   "after"
+  }
+ }
+```
 
 ### <a id="toc-removing-a-node"></a>Removing a node
 
