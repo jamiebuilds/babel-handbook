@@ -1368,6 +1368,8 @@ Identifier(path) {
 
 ### <a id="toc-find-a-specific-parent-path"></a>Find a specific parent path
 
+Sometimes you will need to traverse the tree upwards from a path until a condition is satisfied.
+
 ```js
 // Call the provided `callback` with the `NodePath`s of all the parents.
 // When the `callback` returns a truthy value, we return that node path.
@@ -1392,6 +1394,8 @@ If a path in a a list like in the body of a `Function`/`Program`, it will have "
 - The current path's index in the container with `path.key`,
 - The path's container (an array of all sibling paths) with `path.container`
 - Get the name of the key of the list container with `path.listKey`
+
+> These APis are used in the [transform-merge-sibling-variables](https://github.com/babel/babili/blob/master/packages/babel-plugin-transform-merge-sibling-variables/src/index.js) plugin used in [babel-minify](https://github.com/babel/babili).
 
 ```js
 var a = 1; // pathA, path.key = 0
