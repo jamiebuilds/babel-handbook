@@ -1713,6 +1713,35 @@ export default function({ types: t }) {
 }
 ```
 
+## <a id="toc-throwing-a-syntax-error"></a> Throwing a Syntax Error
+
+If you want to throw an error with babel-code-frame and a message:
+
+```js
+export default function({ types: t }) {
+  return {
+    visitor: {
+      StringLiteral(path) {
+        throw path.buildCodeFrameError("Error message here");
+      }
+    }
+  };
+}
+```
+
+The error looks like:
+
+```
+file.js: Error message here
+   7 | 
+   8 | let tips = [
+>  9 |   "Click on any AST node with a '+' to expand it",
+     |   ^
+  10 | 
+  11 |   "Hovering over a node highlights the \
+  12 |    corresponding part in the source code",
+```
+
 ----
 
 # <a id="toc-building-nodes"></a>Building Nodes
