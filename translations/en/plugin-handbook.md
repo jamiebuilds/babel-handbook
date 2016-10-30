@@ -59,6 +59,8 @@ a complete list.
     - [Pushing a variable declaration to a parent scope](#toc-pushing-a-variable-declaration-to-a-parent-scope)
     - [Rename a binding and its references](#toc-rename-a-binding-and-its-references)
 - [Plugin Options](#toc-plugin-options)
+  - [Pre and Post in Plugins](#toc-pre-and-post-in-plugins)
+  - [Enabling Syntax in Plugins](#toc-enabling-syntax-in-plugins)
 - [Building Nodes](#toc-building-nodes)
 - [Best Practices](#toc-best-practices)
   - [Avoid traversing the AST as much as possible](#toc-avoid-traversing-the-ast-as-much-as-possible)
@@ -1655,7 +1657,7 @@ export default function({ types: t }) {
 These options are plugin-specific and you cannot access options from other
 plugins.
 
-# <a id="toc-pre-and-post-in-plugins"></a> Pre and Post in Plugins
+## <a id="toc-pre-and-post-in-plugins"></a> Pre and Post in Plugins
 
 Plugins can have functions that are run before or after plugins.
 They can be used for setup or cleanup/analysis purposes.
@@ -1674,6 +1676,19 @@ export default function({ types: t }) {
     post(state) {
       console.log(this.cache);
     }
+  };
+}
+```
+
+## <a id="toc-enabling-syntax-in-plugins"></a> Enabling Syntax in Plugins
+
+Plugins can enable [babylon plugins](https://github.com/babel/babylon#plugins) so that users don't need to
+install/enable them. This prevents a parsing error without inheriting the syntax plugin.
+
+```js
+export default function({ types: t }) {
+  return {
+    inherits: require("babel-plugin-syntax-jsx")
   };
 }
 ```
