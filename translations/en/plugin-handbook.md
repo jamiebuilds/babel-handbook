@@ -41,12 +41,17 @@ a complete list.
   - [Visiting](#toc-visiting)
     - [Get the Path of Sub-Node](#toc-get-the-path-of-a-sub-node)
     - [Check if a node is a certain type](#toc-check-if-a-node-is-a-certain-type)
+    - [Check if a path is a certain type](#toc-check-if-a-path-is-a-certain-type)
     - [Check if an identifier is referenced](#toc-check-if-an-identifier-is-referenced)
+    - [Find a specific parent path](#toc-find-a-specific-parent-path)
+    - [Get Sibling Paths](#toc-get-sibling-paths)
+    - [Stopping Traversal](#toc-stopping-traversal)
   - [Manipulation](#toc-manipulation)
     - [Replacing a node](#toc-replacing-a-node)
     - [Replacing a node with multiple nodes](#toc-replacing-a-node-with-multiple-nodes)
     - [Replacing a node with a source string](#toc-replacing-a-node-with-a-source-string)
     - [Inserting a sibling node](#toc-inserting-a-sibling-node)
+    - [Inserting into a container](#toc-inserting-into-a-container)
     - [Removing a node](#toc-removing-a-node)
     - [Replacing a parent](#toc-replacing-a-parent)
     - [Removing a parent](#toc-removing-a-parent)
@@ -56,6 +61,8 @@ a complete list.
     - [Pushing a variable declaration to a parent scope](#toc-pushing-a-variable-declaration-to-a-parent-scope)
     - [Rename a binding and its references](#toc-rename-a-binding-and-its-references)
 - [Plugin Options](#toc-plugin-options)
+  - [Pre and Post in Plugins](#toc-pre-and-post-in-plugins)
+  - [Enabling Syntax in Plugins](#toc-enabling-syntax-in-plugins)
 - [Building Nodes](#toc-building-nodes)
 - [Best Practices](#toc-best-practices)
   - [Avoid traversing the AST as much as possible](#toc-avoid-traversing-the-ast-as-much-as-possible)
@@ -390,6 +397,11 @@ const MyVisitor = {
     console.log("Called!");
   }
 };
+
+// You can also create a visitor and add methods on it later
+let visitor = {};
+visitor.MemberExpression = function() {};
+visitor.FunctionDeclaration = function() {}
 ```
 
 > **Note:** `Identifier() { ... }` is shorthand for
@@ -468,6 +480,26 @@ const MyVisitor = {
       console.log("Exited!");
     }
   }
+};
+```
+
+If necessary, you can also apply the same function for multiple visitor nodes by piping them in the method name as a string like `Identifier|MemberExpression`.
+
+Example usage in the [flow-comments](https://github.com/babel/babel/blob/2b6ff53459d97218b0cf16f8a51c14a165db1fd2/packages/babel-plugin-transform-flow-comments/src/index.js#L47) plugin
+
+```js
+const MyVisitor = {
+  "ExportNamedDeclaration|Flow"(path) {}
+};
+```
+
+You can also use aliases as visitor nodes (as defined in [babel-types](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions)).
+
+`Function` is an alias for `FunctionDeclaration`, `FunctionExpression`, `ArrowFunctionExpression`
+
+```js
+const MyVisitor = {
+  Function(path) {}
 };
 ```
 
@@ -1131,6 +1163,19 @@ export default function({ types: t }) {
 };
 ```
 
+Each function in the visitor provides 2 parameters: `path` and `state`
+
+```js
+export default function({ types: t }) {
+  return {
+    visitor: {
+      Identifier(path, state) {},
+      ASTNodeTypeHere(path, state) {}
+    }
+  };
+};
+```
+
 Let's write a quick plugin to show off how it works. Here's our source code:
 
 ```js
@@ -1234,12 +1279,15 @@ Awesome! Our very first Babel plugin.
 To access an AST node's property you normally access the node and then the property. `path.node.property`
 
 ```js
+// the BinaryExpression AST node has properties: `left`, `right`, `operator`
 BinaryExpression(path) {
   path.node.left;
+  path.node.right;
+  path.node.operator;
 }
 ```
 
-If you need to access the path of that property instead, use the `get` method of a path, passing in the string to the property.
+If you need to access the `path` of that property instead, use the `get` method of a path, passing in the string to the property.
 
 ```js
 BinaryExpression(path) {
@@ -1249,7 +1297,6 @@ Program(path) {
   path.get('body[0]');
 }
 ```
-
 ### <a id="toc-check-if-a-node-is-a-certain-type"></a>Check if a node is a certain type
 
 If you want to check what the type of a node is, the preferred way to do so is:
@@ -1286,6 +1333,20 @@ BinaryExpression(path) {
 }
 ```
 
+### <a id="toc-check-if-a-path-is-a-certain-type"></a>Check if a path is a certain type
+
+A path has all the type methods in `t.isX()`. You can make this check instead of getting the node
+
+Also equivalent to doing `if (t.isIdentifier(path.node.left)) {`
+
+```js
+BinaryExpression(path) {
+  if (path.get('left').isIdentifier()) {
+    // ...
+  }
+}
+```
+
 ### <a id="toc-check-if-an-identifier-is-referenced"></a>Check if an identifier is referenced
 
 ```js
@@ -1304,6 +1365,88 @@ Identifier(path) {
     // ...
   }
 }
+```
+
+### <a id="toc-find-a-specific-parent-path"></a>Find a specific parent path
+
+Sometimes you will need to traverse the tree upwards from a path until a condition is satisfied.
+
+```js
+// Call the provided `callback` with the `NodePath`s of all the parents.
+// When the `callback` returns a truthy value, we return that node path.
+path.findParent((path) => path.isObjectExpression());
+
+// Include the current path
+path.find((path) => path.isObjectExpression());
+
+// Find the parent function or Program
+path.getFunctionParent();
+
+// Walk up the tree until we hit a parent node path in a list
+path.getStatementParent();
+```
+
+### <a id="toc-get-sibling-paths"></a>Get Sibling Paths
+
+If a path in a a list like in the body of a `Function`/`Program`, it will have "siblings".
+
+- Check if a path is part of a list with `path.inList`
+- You can get the surrounding siblings with `path.getSibling(index)`,
+- The current path's index in the container with `path.key`,
+- The path's container (an array of all sibling paths) with `path.container`
+- Get the name of the key of the list container with `path.listKey`
+
+> These APis are used in the [transform-merge-sibling-variables](https://github.com/babel/babili/blob/master/packages/babel-plugin-transform-merge-sibling-variables/src/index.js) plugin used in [babel-minify](https://github.com/babel/babili).
+
+```js
+var a = 1; // pathA, path.key = 0
+var b = 2; // pathB, path.key = 1
+var c = 3; // pathC, path.key = 2
+```
+
+```js
+export default function({ types: t }) {
+  return {
+    visitor: {
+      VariableDeclaration(path) {
+        // if the current path is pathA
+        path.inList // true
+        path.listKey // "body"
+        path.key // 0
+        path.getSibling(0) // pathA
+        path.getSibling(path.key + 1) // pathB
+        path.container // [pathA, pathB, pathC]
+      }
+    }
+  };
+}
+```
+
+### <a id="toc-stopping-traversal"></a>Stopping Traversal
+
+If your plugin needs to not run in a certain situation, the simpliest thing to do is to write an early return.
+
+```js
+BinaryExpression(path) {
+  if (path.node.operator !== '**') return;
+}
+```
+
+If you are doing a sub-traversal in a top level path, you can use 2 provided API methods:
+
+`path.skip()` skips traversing the children of the current path.
+`path.stop()` stops traversal entirely.
+
+```js
+path.traverse({
+  Function(path) {
+    path.skip(); // if checking the children is irrelevant
+  },
+  ReferencedIdentifier(path, state) {
+    state.iife = true;
+    path.stop(); // if you want to save some state and then stop traversal, or deopt
+  }
+});
 ```
 
 ## <a id="toc-manipulation"></a>Manipulation
@@ -1394,6 +1537,28 @@ FunctionDeclaration(path) {
 > uses the same heuristics mentioned in
 > [Replacing a node with multiple nodes](#replacing-a-node-with-multiple-nodes).
 
+### <a id="toc-inserting-into-a-container"></a>Inserting into a container
+
+If you want to insert into a AST node property like that is an array like `body`.
+It is simialr to `insertBefore`/`insertAfter` other than you having to specify the `listKey` which is usually `body`.
+
+```js
+ClassMethod(path) {
+  path.get('body').unshiftContainer('body', t.stringLiteral('before'));
+  path.get('body').pushContainer('body', t.stringLiteral('after'));
+}
+```
+
+```diff
+ class A {
+  constructor() {
++   "before"
+    var a = 'middle';
++   "after"
+  }
+ }
+```
+
 ### <a id="toc-removing-a-node"></a>Removing a node
 
 ```js
@@ -1409,6 +1574,8 @@ FunctionDeclaration(path) {
 ```
 
 ### <a id="toc-replacing-a-parent"></a>Replacing a parent
+
+Just call `replaceWith` with the parentPath: `path.parentPath`
 
 ```js
 BinaryExpression(path) {
@@ -1565,6 +1732,71 @@ export default function({ types: t }) {
 These options are plugin-specific and you cannot access options from other
 plugins.
 
+## <a id="toc-pre-and-post-in-plugins"></a> Pre and Post in Plugins
+
+Plugins can have functions that are run before or after plugins.
+They can be used for setup or cleanup/analysis purposes.
+
+```js
+export default function({ types: t }) {
+  return {
+    pre(state) {
+      this.cache = new Map();
+    },
+    visitor: {
+      StringLiteral(path) {
+        this.cache.set(path.node.value, 1);
+      }
+    },
+    post(state) {
+      console.log(this.cache);
+    }
+  };
+}
+```
+
+## <a id="toc-enabling-syntax-in-plugins"></a> Enabling Syntax in Plugins
+
+Plugins can enable [babylon plugins](https://github.com/babel/babylon#plugins) so that users don't need to
+install/enable them. This prevents a parsing error without inheriting the syntax plugin.
+
+```js
+export default function({ types: t }) {
+  return {
+    inherits: require("babel-plugin-syntax-jsx")
+  };
+}
+```
+
+## <a id="toc-throwing-a-syntax-error"></a> Throwing a Syntax Error
+
+If you want to throw an error with babel-code-frame and a message:
+
+```js
+export default function({ types: t }) {
+  return {
+    visitor: {
+      StringLiteral(path) {
+        throw path.buildCodeFrameError("Error message here");
+      }
+    }
+  };
+}
+```
+
+The error looks like:
+
+```
+file.js: Error message here
+   7 | 
+   8 | let tips = [
+>  9 |   "Click on any AST node with a '+' to expand it",
+     |   ^
+  10 | 
+  11 |   "Hovering over a node highlights the \
+  12 |    corresponding part in the source code",
+```
+
 ----
 
 # <a id="toc-building-nodes"></a>Building Nodes
@@ -1621,6 +1853,19 @@ builder: ["object", "property", "computed"],
 > having too many arguments. In these cases you need to set the properties
 > manually. An example of this is
 > [`ClassMethod`](https://github.com/babel/babel/blob/bbd14f88c4eea88fa584dd877759dd6b900bf35e/packages/babel-types/src/definitions/es2015.js#L238-L276).
+
+```js
+// Example
+// because the builder doesn't contain `async` as a property
+var node = t.classMethod(
+  "constructor",
+  t.identifier("constructor"),
+  params,
+  body
+)
+// set it manually after creation
+node.async = true;
+```
 
 You can see the validation for the builder arguments with the `fields` object.
 
@@ -1704,7 +1949,20 @@ and you can see them
 
 # <a id="toc-best-practices"></a>Best Practices
 
-> I'll be working on this section over the coming weeks.
+## <a id="toc-create-helper-builders-and-checkers"></a> Create Helper Builders and Checkers
+
+It's pretty simple to extract certain checks (if a node is a certain type) into their own helper functions
+as well as extracting out helpers for specific node types.
+
+```js
+function isAssignment(node) {
+  return node && node.operator === opts.operator + "=";
+}
+
+function buildAssignment(left, right) {
+  return t.assignmentExpression("=", left, right);
+}
+```
 
 ## <a id="toc-avoid-traversing-the-ast-as-much-as-possible"></a>Avoid traversing the AST as much as possible
 
@@ -1903,5 +2161,5 @@ class Foo {
 }
 ```
 
-> ***For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle)
+> ***For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) and [@babeljs](https://twitter.com/babeljs)
 > on Twitter.***
