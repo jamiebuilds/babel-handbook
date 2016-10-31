@@ -483,7 +483,7 @@ const MyVisitor = {
 };
 ```
 
-If necessary, you can also apply the same function for multiple visitor nodes by piping them in the method name as a string like `Identifier|MemberExpression`.
+If necessary, you can also apply the same function for multiple visitor nodes by separating them with a `|` in the method name as a string like `Identifier|MemberExpression`.
 
 Example usage in the [flow-comments](https://github.com/babel/babel/blob/2b6ff53459d97218b0cf16f8a51c14a165db1fd2/packages/babel-plugin-transform-flow-comments/src/index.js#L47) plugin
 
@@ -494,6 +494,8 @@ const MyVisitor = {
 ```
 
 You can also use aliases as visitor nodes (as defined in [babel-types](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions)).
+
+For example,
 
 `Function` is an alias for `FunctionDeclaration`, `FunctionExpression`, `ArrowFunctionExpression`
 
@@ -1163,7 +1165,7 @@ export default function({ types: t }) {
 };
 ```
 
-Each function in the visitor provides 2 parameters: `path` and `state`
+Each function in the visitor receives 2 arguments: `path` and `state`
 
 ```js
 export default function({ types: t }) {
@@ -1335,13 +1337,21 @@ BinaryExpression(path) {
 
 ### <a id="toc-check-if-a-path-is-a-certain-type"></a>Check if a path is a certain type
 
-A path has all the type methods in `t.isX()`. You can make this check instead of getting the node
-
-Also equivalent to doing `if (t.isIdentifier(path.node.left)) {`
+A path has the same methods for checking the type of a node:
 
 ```js
 BinaryExpression(path) {
-  if (path.get('left').isIdentifier()) {
+  if (path.get('left').isIdentifier({ name: "n" })) {
+    // ...
+  }
+}
+```
+
+is equivalent to doing:
+
+```js
+BinaryExpression(path) {
+  if (t.isIdentifier(path.node.left, { name: "n" })) {
     // ...
   }
 }
@@ -1371,18 +1381,28 @@ Identifier(path) {
 
 Sometimes you will need to traverse the tree upwards from a path until a condition is satisfied.
 
+Call the provided `callback` with the `NodePath`s of all the parents.
+When the `callback` returns a truthy value, we return that `NodePath`.
+
 ```js
-// Call the provided `callback` with the `NodePath`s of all the parents.
-// When the `callback` returns a truthy value, we return that node path.
 path.findParent((path) => path.isObjectExpression());
+```
 
-// Include the current path
+If the current path should be included as well:
+
+```js
 path.find((path) => path.isObjectExpression());
+```
 
-// Find the parent function or Program
+Find the closest parent function or program:
+
+```js
 path.getFunctionParent();
+```
 
-// Walk up the tree until we hit a parent node path in a list
+Walk up the tree until we hit a parent node path in a list
+
+```js
 path.getStatementParent();
 ```
 
