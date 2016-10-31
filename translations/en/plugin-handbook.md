@@ -45,6 +45,7 @@ a complete list.
     - [Check if an identifier is referenced](#toc-check-if-an-identifier-is-referenced)
     - [Find a specific parent path](#toc-find-a-specific-parent-path)
     - [Get Sibling Paths](#toc-get-sibling-paths)
+    - [Stopping Traversal](#toc-stopping-traversal)
   - [Manipulation](#toc-manipulation)
     - [Replacing a node](#toc-replacing-a-node)
     - [Replacing a node with multiple nodes](#toc-replacing-a-node-with-multiple-nodes)
@@ -1419,6 +1420,33 @@ export default function({ types: t }) {
     }
   };
 }
+```
+
+### <a id="toc-stopping-traversal"></a>Stopping Traversal
+
+If your plugin needs to not run in a certain situation, the simpliest thing to do is to write an early return.
+
+```js
+BinaryExpression(path) {
+  if (path.node.operator !== '**') return;
+}
+```
+
+If you are doing a sub-traversal in a top level path, you can use 2 provided API methods:
+
+`path.skip()` skips traversing the children of the current path.
+`path.stop()` stops traversal entirely.
+
+```js
+path.traverse({
+  Function(path) {
+    path.skip(); // if checking the children is irrelevant
+  },
+  ReferencedIdentifier(path, state) {
+    state.iife = true;
+    path.stop(); // if you want to save some state and then stop traversal, or deopt
+  }
+});
 ```
 
 ## <a id="toc-manipulation"></a>Manipulation
