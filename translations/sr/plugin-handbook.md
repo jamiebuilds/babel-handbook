@@ -39,12 +39,17 @@ This handbook is available in other languages, see the [README](/README.md) for 
       * [Posećivanje (visiting)](#toc-visiting)
       * [Get the Path of Sub-Node](#toc-get-the-path-of-a-sub-node)
       * [Check if a node is a certain type](#toc-check-if-a-node-is-a-certain-type)
+      * [Check if a path is a certain type](#toc-check-if-a-path-is-a-certain-type)
       * [Check if an identifier is referenced](#toc-check-if-an-identifier-is-referenced)
+      * [Find a specific parent path](#toc-find-a-specific-parent-path)
+      * [Get Sibling Paths](#toc-get-sibling-paths)
+      * [Stopping Traversal](#toc-stopping-traversal)
       * [Manipulacija](#toc-manipulation)
       * [Replacing a node](#toc-replacing-a-node)
       * [Replacing a node with multiple nodes](#toc-replacing-a-node-with-multiple-nodes)
       * [Replacing a node with a source string](#toc-replacing-a-node-with-a-source-string)
       * [Inserting a sibling node](#toc-inserting-a-sibling-node)
+      * [Inserting into a container](#toc-inserting-into-a-container)
       * [Removing a node](#toc-removing-a-node)
       * [Replacing a parent](#toc-replacing-a-parent)
       * [Removing a parent](#toc-removing-a-parent)
@@ -53,7 +58,9 @@ This handbook is available in other languages, see the [README](/README.md) for 
       * [Generating a UID](#toc-generating-a-uid)
       * [Pushing a variable declaration to a parent scope](#toc-pushing-a-variable-declaration-to-a-parent-scope)
       * [Rename a binding and its references](#toc-rename-a-binding-and-its-references)
-  * [Plagin opcije](#toc-plugin-options)
+  * [Plagin opcije](#toc-plugin-options) 
+      * [Pre and Post in Plugins](#toc-pre-and-post-in-plugins)
+      * [Enabling Syntax in Plugins](#toc-enabling-syntax-in-plugins)
   * [Kreiranje čvorova](#toc-building-nodes)
   * [Praktični saveti](#toc-best-practices) 
       * [Izbegavajte prolazak kroz AST što je više moguće](#toc-avoid-traversing-the-ast-as-much-as-possible)
@@ -92,7 +99,7 @@ function square(n) {
 
 > Da biste stekli bolji osećaj u vezi sa strukturama koje koristi AST možete da pogledate [AST Explorer](http://astexplorer.net/). Da biste pogledali kod iz prethodnog primera u Ast Exploreru možete da odete na [ovaj](http://astexplorer.net/#/Z1exs6BWMq) link.
 
-Kod iz primera može se predstaviti kao lista:
+This same program can be represented as a tree like this:
 
 ```md
 - FunctionDeclaration:
@@ -343,6 +350,11 @@ const MyVisitor = {
     console.log("Called!");
   }
 };
+
+// You can also create a visitor and add methods on it later
+let visitor = {};
+visitor.MemberExpression = function() {};
+visitor.FunctionDeclaration = function() {}
 ```
 
 > **Napomena:** `Identifier() { ... }` je skraćeno zapisano `Identifier: { enter() { ... } }`.
@@ -419,13 +431,35 @@ const MyVisitor = {
 };
 ```
 
+If necessary, you can also apply the same function for multiple visitor nodes by separating them with a `|` in the method name as a string like `Identifier|MemberExpression`.
+
+Example usage in the [flow-comments](https://github.com/babel/babel/blob/2b6ff53459d97218b0cf16f8a51c14a165db1fd2/packages/babel-plugin-transform-flow-comments/src/index.js#L47) plugin
+
+```js
+const MyVisitor = {
+  "ExportNamedDeclaration|Flow"(path) {}
+};
+```
+
+You can also use aliases as visitor nodes (as defined in [babel-types](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions)).
+
+For example,
+
+`Function` is an alias for `FunctionDeclaration`, `FunctionExpression`, `ArrowFunctionExpression`
+
+```js
+const MyVisitor = {
+  Function(path) {}
+};
+```
+
 ### <a id="toc-paths"></a>Putanje (paths)
 
-Generalno, AST se sastoji od više čvorova. Postavlja se pitanje kako su oni međusobno povezani? Možemo da imamo jeda ogroman promenljivi objekat sa kojim manipulišemo i imati potpun pristup ka svakom njegovom delu ili možemo da pojednostavimo ovo manipulisanje korišćenjem **putanja**.
+An AST generally has many Nodes, but how do Nodes relate to one another? We could have one giant mutable object that you manipulate and have full access to, or we can simplify this with **Paths**.
 
-**Putanja** je veza između dva čvora u objektnoj reprezentaciji.
+A **Path** is an object representation of the link between two nodes.
 
-Na primer, ako pogledamo sledeći čvor i njegove podčvore (child):
+For example if we take the following node and its child:
 
 ```js
 {
@@ -438,7 +472,7 @@ Na primer, ako pogledamo sledeći čvor i njegove podčvore (child):
 }
 ```
 
-i predstavimo podčvor `Identifier` kao "putanju", dobijeni rezultat izgleda kao:
+And represent the child `Identifier` as a path, it looks something like this:
 
 ```js
 {
@@ -454,7 +488,7 @@ i predstavimo podčvor `Identifier` kao "putanju", dobijeni rezultat izgleda kao
 }
 ```
 
-Ovde imamo i dodatne metapodatke (metadata) o "putanji":
+It also has additional metadata about the path:
 
 ```js
 {
@@ -482,13 +516,13 @@ Ovde imamo i dodatne metapodatke (metadata) o "putanji":
 }
 ```
 
-Kasnije ćemo razmotriti veliki broj metoda vezanih za dodavanje, modifikovanje, pomeranje i uklanjanje čvorova.
+As well as tons and tons of methods related to adding, updating, moving, and removing nodes, but we'll get into those later.
 
-Na neki način, "putanje" su **reaktivne** reprezentacije položaja čvorova unutar stabla kao i različite informacije o čvoru. Pozivanjem metoda koje modifikuju stablo se ažuriraju informacije o njegovoj strukturi. Sve ovo vam omogućava Babel kako bi korišćenje čvorova bilo što olakšano i nezavisno od stanja u kojima se nalaze.
+In a sense, paths are a **reactive** representation of a node's position in the tree and all sorts of information about the node. Whenever you call a method that modifies the tree, this information is updated. Babel manages all of this for you to make working with nodes easy and as stateless as possible.
 
 #### <a id="toc-paths-in-visitors"></a>Putanje u "posetiocima"
 
-Kad imamo "posetioca" koji ima `Identifier()` metod, u stanju smo da radimo sa putanjom umesto sa čvorom. Na ovaj način možemo da koristimo reaktivnu reprezentaciju čvora umesto samog čvora.
+When you have a visitor that has a `Identifier()` method, you're actually visiting the path instead of the node. This way you are mostly working with the reactive representation of a node instead of the node itself.
 
 ```js
 const MyVisitor = {
@@ -510,9 +544,9 @@ Visiting: c
 
 ### <a id="toc-state"></a>Stanje (state)
 
-Stanje je neprijatelj AST transformacija. Stanje će vas uvek napadati i vaše pretpostavke o stanju će skoro uvek biti pogrešne tako što će se pojavljivati sintakse koda koje niste očekivali.
+State is the enemy of AST transformation. State will bite you over and over again and your assumptions about state will almost always be proven wrong by some syntax that you didn't consider.
 
-Pogledajmo sledeći primer:
+Take the following code:
 
 ```js
 function square(n) {
@@ -520,7 +554,7 @@ function square(n) {
 }
 ```
 
-Napišimo mali "posetioc" koji će da preimenuje `n` u `x`.
+Let's write a quick hacky visitor that will rename `n` to `x`.
 
 ```js
 let paramName;
@@ -540,7 +574,7 @@ const MyVisitor = {
 };
 ```
 
-Ovaj primer će možda raditi za prethodni primer, ali ne i za sledeći primer:
+This might work for the above code, but we can easily break that by doing this:
 
 ```js
 function square(n) {
@@ -549,7 +583,7 @@ function square(n) {
 n;
 ```
 
-Bolje rešenje se dobija korišćenjem rekurzije. Ubacimo "posetioca" u "posetioca" kao u filmu Christophera Nolana.
+The better way to deal with this is recursion. So let's make like a Christopher Nolan film and put a visitor inside of a visitor.
 
 ```js
 const updateParamNameVisitor = {
@@ -571,11 +605,11 @@ const MyVisitor = {
 };
 ```
 
-Iako je ovo specifičan primer, on demonstira kako da izbegnemo korišćenje globalog stanja u vašem "posetiocu".
+Of course, this is a contrived example but it demonstrates how to eliminate global state from your visitors.
 
 ### <a id="toc-scopes"></a>Domeni (scopes)
 
-Uvedimo sad koncept [**domena**](https://en.wikipedia.org/wiki/Scope_(computer_science)) (scope). JavaScript koristi [leksički domen](https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scoping_vs._dynamic_scoping) (lexical scoping) - strukturu stabla u kojoj svaki blok koda kreira novi domen.
+Next let's introduce the concept of a [**scope**](https://en.wikipedia.org/wiki/Scope_(computer_science)). JavaScript has [lexical scoping](https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scoping_vs._dynamic_scoping), which is a tree structure where blocks create new scope.
 
 ```js
 // global scope
@@ -589,7 +623,7 @@ function scopeOne() {
 }
 ```
 
-Uvek kad u JavaScriptu uvedemo referencu, bilo da se radi o promenljivoj, funkciji, klasi, parametaru, labela i tako dalje, ona pripada trenutnom domenu (current scope).
+Whenever you create a reference in JavaScript, whether that be by a variable, function, class, param, import, label, etc., it belongs to the current scope.
 
 ```js
 var global = "I am in the global scope";
@@ -603,7 +637,7 @@ function scopeOne() {
 }
 ```
 
-Kod iz ugnežđenih domena može da koristi reference iz spoljašnjih domena.
+Code within a deeper scope may use a reference from a higher scope.
 
 ```js
 function scopeOne() {
@@ -615,7 +649,7 @@ function scopeOne() {
 }
 ```
 
-Ugnežđeni domen može da koristi referencu sa istim imenom kao i referenca u spoljašnjem domenu, ali ona pri tome ne menja vrednost.
+A lower scope might also create a reference of the same name without modifying it.
 
 ```js
 function scopeOne() {
@@ -627,11 +661,11 @@ function scopeOne() {
 }
 ```
 
-Kada pišemo kod za transformacije, moramo voditi računa o domenima. Moramo se pobrinuti da ne pokvarimo postojeći kod pri modifikovanju njegovih raznih delova.
+When writing a transform, we want to be wary of scope. We need to make sure we don't break existing code while modifying different parts of it.
 
-Ako treba da dodamo nove reference, treba da vodimo računa da se one ne poklapaju sa već postojećim. Ili možda samo želimo da nađemo gde su referencirane promenljive. Moramo biti u stanju da pratimo te reference unutar datog domena.
+We may want to add new references and make sure they don't collide with existing ones. Or maybe we just want to find where a variable is referenced. We want to be able to track these references within a given scope.
 
-Domen može biti predstavljen kao:
+A scope can be represented as:
 
 ```js
 {
@@ -643,13 +677,13 @@ Domen može biti predstavljen kao:
 }
 ```
 
-Novi domen kreiramo tako da mu dodeljujemo putanju i nadređeni domen (parent scope). U procesu prolaska se prikupljaju sve reference ("bindings") unutar domena.
+When you create a new scope you do so by giving it a path and a parent scope. Then during the traversal process it collects all the references ("bindings") within that scope.
 
-Nakon toka, na domen možemo da primenumo veliko broj metoda. Njih ćemo razmotriti kasnije.
+Once that's done, there's all sorts of methods you can use on scopes. We'll get into those later though.
 
 #### <a id="toc-bindings"></a>Vezivanje (bindings)
 
-Reference pripadaju određenom domenu; ovu relaciju nazivamo **vezivanje** (binding).
+References all belong to a particular scope; this relationship is known as a **binding**.
 
 ```js
 function scopeOnce() {
@@ -663,7 +697,7 @@ function scopeOnce() {
 }
 ```
 
-Jedno "vezivanje" ima sledeći oblik:
+A single binding looks like this:
 
 ```js
 {
@@ -681,9 +715,9 @@ Jedno "vezivanje" ima sledeći oblik:
 }
 ```
 
-Sa ovim informacijama možemo da nađemo sve reference na "vezivanja", odgovorimo na pitanje o kom tipu "vezivanja" se radi (parametar, deklaracija,...), pronaći u kome se domenu nalaze, ili dobiti kopiju identifikatora "vezivanja". Možemo čak da proverimo da li se radi o konstanti i videti koja "putanja" uzrokuje da "vezivanje" ne može da bude predstavljeno kao konstanta.
+With this information you can find all the references to a binding, see what type of binding it is (parameter, declaration, etc.), lookup what scope it belongs to, or get a copy of its identifier. You can even tell if it's constant and if not, see what paths are causing it to be non-constant.
 
-Mogućnost da kažemo da li je neko "vezivanje konstanta" je korisno u mnogim slučajevima, pri čemu je najbitniji minifikacija koda.
+Being able to tell if a binding is constant is useful for many purposes, the largest of which is minification.
 
 ```js
 function scopeOne() {
@@ -702,21 +736,21 @@ function scopeOne() {
 
 # <a id="toc-api"></a>API
 
-Babel u osnovi čini kolekciju modula. U ovom odeljku ćemo pomenuti one koji su najbitniji, objašnjavajući šta oni rade i kako se koriste.
+Babel is actually a collection of modules. In this section we'll walk through the major ones, explaining what they do and how to use them.
 
 > Napomena: Ovaj dokument ne zamenjuje detaljnu API dokumentaciju koja će uskoro biti dostupna na drugom mestu.
 
 ## <a id="toc-babylon"></a>[`babylon`](https://github.com/babel/babylon)
 
-Babylon je parser koji se koristi u Babelu. Ovaj modul je nastao kao "ogranak" (fork) projekta Acorn, veoma je brz, jednostavan za korišćenje, ima arhitekturu "plugina" koja je upotrebljiva za nestandardne potrebe (kao i za buduće standarde).
+Babylon is Babel's parser. Started as a fork of Acorn, it's fast, simple to use, has plugin-based architecture for non-standard features (as well as future standards).
 
-Prvo, treba da ga instaliramo.
+First, let's install it.
 
 ```sh
 $ npm install --save babylon
 ```
 
-Počnimo od jednostavnog parsiranja koda datog u sledećem stringu:
+Let's start by simply parsing a string of code:
 
 ```js
 import * as babylon from "babylon";
@@ -737,7 +771,7 @@ babylon.parse(code);
 // }
 ```
 
-Metod `parse()` može da primi i opcije kao objekta prosleđen kao drugi parametar:
+We can also pass options to `parse()` like so:
 
 ```js
 babylon.parse(code, {
@@ -746,25 +780,25 @@ babylon.parse(code, {
 });
 ```
 
-`sourceType` može da bude ili `"module"` ili `"script"` što oderđuje na koji način Babylon treba da parsira dati kod. Ako je sourceType tipa `"module"`, ulazni kod će biti parsiran u "striktnom modu" (strict mode) i biće dozvoljene deklaracije modula što nije moguće ako se koristi mod `"script"`.
+`sourceType` can either be `"module"` or `"script"` which is the mode that Babylon should parse in. `"module"` will parse in strict mode and allow module declarations, `"script"` will not.
 
 > **Napomena:** podrazumevana vrednost za `sourceType` je `"script"` u ako se pri parsiranju naiđe na ključnu reč `import` or `export` parser će da izbaci poruku o grešci i prekinuti parsiranje. Da bi izbegli ove greške koristite `sourceType: "module"` u opcijama pri pozivu parsera.
 
-Kako se Babylon sagrađen na arhitekturi baziranoj na plaginovima, postoji `plugins` opcija koja dozvoljava upotrebu unutrašnjih plaginova. Imajte u vidu da Babylon još nije otvorio svoj API da bi podržao spoljašnje plaginove, i očekuje se će to biti ostvareno jedoga dana.
+Since Babylon is built with a plugin-based architecture, there is also a `plugins` option which will enable the internal plugins. Note that Babylon has not yet opened this API to external plugins, although may do so in the future.
 
 To see a full list of plugins, see the [Babylon README](https://github.com/babel/babylon/blob/master/README.md#plugins).
 
 ## <a id="toc-babel-traverse"></a>[`babel-traverse`](https://github.com/babel/babel/tree/master/packages/babel-traverse)
 
-Babel Traverse modul procesira ukupno stanje stabla i odgovoran je za zamene, uklanjanja i dodavanje čvorova.
+The Babel Traverse module maintains the overall tree state, and is responsible for replacing, removing, and adding nodes.
 
-Da biste ga instalirali izvršite sledeću komandu:
+Install it by running:
 
 ```sh
 $ npm install --save babel-traverse
 ```
 
-Možemo ga koristiti zajedno sa Babylonom da bismo prošli kroz čvorove i ažurirali ih:
+We can use it alongside Babylon to traverse and update nodes:
 
 ```js
 import * as babylon from "babylon";
@@ -790,15 +824,15 @@ traverse(ast, {
 
 ## <a id="toc-babel-types"></a>[`babel-types`](https://github.com/babel/babel/tree/master/packages/babel-types)
 
-Babel Types podseća na Loadas biblioteku primenjenu na AST čvorove. Biblioteka sadrži metode za kreiranje, validaciju i konverziju AST čvorova. Korisna je za pročišćavanje logike u AST strukturi korišćenjem dobro osmišljenih pomoćnih metoda.
+Babel Types is a Lodash-esque utility library for AST nodes. It contains methods for building, validating, and converting AST nodes. It's useful for cleaning up AST logic with well thought out utility methods.
 
-Možemo ga instalirati ako izvršimo komandu:
+You can install it by running:
 
 ```sh
 $ npm install --save babel-types
 ```
 
-Po tom možemo da počnemo da ga koristimo:
+Then start using it:
 
 ```js
 import traverse from "babel-traverse";
@@ -815,9 +849,9 @@ traverse(ast, {
 
 ### <a id="toc-definitions"></a>Defincije
 
-Babel Types sadrži definicije za svaki pojedinačni tip čvora, sa informacija koje se strukture podataka koriste u njima, koje su validne vrednosti unutar strukture, kako se kreiraju određeni čvorovi, kako se prolazi kroz čvorove i koji su alijasi (aliases) za čvorove.
+Babel Types has definitions for every single type of node, with information on what properties belong where, what values are valid, how to build that node, how the node should be traversed, and aliases of the Node.
 
-Definicija tipa jednog čvora ima oblik:
+A single node type definition looks like this:
 
 ```js
 defineType("BinaryExpression", {
@@ -840,19 +874,19 @@ defineType("BinaryExpression", {
 
 ### <a id="toc-builders"></a>Gradioci (Builders)
 
-Primetićete da gornja definicija `BinaryExpression` ima polje `builder`.
+You'll notice the above definition for `BinaryExpression` has a field for a `builder`.
 
 ```js
 builder: ["operator", "left", "right"]
 ```
 
-Svaki tip čvora koristi metodu "gradioca", koja u praksi izgleda ovako:
+This is because each node type gets a builder method, which when used looks like this:
 
 ```js
 t.binaryExpression("*", t.identifier("a"), t.identifier("b"));
 ```
 
-Ovim je kreiran jedan čvor AST koji izgleda kao:
+Which creates an AST like this:
 
 ```js
 {
@@ -869,17 +903,17 @@ Ovim je kreiran jedan čvor AST koji izgleda kao:
 }
 ```
 
-Rezultat prethodnog izraza je sledeći:
+Which when printed looks like this:
 
 ```js
 a * b
 ```
 
-"Gradioci", takođe, validiraju čvorove koje kreiraju i bacaju greške sa opisom ako nisu korišćeni na pravi način. Ovo nas vodi u sledeći tip metoda.
+Builders will also validate the nodes they are creating and throw descriptive errors if used improperly. Which leads into the next type of method.
 
 ### <a id="toc-validators"></a>Validatori
 
-Definicija `BinaryExpression`, takođe, uključuje informacije o `poljima` čvora i kako se validiraju.
+The definition for `BinaryExpression` also includes information on the `fields` of a node and how to validate them.
 
 ```js
 fields: {
@@ -895,19 +929,19 @@ fields: {
 }
 ```
 
-Ovo je iskorišćeno da se kreiraju dva tipa metoda za validaciju. Prvi od njih je `isX`.
+This is used to create two types of validating methods. The first of which is `isX`.
 
 ```js
 t.isBinaryExpression(maybeBinaryExpressionNode);
 ```
 
-Izraz proverava da li čvor sadrži binarni izraz, a moguće je proslediti i drugi parametar kojim se obezbeđuje da čvor sadrži određena polja i njihove vrednosti.
+This tests to make sure that the node is a binary expression, but you can also pass a second parameter to ensure that the node contains certain properties and values.
 
 ```js
 t.isBinaryExpression(maybeBinaryExpressionNode, { operator: "*" });
 ```
 
-Moguće je koristiti i verzije ovih metoda koje će izbaciti greške u izvršavanju koda, umesto da vraćaju samo vrednosti true ili false.
+There is also the more, *ehem*, assertive version of these methods, which will throw errors instead of returning `true` or `false`.
 
 ```js
 t.assertBinaryExpression(maybeBinaryExpressionNode);
@@ -921,15 +955,15 @@ t.assertBinaryExpression(maybeBinaryExpressionNode, { operator: "*" });
 
 ## <a id="toc-babel-generator"></a>[`babel-generator`](https://github.com/babel/babel/tree/master/packages/babel-generator)
 
-Babel Generator je generator koda u okviru Babela. Njegova uloga je da pretvori AST strukturu u kod sa mapama koda (sourcemaps).
+Babel Generator is the code generator for Babel. It takes an AST and turns it into code with sourcemaps.
 
-Izvršite sledeću komandu da biste ga instalirali:
+Run the following to install it:
 
 ```sh
 $ npm install --save babel-generator
 ```
 
-Po tom ga možete koristiti
+Then use it
 
 ```js
 import * as babylon from "babylon";
@@ -948,7 +982,7 @@ generate(ast, null, code);
 // }
 ```
 
-Metod `generate()` prihvata opcije u formi objekta prosleđenog kao drugi parametar.
+You can also pass options to `generate()`.
 
 ```js
 generate(ast, {
@@ -991,7 +1025,7 @@ var myModule = require("my-module");
 
 # <a id="toc-writing-your-first-babel-plugin"></a>Kreiranje vašeg prvog Babel plugina
 
-Nakon što smo se upoznali sa osnova Babela, pokušajmo da stečeno znanje iskoristimu u radu sa plugin API-ijem.
+Now that you're familiar with all the basics of Babel, let's tie it together with the plugin API.
 
 Start off with a `function` that gets passed the current [`babel`](https://github.com/babel/babel/tree/master/packages/babel-core) object.
 
@@ -1001,7 +1035,7 @@ export default function(babel) {
 }
 ```
 
-Pošto će biti često korišćeno, dodaćemo kod za uzimanje `babel.types` kao:
+Since you'll be using it so often, you'll likely want to grab just `babel.types` like so:
 
 ```js
 export default function({ types: t }) {
@@ -1009,7 +1043,7 @@ export default function({ types: t }) {
 }
 ```
 
-Rezultat poziva treba da bude objekat koji ima polje `visitor` koji predstavlja osnovni "posetioc" u plaginu.
+Then you return an object with a property `visitor` which is the primary visitor for the plugin.
 
 ```js
 export default function({ types: t }) {
@@ -1021,13 +1055,26 @@ export default function({ types: t }) {
 };
 ```
 
-Napisaćemo mali plagin da bi smo demonstrirali kao oni rade. Ovako izgleda naš test kod:
+Each function in the visitor receives 2 arguments: `path` and `state`
+
+```js
+export default function({ types: t }) {
+  return {
+    visitor: {
+      Identifier(path, state) {},
+      ASTNodeTypeHere(path, state) {}
+    }
+  };
+};
+```
+
+Let's write a quick plugin to show off how it works. Here's our source code:
 
 ```js
 foo === bar;
 ```
 
-Ili u AST formi:
+Or in AST form:
 
 ```js
 {
@@ -1044,7 +1091,7 @@ Ili u AST formi:
 }
 ```
 
-Počećemo sa dodavanje `BinaryExpression` metoda "posetioca".
+We'll start off by adding a `BinaryExpression` visitor method.
 
 ```js
 export default function({ types: t }) {
@@ -1058,7 +1105,7 @@ export default function({ types: t }) {
 }
 ```
 
-Ograničićemo dejstvo metoda samo na `BinaryExpression` (binarne operacije) koje koriste operator `===`.
+Then let's narrow it down to just `BinaryExpression`s that are using the `===` operator.
 
 ```js
 visitor: {
@@ -1072,7 +1119,7 @@ visitor: {
 }
 ```
 
-Zamenimo `left` polje sa novim identifikatorom:
+Now let's replace the `left` property with a new identifier:
 
 ```js
 BinaryExpression(path) {
@@ -1085,13 +1132,13 @@ BinaryExpression(path) {
 }
 ```
 
-Ako sad izvršimo ovaj plagin kao rezultat ćemo dobiti:
+Already if we run this plugin we would get:
 
 ```js
 sebmck === bar;
 ```
 
-Zamenimo sad i `right` polje koje odgovara desnom operandu binarne operacije.
+Now let's just replace the `right` property.
 
 ```js
 BinaryExpression(path) {
@@ -1104,13 +1151,13 @@ BinaryExpression(path) {
 }
 ```
 
-Kao konačan rezultat dobijamo:
+And now for our final result:
 
 ```js
 sebmck === dork;
 ```
 
-Neviđeno! Naš prvi Babel plagin.
+Awesome! Our very first Babel plugin.
 
 * * *
 
@@ -1123,12 +1170,15 @@ Neviđeno! Naš prvi Babel plagin.
 To access an AST node's property you normally access the node and then the property. `path.node.property`
 
 ```js
+// the BinaryExpression AST node has properties: `left`, `right`, `operator`
 BinaryExpression(path) {
   path.node.left;
+  path.node.right;
+  path.node.operator;
 }
 ```
 
-If you need to access the path of that property instead, use the `get` method of a path, passing in the string to the property.
+If you need to access the `path` of that property instead, use the `get` method of a path, passing in the string to the property.
 
 ```js
 BinaryExpression(path) {
@@ -1175,6 +1225,28 @@ BinaryExpression(path) {
 }
 ```
 
+### <a id="toc-check-if-a-path-is-a-certain-type"></a>Check if a path is a certain type
+
+A path has the same methods for checking the type of a node:
+
+```js
+BinaryExpression(path) {
+  if (path.get('left').isIdentifier({ name: "n" })) {
+    // ...
+  }
+}
+```
+
+is equivalent to doing:
+
+```js
+BinaryExpression(path) {
+  if (t.isIdentifier(path.node.left, { name: "n" })) {
+    // ...
+  }
+}
+```
+
 ### <a id="toc-check-if-an-identifier-is-referenced"></a>Check if an identifier is referenced
 
 ```js
@@ -1193,6 +1265,96 @@ Identifier(path) {
     // ...
   }
 }
+```
+
+### <a id="toc-find-a-specific-parent-path"></a>Find a specific parent path
+
+Sometimes you will need to traverse the tree upwards from a path until a condition is satisfied.
+
+Call the provided `callback` with the `NodePath`s of all the parents. When the `callback` returns a truthy value, we return that `NodePath`.
+
+```js
+path.findParent((path) => path.isObjectExpression());
+```
+
+If the current path should be included as well:
+
+```js
+path.find((path) => path.isObjectExpression());
+```
+
+Find the closest parent function or program:
+
+```js
+path.getFunctionParent();
+```
+
+Walk up the tree until we hit a parent node path in a list
+
+```js
+path.getStatementParent();
+```
+
+### <a id="toc-get-sibling-paths"></a>Get Sibling Paths
+
+If a path in a a list like in the body of a `Function`/`Program`, it will have "siblings".
+
+  * Check if a path is part of a list with `path.inList`
+  * You can get the surrounding siblings with `path.getSibling(index)`,
+  * The current path's index in the container with `path.key`,
+  * The path's container (an array of all sibling paths) with `path.container`
+  * Get the name of the key of the list container with `path.listKey`
+
+> These APis are used in the [transform-merge-sibling-variables](https://github.com/babel/babili/blob/master/packages/babel-plugin-transform-merge-sibling-variables/src/index.js) plugin used in [babel-minify](https://github.com/babel/babili).
+
+```js
+var a = 1; // pathA, path.key = 0
+var b = 2; // pathB, path.key = 1
+var c = 3; // pathC, path.key = 2
+```
+
+```js
+export default function({ types: t }) {
+  return {
+    visitor: {
+      VariableDeclaration(path) {
+        // if the current path is pathA
+        path.inList // true
+        path.listKey // "body"
+        path.key // 0
+        path.getSibling(0) // pathA
+        path.getSibling(path.key + 1) // pathB
+        path.container // [pathA, pathB, pathC]
+      }
+    }
+  };
+}
+```
+
+### <a id="toc-stopping-traversal"></a>Stopping Traversal
+
+If your plugin needs to not run in a certain situation, the simpliest thing to do is to write an early return.
+
+```js
+BinaryExpression(path) {
+  if (path.node.operator !== '**') return;
+}
+```
+
+If you are doing a sub-traversal in a top level path, you can use 2 provided API methods:
+
+`path.skip()` skips traversing the children of the current path. `path.stop()` stops traversal entirely.
+
+```js
+path.traverse({
+  Function(path) {
+    path.skip(); // if checking the children is irrelevant
+  },
+  ReferencedIdentifier(path, state) {
+    state.iife = true;
+    path.stop(); // if you want to save some state and then stop traversal, or deopt
+  }
+});
 ```
 
 ## <a id="toc-manipulation"></a>Manipulacija
@@ -1235,7 +1397,7 @@ ReturnStatement(path) {
   }
 ```
 
-> **Napomena:** Kad zamenjujete izraz sa više čvorovan, oni moraju biti izrazi (statements). Razlog za ovo je što Babel intenzivno koristi heuristiku kada zamenjuje čvorove, što znači da možete da uradite prilično neobične transformacije koje bi u suprotnom tražile jako veliko broj linija koda.
+> **Note:** When replacing an expression with multiple nodes, they must be statements. This is because Babel uses heuristics extensively when replacing nodes which means that you can do some pretty crazy transformations that would be extremely verbose otherwise.
 
 ### <a id="toc-replacing-a-node-with-a-source-string"></a>Replacing a node with a source string
 
@@ -1255,7 +1417,7 @@ FunctionDeclaration(path) {
   }
 ```
 
-> **Napomena:** Nije preporučljivo koristit ovaj API ukoliko ne radite sa izvorom dinamičkih stringova. U suprotnom, mnogo je efikasnije da se kod parsira izvan "posetioca".
+> **Note:** It's not recommended to use this API unless you're dealing with dynamic source strings, otherwise it's more efficient to parse the code outside of the visitor.
 
 ### <a id="toc-inserting-a-sibling-node"></a>Inserting a sibling node
 
@@ -1274,7 +1436,28 @@ FunctionDeclaration(path) {
 + "A little high, little low.";
 ```
 
-> **Napomena:** Ovo uvek treba da bude izraz ili niz izraza. Ovde se koristi ista heuristika kao i u [Zamenjivanje čvora sa više čvorova](#replacing-a-node-with-multiple-nodes).
+> **Note:** This should always be a statement or an array of statements. This uses the same heuristics mentioned in [Replacing a node with multiple nodes](#replacing-a-node-with-multiple-nodes).
+
+### <a id="toc-inserting-into-a-container"></a>Inserting into a container
+
+If you want to insert into a AST node property like that is an array like `body`. It is simialr to `insertBefore`/`insertAfter` other than you having to specify the `listKey` which is usually `body`.
+
+```js
+ClassMethod(path) {
+  path.get('body').unshiftContainer('body', t.stringLiteral('before'));
+  path.get('body').pushContainer('body', t.stringLiteral('after'));
+}
+```
+
+```diff
+ class A {
+  constructor() {
++   "before"
+    var a = 'middle';
++   "after"
+  }
+ }
+```
 
 ### <a id="toc-removing-a-node"></a>Removing a node
 
@@ -1291,6 +1474,8 @@ FunctionDeclaration(path) {
 ```
 
 ### <a id="toc-replacing-a-parent"></a>Replacing a parent
+
+Just call `replaceWith` with the parentPath: `path.parentPath`
 
 ```js
 BinaryExpression(path) {
@@ -1444,6 +1629,68 @@ export default function({ types: t }) {
 
 These options are plugin-specific and you cannot access options from other plugins.
 
+## <a id="toc-pre-and-post-in-plugins"></a> Pre and Post in Plugins
+
+Plugins can have functions that are run before or after plugins. They can be used for setup or cleanup/analysis purposes.
+
+```js
+export default function({ types: t }) {
+  return {
+    pre(state) {
+      this.cache = new Map();
+    },
+    visitor: {
+      StringLiteral(path) {
+        this.cache.set(path.node.value, 1);
+      }
+    },
+    post(state) {
+      console.log(this.cache);
+    }
+  };
+}
+```
+
+## <a id="toc-enabling-syntax-in-plugins"></a> Enabling Syntax in Plugins
+
+Plugins can enable [babylon plugins](https://github.com/babel/babylon#plugins) so that users don't need to install/enable them. This prevents a parsing error without inheriting the syntax plugin.
+
+```js
+export default function({ types: t }) {
+  return {
+    inherits: require("babel-plugin-syntax-jsx")
+  };
+}
+```
+
+## <a id="toc-throwing-a-syntax-error"></a> Throwing a Syntax Error
+
+If you want to throw an error with babel-code-frame and a message:
+
+```js
+export default function({ types: t }) {
+  return {
+    visitor: {
+      StringLiteral(path) {
+        throw path.buildCodeFrameError("Error message here");
+      }
+    }
+  };
+}
+```
+
+The error looks like:
+
+    file.js: Error message here
+       7 | 
+       8 | let tips = [
+    >  9 |   "Click on any AST node with a '+' to expand it",
+         |   ^
+      10 | 
+      11 |   "Hovering over a node highlights the \
+      12 |    corresponding part in the source code",
+    
+
 * * *
 
 # <a id="toc-building-nodes"></a>Kreiranje čvorova
@@ -1486,7 +1733,20 @@ By looking at the `builder` property, you can see the 3 arguments that will be n
 builder: ["object", "property", "computed"],
 ```
 
-> Treba da znate da ponekad u čvoru postoji više polja koje je moguće definisati nego što ih sadrži niz pridružen polju `builder`. Razlog za ovo je da se izbegne prevelik broj parametara pri pozivanju metode "gradioca". Ako je to slučaj, potrebno je da ručno postavite vrednosti preostalih polja. Kao primer imamo [`ClassMethod`](https://github.com/babel/babel/blob/bbd14f88c4eea88fa584dd877759dd6b900bf35e/packages/babel-types/src/definitions/es2015.js#L238-L276).
+> Note that sometimes there are more properties that you can customize on the node than the `builder` array contains. This is to keep the builder from having too many arguments. In these cases you need to set the properties manually. An example of this is [`ClassMethod`](https://github.com/babel/babel/blob/bbd14f88c4eea88fa584dd877759dd6b900bf35e/packages/babel-types/src/definitions/es2015.js#L238-L276).
+
+```js
+// Example
+// because the builder doesn't contain `async` as a property
+var node = t.classMethod(
+  "constructor",
+  t.identifier("constructor"),
+  params,
+  body
+)
+// set it manually after creation
+node.async = true;
+```
 
 You can see the validation for the builder arguments with the `fields` object.
 
@@ -1559,7 +1819,19 @@ You can find all of the actual [definitions here](https://github.com/babel/babel
 
 # <a id="toc-best-practices"></a>Praktični saveti
 
-> O toku sledećih sedmica ću proširiti sadržaj ovog odeljka.
+## <a id="toc-create-helper-builders-and-checkers"></a> Create Helper Builders and Checkers
+
+It's pretty simple to extract certain checks (if a node is a certain type) into their own helper functions as well as extracting out helpers for specific node types.
+
+```js
+function isAssignment(node) {
+  return node && node.operator === opts.operator + "=";
+}
+
+function buildAssignment(left, right) {
+  return t.assignmentExpression("=", left, right);
+}
+```
 
 ## <a id="toc-avoid-traversing-the-ast-as-much-as-possible"></a>Izbegavajte prolazak kroz AST što je više moguće
 
@@ -1743,4 +2015,4 @@ class Foo {
 }
 ```
 
-> ***За будућа ажурирања, пратите [@thejameskyle](https://twitter.com/thejameskyle) на Твитеру.***
+> ***For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) and [@babeljs](https://twitter.com/babeljs) on Twitter.***

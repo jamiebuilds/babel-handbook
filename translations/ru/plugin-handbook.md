@@ -39,12 +39,17 @@
       * [Посещение](#toc-visiting)
       * [Get the Path of Sub-Node](#toc-get-the-path-of-a-sub-node)
       * [Check if a node is a certain type](#toc-check-if-a-node-is-a-certain-type)
+      * [Check if a path is a certain type](#toc-check-if-a-path-is-a-certain-type)
       * [Check if an identifier is referenced](#toc-check-if-an-identifier-is-referenced)
+      * [Find a specific parent path](#toc-find-a-specific-parent-path)
+      * [Get Sibling Paths](#toc-get-sibling-paths)
+      * [Stopping Traversal](#toc-stopping-traversal)
       * [Манипуляция](#toc-manipulation)
       * [Replacing a node](#toc-replacing-a-node)
       * [Replacing a node with multiple nodes](#toc-replacing-a-node-with-multiple-nodes)
       * [Replacing a node with a source string](#toc-replacing-a-node-with-a-source-string)
       * [Inserting a sibling node](#toc-inserting-a-sibling-node)
+      * [Inserting into a container](#toc-inserting-into-a-container)
       * [Removing a node](#toc-removing-a-node)
       * [Replacing a parent](#toc-replacing-a-parent)
       * [Removing a parent](#toc-removing-a-parent)
@@ -53,7 +58,9 @@
       * [Generating a UID](#toc-generating-a-uid)
       * [Pushing a variable declaration to a parent scope](#toc-pushing-a-variable-declaration-to-a-parent-scope)
       * [Rename a binding and its references](#toc-rename-a-binding-and-its-references)
-  * [Параметры плагина](#toc-plugin-options)
+  * [Параметры плагина](#toc-plugin-options) 
+      * [Pre and Post in Plugins](#toc-pre-and-post-in-plugins)
+      * [Enabling Syntax in Plugins](#toc-enabling-syntax-in-plugins)
   * [Построение узлов](#toc-building-nodes)
   * [Лучшие практики](#toc-best-practices) 
       * [Избегайте обхода AST насколько это возможно](#toc-avoid-traversing-the-ast-as-much-as-possible)
@@ -92,7 +99,7 @@ function square(n) {
 
 > Взгляните на [AST Explorer](http://astexplorer.net/) чтобы получить более полное представление об AST-нодах. [Здесь](http://astexplorer.net/#/Z1exs6BWMq) находится ссылка на него с уже скопированным примером выше.
 
-Эта же программа может быть представлена в виде подобного списка:
+This same program can be represented as a tree like this:
 
 ```md
 - FunctionDeclaration:
@@ -343,6 +350,11 @@ const MyVisitor = {
     console.log("Called!");
   }
 };
+
+// You can also create a visitor and add methods on it later
+let visitor = {};
+visitor.MemberExpression = function() {};
+visitor.FunctionDeclaration = function() {}
 ```
 
 > **Примечание:** `Identifier() { ... }` является краткой формой для `идентификатор: {enter() { ... }}`.
@@ -419,13 +431,35 @@ const MyVisitor = {
 };
 ```
 
+If necessary, you can also apply the same function for multiple visitor nodes by separating them with a `|` in the method name as a string like `Identifier|MemberExpression`.
+
+Example usage in the [flow-comments](https://github.com/babel/babel/blob/2b6ff53459d97218b0cf16f8a51c14a165db1fd2/packages/babel-plugin-transform-flow-comments/src/index.js#L47) plugin
+
+```js
+const MyVisitor = {
+  "ExportNamedDeclaration|Flow"(path) {}
+};
+```
+
+You can also use aliases as visitor nodes (as defined in [babel-types](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions)).
+
+For example,
+
+`Function` is an alias for `FunctionDeclaration`, `FunctionExpression`, `ArrowFunctionExpression`
+
+```js
+const MyVisitor = {
+  Function(path) {}
+};
+```
+
 ### <a id="toc-paths"></a>Пути
 
-AST, как правило, имеет много узлов, но как узлы связаны друг с другом? Мы могли бы иметь один гигантский изменяемый объект, которым вы манипулируете и к которому имеете полный доступ, или мы можем упростить это с **путями**.
+An AST generally has many Nodes, but how do Nodes relate to one another? We could have one giant mutable object that you manipulate and have full access to, or we can simplify this with **Paths**.
 
-**Путь** — это объектное представление ссылки между двумя узлами.
+A **Path** is an object representation of the link between two nodes.
 
-Например, если мы возьмем следующий узел и его дочерний:
+For example if we take the following node and its child:
 
 ```js
 {
@@ -438,7 +472,7 @@ AST, как правило, имеет много узлов, но как узл
 }
 ```
 
-И представление ребенка `Identifier` как путь выглядит примерно так:
+And represent the child `Identifier` as a path, it looks something like this:
 
 ```js
 {
@@ -454,7 +488,7 @@ AST, как правило, имеет много узлов, но как узл
 }
 ```
 
-Он также имеет дополнительные метаданные о пути:
+It also has additional metadata about the path:
 
 ```js
 {
@@ -482,13 +516,13 @@ AST, как правило, имеет много узлов, но как узл
 }
 ```
 
-А также множество методов, связанных с добавлением, обновлением, перемещением и удалением узлов, но об этом мы поговорим чуточку позже.
+As well as tons and tons of methods related to adding, updating, moving, and removing nodes, but we'll get into those later.
 
-В некотором смысле, пути являются **активным** представлением позиции узла в дереве, а также содержат различные сведения об узле. Всякий раз эта информация обновляется, когда вызывается изменяющий дерево метод. Babel всё сделает это самостоятельно, чтобы Ваша работа с узлами была максимально легкой, и при этом, не оказывая влияния на последующие события.
+In a sense, paths are a **reactive** representation of a node's position in the tree and all sorts of information about the node. Whenever you call a method that modifies the tree, this information is updated. Babel manages all of this for you to make working with nodes easy and as stateless as possible.
 
 #### <a id="toc-paths-in-visitors"></a>Пути в Посетителях
 
-Когда у вас посетитель, который имеет метод `Identifier()`, на самом деле вы посещаете сам путь вместо узла. Таким образом, Вы работаете с активным представлением узла вместо самого узла.
+When you have a visitor that has a `Identifier()` method, you're actually visiting the path instead of the node. This way you are mostly working with the reactive representation of a node instead of the node itself.
 
 ```js
 const MyVisitor = {
@@ -510,9 +544,9 @@ Visiting: c
 
 ### <a id="toc-state"></a>Состояние
 
-Состояние является противником AST трансформации. Состояние будет "колоть" вас снова и снова, и ваши предположения о состоянии будут почти всегда опровергнуты каким-либо синтаксисом, который вы не рассматривали.
+State is the enemy of AST transformation. State will bite you over and over again and your assumptions about state will almost always be proven wrong by some syntax that you didn't consider.
 
-Возьмем следующий код:
+Take the following code:
 
 ```js
 function square(n) {
@@ -520,7 +554,7 @@ function square(n) {
 }
 ```
 
-А теперь запустим туда коварного посетителя, который переименует `n` в `x`.
+Let's write a quick hacky visitor that will rename `n` to `x`.
 
 ```js
 let paramName;
@@ -540,7 +574,7 @@ const MyVisitor = {
 };
 ```
 
-Это может сработать для приведенного выше кода, но мы можем легко это прервать, вызвав:
+This might work for the above code, but we can easily break that by doing this:
 
 ```js
 function square(n) {
@@ -549,7 +583,7 @@ function square(n) {
 n;
 ```
 
-Лучший способ справиться с этим — рекурсия. Так что давайте вспомним фильм Кристофера Нолана "Начало" и положим посетителя в посетителя.
+The better way to deal with this is recursion. So let's make like a Christopher Nolan film and put a visitor inside of a visitor.
 
 ```js
 const updateParamNameVisitor = {
@@ -571,11 +605,11 @@ const MyVisitor = {
 };
 ```
 
-Конечно это надуманный пример, но он демонстрирует как исключить глобальное состояние из ваших посетителей.
+Of course, this is a contrived example but it demonstrates how to eliminate global state from your visitors.
 
 ### <a id="toc-scopes"></a>Области видимости
 
-Далее введем понятие [**области видимости**](https://en.wikipedia.org/wiki/Scope_(computer_science)). JavaScript имеет [лексическую область видимости](https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scoping_vs._dynamic_scoping), которая имеет структуру дерева, где блоки создают новую область видимости.
+Next let's introduce the concept of a [**scope**](https://en.wikipedia.org/wiki/Scope_(computer_science)). JavaScript has [lexical scoping](https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scoping_vs._dynamic_scoping), which is a tree structure where blocks create new scope.
 
 ```js
 // global scope
@@ -589,7 +623,7 @@ function scopeOne() {
 }
 ```
 
-Всякий раз, когда вы создаете ссылку в JavaScript, будь то переменной, функции, класса, параметра, импорта и т. д., она принадлежит к текущей области видимости.
+Whenever you create a reference in JavaScript, whether that be by a variable, function, class, param, import, label, etc., it belongs to the current scope.
 
 ```js
 var global = "I am in the global scope";
@@ -603,7 +637,7 @@ function scopeOne() {
 }
 ```
 
-Код в пределах более глубокой области видимости может использовать ссылку из более высокой области видимости.
+Code within a deeper scope may use a reference from a higher scope.
 
 ```js
 function scopeOne() {
@@ -615,7 +649,7 @@ function scopeOne() {
 }
 ```
 
-Более низкая область видимости также может создать ссылку с тем же именем без её изменения.
+A lower scope might also create a reference of the same name without modifying it.
 
 ```js
 function scopeOne() {
@@ -627,11 +661,11 @@ function scopeOne() {
 }
 ```
 
-При написании трансформации мы хотим быть осторожными с областью видимости. Мы должны убедиться, что не поломаем существующий код в процессе изменения отдельных его частей.
+When writing a transform, we want to be wary of scope. We need to make sure we don't break existing code while modifying different parts of it.
 
-Нам может потребоваться добавить новые ссылки и убедиться, что они не пересекаются с уже существующими. Или, может быть, мы просто хотим найти, на что ссылается переменная. Другими словами, мы просто хотим иметь возможность отслеживать эти ссылки в пределах заданной области.
+We may want to add new references and make sure they don't collide with existing ones. Or maybe we just want to find where a variable is referenced. We want to be able to track these references within a given scope.
 
-Область видимости может быть представлена как:
+A scope can be represented as:
 
 ```js
 {
@@ -643,13 +677,13 @@ function scopeOne() {
 }
 ```
 
-Когда вы создаете новый scope, вы делаете это передавая ему путь и родительский scope. Затем в процессе обхода он собирает все ссылки ("bindings") внутри scope.
+When you create a new scope you do so by giving it a path and a parent scope. Then during the traversal process it collects all the references ("bindings") within that scope.
 
-Как только всё это сделано, перед Вами и открываются все методы, которые можно использовать в областях видимости. Хотя как обычно, мы поговорим об этом чуточку позднее.
+Once that's done, there's all sorts of methods you can use on scopes. We'll get into those later though.
 
 #### <a id="toc-bindings"></a>Привязка контекста
 
-Все ссылки принадлежат к определенной области; эта связь известна как **привязка**.
+References all belong to a particular scope; this relationship is known as a **binding**.
 
 ```js
 function scopeOnce() {
@@ -663,7 +697,7 @@ function scopeOnce() {
 }
 ```
 
-Одиночная привязка выглядит следующим образом:
+A single binding looks like this:
 
 ```js
 {
@@ -681,9 +715,9 @@ function scopeOnce() {
 }
 ```
 
-С этой информацией вы можете найти все ссылки на привязку (binding), увидеть, какой тип привязки (параметр, декларация и т. д.), поиск того, к какой области (scope) он принадлежит, или получить копию его идентификатора. You can even tell if it's constant and if not, see what paths are causing it to be non-constant.
+With this information you can find all the references to a binding, see what type of binding it is (parameter, declaration, etc.), lookup what scope it belongs to, or get a copy of its identifier. You can even tell if it's constant and if not, see what paths are causing it to be non-constant.
 
-Иметь возможность сказать, является ли binding постоянным, полезно для многих целей, крупнейшим из которых является минификация.
+Being able to tell if a binding is constant is useful for many purposes, the largest of which is minification.
 
 ```js
 function scopeOne() {
@@ -702,21 +736,21 @@ function scopeOne() {
 
 # <a id="toc-api"></a>API
 
-Babel фактически представляет собой набор модулей. В этом разделе мы рассмотрим основные из них, объясняя, что они делают и как их использовать.
+Babel is actually a collection of modules. In this section we'll walk through the major ones, explaining what they do and how to use them.
 
 > Примечание: это не замена для подробной API документации, которая вскоре будет доступна где-то в другом месте.
 
 ## <a id="toc-babylon"></a>[`babylon`](https://github.com/babel/babylon)
 
-Babylon это парсер Babel'я. Появившийся как форк Acorn'а, он быстрый, простой в использовании, имеет плагин ориентированную архитектуру для нестандартных функций (а также будущих стандартов).
+Babylon is Babel's parser. Started as a fork of Acorn, it's fast, simple to use, has plugin-based architecture for non-standard features (as well as future standards).
 
-Сперва давайте установим его.
+First, let's install it.
 
 ```sh
 $ npm install --save babylon
 ```
 
-Давайте начнем с разбора строки кода:
+Let's start by simply parsing a string of code:
 
 ```js
 import * as babylon from "babylon";
@@ -737,7 +771,7 @@ babylon.parse(code);
 // }
 ```
 
-Мы также можем передать опции в `parse()` следующим образом:
+We can also pass options to `parse()` like so:
 
 ```js
 babylon.parse(code, {
@@ -746,25 +780,25 @@ babylon.parse(code, {
 });
 ```
 
-`sourceType` может быть как `"module"`, так и `"script"` и представляет собой режим разбора в Babylon. `"module"` будет производить разбор в strict mode и позволяет объявления модуля, `"script"` — нет.
+`sourceType` can either be `"module"` or `"script"` which is the mode that Babylon should parse in. `"module"` will parse in strict mode and allow module declarations, `"script"` will not.
 
 > **Примечание:** значением `sourceType` по умолчанию является `"script"`, и если будет найден ` import ` или ` export `, то произойдет ошибка. Передайте `sourceType: "module"` чтобы избежать этой ошибки.
 
-Поскольку Babylon имеет плагин-архитектуру, есть также опция `plugins`, которая включит внутренние плагины. Обратите внимание, что в этот API Babylon еще не открыт для внешних плагинов, но может сделать это в будущем.
+Since Babylon is built with a plugin-based architecture, there is also a `plugins` option which will enable the internal plugins. Note that Babylon has not yet opened this API to external plugins, although may do so in the future.
 
 To see a full list of plugins, see the [Babylon README](https://github.com/babel/babylon/blob/master/README.md#plugins).
 
 ## <a id="toc-babel-traverse"></a>[`babel-traverse`](https://github.com/babel/babel/tree/master/packages/babel-traverse)
 
-Модуль Babel Traverse поддерживает общее состояние дерева и отвечает за замену, удаление и добавление узлов.
+The Babel Traverse module maintains the overall tree state, and is responsible for replacing, removing, and adding nodes.
 
-Установите его, выполнив:
+Install it by running:
 
 ```sh
 $ npm install --save babel-traverse
 ```
 
-Мы можем использовать его вместе с Babylon для обхода и обновления узлов:
+We can use it alongside Babylon to traverse and update nodes:
 
 ```js
 import * as babylon from "babylon";
@@ -790,15 +824,15 @@ traverse(ast, {
 
 ## <a id="toc-babel-types"></a>[`babel-types`](https://github.com/babel/babel/tree/master/packages/babel-types)
 
-Babel Types is a Lodash-esque utility library for AST nodes. Он содержит методы для создания, проверки и преобразования узлов AST. Он полезен для очистки AST логики с хорошо продуманными служебными методами.
+Babel Types is a Lodash-esque utility library for AST nodes. It contains methods for building, validating, and converting AST nodes. It's useful for cleaning up AST logic with well thought out utility methods.
 
-Его можно установить, запустив:
+You can install it by running:
 
 ```sh
 $ npm install --save babel-types
 ```
 
-Затем начнете его использовать:
+Then start using it:
 
 ```js
 import traverse from "babel-traverse";
@@ -815,9 +849,9 @@ traverse(ast, {
 
 ### <a id="toc-definitions"></a>Определения
 
-Типы Babel имеют определения для каждого типа узла с информацией о том, какие свойства чему принадлежат, какие значения являются допустимыми, как построить этот узел, как узел должен быть пройден, а также псевдонимы узла.
+Babel Types has definitions for every single type of node, with information on what properties belong where, what values are valid, how to build that node, how the node should be traversed, and aliases of the Node.
 
-Определение типа узла выглядит следующим образом:
+A single node type definition looks like this:
 
 ```js
 defineType("BinaryExpression", {
@@ -840,19 +874,19 @@ defineType("BinaryExpression", {
 
 ### <a id="toc-builders"></a>Строители
 
-Обратите внимание, что в приведенном выше определении для `BinaryExpression` есть поле `builder`.
+You'll notice the above definition for `BinaryExpression` has a field for a `builder`.
 
 ```js
 builder: ["operator", "left", "right"]
 ```
 
-Это потому, что каждый тип узла получает метод-строитель, который при использовании выглядит следующим образом:
+This is because each node type gets a builder method, which when used looks like this:
 
 ```js
 t.binaryExpression("*", t.identifier("a"), t.identifier("b"));
 ```
 
-И создает следующий AST:
+Which creates an AST like this:
 
 ```js
 {
@@ -869,17 +903,17 @@ t.binaryExpression("*", t.identifier("a"), t.identifier("b"));
 }
 ```
 
-Который при выводе выглядит следующим образом:
+Which when printed looks like this:
 
 ```js
 a * b
 ```
 
-Строители также будут проверять узлы, которые они создают и бросить ошибки если используются ненадлежащим образом. Что приводит нас к необходимости познакомиться со следующим типом методов.
+Builders will also validate the nodes they are creating and throw descriptive errors if used improperly. Which leads into the next type of method.
 
 ### <a id="toc-validators"></a>Валидаторы
 
-Определение `BinaryExpression` также включает информацию о `полях` узла и как проверить их.
+The definition for `BinaryExpression` also includes information on the `fields` of a node and how to validate them.
 
 ```js
 fields: {
@@ -895,7 +929,7 @@ fields: {
 }
 ```
 
-Это используется для создания двух типов проверки методов. В первом из которых является `isX`.
+This is used to create two types of validating methods. The first of which is `isX`.
 
 ```js
 t.isBinaryExpression(maybeBinaryExpressionNode);
@@ -921,15 +955,15 @@ t.assertBinaryExpression(maybeBinaryExpressionNode, { operator: "*" });
 
 ## <a id="toc-babel-generator"></a>[`babel-generator`](https://github.com/babel/babel/tree/master/packages/babel-generator)
 
-Babel Generator — это генератор кода Babel. Он принимает AST и превращает его в код с sourcemaps.
+Babel Generator is the code generator for Babel. It takes an AST and turns it into code with sourcemaps.
 
-Выполните следующие действия, чтобы установить его:
+Run the following to install it:
 
 ```sh
 $ npm install --save babel-generator
 ```
 
-Затем используйте его
+Then use it
 
 ```js
 import * as babylon from "babylon";
@@ -948,7 +982,7 @@ generate(ast, null, code);
 // }
 ```
 
-Вы также можете передать параметры в `generate()`.
+You can also pass options to `generate()`.
 
 ```js
 generate(ast, {
@@ -991,7 +1025,7 @@ var myModule = require("my-module");
 
 # <a id="toc-writing-your-first-babel-plugin"></a>Создание вашего первого плагина Babel
 
-Теперь, когда вы знакомы с основами Babel, давайте свяжем это вместе с API для плагинов.
+Now that you're familiar with all the basics of Babel, let's tie it together with the plugin API.
 
 Start off with a `function` that gets passed the current [`babel`](https://github.com/babel/babel/tree/master/packages/babel-core) object.
 
@@ -1001,7 +1035,7 @@ export default function(babel) {
 }
 ```
 
-Так как вы будете использовать его так часто, вы, скорее всего, захотите просто взять `babel.types` следующим образом:
+Since you'll be using it so often, you'll likely want to grab just `babel.types` like so:
 
 ```js
 export default function({ types: t }) {
@@ -1009,7 +1043,7 @@ export default function({ types: t }) {
 }
 ```
 
-Затем вы возвращаете объект со свойством `visitor`, который является основным посетитель для плагина.
+Then you return an object with a property `visitor` which is the primary visitor for the plugin.
 
 ```js
 export default function({ types: t }) {
@@ -1021,13 +1055,26 @@ export default function({ types: t }) {
 };
 ```
 
-Давайте быстро напишем плагин, чтобы показать как это работает. Вот наш исходный код:
+Each function in the visitor receives 2 arguments: `path` and `state`
+
+```js
+export default function({ types: t }) {
+  return {
+    visitor: {
+      Identifier(path, state) {},
+      ASTNodeTypeHere(path, state) {}
+    }
+  };
+};
+```
+
+Let's write a quick plugin to show off how it works. Here's our source code:
 
 ```js
 foo === bar;
 ```
 
-Или в виде AST:
+Or in AST form:
 
 ```js
 {
@@ -1044,7 +1091,7 @@ foo === bar;
 }
 ```
 
-Мы начнем с добавления метода посетителя `BinaryExpression`.
+We'll start off by adding a `BinaryExpression` visitor method.
 
 ```js
 export default function({ types: t }) {
@@ -1058,7 +1105,7 @@ export default function({ types: t }) {
 }
 ```
 
-Затем давайте сведем это к `BinaryExpression`, которые используют оператор `===`.
+Then let's narrow it down to just `BinaryExpression`s that are using the `===` operator.
 
 ```js
 visitor: {
@@ -1072,7 +1119,7 @@ visitor: {
 }
 ```
 
-Теперь давайте заменить свойство `left` новым идентификатором:
+Now let's replace the `left` property with a new identifier:
 
 ```js
 BinaryExpression(path) {
@@ -1085,13 +1132,13 @@ BinaryExpression(path) {
 }
 ```
 
-Уже теперь если мы запустим этот плагин, мы получим:
+Already if we run this plugin we would get:
 
 ```js
 sebmck === bar;
 ```
 
-Теперь давайте просто заменим свойство `right`.
+Now let's just replace the `right` property.
 
 ```js
 BinaryExpression(path) {
@@ -1104,13 +1151,13 @@ BinaryExpression(path) {
 }
 ```
 
-И теперь для нашего конечного результата:
+And now for our final result:
 
 ```js
 sebmck === dork;
 ```
 
-Великолепно! Наш самый первый плагин для Babel.
+Awesome! Our very first Babel plugin.
 
 * * *
 
@@ -1123,12 +1170,15 @@ sebmck === dork;
 To access an AST node's property you normally access the node and then the property. `path.node.property`
 
 ```js
+// the BinaryExpression AST node has properties: `left`, `right`, `operator`
 BinaryExpression(path) {
   path.node.left;
+  path.node.right;
+  path.node.operator;
 }
 ```
 
-If you need to access the path of that property instead, use the `get` method of a path, passing in the string to the property.
+If you need to access the `path` of that property instead, use the `get` method of a path, passing in the string to the property.
 
 ```js
 BinaryExpression(path) {
@@ -1175,6 +1225,28 @@ BinaryExpression(path) {
 }
 ```
 
+### <a id="toc-check-if-a-path-is-a-certain-type"></a>Check if a path is a certain type
+
+A path has the same methods for checking the type of a node:
+
+```js
+BinaryExpression(path) {
+  if (path.get('left').isIdentifier({ name: "n" })) {
+    // ...
+  }
+}
+```
+
+is equivalent to doing:
+
+```js
+BinaryExpression(path) {
+  if (t.isIdentifier(path.node.left, { name: "n" })) {
+    // ...
+  }
+}
+```
+
 ### <a id="toc-check-if-an-identifier-is-referenced"></a>Check if an identifier is referenced
 
 ```js
@@ -1193,6 +1265,96 @@ Identifier(path) {
     // ...
   }
 }
+```
+
+### <a id="toc-find-a-specific-parent-path"></a>Find a specific parent path
+
+Sometimes you will need to traverse the tree upwards from a path until a condition is satisfied.
+
+Call the provided `callback` with the `NodePath`s of all the parents. When the `callback` returns a truthy value, we return that `NodePath`.
+
+```js
+path.findParent((path) => path.isObjectExpression());
+```
+
+If the current path should be included as well:
+
+```js
+path.find((path) => path.isObjectExpression());
+```
+
+Find the closest parent function or program:
+
+```js
+path.getFunctionParent();
+```
+
+Walk up the tree until we hit a parent node path in a list
+
+```js
+path.getStatementParent();
+```
+
+### <a id="toc-get-sibling-paths"></a>Get Sibling Paths
+
+If a path in a a list like in the body of a `Function`/`Program`, it will have "siblings".
+
+  * Check if a path is part of a list with `path.inList`
+  * You can get the surrounding siblings with `path.getSibling(index)`,
+  * The current path's index in the container with `path.key`,
+  * The path's container (an array of all sibling paths) with `path.container`
+  * Get the name of the key of the list container with `path.listKey`
+
+> These APis are used in the [transform-merge-sibling-variables](https://github.com/babel/babili/blob/master/packages/babel-plugin-transform-merge-sibling-variables/src/index.js) plugin used in [babel-minify](https://github.com/babel/babili).
+
+```js
+var a = 1; // pathA, path.key = 0
+var b = 2; // pathB, path.key = 1
+var c = 3; // pathC, path.key = 2
+```
+
+```js
+export default function({ types: t }) {
+  return {
+    visitor: {
+      VariableDeclaration(path) {
+        // if the current path is pathA
+        path.inList // true
+        path.listKey // "body"
+        path.key // 0
+        path.getSibling(0) // pathA
+        path.getSibling(path.key + 1) // pathB
+        path.container // [pathA, pathB, pathC]
+      }
+    }
+  };
+}
+```
+
+### <a id="toc-stopping-traversal"></a>Stopping Traversal
+
+If your plugin needs to not run in a certain situation, the simpliest thing to do is to write an early return.
+
+```js
+BinaryExpression(path) {
+  if (path.node.operator !== '**') return;
+}
+```
+
+If you are doing a sub-traversal in a top level path, you can use 2 provided API methods:
+
+`path.skip()` skips traversing the children of the current path. `path.stop()` stops traversal entirely.
+
+```js
+path.traverse({
+  Function(path) {
+    path.skip(); // if checking the children is irrelevant
+  },
+  ReferencedIdentifier(path, state) {
+    state.iife = true;
+    path.stop(); // if you want to save some state and then stop traversal, or deopt
+  }
+});
 ```
 
 ## <a id="toc-manipulation"></a>Манипуляция
@@ -1235,7 +1397,7 @@ ReturnStatement(path) {
   }
 ```
 
-> **Примечание:** При замене выражения с несколькими узлами, они должны быть выражениями. Это потому, что Babel широко использует эвристику, при замене узлов, что означает, что вы можете сделать некоторые довольно сумасшедшие преобразования, которые в противном случае были бы чрезвычайно многословные.
+> **Note:** When replacing an expression with multiple nodes, they must be statements. This is because Babel uses heuristics extensively when replacing nodes which means that you can do some pretty crazy transformations that would be extremely verbose otherwise.
 
 ### <a id="toc-replacing-a-node-with-a-source-string"></a>Replacing a node with a source string
 
@@ -1255,7 +1417,7 @@ FunctionDeclaration(path) {
   }
 ```
 
-> **Примечание:** Не рекомендуется использовать этот API, если вы имеете дело с динамическим источником строк, в противном случае это более эффективно для разбора кода вне посетителя.
+> **Note:** It's not recommended to use this API unless you're dealing with dynamic source strings, otherwise it's more efficient to parse the code outside of the visitor.
 
 ### <a id="toc-inserting-a-sibling-node"></a>Inserting a sibling node
 
@@ -1276,6 +1438,27 @@ FunctionDeclaration(path) {
 
 > **Note:** This should always be a statement or an array of statements. This uses the same heuristics mentioned in [Replacing a node with multiple nodes](#replacing-a-node-with-multiple-nodes).
 
+### <a id="toc-inserting-into-a-container"></a>Inserting into a container
+
+If you want to insert into a AST node property like that is an array like `body`. It is simialr to `insertBefore`/`insertAfter` other than you having to specify the `listKey` which is usually `body`.
+
+```js
+ClassMethod(path) {
+  path.get('body').unshiftContainer('body', t.stringLiteral('before'));
+  path.get('body').pushContainer('body', t.stringLiteral('after'));
+}
+```
+
+```diff
+ class A {
+  constructor() {
++   "before"
+    var a = 'middle';
++   "after"
+  }
+ }
+```
+
 ### <a id="toc-removing-a-node"></a>Removing a node
 
 ```js
@@ -1291,6 +1474,8 @@ FunctionDeclaration(path) {
 ```
 
 ### <a id="toc-replacing-a-parent"></a>Replacing a parent
+
+Just call `replaceWith` with the parentPath: `path.parentPath`
 
 ```js
 BinaryExpression(path) {
@@ -1444,6 +1629,68 @@ export default function({ types: t }) {
 
 These options are plugin-specific and you cannot access options from other plugins.
 
+## <a id="toc-pre-and-post-in-plugins"></a> Pre and Post in Plugins
+
+Plugins can have functions that are run before or after plugins. They can be used for setup or cleanup/analysis purposes.
+
+```js
+export default function({ types: t }) {
+  return {
+    pre(state) {
+      this.cache = new Map();
+    },
+    visitor: {
+      StringLiteral(path) {
+        this.cache.set(path.node.value, 1);
+      }
+    },
+    post(state) {
+      console.log(this.cache);
+    }
+  };
+}
+```
+
+## <a id="toc-enabling-syntax-in-plugins"></a> Enabling Syntax in Plugins
+
+Plugins can enable [babylon plugins](https://github.com/babel/babylon#plugins) so that users don't need to install/enable them. This prevents a parsing error without inheriting the syntax plugin.
+
+```js
+export default function({ types: t }) {
+  return {
+    inherits: require("babel-plugin-syntax-jsx")
+  };
+}
+```
+
+## <a id="toc-throwing-a-syntax-error"></a> Throwing a Syntax Error
+
+If you want to throw an error with babel-code-frame and a message:
+
+```js
+export default function({ types: t }) {
+  return {
+    visitor: {
+      StringLiteral(path) {
+        throw path.buildCodeFrameError("Error message here");
+      }
+    }
+  };
+}
+```
+
+The error looks like:
+
+    file.js: Error message here
+       7 | 
+       8 | let tips = [
+    >  9 |   "Click on any AST node with a '+' to expand it",
+         |   ^
+      10 | 
+      11 |   "Hovering over a node highlights the \
+      12 |    corresponding part in the source code",
+    
+
 * * *
 
 # <a id="toc-building-nodes"></a>Построение узлов
@@ -1487,6 +1734,19 @@ builder: ["object", "property", "computed"],
 ```
 
 > Note that sometimes there are more properties that you can customize on the node than the `builder` array contains. This is to keep the builder from having too many arguments. In these cases you need to set the properties manually. An example of this is [`ClassMethod`](https://github.com/babel/babel/blob/bbd14f88c4eea88fa584dd877759dd6b900bf35e/packages/babel-types/src/definitions/es2015.js#L238-L276).
+
+```js
+// Example
+// because the builder doesn't contain `async` as a property
+var node = t.classMethod(
+  "constructor",
+  t.identifier("constructor"),
+  params,
+  body
+)
+// set it manually after creation
+node.async = true;
+```
 
 You can see the validation for the builder arguments with the `fields` object.
 
@@ -1559,7 +1819,19 @@ You can find all of the actual [definitions here](https://github.com/babel/babel
 
 # <a id="toc-best-practices"></a>Лучшие практики
 
-> В ближайшее время этот раздел будет дополнен.
+## <a id="toc-create-helper-builders-and-checkers"></a> Create Helper Builders and Checkers
+
+It's pretty simple to extract certain checks (if a node is a certain type) into their own helper functions as well as extracting out helpers for specific node types.
+
+```js
+function isAssignment(node) {
+  return node && node.operator === opts.operator + "=";
+}
+
+function buildAssignment(left, right) {
+  return t.assignmentExpression("=", left, right);
+}
+```
 
 ## <a id="toc-avoid-traversing-the-ast-as-much-as-possible"></a>Избегайте обхода AST насколько это возможно
 
@@ -1628,7 +1900,7 @@ const MyVisitor = {
 };
 ```
 
-## <a id="toc-optimizing-nested-visitors"></a>Оптимизация вложенности посетителей
+## <a id="toc-optimizing-nested-visitors"></a>Оптимизации вложенных посетителей
 
 When you are nesting visitors, it might make sense to write them nested in your code.
 
@@ -1743,4 +2015,4 @@ class Foo {
 }
 ```
 
-> ***Оставайтесь в курсе последних обновлений - подписывайтесь в Твиттере на [@thejameskyle](https://twitter.com/thejameskyle).***
+> ***For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) and [@babeljs](https://twitter.com/babeljs) on Twitter.***

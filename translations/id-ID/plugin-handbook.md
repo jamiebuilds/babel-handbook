@@ -39,21 +39,28 @@ Buku pedoman ini tersedia dalam bahasa lain, lihat file [README](/README.md) unt
       * [Pengunjungan](#toc-visiting)
       * [Mendapatkan path dari Sub-Node](#toc-get-the-path-of-a-sub-node)
       * [Memeriksa tipe dari sebuah node](#toc-check-if-a-node-is-a-certain-type)
-      * [Memeriksa apakah sebuah identifier direferensikan](#toc-check-if-an-identifier-is-referenced)
+      * [Check if a path is a certain type](#toc-check-if-a-path-is-a-certain-type)
+      * [Check if an identifier is referenced](#toc-check-if-an-identifier-is-referenced)
+      * [Find a specific parent path](#toc-find-a-specific-parent-path)
+      * [Get Sibling Paths](#toc-get-sibling-paths)
+      * [Stopping Traversal](#toc-stopping-traversal)
       * [Manipulasi](#toc-manipulation)
-      * [Mengganti sebuah node](#toc-replacing-a-node)
-      * [Mengganti sebuah node dengan banyak node](#toc-replacing-a-node-with-multiple-nodes)
-      * [Mengganti sebuah node dengan source code](#toc-replacing-a-node-with-a-source-string)
-      * [Menambahkan node yang berdekatan](#toc-inserting-a-sibling-node)
-      * [Menghapus sebuah node](#toc-removing-a-node)
-      * [Mengganti parent dari sebuah node](#toc-replacing-a-parent)
-      * [Menghapus parent dari sebuah node](#toc-removing-a-parent)
-      * [Cakupan](#toc-scope)
-      * [Memeriksa apakah variabel lokal terbatasi](#toc-checking-if-a-local-variable-is-bound)
-      * [Menghasilkan UID](#toc-generating-a-uid)
-      * [Menambahkan deklarasi variable ke cakupan parent](#toc-pushing-a-variable-declaration-to-a-parent-scope)
-      * [Mengubah nama dari binding dan referensinya](#toc-rename-a-binding-and-its-references)
-  * [Plugin: Opsi](#toc-plugin-options)
+      * [Replacing a node](#toc-replacing-a-node)
+      * [Replacing a node with multiple nodes](#toc-replacing-a-node-with-multiple-nodes)
+      * [Replacing a node with a source string](#toc-replacing-a-node-with-a-source-string)
+      * [Inserting a sibling node](#toc-inserting-a-sibling-node)
+      * [Inserting into a container](#toc-inserting-into-a-container)
+      * [Removing a node](#toc-removing-a-node)
+      * [Replacing a parent](#toc-replacing-a-parent)
+      * [Removing a parent](#toc-removing-a-parent)
+      * [Ruang lingkup](#toc-scope)
+      * [Checking if a local variable is bound](#toc-checking-if-a-local-variable-is-bound)
+      * [Generating a UID](#toc-generating-a-uid)
+      * [Pushing a variable declaration to a parent scope](#toc-pushing-a-variable-declaration-to-a-parent-scope)
+      * [Rename a binding and its references](#toc-rename-a-binding-and-its-references)
+  * [Plugin: Opsi](#toc-plugin-options) 
+      * [Pre and Post in Plugins](#toc-pre-and-post-in-plugins)
+      * [Enabling Syntax in Plugins](#toc-enabling-syntax-in-plugins)
   * [Bangunan node](#toc-building-nodes)
   * [Praktik terbaik](#toc-best-practices) 
       * [Menghindari melintasi AST sebanyak mungkin](#toc-avoid-traversing-the-ast-as-much-as-possible)
@@ -92,7 +99,7 @@ function square(n) {
 
 > Periksa [AST Explorer](http://astexplorer.net/) untuk mendapatkan informasi yang lebih baik untuk node AST. [Ini](http://astexplorer.net/#/Z1exs6BWMq) adalah linknya dengan kode contoh di atas disisipkan.
 
-Program yang sama dapat dilihat sebagai daftar seperti ini:
+This same program can be represented as a tree like this:
 
 ```md
 - FunctionDeclaration:
@@ -343,6 +350,11 @@ const MyVisitor = {
     console.log("Called!");
   }
 };
+
+// You can also create a visitor and add methods on it later
+let visitor = {};
+visitor.MemberExpression = function() {};
+visitor.FunctionDeclaration = function() {}
 ```
 
 > **Catatan:** `Identifier() { ... }` adalah singkatan untuk `Identifier: {enter() { ... }}`.
@@ -419,13 +431,35 @@ const MyVisitor = {
 };
 ```
 
+If necessary, you can also apply the same function for multiple visitor nodes by separating them with a `|` in the method name as a string like `Identifier|MemberExpression`.
+
+Example usage in the [flow-comments](https://github.com/babel/babel/blob/2b6ff53459d97218b0cf16f8a51c14a165db1fd2/packages/babel-plugin-transform-flow-comments/src/index.js#L47) plugin
+
+```js
+const MyVisitor = {
+  "ExportNamedDeclaration|Flow"(path) {}
+};
+```
+
+You can also use aliases as visitor nodes (as defined in [babel-types](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions)).
+
+For example,
+
+`Function` is an alias for `FunctionDeclaration`, `FunctionExpression`, `ArrowFunctionExpression`
+
+```js
+const MyVisitor = {
+  Function(path) {}
+};
+```
+
 ### <a id="toc-paths"></a>Jalur
 
-AST umumnya memiliki banyak node, tapi bagaimana node berhubungan satu sama lain? Kita bisa memiliki satu objek bisa berubah raksasa yang Anda memanipulasi dan memiliki akses penuh ke, atau kita dapat menyederhanakan ini dengan **jalan**.
+An AST generally has many Nodes, but how do Nodes relate to one another? We could have one giant mutable object that you manipulate and have full access to, or we can simplify this with **Paths**.
 
-Sebuah **Path** adalah representasi objek berhubungan antara dua node.
+A **Path** is an object representation of the link between two nodes.
 
-Sebagai contoh jika kita mengambil node berikut dan anaknya:
+For example if we take the following node and its child:
 
 ```js
 {
@@ -438,7 +472,7 @@ Sebagai contoh jika kita mengambil node berikut dan anaknya:
 }
 ```
 
-Dan mewakili anak `Identifier` sebagai path, tampak seperti ini:
+And represent the child `Identifier` as a path, it looks something like this:
 
 ```js
 {
@@ -454,7 +488,7 @@ Dan mewakili anak `Identifier` sebagai path, tampak seperti ini:
 }
 ```
 
-Ini juga memiliki tambahan metadata tentang path:
+It also has additional metadata about the path:
 
 ```js
 {
@@ -482,13 +516,13 @@ Ini juga memiliki tambahan metadata tentang path:
 }
 ```
 
-Sama halnya dengan metode yang berhubungan dengan menambahkan, update, memindahkan, dan menghapus node, tetapi kita akan masuk ke sana nanti.
+As well as tons and tons of methods related to adding, updating, moving, and removing nodes, but we'll get into those later.
 
-Dalam artinya, paths adalah sebuah representasi **reaktif** dari posisi node di pohon dan segala macam informasi tentang node. Setiap kali Anda memanggil metode yang memodifikasi pohon, informasi ini diperbarui. Babel mengelola semua ini bagi anda untuk membuat bekerja dengan node mudah dan semakin stateless.
+In a sense, paths are a **reactive** representation of a node's position in the tree and all sorts of information about the node. Whenever you call a method that modifies the tree, this information is updated. Babel manages all of this for you to make working with nodes easy and as stateless as possible.
 
 #### <a id="toc-paths-in-visitors"></a>Jalan pengunjung
 
-Bila Anda memiliki pengunjung yang memiliki metode`Identifier()`, Anda benar-benar mengunjungi path bukan node. Dengan cara ini Anda sebagian besar bekerja dengan perwakilan reaktif dari sebuah node bukan node itu sendiri.
+When you have a visitor that has a `Identifier()` method, you're actually visiting the path instead of the node. This way you are mostly working with the reactive representation of a node instead of the node itself.
 
 ```js
 const MyVisitor = {
@@ -510,9 +544,9 @@ Visiting: c
 
 ### <a id="toc-state"></a>Keadaan
 
-Keadaan adalah musuh AST transformasi. Negara akan menggigit Anda lagi dan lagi dan Anda asumsi tentang keadaan akan hampir selalu terbukti salah oleh beberapa sintaks yang tidak Anda pertimbangkan.
+State is the enemy of AST transformation. State will bite you over and over again and your assumptions about state will almost always be proven wrong by some syntax that you didn't consider.
 
-Ambil kode berikut:
+Take the following code:
 
 ```js
 function square(n) {
@@ -520,7 +554,7 @@ function square(n) {
 }
 ```
 
-Ayo menulis pengunjung hacky cepat yang akan mengubah `n` `x`.
+Let's write a quick hacky visitor that will rename `n` to `x`.
 
 ```js
 let paramName;
@@ -540,7 +574,7 @@ const MyVisitor = {
 };
 ```
 
-Ini mungkin bekerja untuk kode di atas, tetapi kita dapat dengan mudah pecah bahwa dengan melakukan hal ini:
+This might work for the above code, but we can easily break that by doing this:
 
 ```js
 function square(n) {
@@ -549,7 +583,7 @@ function square(n) {
 n;
 ```
 
-Cara yang lebih baik untuk menangani hal ini adalah rekursi. Jadi mari kita membuat seperti film Christopher Nolan dan menempatkan pengunjung dalam pengunjung.
+The better way to deal with this is recursion. So let's make like a Christopher Nolan film and put a visitor inside of a visitor.
 
 ```js
 const updateParamNameVisitor = {
@@ -571,11 +605,11 @@ const MyVisitor = {
 };
 ```
 
-Tentu saja, ini adalah contoh yang dibuat-buat, tapi ini menunjukkan bagaimana untuk menghilangkan state global dari pengunjung anda.
+Of course, this is a contrived example but it demonstrates how to eliminate global state from your visitors.
 
 ### <a id="toc-scopes"></a>Cakupan
 
-Selanjutnya mari kita belajar konsep [**cakupan**](https://en.wikipedia.org/wiki/Scope_(computer_science)). JavaScript memiliki [cakupan leksikal](https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scoping_vs._dynamic_scoping), yang merupakan struktur pohon di mana blok dapat membuat cakupan baru.
+Next let's introduce the concept of a [**scope**](https://en.wikipedia.org/wiki/Scope_(computer_science)). JavaScript has [lexical scoping](https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scoping_vs._dynamic_scoping), which is a tree structure where blocks create new scope.
 
 ```js
 // global scope
@@ -589,7 +623,7 @@ function scopeOne() {
 }
 ```
 
-Setiap kali Anda membuat referensi dalam JavaScript, apakah itu oleh variabel, fungsi, kelas, param, impor, label, dll, itu milik cakupan saat ini.
+Whenever you create a reference in JavaScript, whether that be by a variable, function, class, param, import, label, etc., it belongs to the current scope.
 
 ```js
 var global = "I am in the global scope";
@@ -603,7 +637,7 @@ function scopeOne() {
 }
 ```
 
-Kode dalam cakupan yang lebih dalam dapat menggunakan referensi dari cakupan yang lebih tinggi.
+Code within a deeper scope may use a reference from a higher scope.
 
 ```js
 function scopeOne() {
@@ -615,7 +649,7 @@ function scopeOne() {
 }
 ```
 
-Cakupan yang lebih rendah juga mungkin membuat referensi dari nama yang sama tanpa memodifikasi itu.
+A lower scope might also create a reference of the same name without modifying it.
 
 ```js
 function scopeOne() {
@@ -627,11 +661,11 @@ function scopeOne() {
 }
 ```
 
-Saat menulis sebuah transformasi, kita perlu berhati-hati dengan cakupan. Kita perlu memastikan bahwa kita tidak melanggar kode yang ada sementara memodifikasi bagian yang berbeda itu.
+When writing a transform, we want to be wary of scope. We need to make sure we don't break existing code while modifying different parts of it.
 
-Kita mungkin ingin menambahkan referensi baru dan memastikan bahwa mereka tidak berbenturan dengan yang sudah ada. Atau mungkin kita hanya ingin menemukan mana variabel yang dirujuk. Kami ingin dapat melacak ini referensi dalam lingkup yang diberikan.
+We may want to add new references and make sure they don't collide with existing ones. Or maybe we just want to find where a variable is referenced. We want to be able to track these references within a given scope.
 
-Lingkup yang dapat digambarkan sebagai:
+A scope can be represented as:
 
 ```js
 {
@@ -643,13 +677,13 @@ Lingkup yang dapat digambarkan sebagai:
 }
 ```
 
-Ketika Anda membuat cakupan baru Anda melakukannya dengan memberikan jalan dan lingkup orangtua. Kemudian selama proses traversal mengumpulkan semua referensi ("binding") dalam lingkup itu.
+When you create a new scope you do so by giving it a path and a parent scope. Then during the traversal process it collects all the references ("bindings") within that scope.
 
-Setelah selesai, ada segala macam metode yang dapat Anda gunakan pada cakupan. Kita akan mendapatkan ke orang-orang kemudian meskipun.
+Once that's done, there's all sorts of methods you can use on scopes. We'll get into those later though.
 
 #### <a id="toc-bindings"></a>Binding
 
-Semua referensi adalah milik cakupan tertentu; hubungan ini dikenal sebagai **binding**.
+References all belong to a particular scope; this relationship is known as a **binding**.
 
 ```js
 function scopeOnce() {
@@ -663,7 +697,7 @@ function scopeOnce() {
 }
 ```
 
-Binding tunggal terlihat seperti ini:
+A single binding looks like this:
 
 ```js
 {
@@ -681,9 +715,9 @@ Binding tunggal terlihat seperti ini:
 }
 ```
 
-Dengan informasi ini anda dapat menemukan semua referensi pada sebuah binding, melihat apa jenis mengikat itu (parameter, deklarasi, dll), melihat cakupan apa itu, atau mendapatkan salinan dari identifier. Anda bahkan dapat memberitahu jika itu konstan dan jika tidak, dapat melihat jalan apa yang menyebabkan untuk menjadi tidak konstan.
+With this information you can find all the references to a binding, see what type of binding it is (parameter, declaration, etc.), lookup what scope it belongs to, or get a copy of its identifier. You can even tell if it's constant and if not, see what paths are causing it to be non-constant.
 
-Mampu untuk mengetahui apakah sebuah binding adalah konstan berguna untuk berbagai keperluan, yang terbesar adalah minifikasi.
+Being able to tell if a binding is constant is useful for many purposes, the largest of which is minification.
 
 ```js
 function scopeOne() {
@@ -702,21 +736,21 @@ function scopeOne() {
 
 # <a id="toc-api"></a>API
 
-Babel adalah benar-benar kumpulan dari modul. Dalam bagian ini kita akan berjalan melalui yang utama, menjelaskan apa yang mereka lakukan dan bagaimana menggunakannya.
+Babel is actually a collection of modules. In this section we'll walk through the major ones, explaining what they do and how to use them.
 
 > Catatan: Ini bukanlah pengganti untuk rinci dokumentasi API yang akan tersedia di tempat lain segera.
 
 ## <a id="toc-babylon"></a>[`babylon`](https://github.com/babel/babylon)
 
-Babylon adalah pengurai Babel. Dimulai sebagai sebuah fork dari Acorn, dia cepat, mudah digunakan, memiliki arsitektur berbasis plugin untuk non-standar fitur (serta standar masa depan).
+Babylon is Babel's parser. Started as a fork of Acorn, it's fast, simple to use, has plugin-based architecture for non-standard features (as well as future standards).
 
-Pertama, mari kita menginstalnya.
+First, let's install it.
 
 ```sh
 $ npm install --save babylon
 ```
 
-Mari kita mulai dengan hanya mengurai string kode:
+Let's start by simply parsing a string of code:
 
 ```js
 import * as babylon from "babylon";
@@ -737,7 +771,7 @@ babylon.parse(code);
 // }
 ```
 
-Kami juga dapat melewati pilihan untuk `parse()` seperti:
+We can also pass options to `parse()` like so:
 
 ```js
 babylon.parse(code, {
@@ -746,25 +780,25 @@ babylon.parse(code, {
 });
 ```
 
-`sourceType` dapat menjadi `"modul"` atau `"script"` yang adalah modus yang Babel harus memilah dalam. `"modul"` akan mengurai dalam modus ketat dan memungkinkan Deklarasi modul, `"script"` tidak akan.
+`sourceType` can either be `"module"` or `"script"` which is the mode that Babylon should parse in. `"module"` will parse in strict mode and allow module declarations, `"script"` will not.
 
 > **Catatan:** `sourceType` default `"script"` dan akan kesalahan ketika ia menemukan `impor` atau `ekspor`. Lulus `sourceType: "modul"` untuk menyingkirkan kesalahan ini.
 
-Karena Babel dibangun dengan arsitektur yang berbasis plugin, juga ada pilihan `plugin` yang akan memungkinkan plugin internal. Catatan bahwa Babel tidak belum dibuka API ini untuk plugin eksternal, meskipun dapat melakukannya di masa depan.
+Since Babylon is built with a plugin-based architecture, there is also a `plugins` option which will enable the internal plugins. Note that Babylon has not yet opened this API to external plugins, although may do so in the future.
 
 To see a full list of plugins, see the [Babylon README](https://github.com/babel/babylon/blob/master/README.md#plugins).
 
 ## <a id="toc-babel-traverse"></a>[`babel-traverse`](https://github.com/babel/babel/tree/master/packages/babel-traverse)
 
-Modul Babel melintasi mempertahankan status pohon, dan bertanggung jawab untuk mengganti, menghapus dan menambahkan node.
+The Babel Traverse module maintains the overall tree state, and is responsible for replacing, removing, and adding nodes.
 
-Menginstalnya dengan menjalankan:
+Install it by running:
 
 ```sh
 $ npm install --save babel-traverse
 ```
 
-Kita dapat menggunakannya bersama Babel untuk melintasi dan memperbarui node:
+We can use it alongside Babylon to traverse and update nodes:
 
 ```js
 import * as babylon from "babylon";
@@ -790,15 +824,15 @@ traverse(ast, {
 
 ## <a id="toc-babel-types"></a>[`babel-types`](https://github.com/babel/babel/tree/master/packages/babel-types)
 
-Jenis Babel adalah utilitas Lodash-esque perpustakaan untuk AST node. Ini berisi metode untuk membangun, memvalidasi, dan mengkonversi AST node. Hal ini berguna untuk membersihkan AST logika dengan dipikirkan utilitas metode dengan baik.
+Babel Types is a Lodash-esque utility library for AST nodes. It contains methods for building, validating, and converting AST nodes. It's useful for cleaning up AST logic with well thought out utility methods.
 
-Anda dapat menginstalnya dengan menjalankan:
+You can install it by running:
 
 ```sh
 $ npm install --save babel-types
 ```
 
-Kemudian mulai menggunakannya:
+Then start using it:
 
 ```js
 import traverse from "babel-traverse";
@@ -815,9 +849,9 @@ traverse(ast, {
 
 ### <a id="toc-definitions"></a>Definisi
 
-Babel jenis memiliki definisi untuk setiap satu jenis node, dengan informasi tentang sifat-sifat apa milik dimana, apa nilai-nilai berlaku, bagaimana membangun simpul tersebut, bagaimana node yang harus dilalui, dan alias node.
+Babel Types has definitions for every single type of node, with information on what properties belong where, what values are valid, how to build that node, how the node should be traversed, and aliases of the Node.
 
-Definisi jenis satu simpul yang terlihat seperti ini:
+A single node type definition looks like this:
 
 ```js
 defineType("BinaryExpression", {
@@ -840,19 +874,19 @@ defineType("BinaryExpression", {
 
 ### <a id="toc-builders"></a>Pembangun
 
-Anda akan melihat definisi di atas untuk `BinaryExpression` memiliki lapangan bagi seorang `pembangun`.
+You'll notice the above definition for `BinaryExpression` has a field for a `builder`.
 
 ```js
 builder: ["operator", "left", "right"]
 ```
 
-Hal ini karena setiap jenis node mendapat metode builder, yang bila digunakan tampak seperti ini:
+This is because each node type gets a builder method, which when used looks like this:
 
 ```js
 t.binaryExpression("*", t.identifier("a"), t.identifier("b"));
 ```
 
-Yang menciptakan AST seperti ini:
+Which creates an AST like this:
 
 ```js
 {
@@ -869,17 +903,17 @@ Yang menciptakan AST seperti ini:
 }
 ```
 
-Yang ketika dicetak tampak seperti ini:
+Which when printed looks like this:
 
 ```js
 a * b
 ```
 
-Pembangun juga akan memvalidasi node mereka membuat dan melempar kesalahan deskriptif jika digunakan dengan benar. Yang mengarah ke jenis metode berikutnya.
+Builders will also validate the nodes they are creating and throw descriptive errors if used improperly. Which leads into the next type of method.
 
 ### <a id="toc-validators"></a>Validator
 
-Definisi `BinaryExpression` juga mencakup informasi tentang `bidang` sebuah node dan bagaimana melakukan validasi.
+The definition for `BinaryExpression` also includes information on the `fields` of a node and how to validate them.
 
 ```js
 fields: {
@@ -895,19 +929,19 @@ fields: {
 }
 ```
 
-Ini digunakan untuk membuat dua jenis memvalidasi metode. Yang pertama adalah `Bei`.
+This is used to create two types of validating methods. The first of which is `isX`.
 
 ```js
 t.isBinaryExpression(maybeBinaryExpressionNode);
 ```
 
-Tes ini untuk memastikan bahwa node adalah ekspresi biner, tetapi Anda juga dapat melewati parameter kedua untuk memastikan bahwa node berisi properti dan nilai-nilai tertentu.
+This tests to make sure that the node is a binary expression, but you can also pass a second parameter to ensure that the node contains certain properties and values.
 
 ```js
 t.isBinaryExpression(maybeBinaryExpressionNode, { operator: "*" });
 ```
 
-Ada juga lebih, *ehem*, tegas versi dari metode ini, yang akan melemparkan kesalahan daripada mengembalikan `true` atau `false`.
+There is also the more, *ehem*, assertive version of these methods, which will throw errors instead of returning `true` or `false`.
 
 ```js
 t.assertBinaryExpression(maybeBinaryExpressionNode);
@@ -921,15 +955,15 @@ t.assertBinaryExpression(maybeBinaryExpressionNode, { operator: "*" });
 
 ## <a id="toc-babel-generator"></a>[`babel-generator`](https://github.com/babel/babel/tree/master/packages/babel-generator)
 
-Babel Generator adalah kode generator untuk Babel. Dibutuhkan AST dan mengubahnya menjadi kode dengan sourcemaps.
+Babel Generator is the code generator for Babel. It takes an AST and turns it into code with sourcemaps.
 
-Jalankan berikut ini untuk menginstalnya:
+Run the following to install it:
 
 ```sh
 $ npm install --save babel-generator
 ```
 
-Kemudian menggunakannya
+Then use it
 
 ```js
 import * as babylon from "babylon";
@@ -948,7 +982,7 @@ generate(ast, null, code);
 // }
 ```
 
-Anda juga dapat melewati pilihan untuk `generate()`.
+You can also pass options to `generate()`.
 
 ```js
 generate(ast, {
@@ -962,7 +996,7 @@ generate(ast, {
 
 ## <a id="toc-babel-template"></a>[`babel-template`](https://github.com/babel/babel/tree/master/packages/babel-template)
 
-Babel Template adalah modul kecil tapi sangat berguna yang lain. Hal ini memungkinkan Anda untuk menulis string kode dengan pengganti yang Anda dapat menggunakan bukan secara manual membangun AST besar. Dalam ilmu komputer, kemampuan ini disebut quasiquotes.
+Babel Template is another tiny but incredibly useful module. It allows you to write strings of code with placeholders that you can use instead of manually building up a massive AST. In computer science, this capability is called quasiquotes.
 
 ```sh
 $ npm install --save babel-template
@@ -991,9 +1025,9 @@ var myModule = require("my-module");
 
 # <a id="toc-writing-your-first-babel-plugin"></a>Menulis Plugin Babel pertama Anda
 
-Sekarang bahwa Anda akrab dengan semua dasar-dasar Babel, mari kita mengikat bersama-sama dengan plugin API.
+Now that you're familiar with all the basics of Babel, let's tie it together with the plugin API.
 
-Memulai dengan `fungsi` yang akan dilewati objek [`babel`](https://github.com/babel/babel/tree/master/packages/babel-core) saat ini.
+Start off with a `function` that gets passed the current [`babel`](https://github.com/babel/babel/tree/master/packages/babel-core) object.
 
 ```js
 export default function(babel) {
@@ -1001,7 +1035,7 @@ export default function(babel) {
 }
 ```
 
-Karena Anda akan menggunakan itu begitu sering, Anda mungkin ingin mengambil hanya `babel.types` seperti:
+Since you'll be using it so often, you'll likely want to grab just `babel.types` like so:
 
 ```js
 export default function({ types: t }) {
@@ -1009,7 +1043,7 @@ export default function({ types: t }) {
 }
 ```
 
-Kemudian Anda kembali sebuah objek dengan properti `pengunjung` yang merupakan pengunjung utama untuk plugin.
+Then you return an object with a property `visitor` which is the primary visitor for the plugin.
 
 ```js
 export default function({ types: t }) {
@@ -1021,13 +1055,26 @@ export default function({ types: t }) {
 };
 ```
 
-Mari kita menulis sebuah plugin yang cepat untuk menunjukkan cara kerjanya. Berikut adalah kode sumber kami:
+Each function in the visitor receives 2 arguments: `path` and `state`
+
+```js
+export default function({ types: t }) {
+  return {
+    visitor: {
+      Identifier(path, state) {},
+      ASTNodeTypeHere(path, state) {}
+    }
+  };
+};
+```
+
+Let's write a quick plugin to show off how it works. Here's our source code:
 
 ```js
 foo === bar;
 ```
 
-Atau AST membentuk:
+Or in AST form:
 
 ```js
 {
@@ -1044,7 +1091,7 @@ Atau AST membentuk:
 }
 ```
 
-Kita akan mulai dengan menambahkan metode pengunjung `BinaryExpression`.
+We'll start off by adding a `BinaryExpression` visitor method.
 
 ```js
 export default function({ types: t }) {
@@ -1058,7 +1105,7 @@ export default function({ types: t }) {
 }
 ```
 
-Kemudian Mari kita menguranginya hingga ke hanya `BinaryExpression` s yang menggunakan operator `=`.
+Then let's narrow it down to just `BinaryExpression`s that are using the `===` operator.
 
 ```js
 visitor: {
@@ -1072,7 +1119,7 @@ visitor: {
 }
 ```
 
-Sekarang mari kita mengganti properti `kiri` dengan sebuah identifier yang baru:
+Now let's replace the `left` property with a new identifier:
 
 ```js
 BinaryExpression(path) {
@@ -1085,13 +1132,13 @@ BinaryExpression(path) {
 }
 ```
 
-Sudah jika kita menjalankan plugin ini kita akan mendapatkan:
+Already if we run this plugin we would get:
 
 ```js
 sebmck === bar;
 ```
 
-Sekarang mari kita hanya mengganti properti yang `tepat`.
+Now let's just replace the `right` property.
 
 ```js
 BinaryExpression(path) {
@@ -1104,13 +1151,13 @@ BinaryExpression(path) {
 }
 ```
 
-Dan sekarang untuk hasil akhir kami:
+And now for our final result:
 
 ```js
 sebmck === dork;
 ```
 
-Keren! Kami pertama plugin Babel.
+Awesome! Our very first Babel plugin.
 
 * * *
 
@@ -1120,15 +1167,18 @@ Keren! Kami pertama plugin Babel.
 
 ### <a id="toc-get-the-path-of-a-sub-node"></a>Mendapatkan path dari Sub-Node
 
-Untuk mengakses properti dari node AST, biasanya Anda mengakses node-nya terlebih dahulu dan kemudian propertinya. `path.node.Property`
+To access an AST node's property you normally access the node and then the property. `path.node.property`
 
 ```js
+// the BinaryExpression AST node has properties: `left`, `right`, `operator`
 BinaryExpression(path) {
   path.node.left;
+  path.node.right;
+  path.node.operator;
 }
 ```
 
-Apabila kamu hendak mengakses path dari properti tersebut, gunakan method `get` dari path, lalu gunakan sebagai string di properti tersebut.
+If you need to access the `path` of that property instead, use the `get` method of a path, passing in the string to the property.
 
 ```js
 BinaryExpression(path) {
@@ -1141,7 +1191,7 @@ Program(path) {
 
 ### <a id="toc-check-if-a-node-is-a-certain-type"></a>Memeriksa tipe dari sebuah node
 
-Apabila kamu ingin mengetahui tipe dari sebuah node, cara yang dianjurkan adalah sebagai berikut:
+If you want to check what the type of a node is, the preferred way to do so is:
 
 ```js
 BinaryExpression(path) {
@@ -1151,7 +1201,7 @@ BinaryExpression(path) {
 }
 ```
 
-Kamu juga dapat melakukan pemeriksaan singkat pada properti-properti dari node tersebut:
+You can also do a shallow check for properties on that node:
 
 ```js
 BinaryExpression(path) {
@@ -1161,7 +1211,7 @@ BinaryExpression(path) {
 }
 ```
 
-Hal ini secara fungsional juga sama dengan:
+This is functionally equivalent to:
 
 ```js
 BinaryExpression(path) {
@@ -1175,7 +1225,29 @@ BinaryExpression(path) {
 }
 ```
 
-### <a id="toc-check-if-an-identifier-is-referenced"></a>Memeriksa apakah sebuah identifier direferensikan
+### <a id="toc-check-if-a-path-is-a-certain-type"></a>Check if a path is a certain type
+
+A path has the same methods for checking the type of a node:
+
+```js
+BinaryExpression(path) {
+  if (path.get('left').isIdentifier({ name: "n" })) {
+    // ...
+  }
+}
+```
+
+is equivalent to doing:
+
+```js
+BinaryExpression(path) {
+  if (t.isIdentifier(path.node.left, { name: "n" })) {
+    // ...
+  }
+}
+```
+
+### <a id="toc-check-if-an-identifier-is-referenced"></a>Check if an identifier is referenced
 
 ```js
 Identifier(path) {
@@ -1185,7 +1257,7 @@ Identifier(path) {
 }
 ```
 
-Atau dengan cara lain:
+Alternatively:
 
 ```js
 Identifier(path) {
@@ -1195,9 +1267,99 @@ Identifier(path) {
 }
 ```
 
+### <a id="toc-find-a-specific-parent-path"></a>Find a specific parent path
+
+Sometimes you will need to traverse the tree upwards from a path until a condition is satisfied.
+
+Call the provided `callback` with the `NodePath`s of all the parents. When the `callback` returns a truthy value, we return that `NodePath`.
+
+```js
+path.findParent((path) => path.isObjectExpression());
+```
+
+If the current path should be included as well:
+
+```js
+path.find((path) => path.isObjectExpression());
+```
+
+Find the closest parent function or program:
+
+```js
+path.getFunctionParent();
+```
+
+Walk up the tree until we hit a parent node path in a list
+
+```js
+path.getStatementParent();
+```
+
+### <a id="toc-get-sibling-paths"></a>Get Sibling Paths
+
+If a path in a a list like in the body of a `Function`/`Program`, it will have "siblings".
+
+  * Check if a path is part of a list with `path.inList`
+  * You can get the surrounding siblings with `path.getSibling(index)`,
+  * The current path's index in the container with `path.key`,
+  * The path's container (an array of all sibling paths) with `path.container`
+  * Get the name of the key of the list container with `path.listKey`
+
+> These APis are used in the [transform-merge-sibling-variables](https://github.com/babel/babili/blob/master/packages/babel-plugin-transform-merge-sibling-variables/src/index.js) plugin used in [babel-minify](https://github.com/babel/babili).
+
+```js
+var a = 1; // pathA, path.key = 0
+var b = 2; // pathB, path.key = 1
+var c = 3; // pathC, path.key = 2
+```
+
+```js
+export default function({ types: t }) {
+  return {
+    visitor: {
+      VariableDeclaration(path) {
+        // if the current path is pathA
+        path.inList // true
+        path.listKey // "body"
+        path.key // 0
+        path.getSibling(0) // pathA
+        path.getSibling(path.key + 1) // pathB
+        path.container // [pathA, pathB, pathC]
+      }
+    }
+  };
+}
+```
+
+### <a id="toc-stopping-traversal"></a>Stopping Traversal
+
+If your plugin needs to not run in a certain situation, the simpliest thing to do is to write an early return.
+
+```js
+BinaryExpression(path) {
+  if (path.node.operator !== '**') return;
+}
+```
+
+If you are doing a sub-traversal in a top level path, you can use 2 provided API methods:
+
+`path.skip()` skips traversing the children of the current path. `path.stop()` stops traversal entirely.
+
+```js
+path.traverse({
+  Function(path) {
+    path.skip(); // if checking the children is irrelevant
+  },
+  ReferencedIdentifier(path, state) {
+    state.iife = true;
+    path.stop(); // if you want to save some state and then stop traversal, or deopt
+  }
+});
+```
+
 ## <a id="toc-manipulation"></a>Manipulasi
 
-### <a id="toc-replacing-a-node"></a>Mengganti sebuah node
+### <a id="toc-replacing-a-node"></a>Replacing a node
 
 ```js
 BinaryExpression(path) {
@@ -1214,7 +1376,7 @@ BinaryExpression(path) {
   }
 ```
 
-### <a id="toc-replacing-a-node-with-multiple-nodes"></a>Mengganti sebuah node dengan banyak node
+### <a id="toc-replacing-a-node-with-multiple-nodes"></a>Replacing a node with multiple nodes
 
 ```js
 ReturnStatement(path) {
@@ -1235,9 +1397,9 @@ ReturnStatement(path) {
   }
 ```
 
-> **Catatan:** Ketika mengganti ekspresi dengan beberapa node, mereka harus pernyataan. Hal ini karena Babel menggunakan heuristik secara ekstensif ketika menggantikan node yang berarti bahwa Anda dapat melakukan beberapa transformasi yang cukup gila bahwa akan sangat verbose sebaliknya.
+> **Note:** When replacing an expression with multiple nodes, they must be statements. This is because Babel uses heuristics extensively when replacing nodes which means that you can do some pretty crazy transformations that would be extremely verbose otherwise.
 
-### <a id="toc-replacing-a-node-with-a-source-string"></a>Mengganti sebuah node dengan source code
+### <a id="toc-replacing-a-node-with-a-source-string"></a>Replacing a node with a source string
 
 ```js
 FunctionDeclaration(path) {
@@ -1255,9 +1417,9 @@ FunctionDeclaration(path) {
   }
 ```
 
-> **Catatan:** Tidak dianjurkan untuk menggunakan API ini kecuali Anda sedang berhadapan dengan string dinamis sumber, jika tidak lebih efisien untuk mengurai kode di luar pengunjung.
+> **Note:** It's not recommended to use this API unless you're dealing with dynamic source strings, otherwise it's more efficient to parse the code outside of the visitor.
 
-### <a id="toc-inserting-a-sibling-node"></a>Menambahkan node yang berdekatan
+### <a id="toc-inserting-a-sibling-node"></a>Inserting a sibling node
 
 ```js
 FunctionDeclaration(path) {
@@ -1274,9 +1436,30 @@ FunctionDeclaration(path) {
 + "A little high, little low.";
 ```
 
-> **Catatan:** Ini harus selalu pernyataan atau sebuah array dari pernyataan. Ini menggunakan heuristik sama yang disebutkan dalam [menggantikan sebuah node dengan node beberapa](#replacing-a-node-with-multiple-nodes).
+> **Note:** This should always be a statement or an array of statements. This uses the same heuristics mentioned in [Replacing a node with multiple nodes](#replacing-a-node-with-multiple-nodes).
 
-### <a id="toc-removing-a-node"></a>Menghapus sebuah node
+### <a id="toc-inserting-into-a-container"></a>Inserting into a container
+
+If you want to insert into a AST node property like that is an array like `body`. It is simialr to `insertBefore`/`insertAfter` other than you having to specify the `listKey` which is usually `body`.
+
+```js
+ClassMethod(path) {
+  path.get('body').unshiftContainer('body', t.stringLiteral('before'));
+  path.get('body').pushContainer('body', t.stringLiteral('after'));
+}
+```
+
+```diff
+ class A {
+  constructor() {
++   "before"
+    var a = 'middle';
++   "after"
+  }
+ }
+```
+
+### <a id="toc-removing-a-node"></a>Removing a node
 
 ```js
 FunctionDeclaration(path) {
@@ -1290,7 +1473,9 @@ FunctionDeclaration(path) {
 - }
 ```
 
-### <a id="toc-replacing-a-parent"></a>Mengganti parent dari sebuah node
+### <a id="toc-replacing-a-parent"></a>Replacing a parent
+
+Just call `replaceWith` with the parentPath: `path.parentPath`
 
 ```js
 BinaryExpression(path) {
@@ -1307,7 +1492,7 @@ BinaryExpression(path) {
   }
 ```
 
-### <a id="toc-removing-a-parent"></a>Menghapus parent dari sebuah node
+### <a id="toc-removing-a-parent"></a>Removing a parent
 
 ```js
 BinaryExpression(path) {
@@ -1323,7 +1508,7 @@ BinaryExpression(path) {
 
 ## <a id="toc-scope"></a>Ruang lingkup
 
-### <a id="toc-checking-if-a-local-variable-is-bound"></a>Memeriksa apakah variabel lokal terbatasi
+### <a id="toc-checking-if-a-local-variable-is-bound"></a>Checking if a local variable is bound
 
 ```js
 FunctionDeclaration(path) {
@@ -1333,7 +1518,7 @@ FunctionDeclaration(path) {
 }
 ```
 
-Dengan begini, Babel akan memeriksa binding tersebut dengan cakupan yang semakin tinggi.
+This will walk up the scope tree and check for that particular binding.
 
 You can also check if a scope has its **own** binding:
 
@@ -1345,9 +1530,9 @@ FunctionDeclaration(path) {
 }
 ```
 
-### <a id="toc-generating-a-uid"></a>Menghasilkan UID
+### <a id="toc-generating-a-uid"></a>Generating a UID
 
-Fungsi berikut akan menghasilkan sebuah pengenal yang tidak akan sama dengan variabel lokal apapun yang telah didefinisikan.
+This will generate an identifier that doesn't collide with any locally defined variables.
 
 ```js
 FunctionDeclaration(path) {
@@ -1358,9 +1543,9 @@ FunctionDeclaration(path) {
 }
 ```
 
-### <a id="toc-pushing-a-variable-declaration-to-a-parent-scope"></a>Menambahkan deklarasi variable ke cakupan parent
+### <a id="toc-pushing-a-variable-declaration-to-a-parent-scope"></a>Pushing a variable declaration to a parent scope
 
-Terkadang kamu hanya ingin menambahkan sebuah `VariableDeclaration` sehingga kamu dapat memberi nilai pada variabel tersebut.
+Sometimes you may want to push a `VariableDeclaration` so you can assign to it.
 
 ```js
 FunctionDeclaration(path) {
@@ -1378,7 +1563,7 @@ FunctionDeclaration(path) {
 + };
 ```
 
-### <a id="toc-rename-a-binding-and-its-references"></a>Mengubah nama dari binding dan referensinya
+### <a id="toc-rename-a-binding-and-its-references"></a>Rename a binding and its references
 
 ```js
 FunctionDeclaration(path) {
@@ -1394,7 +1579,7 @@ FunctionDeclaration(path) {
   }
 ```
 
-Atau kamu dapat mengganti nama sebuah binding dengan tanda pengenal unik yang telah dihasilkan:
+Alternatively, you can rename a binding to a generated unique identifier:
 
 ```js
 FunctionDeclaration(path) {
@@ -1444,6 +1629,68 @@ export default function({ types: t }) {
 
 These options are plugin-specific and you cannot access options from other plugins.
 
+## <a id="toc-pre-and-post-in-plugins"></a> Pre and Post in Plugins
+
+Plugins can have functions that are run before or after plugins. They can be used for setup or cleanup/analysis purposes.
+
+```js
+export default function({ types: t }) {
+  return {
+    pre(state) {
+      this.cache = new Map();
+    },
+    visitor: {
+      StringLiteral(path) {
+        this.cache.set(path.node.value, 1);
+      }
+    },
+    post(state) {
+      console.log(this.cache);
+    }
+  };
+}
+```
+
+## <a id="toc-enabling-syntax-in-plugins"></a> Enabling Syntax in Plugins
+
+Plugins can enable [babylon plugins](https://github.com/babel/babylon#plugins) so that users don't need to install/enable them. This prevents a parsing error without inheriting the syntax plugin.
+
+```js
+export default function({ types: t }) {
+  return {
+    inherits: require("babel-plugin-syntax-jsx")
+  };
+}
+```
+
+## <a id="toc-throwing-a-syntax-error"></a> Throwing a Syntax Error
+
+If you want to throw an error with babel-code-frame and a message:
+
+```js
+export default function({ types: t }) {
+  return {
+    visitor: {
+      StringLiteral(path) {
+        throw path.buildCodeFrameError("Error message here");
+      }
+    }
+  };
+}
+```
+
+The error looks like:
+
+    file.js: Error message here
+       7 | 
+       8 | let tips = [
+    >  9 |   "Click on any AST node with a '+' to expand it",
+         |   ^
+      10 | 
+      11 |   "Hovering over a node highlights the \
+      12 |    corresponding part in the source code",
+    
+
 * * *
 
 # <a id="toc-building-nodes"></a>Bangunan node
@@ -1486,7 +1733,20 @@ By looking at the `builder` property, you can see the 3 arguments that will be n
 builder: ["object", "property", "computed"],
 ```
 
-> Perhatikan bahwa kadang-kadang ada sifat lebih yang Anda dapat menyesuaikan pada node dari array `pembangun` berisi. Hal ini untuk menjaga builder dari memiliki terlalu banyak argumen. Dalam kasus ini Anda perlu untuk mengatur properti secara manual. Contoh ini adalah [`ClassMethod`](https://github.com/babel/babel/blob/bbd14f88c4eea88fa584dd877759dd6b900bf35e/packages/babel-types/src/definitions/es2015.js#L238-L276).
+> Note that sometimes there are more properties that you can customize on the node than the `builder` array contains. This is to keep the builder from having too many arguments. In these cases you need to set the properties manually. An example of this is [`ClassMethod`](https://github.com/babel/babel/blob/bbd14f88c4eea88fa584dd877759dd6b900bf35e/packages/babel-types/src/definitions/es2015.js#L238-L276).
+
+```js
+// Example
+// because the builder doesn't contain `async` as a property
+var node = t.classMethod(
+  "constructor",
+  t.identifier("constructor"),
+  params,
+  body
+)
+// set it manually after creation
+node.async = true;
+```
 
 You can see the validation for the builder arguments with the `fields` object.
 
@@ -1559,7 +1819,19 @@ You can find all of the actual [definitions here](https://github.com/babel/babel
 
 # <a id="toc-best-practices"></a>Praktik terbaik
 
-> Aku akan bekerja pada bagian ini selama beberapa minggu mendatang.
+## <a id="toc-create-helper-builders-and-checkers"></a> Create Helper Builders and Checkers
+
+It's pretty simple to extract certain checks (if a node is a certain type) into their own helper functions as well as extracting out helpers for specific node types.
+
+```js
+function isAssignment(node) {
+  return node && node.operator === opts.operator + "=";
+}
+
+function buildAssignment(left, right) {
+  return t.assignmentExpression("=", left, right);
+}
+```
 
 ## <a id="toc-avoid-traversing-the-ast-as-much-as-possible"></a>Menghindari melintasi AST sebanyak mungkin
 
@@ -1743,4 +2015,4 @@ class Foo {
 }
 ```
 
-> ***Untuk pembaruan terbaru, ikuti [@thejameskyle](https://twitter.com/thejameskyle) di Twitter.***
+> ***For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) and [@babeljs](https://twitter.com/babeljs) on Twitter.***

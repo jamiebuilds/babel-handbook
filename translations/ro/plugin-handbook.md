@@ -39,21 +39,28 @@ Acest manual este disponibil și în alte limbi, a se vedea [README](/README.md)
       * [Vizitare (Visiting)](#toc-visiting)
       * [Aflarea căii unui sub-nod](#toc-get-the-path-of-a-sub-node)
       * [Verificare dacă un nod este de un anumit tip](#toc-check-if-a-node-is-a-certain-type)
+      * [Verificare dacă un nod este de un anumit tip](#toc-check-if-a-path-is-a-certain-type)
       * [Verificare dacă un identificator are referință](#toc-check-if-an-identifier-is-referenced)
+      * [Aflarea căii unui anumit părinte](#toc-find-a-specific-parent-path)
+      * [Aflarea căilor nodurilor de același nivel](#toc-get-sibling-paths)
+      * [Oprirea traversării](#toc-stopping-traversal)
       * [Manipulare](#toc-manipulation)
       * [Înlocuirea unui nod](#toc-replacing-a-node)
       * [Înlocuirea unui nod cu mai multe noduri](#toc-replacing-a-node-with-multiple-nodes)
       * [Înlocuirea unui nod cu un șir de caractere sursă](#toc-replacing-a-node-with-a-source-string)
       * [Inserarea unui nod pe același nivel](#toc-inserting-a-sibling-node)
+      * [Inserarea într-un containăr](#toc-inserting-into-a-container)
       * [Ștergerea unui nod](#toc-removing-a-node)
       * [Înlocuirea unui părinte](#toc-replacing-a-parent)
       * [Ștergerea unui părinte](#toc-removing-a-parent)
       * [Domeniu (Scope)](#toc-scope)
-      * [Verificare dacă o variabilă locală are legatură](#toc-checking-if-a-local-variable-is-bound)
+      * [Verificare dacă o variabilă locală este legată](#toc-checking-if-a-local-variable-is-bound)
       * [Generarea unui UID](#toc-generating-a-uid)
       * [Mutarea unei declarații de variabilă într-un domeniu părinte](#toc-pushing-a-variable-declaration-to-a-parent-scope)
       * [Redenumirea unei legături și a referințelor sale](#toc-rename-a-binding-and-its-references)
-  * [Opțiuni de plugin](#toc-plugin-options)
+  * [Opțiuni de plugin](#toc-plugin-options) 
+      * [Pre şi Post în plugin-uri](#toc-pre-and-post-in-plugins)
+      * [Activarea Syntax în plugin-uri](#toc-enabling-syntax-in-plugins)
   * [Construirea nodurilor](#toc-building-nodes)
   * [Practici preferate](#toc-best-practices) 
       * [Evitați traversarea AST pe cât posibil](#toc-avoid-traversing-the-ast-as-much-as-possible)
@@ -343,6 +350,11 @@ const MyVisitor = {
     console.log("Called!");
   }
 };
+
+// You can also create a visitor and add methods on it later
+let visitor = {};
+visitor.MemberExpression = function() {};
+visitor.FunctionDeclaration = function() {}
 ```
 
 > **Notă:** `Identifier() { ... }` este o prescurtare pentru `Identifier: {enter() { ... }}`.
@@ -419,11 +431,33 @@ const MyVisitor = {
 };
 ```
 
+Dacă este necesar, puteţi aplica aceeaşi funcţie mai multor noduri de vizitator prin separare acestora cu o `|` în numele metodei, de exemplu `Identifier|MemberExpression`.
+
+Exemplu de utilizare în plugin-ul [flow-comments](https://github.com/babel/babel/blob/2b6ff53459d97218b0cf16f8a51c14a165db1fd2/packages/babel-plugin-transform-flow-comments/src/index.js#L47)
+
+```js
+const MyVisitor = {
+  "ExportNamedDeclaration|Flow"(path) {}
+};
+```
+
+Puteţi deasemenea utiliza un alias ca noduri de vizitator (conform definiției din [babel-types](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions)).
+
+De exemplu,
+
+`Function` este un alias pentru `FunctionDeclaration`, `FunctionExpression`, `ArrowFunctionExpression`
+
+```js
+const MyVisitor = {
+  Function(path) {}
+};
+```
+
 ### <a id="toc-paths"></a>Trasee (Paths)
 
-AST o are în general multe Noduri, dar cum se relaționează ele unul la altul? Am putea avea un singur obiect mutabil gigant, care să-l manipulăm şi să avem acces deplin la el, sau putem simplifica acest lucru cu Trasee (**Paths**).
+AST o are în general multe Noduri, dar cum se relaționează ele unul la altul? Am putea avea un singur obiect mutabil gigant, pe care să-l manipulăm şi să avem acces deplin la el, sau putem simplifica acest lucru cu Trasee (**Paths**).
 
-Un Traseu (**Path**) este o reprezentare de obiect a legăturii între două noduri.
+Un Traseu (**Path**) este o reprezentare de obiect a legăturii dintre două noduri.
 
 De exemplu, dacă luăm următorul nod şi copilul său:
 
@@ -643,7 +677,7 @@ Un domeniu poate fi reprezentat în felul următor:
 }
 ```
 
-Crearea unui domeniu nou implică pasarea unui traseu şi a unui domeniu părinte. Apoi, în timpul procesului de traversare se colectează toate referințele ("legături") din acel domeniu.
+Crearea unui domeniu nou implică pasarea unui traseu şi a unui domeniu părinte. Apoi, în timpul procesului de traversare se colectează toate referințele ("legăturile") din acel domeniu.
 
 Odată ce am făcut acest lucru, există tot felul de metode ce le putem utiliza pe domenii. Însă le vom examina mai târziu.
 
@@ -815,7 +849,7 @@ traverse(ast, {
 
 ### <a id="toc-definitions"></a>Definiții
 
-Babel Types conține definiţii pentru fiecare tip de nod, și informaţii cu privire la ce proprietăţile aparţin cui, ce valori sunt valide, cum se construiește un nod, cum ar trebui traversat nodul şi pseudonime ale nodului.
+Babel Types conține definiţii pentru fiecare tip de nod, și informaţii cu privire la ce proprietăţile aparţin cui, ce valori sunt valide, cum se construiește un nod, cum ar trebui traversat nodul şi alias-uri ale nodului.
 
 O definiţie a unui tip de nod arată astfel:
 
@@ -1021,6 +1055,19 @@ export default function({ types: t }) {
 };
 ```
 
+Fiecare funcţie în vizitator primește 2 argumente: ` path ` şi ` state `
+
+```js
+export default function({ types: t }) {
+  return {
+    visitor: {
+      Identifier(path, state) {},
+      ASTNodeTypeHere(path, state) {}
+    }
+  };
+};
+```
+
 Să scriem un plug-in rapid pentru a scoate în evidenţă modul în care funcţionează. Acesta este codul nostru sursă:
 
 ```js
@@ -1123,8 +1170,11 @@ Super mișto! Primul nostru plugin pentru Babel.
 Pentru a accesa proprietatea unui nod AST în mod normal se accesează nodul şi apoi proprietatea. `path.node.property`
 
 ```js
+// the BinaryExpression AST node has properties: `left`, `right`, `operator`
 BinaryExpression(path) {
   path.node.left;
+  path.node.right;
+  path.node.operator;
 }
 ```
 
@@ -1175,6 +1225,28 @@ BinaryExpression(path) {
 }
 ```
 
+### <a id="toc-check-if-a-path-is-a-certain-type"></a>Verificare dacă un nod este de un anumit tip
+
+Un traseu are aceleași metode de verificare a tipului unui nod:
+
+```js
+BinaryExpression(path) {
+  if (path.get('left').isIdentifier({ name: "n" })) {
+    // ...
+  }
+}
+```
+
+este echivalent cu a face:
+
+```js
+BinaryExpression(path) {
+  if (t.isIdentifier(path.node.left, { name: "n" })) {
+    // ...
+  }
+}
+```
+
 ### <a id="toc-check-if-an-identifier-is-referenced"></a>Verificare dacă un identificator are referință
 
 ```js
@@ -1193,6 +1265,96 @@ Identifier(path) {
     // ...
   }
 }
+```
+
+### <a id="toc-find-a-specific-parent-path"></a>Aflarea căii unui anumit părinte
+
+Uneori va trebui să traversați arborele în sus, până când este îndeplinită o condiţie.
+
+Apelați `callback`-ul cu `NodePath`-ul tuturor părinţii. Când `calback`-ul returnează o valoare adevărată, vom returna acel `NodePath`.
+
+```js
+path.findParent((path) => path.isObjectExpression());
+```
+
+În cazul în care traseul curent trebuie și el inclus:
+
+```js
+path.find((path) => path.isObjectExpression());
+```
+
+Găseşte cea mai apropiată funcție sau program părinte:
+
+```js
+path.getFunctionParent();
+```
+
+Traversați arborele în sus, până când găsim un nod părinte în listă
+
+```js
+path.getStatementParent();
+```
+
+### <a id="toc-get-sibling-paths"></a>Aflarea traseelor nodurilor de același nivel
+
+În cazul în care o cale dintr-o listă, ca în corpul unui ` Function ` / ` Program `, acesta va avea "fraţi".
+
+  * Verificaţi dacă un traseu este parte dintr-o listă cu `path.inList`
+  * Puteţi obţine fraţii din jur cu `path.getSibling(index)`,
+  * Indicele traseului curent în containerul cu `path.key`,
+  * Containerului traseului (o serie cu toate traseele fraților) cu `path.container`
+  * Obţine numele cheii containerului listei cu `path.listKey`
+
+> Aceste API-uri sunt utilizate în plugin-ul [transform-merge-sibling-variables](https://github.com/babel/babili/blob/master/packages/babel-plugin-transform-merge-sibling-variables/src/index.js) utilizat în [babel-minify](https://github.com/babel/babili).
+
+```js
+var a = 1; // pathA, path.key = 0
+var b = 2; // pathB, path.key = 1
+var c = 3; // pathC, path.key = 2
+```
+
+```js
+export default function({ types: t }) {
+  return {
+    visitor: {
+      VariableDeclaration(path) {
+        // if the current path is pathA
+        path.inList // true
+        path.listKey // "body"
+        path.key // 0
+        path.getSibling(0) // pathA
+        path.getSibling(path.key + 1) // pathB
+        path.container // [pathA, pathB, pathC]
+      }
+    }
+  };
+}
+```
+
+### <a id="toc-stopping-traversal"></a>Oprirea traversării
+
+Dacă plugin-ul dumneavoastră trebuie să-și oprească execuția la un anumit moment, cea mai simplă abordare este să returnați devreme.
+
+```js
+BinaryExpression(path) {
+  if (path.node.operator !== '**') return;
+}
+```
+
+Dacă faceți o sub-traversare într-un traseu de nivel superior, puteţi folosi 2 metode oferite de API:
+
+`path.skip()` skips traversing the children of the current path. `path.stop()` stops traversal entirely.
+
+```js
+path.traverse({
+  Function(path) {
+    path.skip(); // if checking the children is irrelevant
+  },
+  ReferencedIdentifier(path, state) {
+    state.iife = true;
+    path.stop(); // if you want to save some state and then stop traversal, or deopt
+  }
+});
 ```
 
 ## <a id="toc-manipulation"></a>Manipulare
@@ -1276,6 +1438,27 @@ FunctionDeclaration(path) {
 
 > **Notă:** Acesta ar trebui să fie întotdeauna o declaraţie sau o serie de declaraţii. Aceasta utilizează aceleaşi euristici menţionate în [Înlocuirea unui nod cu mai multe noduri](#replacing-a-node-with-multiple-nodes).
 
+### <a id="toc-inserting-into-a-container"></a>Inserarea într-un container
+
+Dacă doriţi să inseraţi într-o proprietate de nod AST ca asta este un array la fel ca `body`. Este similar cu `insertBefore` / `insertAfter` fiind nevoie doar de a specifica `listKey`, care este de obicei `body`.
+
+```js
+ClassMethod(path) {
+  path.get('body').unshiftContainer('body', t.stringLiteral('before'));
+  path.get('body').pushContainer('body', t.stringLiteral('after'));
+}
+```
+
+```diff
+ class A {
+  constructor() {
++   "before"
+    var a = 'middle';
++   "after"
+  }
+ }
+```
+
 ### <a id="toc-removing-a-node"></a>Ștergerea unui nod
 
 ```js
@@ -1291,6 +1474,8 @@ FunctionDeclaration(path) {
 ```
 
 ### <a id="toc-replacing-a-parent"></a>Înlocuirea unui părinte
+
+Doar apelați `replaceWith` cu parentPath: `path.parentPath`
 
 ```js
 BinaryExpression(path) {
@@ -1323,7 +1508,7 @@ BinaryExpression(path) {
 
 ## <a id="toc-scope"></a>Domeniu (Scope)
 
-### <a id="toc-checking-if-a-local-variable-is-bound"></a>Verificare dacă o variabilă locală are legatură
+### <a id="toc-checking-if-a-local-variable-is-bound"></a>Verificare dacă o variabilă locală este legată
 
 ```js
 FunctionDeclaration(path) {
@@ -1333,7 +1518,7 @@ FunctionDeclaration(path) {
 }
 ```
 
-Aceasta va parcurge arborele şi va căuta acea legatură anume.
+Aceasta va parcurge arborele şi va căuta acea legătură anume.
 
 Puteţi verifica și dacă un domeniu are o legătură proprie (**own**):
 
@@ -1444,6 +1629,68 @@ export default function({ types: t }) {
 
 Aceste opţiuni sunt specifice plugin-ului şi nu puteţi accesa opţiuni din alte plugin-uri.
 
+## <a id="toc-pre-and-post-in-plugins"></a> Pre şi Post în plugin-uri
+
+Plugin-urile pot avea funcţii care sunt rulate înainte sau după. Ele pot fi folosite în scopuri de instalare sau curăţare/analiză.
+
+```js
+export default function({ types: t }) {
+  return {
+    pre(state) {
+      this.cache = new Map();
+    },
+    visitor: {
+      StringLiteral(path) {
+        this.cache.set(path.node.value, 1);
+      }
+    },
+    post(state) {
+      console.log(this.cache);
+    }
+  };
+}
+```
+
+## <a id="toc-enabling-syntax-in-plugins"></a> Activarea Syntax în plugin-uri
+
+Plugin-urile pot activa [plugin-uri Babilon](https://github.com/babel/babylon#plugins), astfel încât utilizatorii nu trebuie să le instaleze/activeze. Acest lucru previne erori de interpretare în lipsa moştenirii plugin-ului de sintaxă.
+
+```js
+export default function({ types: t }) {
+  return {
+    inherits: require("babel-plugin-syntax-jsx")
+  };
+}
+```
+
+## <a id="toc-throwing-a-syntax-error"></a> Aruncarea unei Erori de Sintaxă
+
+Dacă doriţi să aruncați o eroare cu babel-code-frame și un mesaj:
+
+```js
+export default function({ types: t }) {
+  return {
+    visitor: {
+      StringLiteral(path) {
+        throw path.buildCodeFrameError("Error message here");
+      }
+    }
+  };
+}
+```
+
+Eroarea arată așa:
+
+    file.js: Error message here
+       7 | 
+       8 | let tips = [
+    >  9 |   "Click on any AST node with a '+' to expand it",
+         |   ^
+      10 | 
+      11 |   "Hovering over a node highlights the \
+      12 |    corresponding part in the source code",
+    
+
 * * *
 
 # <a id="toc-building-nodes"></a>Construirea nodurilor
@@ -1487,6 +1734,19 @@ builder: ["object", "property", "computed"],
 ```
 
 > Reţineţi că, uneori, există mai multe proprietăţi care le puteți particulariza, decât cele conținute în seria constructorului (`builder`). Acest lucru se întâmplă pentru a evita prea multe argumente pe constructor. În aceste cazuri, trebuie să setaţi proprietăţile manual. Un exemplu este [`ClassMethod`](https://github.com/babel/babel/blob/bbd14f88c4eea88fa584dd877759dd6b900bf35e/packages/babel-types/src/definitions/es2015.js#L238-L276).
+
+```js
+// Example
+// because the builder doesn't contain `async` as a property
+var node = t.classMethod(
+  "constructor",
+  t.identifier("constructor"),
+  params,
+  body
+)
+// set it manually after creation
+node.async = true;
+```
 
 Puteţi vedea validarea pentru argumentele constructorului cu obiectul `fields`.
 
@@ -1559,7 +1819,19 @@ Puteţi găsi toate [definiţiile aici](https://github.com/babel/babel/tree/mast
 
 # <a id="toc-best-practices"></a>Practici preferate
 
-> Voi lucra la această secţiune în următoarele săptămâni.
+## <a id="toc-create-helper-builders-and-checkers"></a> Crearea de funcții ajutătoare Constructor şi Verificator
+
+Este destul de simplu pentru a extrage anumite verificări (dacă un nod are un anumit tip) în funcții separate de ajutor, precum şi extragerea de funcții ajutoare pentru tipuri specifice de nod.
+
+```js
+function isAssignment(node) {
+  return node && node.operator === opts.operator + "=";
+}
+
+function buildAssignment(left, right) {
+  return t.assignmentExpression("=", left, right);
+}
+```
 
 ## <a id="toc-avoid-traversing-the-ast-as-much-as-possible"></a>Evitați traversarea AST pe cât posibil
 
@@ -1743,4 +2015,4 @@ class Foo {
 }
 ```
 
-> ***Pentru actualizări, urmăriţi-l pe [@thejameskyle](https://twitter.com/thejameskyle) pe Twitter.***
+> ***Pentru actualizări, urmăriţi [@thejameskyle](https://twitter.com/thejameskyle) şi [@babeljs](https://twitter.com/babeljs) pe Twitter.***
