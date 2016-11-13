@@ -1296,7 +1296,7 @@ BinaryExpression(path) {
   path.get('left');
 }
 Program(path) {
-  path.get('body[0]');
+  path.get('body.0');
 }
 ```
 ### <a id="toc-check-if-a-node-is-a-certain-type"></a>Check if a node is a certain type
