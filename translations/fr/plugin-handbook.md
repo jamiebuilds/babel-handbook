@@ -99,7 +99,7 @@ function square(n) {
 
 > Découvrez [AST Explorer](http://astexplorer.net/) pour avoir une meilleure idée des nœuds AST. Voici [un lien](http://astexplorer.net/#/Z1exs6BWMq) avec l'exemple de code ci-dessus.
 
-This same program can be represented as a tree like this:
+Ce même programme peut être représenté sous forme d'une arborescence comme celle-ci :
 
 ```md
 - FunctionDeclaration:
@@ -1185,7 +1185,7 @@ BinaryExpression(path) {
   path.get('left');
 }
 Program(path) {
-  path.get('body[0]');
+  path.get('body.0');
 }
 ```
 
