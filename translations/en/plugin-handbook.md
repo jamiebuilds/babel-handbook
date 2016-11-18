@@ -70,6 +70,7 @@ a complete list.
     - [Do not traverse when manual lookup will do](#toc-do-not-traverse-when-manual-lookup-will-do)
   - [Optimizing nested visitors](#toc-optimizing-nested-visitors)
   - [Being aware of nested structures](#toc-being-aware-of-nested-structures)
+  - [Unit Testing](#toc-unit-testing)
 
 # <a id="toc-introduction"></a>Introduction
 
@@ -2179,6 +2180,101 @@ class Foo {
     }
   }
 }
+```
+
+## <a id="toc-unit-testing"></a>Unit Testing
+
+There are two primary ways to test babel plugins. The first is making assertions on the AST,
+and the other is snapshot testing. We'll use jest for this example because it supports
+snapshot testing out of the box. The example we're creating here is hosted in
+[this repo](https://github.com/brigand/babel-plugin-testing-example).
+
+First we need a babel plugin, we'll put this in src/index.js.
+
+```js
+
+module.exports = function testPlugin(babel) {
+  return {
+    visitor: {
+      Identifier(path) {
+        if (path.node.name === 'foo') {
+          path.node.name = 'bar';
+        }
+      }
+    }
+  };
+};
+```
+
+### Snapshot Tests
+
+Next, install our dependencies with `npm install --save-dev babel-core jest`, and
+then we can begin writing our first test: the snapshot. Snapshot tests allow us
+to visually inspect the output of our babel plugin. We give it an input, tell it to make
+a snapshot, and it saves it to a file. We check in the snapshots into git. This allows
+us to see when we've affected the output of any of our test cases. It also gives use a diff
+in pull requests. Of course you could do this with any test framework, but with jest updating
+the snapshots is as easy as `jest -u`.
+
+```js
+// src/__tests__/index-test.js
+const babel = require('babel-core');
+const plugin = require('../');
+
+var example = `
+var foo = 1;
+if (foo) console.log(foo);
+`;
+
+it('works', () => {
+  const {code} = babel.transform(example, {plugins: [plugin]});
+  expect(code).toMatchSnapshot();
+});
+```
+
+This gives us a snapshot file in `src/__tests__/__snapshots__/index-test.js.snap`.
+
+```js
+exports[`test works 1`] = `
+"
+var bar = 1;
+if (bar) console.log(bar);"
+`;
+```
+
+If we change 'bar' to 'baz' in our plugin and run jest again, we get this:
+
+```diff    Received value does not match stored snapshot 1.
+
+    - Snapshot
+    + Received
+
+    @@ -1,3 +1,3 @@
+     "
+    -var bar = 1;
+    -if (bar) console.log(bar);"
+    +var baz = 1;
+    +if (baz) console.log(baz);"
+```
+
+We see how our change to the plugin code affected the output of our plugin, and
+if the output looks good to us, we can run `jest -u` to update the snapshot.
+
+### AST Tests
+
+In addition to snapshot testing, we can manually inspect the AST. This is a simple but
+brittle example. For more involved situations you may wish to leverage
+babel-traverse. It allows you to specify an object with a `visitor` key, exactly like
+you use for the plugin itself.
+
+```js
+it('contains baz', () => {
+  const {ast} = babel.transform(example, {plugins: [plugin]});
+  const program = ast.program;
+  const declaration = program.body[0].declarations[0];
+  assert.equal(declaration.id.name, 'baz');
+  // or babelTraverse(program, {visitor: ...})
+});
 ```
 
 > ***For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) and [@babeljs](https://twitter.com/babeljs)
