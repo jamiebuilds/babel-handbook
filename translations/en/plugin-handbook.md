@@ -1564,8 +1564,8 @@ It is simialr to `insertBefore`/`insertAfter` other than you having to specify t
 
 ```js
 ClassMethod(path) {
-  path.get('body').unshiftContainer('body', t.stringLiteral('before'));
-  path.get('body').pushContainer('body', t.stringLiteral('after'));
+  path.unshiftContainer('body', t.stringLiteral('before'));
+  path.pushContainer('body', t.stringLiteral('after'));
 }
 ```
 
