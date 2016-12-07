@@ -788,7 +788,7 @@ We are also looking to grow a self-supporting community, for people who stick ar
 
 ## <a id="toc-babel-chat"></a>Babel чат
 
-Everyone loves [Slack](https://slack.com). If you're looking for immediate support from the community then come chat with us at [slack.babeljs.io](https://slack.babeljs.io).
+Все любят [Slack](https://slack.com). Если вы ищите оперативную помощь со стороны сообщества, тогда заходите к нам в чат [slack.babeljs.io](https://slack.babeljs.io)..
 
 <!--
 ## Babel Stack Overflow
@@ -818,4 +818,4 @@ First, try isolating your problem. It's extremely unlikely that every part of yo
 
 * * *
 
-> ***Оставайтесь в курсе последних обовлений - подписывайтесь в Твиттере на [@thejameskyle](https://twitter.com/thejameskyle).***
+> ***Что бы быть в курсе последних обновлений - подписывайтесь в Твиттере на [@thejameskyle](https://twitter.com/thejameskyle).***

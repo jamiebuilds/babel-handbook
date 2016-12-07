@@ -771,7 +771,7 @@ babylon.parse(code);
 // }
 ```
 
-We can also pass options to `parse()` like so:
+我们也可以通过`parse()`来传递参数
 
 ```js
 babylon.parse(code, {
@@ -1444,8 +1444,8 @@ If you want to insert into a AST node property like that is an array like `body`
 
 ```js
 ClassMethod(path) {
-  path.get('body').unshiftContainer('body', t.stringLiteral('before'));
-  path.get('body').pushContainer('body', t.stringLiteral('after'));
+  path.unshiftContainer('body', t.stringLiteral('before'));
+  path.pushContainer('body', t.stringLiteral('after'));
 }
 ```
 
@@ -1459,7 +1459,7 @@ ClassMethod(path) {
  }
 ```
 
-### <a id="toc-removing-a-node"></a>Removing a node
+### <a id="toc-removing-a-node"></a>删除一个节点
 
 ```js
 FunctionDeclaration(path) {
@@ -1473,7 +1473,7 @@ FunctionDeclaration(path) {
 - }
 ```
 
-### <a id="toc-replacing-a-parent"></a>Replacing a parent
+### <a id="toc-replacing-a-parent"></a>替换父节点
 
 Just call `replaceWith` with the parentPath: `path.parentPath`
 
@@ -1492,7 +1492,7 @@ BinaryExpression(path) {
   }
 ```
 
-### <a id="toc-removing-a-parent"></a>Removing a parent
+### <a id="toc-removing-a-parent"></a>删除父节点
 
 ```js
 BinaryExpression(path) {
@@ -1530,7 +1530,7 @@ FunctionDeclaration(path) {
 }
 ```
 
-### <a id="toc-generating-a-uid"></a>Generating a UID
+### <a id="toc-generating-a-uid"></a>创建一个 UID
 
 This will generate an identifier that doesn't collide with any locally defined variables.
 
@@ -1543,7 +1543,7 @@ FunctionDeclaration(path) {
 }
 ```
 
-### <a id="toc-pushing-a-variable-declaration-to-a-parent-scope"></a>Pushing a variable declaration to a parent scope
+### <a id="toc-pushing-a-variable-declaration-to-a-parent-scope"></a>提升变量声明至父级作用域
 
 Sometimes you may want to push a `VariableDeclaration` so you can assign to it.
 
