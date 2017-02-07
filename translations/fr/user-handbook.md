@@ -431,7 +431,7 @@ function addAll() {
 }
 ```
 
-Malgré cela, le code ne fonctionnera encore pas partout parce que `Array.from` n’existe pas dans tous les environnements JavaScript.
+Malgré cela, le code ne fonctionnera pas encore partout parce que `Array.from` n’existe pas dans tous les environnements JavaScript.
 
     Uncaught TypeError: Array.from is not a function
     
