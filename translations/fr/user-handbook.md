@@ -747,7 +747,7 @@ Les frameworks ont la possibilité non seulement d’utiliser Babel, mais de l�
 
 React a radicalement changé son API pour s’aligner avec les classes de ES2015 ([Lisez la mise à jour de l’API ici](https://babeljs.io/blog/2015/06/07/react-on-es6-plus)). Encore plus fort, React s'appuie sur Babel pour compiler sa syntaxe JSX, en abandonnant son propre outillage personnalisé en faveur de Babel. Vous pouvez commencer en mettant en place le package `babel-preset-react` en suivant les [instructions ci-dessus](#babel-preset-react).
 
-La communauté de React a pris Babel et l'utilise. Il y a maintenant un certain nombre de transformations [construites par la communauté](https://www.npmjs.com/search?q=babel-plugin+react).
+La communauté de React a adopté Babel et l'utilise. Il y a maintenant un certain nombre de transformations [construites par la communauté](https://www.npmjs.com/search?q=babel-plugin+react).
 
 Plus particulièrement, le plugin [`babel-plugin-react-transform`](https://github.com/gaearon/babel-plugin-react-transform), qui combiné avec un certain nombre de [transformations spécifique de React](https://github.com/gaearon/babel-plugin-react-transform#transforms), peut permettre des choses comme *le rechargement à chaud de module* et autres utilitaires de débogage.
 
