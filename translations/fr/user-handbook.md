@@ -101,7 +101,7 @@ Nous pouvons compiler notre premier fichier comme suit :
 $ babel my-file.js
 ```
 
-Cela videra le résultat compilé directement dans votre terminal. Pour l’écrire dans un fichier, nous devons le préciser avec `--out-file` ou `-o`.
+Cela affichera le résultat compilé directement dans votre terminal. Pour l’écrire dans un fichier, nous devons le préciser avec `--out-file` ou `-o`.
 
 ```sh
 $ babel example.js --out-file compiled.js
@@ -371,7 +371,7 @@ Puis ajoutez le preset à votre fichier `.babelrc` :
 
 JavaScript a aussi quelques propositions qui font leur chemin dans la norme par le biais du processus de la TC39 (Comité technique derrière le standard ECMAScript).
 
-Ce processus est découpé par un processus en 5 étapes (0-4). Plus les propositions séduisent et plus elles sont susceptibles d'être acceptées dans la norme, elles passent par les différentes étapes pour être finalement acceptées dans la norme à l'étape 4.
+Ce processus est découpé en 5 étapes (0-4). Plus les propositions séduisent et plus elles sont susceptibles d'être acceptées dans la norme, elles passent par les différentes étapes pour être finalement acceptées dans la norme à l'étape 4.
 
 Celles-ci sont groupées dans babel comme 4 preset différents :
 
