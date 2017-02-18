@@ -348,7 +348,7 @@ babel.transformFromAst(ast, code, options);
 ```
 
 For all of the above methods, `options` refers to
-http://babeljs.io/docs/usage/options/.
+https://babeljs.io/docs/usage/api/#options.
 
 ----
 
