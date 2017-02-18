@@ -276,7 +276,7 @@ $ npm install --save-dev babel-cli
 ```
 
 > **Note:** If you are wondering why we are installing this locally, please read
-> the [Running Babel CLI from within a project](#running-babel-cli--from-within-a-project)
+> the [Running Babel CLI from within a project](#toc-running-babel-cli-from-within-a-project)
 > section above.
 
 Then replace wherever you are running `node` with `babel-node`.
@@ -348,7 +348,7 @@ babel.transformFromAst(ast, code, options);
 ```
 
 For all of the above methods, `options` refers to
-http://babeljs.io/docs/usage/options/.
+https://babeljs.io/docs/usage/api/#options.
 
 ----
 
