@@ -230,7 +230,7 @@ Unutmayın ki bu üretim seviyesi kullanımı anlamına gelmez. Bu şekilde dağ
 $ npm install --save-dev babel-cli
 ```
 
-> **Not:** Eğer neden (global yerine) yerel olarak yüklediğimizi merak ediyorsanız lütfen yukarıdaki [Proje içinde Babel CLI çalıştırmak](#running-babel-cli--from-within-a-project) bölümü okuyunuz.
+> **Note:** If you are wondering why we are installing this locally, please read the [Running Babel CLI from within a project](#toc-running-babel-cli-from-within-a-project) section above.
 
 Daha sonra nerede `node` kullandığunız yerlerin yerine `babel-node` yazınız..
 
@@ -300,7 +300,7 @@ babel.transformFromAst(ast, code, options);
 // => { code, map, ast }
 ```
 
-Tüm bu method ve seçenekler için http://babeljs.io/docs/usage/options/. adresine bakınız. 
+For all of the above methods, `options` refers to https://babeljs.io/docs/usage/api/#options.
 
 * * *
 

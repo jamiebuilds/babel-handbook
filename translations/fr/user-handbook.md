@@ -230,7 +230,7 @@ Tout d’abord, assurez-vous que vous avez `babel-cli` qui est installé.
 $ npm install --save-dev babel-cli
 ```
 
-> **Remarque :** Si vous vous demandez pourquoi nous installons ceci en locale, veuillez lire ci-dessus la section [Exécution du CLI de Babel au sein d’un projet](#running-babel-cli--from-within-a-project).
+> **Note:** If you are wondering why we are installing this locally, please read the [Running Babel CLI from within a project](#toc-running-babel-cli-from-within-a-project) section above.
 
 Puis remplacer chaque fois que vous exécutez `node` avec `babel-node`.
 
@@ -297,7 +297,7 @@ babel.transformFromAst(ast, code, options);
 // => { code, map, ast }
 ```
 
-Pour toutes les méthodes ci-dessus, les `options` se réfèrent à http://babeljs.io/docs/usage/options/.
+For all of the above methods, `options` refers to https://babeljs.io/docs/usage/api/#options.
 
 * * *
 

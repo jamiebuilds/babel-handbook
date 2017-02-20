@@ -230,7 +230,7 @@ console.log("Hello world!");
 $ npm install --save-dev babel-cli
 ```
 
-> **Σημείωση:** Αν αναρωτιέστε γιατί εγκαθιστάμε αυτό σε τοπικό επίπεδο, παρακαλώ διαβάστε την παραπάνω ενότητα [Λειτουργία του Babel CLI μέσα από ένα project](#running-babel-cli--from-within-a-project).
+> **Note:** If you are wondering why we are installing this locally, please read the [Running Babel CLI from within a project](#toc-running-babel-cli-from-within-a-project) section above.
 
 Στη συνέχεια, αντικαταστήστε όπου εκτελείτε `node` με `babel-node`.
 
@@ -297,7 +297,7 @@ babel.transformFromAst(ast, code, options);
 // => { code, map, ast }
 ```
 
-Όλες οι παραπάνω μέθοδοι, `options` αναφέρονται στο http://babeljs.io/docs/usage/options/.
+For all of the above methods, `options` refers to https://babeljs.io/docs/usage/api/#options.
 
 * * *
 

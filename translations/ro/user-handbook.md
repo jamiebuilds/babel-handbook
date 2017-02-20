@@ -230,7 +230,7 @@ Reţineţi că acest lucru nu este recomandat pentru utilizarea în producţie. 
 $ npm install --save-dev babel-cli
 ```
 
-> **Notă:** Dacă vă întrebaţi de ce instalăm acest pachet la nivel local, vă rugăm să citiţi secţiunea [Execută Babel CLI (Interfața Liniei de Comandă) în cadrul unui proiect](#running-babel-cli--from-within-a-project) de mai sus.
+> **Notă:** Dacă vă întrebaţi de ce instalăm acest pachet la nivel local, vă rugăm să citiţi secţiunea [Execută Babel CLI (Interfața Liniei de Comandă) în cadrul unui proiect](#toc-running-babel-cli-from-within-a-project) de mai sus.
 
 Apoi ori de câte ori executaţi `node` înlocuiți cu `babel-node`.
 
@@ -297,7 +297,7 @@ babel.transformFromAst(ast, code, options);
 // => { code, map, ast }
 ```
 
-Pentru toate metodele de mai sus, `options` se referă la http://babeljs.io/docs/usage/options/.
+Pentru toate metodele de mai sus, `options` se referă la https://babeljs.io/docs/usage/api/#options.
 
 * * *
 

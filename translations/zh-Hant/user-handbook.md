@@ -230,7 +230,7 @@ console.log("Hello world!");
 $ npm install --save-dev babel-cli
 ```
 
-> **注意：**如果你對於我們為何採用本地安裝的方式感到疑惑，請參閱前面的 [在專案下執行 Babel 命令列介面](#running-babel-cli--from-within-a-project)
+> **Note:** If you are wondering why we are installing this locally, please read the [Running Babel CLI from within a project](#toc-running-babel-cli-from-within-a-project) section above.
 
 然後在任何您執行 `node` 的地方，以 `babel-node` 取代之。.
 
@@ -297,7 +297,7 @@ babel.transformFromAst(ast, code, options);
 // => { code, map, ast }
 ```
 
-在上面所提到的 Babel 方法中，`options` 在 http://babeljs.io/docs/usage/options/ 有詳細說明。
+For all of the above methods, `options` refers to https://babeljs.io/docs/usage/api/#options.
 
 * * *
 

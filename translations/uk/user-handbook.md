@@ -230,7 +230,7 @@ console.log("Hello world!");
 $ npm install --save-dev babel-cli
 ```
 
-> **Примітка:** Якщо вас цікавить, чому ми установлюємо його локально, будь ласка, прочитайте попередній розділ [Запуск Babel CLI в рамках проекту](#running-babel-cli--from-within-a-project).
+> **Note:** If you are wondering why we are installing this locally, please read the [Running Babel CLI from within a project](#toc-running-babel-cli-from-within-a-project) section above.
 
 Потім потрібно всюди замінити виклик `node` на `babel-node`.
 
@@ -297,7 +297,7 @@ babel.transformFromAst(ast, code, options);
 // => { code, map, ast }
 ```
 
-Для всіх перерахованих вище методів, довідник параметрів (`options`) знаходиться за адресою http://babeljs.io/docs/usage/options/.
+For all of the above methods, `options` refers to https://babeljs.io/docs/usage/api/#options.
 
 * * *
 

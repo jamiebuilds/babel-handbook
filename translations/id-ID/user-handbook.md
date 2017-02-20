@@ -230,7 +230,7 @@ Pertama, pastikan bahwa Anda memiliki `babel-cli` diinstal.
 $ npm install --save-dev babel-cli
 ```
 
-> **Catatan:** Jika Anda bertanya-tanya mengapa kita menginstal ini secara lokal, silakan baca bagian [CLI Babel berjalan dari dalam sebuah proyek](#running-babel-cli--from-within-a-project) di atas.
+> **Note:** If you are wondering why we are installing this locally, please read the [Running Babel CLI from within a project](#toc-running-babel-cli-from-within-a-project) section above.
 
 Lalu timpa dimanapun Anda menjalankan `node` dengan `babel node`.
 
@@ -297,7 +297,7 @@ babel.transformFromAst(ast, code, options);
 // => { code, map, ast }
 ```
 
-Untuk semua metode di atas, `pilihan` mengacu pada http://babeljs.io/docs/usage/options/.
+For all of the above methods, `options` refers to https://babeljs.io/docs/usage/api/#options.
 
 * * *
 

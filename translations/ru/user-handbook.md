@@ -230,7 +230,7 @@ console.log("Hello world!");
 $ npm install --save-dev babel-cli
 ```
 
-> **Примечание:** Если вам интересно, почему используем локальную установку, пожалуйста, прочитайте раздел [Использование Babel CLI в рамках проекта](#running-babel-cli--from-within-a-project).
+> **Note:** If you are wondering why we are installing this locally, please read the [Running Babel CLI from within a project](#toc-running-babel-cli-from-within-a-project) section above.
 
 Затем, переключитесь на работу с `babel-node` везде, где вы работаете с `node`.
 
@@ -297,7 +297,7 @@ babel.transformFromAst(ast, code, options);
 // => { code, map, ast }
 ```
 
-Для всех перечисленных методов, параметры `options` можно найти тут: http://babeljs.io/docs/usage/options/.
+For all of the above methods, `options` refers to https://babeljs.io/docs/usage/api/#options.
 
 * * *
 

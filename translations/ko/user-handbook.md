@@ -230,7 +230,7 @@ console.log("Hello world!");
 $ npm install --save-dev babel-cli
 ```
 
-> **Note:** 여기서 왜 로컬에 설치하는지 궁금하다면 앞의 [프로젝트 내에서 Babel CLI 실행하기](#running-babel-cli--from-within-a-project) 부분을 읽어보세요.
+> **Note:** If you are wondering why we are installing this locally, please read the [Running Babel CLI from within a project](#toc-running-babel-cli-from-within-a-project) section above.
 
 그 다음 `node`를 사용하는 대신 `babel-node`를 사용하세요..
 
@@ -297,7 +297,7 @@ babel.transformFromAst(ast, code, options);
 // => { code, map, ast }
 ```
 
-위의 모든 메서드에서 사용할 수 있는, `options`에 대한 내용은 http://babeljs.io/docs/usage/options/에서 찾아볼 수 있습니다.
+For all of the above methods, `options` refers to https://babeljs.io/docs/usage/api/#options.
 
 * * *
 
