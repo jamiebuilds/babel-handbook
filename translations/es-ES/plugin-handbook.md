@@ -16,7 +16,7 @@ Este manual está disponible en otros idiomas, mira el archivo [README](/README.
           * [Análisis léxico](#toc-lexical-analysis)
           * [Análisis sintáctico](#toc-syntactic-analysis)
       * [Transform](#toc-transform)
-      * [Síntesis](#toc-generate)
+      * [Generate](#toc-generate)
       * [Traversal](#toc-traversal)
       * [Visitors](#toc-visitors)
       * [Paths](#toc-paths) 
@@ -99,7 +99,7 @@ function square(n) {
 
 > Si deseas tener una mejor idea de los nodos AST, visita [AST Explorer](http://astexplorer.net/). [Aquí](http://astexplorer.net/#/Z1exs6BWMq) hay un enlace que contiene el código del ejemplo anterior.
 
-This same program can be represented as a tree like this:
+El mismo programa puede ser representado en un árbol como este:
 
 ```md
 - FunctionDeclaration:
@@ -351,7 +351,7 @@ const MyVisitor = {
   }
 };
 
-// You can also create a visitor and add methods on it later
+// También puedes crear un visitador y el método agregar después
 let visitor = {};
 visitor.MemberExpression = function() {};
 visitor.FunctionDeclaration = function() {}
@@ -391,30 +391,30 @@ Imagina que nosotros tememos una estructura así:
         - Identifier (right)
 ```
 
-As we traverse down each branch of the tree we eventually hit dead ends where we need to traverse back up the tree to get to the next node. Going down the tree we **enter** each node, then going back up we **exit** each node.
+Según atravesamos hacia abajo cada rama del árbol eventualmente llega a un punto final donde nosotros atravesamos de retroceso el árbol para llegar al siguiente nodo. Yendo hacia abajo del árbol nosotros **entramos ** en cada nodo, entonces yendo de retroceso nosotros **salimos** de cada nodo.
 
 Vamos a *caminar* a traves el proceso de lo que parece el árbol de arriba.
 
   * Entra `FunctionDeclaration` 
       * Entra `Identifier (id)`
-      * Hit dead end
-      * Exit `Identifier (id)`
-      * Enter `Identifier (params[0])`
-      * Hit dead end
-      * Exit `Identifier (params[0])`
-      * Enter `BlockStatement (body)`
+      * Punto final
+      * Sale ` Identifier (id)`
+      * Entra ` Identifier (params[0])`
+      * Punto final
+      * Sale ` Identifier (params[0])`
+      * Entra `BlockStatement (body)`
       * Entra `ReturnStatement (body)` 
-          * Enter `BinaryExpression (argument)`
+          * Entra `BinaryExpression (argument)`
           * Entra `Identifier (left)` 
-              * Hit dead end
-          * Exit `Identifier (left)`
+              * Punto final
+          * Sale `Identifier (left)`
           * Entra `Identifier (right)` 
-              * Hit dead end
-          * Exit `Identifier (right)`
-          * Exit `BinaryExpression (argument)`
-      * Exit `ReturnStatement (body)`
-      * Exit `BlockStatement (body)`
-  * Exit `FunctionDeclaration`
+              * Punto final
+          * Sale `Identifier (right)`
+          * Sale `BinaryExpression (argument)`
+      * Sale `ReturnStatement (body)`
+      * Sale `BlockStatement (body)`
+  * Sale `FunctionDeclaration`
 
 Así que cuando se crea un visitador tu tienes dos oportunidades de visitar un nodo.
 
@@ -431,9 +431,9 @@ const MyVisitor = {
 };
 ```
 
-If necessary, you can also apply the same function for multiple visitor nodes by separating them with a `|` in the method name as a string like `Identifier|MemberExpression`.
+Si es necesario, tu puedes también aplicar la misma función por múltiples nodos de visitante separándolos con un `|` en el método como cadena de la siguiente manera `Identifier|MemberExpression`.
 
-Example usage in the [flow-comments](https://github.com/babel/babel/blob/2b6ff53459d97218b0cf16f8a51c14a165db1fd2/packages/babel-plugin-transform-flow-comments/src/index.js#L47) plugin
+Ejemplo en el uso del plugin [flow-comments](https://github.com/babel/babel/blob/2b6ff53459d97218b0cf16f8a51c14a165db1fd2/packages/babel-plugin-transform-flow-comments/src/index.js#L47)
 
 ```js
 const MyVisitor = {
@@ -441,11 +441,11 @@ const MyVisitor = {
 };
 ```
 
-You can also use aliases as visitor nodes (as defined in [babel-types](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions)).
+También puedes usar alias como nodos visitadores (como se define en [babel-types](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions)).
 
-For example,
+Por ejemplo,
 
-`Function` is an alias for `FunctionDeclaration`, `FunctionExpression`, `ArrowFunctionExpression`
+`Function` es un alias para `FunctionDeclaration`, `FunctionExpression`, `ArrowFunctionExpression`
 
 ```js
 const MyVisitor = {
@@ -455,11 +455,11 @@ const MyVisitor = {
 
 ### <a id="toc-paths"></a>Paths
 
-An AST generally has many Nodes, but how do Nodes relate to one another? We could have one giant mutable object that you manipulate and have full access to, or we can simplify this with **Paths**.
+En AST generalmente tiene muchos Nodos, pero, Cómo los nodos se relacionan unos con otros? Podríamos tener un enorme objeto mutable que puedas manipular y al que tener acceso total, o simplemente esto con **Paths**.
 
-A **Path** is an object representation of the link between two nodes.
+Un **Path** es una representación de un objeto entre el enlace de dos nodos.
 
-For example if we take the following node and its child:
+Por ejemplo, si tomamos el siguiente nodo y su hijo:
 
 ```js
 {
@@ -472,7 +472,7 @@ For example if we take the following node and its child:
 }
 ```
 
-And represent the child `Identifier` as a path, it looks something like this:
+Y representamos el hijo `Identifier` como un path, se mira como algo asi:
 
 ```js
 {
@@ -488,7 +488,7 @@ And represent the child `Identifier` as a path, it looks something like this:
 }
 ```
 
-It also has additional metadata about the path:
+También tiene metadatos adicionales sobre el path:
 
 ```js
 {
@@ -516,13 +516,13 @@ It also has additional metadata about the path:
 }
 ```
 
-As well as tons and tons of methods related to adding, updating, moving, and removing nodes, but we'll get into those later.
+También toneladas y toneladas de métodos relacionados con agregación, actualización, movimiento y eliminación de nodos, pero, entraremos en esos mas adelante.
 
-In a sense, paths are a **reactive** representation of a node's position in the tree and all sorts of information about the node. Whenever you call a method that modifies the tree, this information is updated. Babel manages all of this for you to make working with nodes easy and as stateless as possible.
+En un sentido, paths son una representación **reactiva** de la posición de un nodo en el árbol y toda clase de información sobre el nodo. Siempre que tu llames un método que modifica el árbol, esta información es actualizada. Babel maneja todo esto por ti para poder trabajar con los nodos lo mas descentralizado posible.
 
-#### <a id="toc-paths-in-visitors"></a>Paths in Visitors
+#### <a id="toc-paths-in-visitors"></a>Paths en Visitadores
 
-When you have a visitor that has a `Identifier()` method, you're actually visiting the path instead of the node. This way you are mostly working with the reactive representation of a node instead of the node itself.
+Cuando tu tienes un visitador que contiene el `Identifier()`, estas actualmente visitando el camino en vez del nodo. De esta manera tu estas mayormente trabajando con la representación reactiva del nodo en vez del nodo en si mismo.
 
 ```js
 const MyVisitor = {
@@ -544,9 +544,9 @@ Visiting: c
 
 ### <a id="toc-state"></a>Estado
 
-State is the enemy of AST transformation. State will bite you over and over again and your assumptions about state will almost always be proven wrong by some syntax that you didn't consider.
+Estado es el enemigo de la transformación AST. El estado te morderá una y otra vez y tus suposiciones sobre el estado casi siempre serán probadas incorrectas por alguna sintaxis que no consideraste.
 
-Take the following code:
+Toma el siguiente código:
 
 ```js
 function square(n) {
@@ -554,7 +554,7 @@ function square(n) {
 }
 ```
 
-Let's write a quick hacky visitor that will rename `n` to `x`.
+Vamos a escribir rapidamente un visitador que renombre `n` a `x`.
 
 ```js
 let paramName;
@@ -574,7 +574,7 @@ const MyVisitor = {
 };
 ```
 
-This might work for the above code, but we can easily break that by doing this:
+Esto podría funcionar con el código de arriba, pero nosotros podemos fácilmente romperlo haciendo esto:
 
 ```js
 function square(n) {
@@ -583,7 +583,7 @@ function square(n) {
 n;
 ```
 
-The better way to deal with this is recursion. So let's make like a Christopher Nolan film and put a visitor inside of a visitor.
+La mejor manera de lidiar con esto es la recursion. Así que vamos a hacer una película de Christopher Nolan y pongamos un visitador dentro de un visitador.
 
 ```js
 const updateParamNameVisitor = {
@@ -605,11 +605,11 @@ const MyVisitor = {
 };
 ```
 
-Of course, this is a contrived example but it demonstrates how to eliminate global state from your visitors.
+Por su puesto, este es un ejemplo inventado, pero que demuestra como eliminar el estado global desde uno de tus visitadores.
 
-### <a id="toc-scopes"></a>Ámbito
+### <a id="toc-scopes"></a>Scope
 
-Next let's introduce the concept of a [**scope**](https://en.wikipedia.org/wiki/Scope_(computer_science)). JavaScript has [lexical scoping](https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scoping_vs._dynamic_scoping), which is a tree structure where blocks create new scope.
+Ahora vamos a presentar el concepto de [**scope**](https://en.wikipedia.org/wiki/Scope_(computer_science)). Javascript tiene un [lexical scope](https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scoping_vs._dynamic_scoping), cual es una estructura de árbol de bloques donde se crean nuevos scopes.
 
 ```js
 // global scope
