@@ -36,7 +36,6 @@
       * [框架](#toc-frameworks)
       * [React](#toc-react)
       * [文本编辑器和 IDEs（集成开发环境）](#toc-text-editors-and-ides)
-  * [调试 Babel](#toc-debugging-babel)
   * [Babel 支持](#toc-babel-support) 
       * [Babel 论坛](#toc-babel-forum)
       * [Babel 聊天](#toc-babel-chat)

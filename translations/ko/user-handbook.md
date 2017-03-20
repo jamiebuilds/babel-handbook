@@ -36,12 +36,11 @@
       * [프레임워크](#toc-frameworks)
       * [React](#toc-react)
       * [텍스트 편집기와 IDE](#toc-text-editors-and-ides)
-  * [Babel 디버깅하기](#toc-debugging-babel)
   * [Babel 지원](#toc-babel-support) 
       * [Babel 포럼](#toc-babel-forum)
       * [Babel 채팅](#toc-babel-chat)
       * [Babel 이슈](#toc-babel-issues)
-      * [멋진 Babel 버그 리포트 생성](#toc-creating-an-awesome-babel-bug-report)
+      * [멋진 Babel 버그 보고 생성](#toc-creating-an-awesome-babel-bug-report)
 
 # <a id="toc-introduction"></a>소개
 

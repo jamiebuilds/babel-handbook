@@ -36,7 +36,6 @@
       * [フレームワーク](#toc-frameworks)
       * [React](#toc-react)
       * [テキストエディタ・IDE](#toc-text-editors-and-ides)
-  * [Debugging Babel](#toc-debugging-babel)
   * [Babel のサポート](#toc-babel-support) 
       * [Babel Forum](#toc-babel-forum)
       * [Babel Chat](#toc-babel-chat)

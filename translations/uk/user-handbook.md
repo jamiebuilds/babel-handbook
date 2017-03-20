@@ -36,7 +36,6 @@
       * [Фреймворки](#toc-frameworks)
       * [React](#toc-react)
       * [Текстові редактори та інтегровані середовища розробки (IDE)](#toc-text-editors-and-ides)
-  * [Відладка Babel](#toc-debugging-babel)
   * [Підтримка Babel](#toc-babel-support) 
       * [Форум Babel](#toc-babel-forum)
       * [Чат Babel](#toc-babel-chat)

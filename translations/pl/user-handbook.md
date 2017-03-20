@@ -36,7 +36,6 @@ Niniejszy podręcznik jest dostępny w innych językach. Zobacz [plik README](/R
       * [Frameworki](#toc-frameworks)
       * [React](#toc-react)
       * [Edytory tekstu i IDE](#toc-text-editors-and-ides)
-  * [Debugowanie Babel](#toc-debugging-babel)
   * [Wsparcie Babel](#toc-babel-support) 
       * [Forum Babel](#toc-babel-forum)
       * [Czat Babel](#toc-babel-chat)

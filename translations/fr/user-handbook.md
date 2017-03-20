@@ -36,7 +36,6 @@ Ce manuel est disponible dans d'autres langues, voir le [README](/README.md) pou
       * [Frameworks](#toc-frameworks)
       * [React](#toc-react)
       * [IDEs et les éditeurs de texte](#toc-text-editors-and-ides)
-  * [Débogage de Babel](#toc-debugging-babel)
   * [Support Babel](#toc-babel-support) 
       * [Forum Babel](#toc-babel-forum)
       * [Tchat Babel](#toc-babel-chat)

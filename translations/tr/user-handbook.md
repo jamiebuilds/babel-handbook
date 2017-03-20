@@ -36,7 +36,6 @@ Bu kitabın diğer dillere tercümeside mevcuttur.Tüm liste için [README](/REA
       * [Frameworkler](#toc-frameworks)
       * [React](#toc-react)
       * [Metin düzenleyicileri ve IDE'ler](#toc-text-editors-and-ides)
-  * [Babel Hata Ayıklama](#toc-debugging-babel)
   * [Babel destek](#toc-babel-support) 
       * [Babel Forum](#toc-babel-forum)
       * [Babel sohbet](#toc-babel-chat)

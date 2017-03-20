@@ -1298,7 +1298,7 @@ path.getStatementParent();
 
 ### <a id="toc-get-sibling-paths"></a>Get Sibling Paths
 
-If a path in a a list like in the body of a `Function`/`Program`, it will have "siblings".
+If a path is in a list like in the body of a `Function`/`Program`, it will have "siblings".
 
   * Check if a path is part of a list with `path.inList`
   * You can get the surrounding siblings with `path.getSibling(index)`,
@@ -1306,7 +1306,7 @@ If a path in a a list like in the body of a `Function`/`Program`, it will have "
   * The path's container (an array of all sibling paths) with `path.container`
   * Get the name of the key of the list container with `path.listKey`
 
-> These APis are used in the [transform-merge-sibling-variables](https://github.com/babel/babili/blob/master/packages/babel-plugin-transform-merge-sibling-variables/src/index.js) plugin used in [babel-minify](https://github.com/babel/babili).
+> These APIs are used in the [transform-merge-sibling-variables](https://github.com/babel/babili/blob/master/packages/babel-plugin-transform-merge-sibling-variables/src/index.js) plugin used in [babel-minify](https://github.com/babel/babili).
 
 ```js
 var a = 1; // pathA, path.key = 0
@@ -1683,11 +1683,11 @@ export default function({ types: t }) {
 The error looks like:
 
     file.js: Error message here
-       7 | 
+       7 |
        8 | let tips = [
     >  9 |   "Click on any AST node with a '+' to expand it",
          |   ^
-      10 | 
+      10 |
       11 |   "Hovering over a node highlights the \
       12 |    corresponding part in the source code",
     

@@ -36,7 +36,6 @@ Buku pedoman ini tersedia dalam bahasa lain, lihat [README](/README.md) untuk da
       * [Kerangka kerja](#toc-frameworks)
       * [React](#toc-react)
       * [Teks editor dan IDE](#toc-text-editors-and-ides)
-  * [Debugging Babel](#toc-debugging-babel)
   * [Dukungan Babel](#toc-babel-support) 
       * [Forum Babel](#toc-babel-forum)
       * [Chat Babel](#toc-babel-chat)

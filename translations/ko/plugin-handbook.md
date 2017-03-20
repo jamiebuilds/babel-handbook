@@ -99,7 +99,7 @@ function square(n) {
 
 > AST 노드(AST nodes) 들에 더 알고 싶으면 [AST 탐색기](http://astexplorer.net/)를 확인해보세요. [이 링크](http://astexplorer.net/#/Z1exs6BWMq) 는 위 코드를 붙여넣기한 예제입니다.
 
-This same program can be represented as a tree like this:
+위의 코드는 이런 트리로 나타낼 수 있습니다:
 
 ```md
 - FunctionDeclaration:
@@ -274,7 +274,7 @@ n * n;
 
 #### <a id="toc-syntactic-analysis"></a>구문 분석(Syntactic Analysis)
 
-구문 분석 과정에서는 토큰들의 스트림을 취해 AST 표현으로 바꿀 것 입니다. 이 과정에서는 토큰들 안에 있는 정보를 사용해서, 토큰들을 코드의 구조를 나타내는 AST로 재 구성하는데 이것은 어떤 의미에서 더 다루기가 더 쉽습니다.
+구문 분석 과정에서는 토큰들의 스트림을 취해 AST 표현으로 바꿀 것 입니다. 이 과정에서는 토큰들 안에 있는 정보를 사용해서, 토큰들을 코드의 구조를 나타내는 AST로 재 구성하여 다루기 쉽게 만듭니다.
 
 ### <a id="toc-transform"></a>변환(Transform)
 
@@ -290,7 +290,7 @@ n * n;
 
 AST 변환을 하고 싶을때, 재귀적으로 [트리를 탐색](https://en.wikipedia.org/wiki/Tree_traversal)해야합니다.
 
-`FunctionDeclaration` type을 가지고 있다고 해봅시다. 몇개의 속성들을 가지고 있습니다: `id`, `params`, and `body`. 이 각각은 중첩된 노드들을 가지고 있습니다.
+`FunctionDeclaration` type이 있다고 해봅시다. 이것은 몇 개의 속성들을 가지고 있습니다: `id`, `params`, 그리고 `body`. 이 각각은 중첩된 노드들을 가지고 있습니다.
 
 ```js
 {
@@ -328,13 +328,13 @@ AST 변환을 하고 싶을때, 재귀적으로 [트리를 탐색](https://en.wi
 
 다음은 `Identifier` 인 `id` 입니다. `Identifier`는 자식 노드도 갖고 있지 않으므로 넘어갑시다.
 
-다음은 `params` 인데, 이건 노드들의 배열이므로 각각을 방문시다. 여기서는 `Identifier`인 단일 노드뿐이므로 넘어갑시다.
+다음은 `params` 인데, 이것은 노드들의 배열이므로 각각을 방문합니다. 여기에서는 `Identifier`인 단일 노드뿐이므로 넘어갑시다.
 
-그러면 이제 노드들의 배열인 `body` 속성을 가지고 있는 `BlockStatement` 인 `body`에 도달하는데 이 배열을 하나씩 가봅시다.
+그러면 이제 `body`인데 노드들의 배열인 `body`를 속성으로 가지는 `BlockStatement`이므로 각각의 노드를 방문합니다.
 
-여기엔 오직 `argument` 속성을 가지고 있는 `ReturnStatement` 하나가 있는데, `argument` 속성으로 가서 `BinaryExpression` 을 찾아봅시다..
+여기엔 오직 `argument` 속성을 가지고 있는 `ReturnStatement` 하나가 있는데, `argument` 속성으로 가면 `BinaryExpression` 이 있습니다.
 
-`BinaryExpression`은 `operator`, `left`, `right` 를 가지고 있습니다. Operator 는 노드가 아닌 단순 값이라 여긴 방문하지 않고, 대신 `left` 와 `right`를 방문 해봅시다..
+`BinaryExpression`은 `operator`, `left`, `right` 를 가지고 있습니다. Operator 는 노드가 아닌 단순 값이라 여긴 방문하지 않고, 대신 `left` 와 `right`를 방문 해봅시다.
 
 이런 탐색(traversal) 과정은 바벨 변환(transform) 과정 내내 일어납니다.
 
@@ -376,7 +376,7 @@ Called!
 Called!
 ```
 
-이들은 모두 노드에 **입장(enter)**할때 호출됩니다. 그러나 **퇴장(exit)**할때 방문자 메소드가 호출되게 하는 것도 가능합니다..
+이들은 모두 노드에 **입장(enter)**할때 호출됩니다. 그러나 **퇴장(exit)**할때 방문자 메소드가 호출되게 하는 것도 가능합니다.
 
 이런 구조의 트리를 가지고 있다고 상상해봅시다.
 
@@ -431,9 +431,9 @@ const MyVisitor = {
 };
 ```
 
-If necessary, you can also apply the same function for multiple visitor nodes by separating them with a `|` in the method name as a string like `Identifier|MemberExpression`.
+만일 필요하다면, 메소드 이름을 문자열로 `Identifier|MemberExpression`와 같이 `|`로 나눔으로써 같은 함수를 여러 방문자 노드에 적용할 수 있습니다.
 
-Example usage in the [flow-comments](https://github.com/babel/babel/blob/2b6ff53459d97218b0cf16f8a51c14a165db1fd2/packages/babel-plugin-transform-flow-comments/src/index.js#L47) plugin
+예시 [flow-comments](https://github.com/babel/babel/blob/2b6ff53459d97218b0cf16f8a51c14a165db1fd2/packages/babel-plugin-transform-flow-comments/src/index.js#L47) 플러그인
 
 ```js
 const MyVisitor = {
@@ -441,11 +441,11 @@ const MyVisitor = {
 };
 ```
 
-You can also use aliases as visitor nodes (as defined in [babel-types](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions)).
+또한 별칭(aliases)을 사용할 수도 있습니다.([babel-types](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions)에 정의된 대로).
 
-For example,
+예를 들어,
 
-`Function` is an alias for `FunctionDeclaration`, `FunctionExpression`, `ArrowFunctionExpression`
+`Function`은 `FunctionDeclaration`, `FunctionExpression`, `ArrowFunctionExpression`의 별칭입니다.
 
 ```js
 const MyVisitor = {
@@ -455,11 +455,11 @@ const MyVisitor = {
 
 ### <a id="toc-paths"></a>경로(Paths)
 
-An AST generally has many Nodes, but how do Nodes relate to one another? We could have one giant mutable object that you manipulate and have full access to, or we can simplify this with **Paths**.
+추상구문트리(AST) 는 일반적으로 많은 노드들을 가지고 있는데, 어떻게 노드들이 다른 노드와 연결될 수 있을까요? 어디서든 조작하고 접근할 수 있는 하나의 거대한 변경가능한(mutable) 객체를 가질 수 있지만, **Paths** 를 사용해 단순화시킬 수도 있습니다.
 
-A **Path** is an object representation of the link between two nodes.
+**Path** 는 두 노드 사이의 연결을 표현하는 객체입니다.
 
-For example if we take the following node and its child:
+예를들어 아래와 같은 노드와 그 자식 노드가 있다고 해봅시다:
 
 ```js
 {
@@ -472,7 +472,7 @@ For example if we take the following node and its child:
 }
 ```
 
-And represent the child `Identifier` as a path, it looks something like this:
+그리고 자식 노드인 `Identifier`를 경로(path)로 표현하면, 다음과 같습니다:
 
 ```js
 {
@@ -488,7 +488,7 @@ And represent the child `Identifier` as a path, it looks something like this:
 }
 ```
 
-It also has additional metadata about the path:
+이것은 또한 경로에 대한 추가적인 메타데이터(metadata)를 가집니다:
 
 ```js
 {
@@ -516,13 +516,13 @@ It also has additional metadata about the path:
 }
 ```
 
-As well as tons and tons of methods related to adding, updating, moving, and removing nodes, but we'll get into those later.
+뿐만아니라 노드들의 추가, 업데이트, 이동, 삭제와 관련된 굉장히 많은 메소드들도 있습니다만, 나중에 알아보도록 하겠습니다.
 
-In a sense, paths are a **reactive** representation of a node's position in the tree and all sorts of information about the node. Whenever you call a method that modifies the tree, this information is updated. Babel manages all of this for you to make working with nodes easy and as stateless as possible.
+한마디로 Path들은 트리에서 노드의 위치에 대한 **리액티브(reactive)**한 표현이고 노드에 관련된 모든 종류의 정보입니다. 언제든지 트리를 변경하는 메소드를 호출할때마다, 이 정보는 업데이트됩니다. Babel은 당신이 노드들을 쉽고, 최대한 stateless하게 다루도록 이 모든 것을 관리합니다.
 
 #### <a id="toc-paths-in-visitors"></a>방문자 안의 Paths (Paths in Visitors)
 
-When you have a visitor that has a `Identifier()` method, you're actually visiting the path instead of the node. This way you are mostly working with the reactive representation of a node instead of the node itself.
+`Identifier()` 메소드를 가지는 방문자가 있을때, 실제로 방문하는 것은 노드가 아닌 path 입니다. 따라서 노드를 직접 다루기 보다는 주로 그 노드의 리액티브(reactive)한 표현을 사용하여 작업할 수 있습니다.
 
 ```js
 const MyVisitor = {
@@ -544,9 +544,9 @@ Visiting: c
 
 ### <a id="toc-state"></a>상태(State)
 
-State is the enemy of AST transformation. State will bite you over and over again and your assumptions about state will almost always be proven wrong by some syntax that you didn't consider.
+상태(State) 는 추상 구문 트리(AST) 변환의 적입니다. 상태는 계속해서 당신을 괴롭힐 것이며 상태에 대한 추정은 당신이 고려하지 못했던 구문(syntax)에 의해 거의 항상 틀릴 것입니다.
 
-Take the following code:
+아래의 코드를 봅시다:
 
 ```js
 function square(n) {
@@ -554,7 +554,7 @@ function square(n) {
 }
 ```
 
-Let's write a quick hacky visitor that will rename `n` to `x`.
+`n`의 이름을 `x`로 바꾸는 빠르고 간단한 방문자를 작성해봅시다.
 
 ```js
 let paramName;
@@ -574,7 +574,7 @@ const MyVisitor = {
 };
 ```
 
-This might work for the above code, but we can easily break that by doing this:
+위 코드는 아마 잘 동작 할테지만, 아래와 같은 경우 제대로 동작하지 않습니다:
 
 ```js
 function square(n) {
@@ -583,7 +583,7 @@ function square(n) {
 n;
 ```
 
-The better way to deal with this is recursion. So let's make like a Christopher Nolan film and put a visitor inside of a visitor.
+더 좋은 방법은 재귀(recursion) 를 쓰는 것입니다. Christopher Nolan의 영화처럼 방문자안에 방문자를 넣어봅시다.
 
 ```js
 const updateParamNameVisitor = {
@@ -605,11 +605,11 @@ const MyVisitor = {
 };
 ```
 
-Of course, this is a contrived example but it demonstrates how to eliminate global state from your visitors.
+물론, 이건 부자연스러운 예제이긴 하지만 방문자에서 전역 상태(global state) 를 어떻게 제거할 수 있는지 보여줍니다.
 
 ### <a id="toc-scopes"></a>범위(Scopes)
 
-Next let's introduce the concept of a [**scope**](https://en.wikipedia.org/wiki/Scope_(computer_science)). JavaScript has [lexical scoping](https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scoping_vs._dynamic_scoping), which is a tree structure where blocks create new scope.
+다음으로 [**scope**](https://en.wikipedia.org/wiki/Scope_(computer_science)) 개념을 소개합니다. 자바스크립트는 [lexical scoping](https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scoping_vs._dynamic_scoping)을 가지고 있는데, 이것은 트리 구조이며 블록은 새로운 scope을 생성합니다.
 
 ```js
 // global scope
@@ -623,7 +623,7 @@ function scopeOne() {
 }
 ```
 
-Whenever you create a reference in JavaScript, whether that be by a variable, function, class, param, import, label, etc., it belongs to the current scope.
+자바스크립트에서는 참조(reference)를 선언할 경우, 그게 변수든, 함수든, 클래스든, 파라미터든, import든, label이든 뭐든지 간에 현재 scope에 속하게 됩니다.
 
 ```js
 var global = "I am in the global scope";
@@ -637,7 +637,7 @@ function scopeOne() {
 }
 ```
 
-Code within a deeper scope may use a reference from a higher scope.
+하위 scope 안의 코드에서는 상위 scope의 참조를 사용 할 수 있습니다.
 
 ```js
 function scopeOne() {
@@ -649,7 +649,7 @@ function scopeOne() {
 }
 ```
 
-A lower scope might also create a reference of the same name without modifying it.
+또한 하위 scope에서 상위 scope의 참조를 바꾸지 않고, 같은 이름의 참조를 생성할 수 있습니다.
 
 ```js
 function scopeOne() {
@@ -661,11 +661,11 @@ function scopeOne() {
 }
 ```
 
-When writing a transform, we want to be wary of scope. We need to make sure we don't break existing code while modifying different parts of it.
+코드가 변환(transform) 이 될 때, 이 scope를 고려해야 합니다. 코드의 다른 부분이 수정되는 동안 기존 코드가 깨지지 않도록 해야 합니다.
 
-We may want to add new references and make sure they don't collide with existing ones. Or maybe we just want to find where a variable is referenced. We want to be able to track these references within a given scope.
+우리는 새로운 변수들을 추가하고, 그 변수들이 기존의 것들과 충돌하지 않도록 할 수도 있습니다. 아니면 단순히 변수가 어디에서 참조되는지 찾을 수도 있습니다. 우리는 주어진 scope에서 이 참조들이 추적될 수 있도록 만들려고 합니다.
 
-A scope can be represented as:
+Scope는 다음과 같이 나타낼 수 있습니다:
 
 ```js
 {
@@ -677,13 +677,13 @@ A scope can be represented as:
 }
 ```
 
-When you create a new scope you do so by giving it a path and a parent scope. Then during the traversal process it collects all the references ("bindings") within that scope.
+새로운 scope 생성 시 그것의 경로(path)와 부모(parent) scope를 전달함으로써 그렇게 할 수 있습니다. 그런 다음 그것은 탐색 과정 중 해당 scope의 모든 참조("bindings")들을 수집합니다.
 
-Once that's done, there's all sorts of methods you can use on scopes. We'll get into those later though.
+이것이 끝나면, scope 안에서 사용할 수 있는 각종 메소드들이 있게 됩니다. 이것에 대해선 나중에 알아봅시다.
 
 #### <a id="toc-bindings"></a>바인딩(Bindings)
 
-References all belong to a particular scope; this relationship is known as a **binding**.
+특정 scope에 속하는 모든 참조들; 이 관계를 **바인딩**(binding) 이라고 합니다.
 
 ```js
 function scopeOnce() {
@@ -697,7 +697,7 @@ function scopeOnce() {
 }
 ```
 
-A single binding looks like this:
+하나의 binding은 이렇게 생겼습니다:
 
 ```js
 {
@@ -715,9 +715,9 @@ A single binding looks like this:
 }
 ```
 
-With this information you can find all the references to a binding, see what type of binding it is (parameter, declaration, etc.), lookup what scope it belongs to, or get a copy of its identifier. You can even tell if it's constant and if not, see what paths are causing it to be non-constant.
+이 정보들로 binding의 모든 참조들을 찾을 수 있고, 어떤 binding 타입(파라미터인지 선언인지 등등)인지 알 수 있고, 어떤 scope에 속하는지 찾거나, identifier의 사본을 얻을 수 있습니다. 또한 그것이 상수인지 알 수 있고, 만일 아니라면 어떤 path들이 그것을 변경했는지도 알 수 있습니다.
 
-Being able to tell if a binding is constant is useful for many purposes, the largest of which is minification.
+상수인지 아닌지는 다양한 이유로 유용한 정보인데, 가장 큰 이유는 minification 때문입니다.
 
 ```js
 function scopeOne() {
@@ -736,21 +736,21 @@ function scopeOne() {
 
 # <a id="toc-api"></a>API
 
-Babel is actually a collection of modules. In this section we'll walk through the major ones, explaining what they do and how to use them.
+Babel 은 사실 모듈들의 집합입니다. 이 장에서는 중요한 모듈들이 살펴보고, 그것들이 무엇을 하고, 어떻게 그것들을 사용할 것인지 설명합니다.
 
 > 주의: 이 장은 곧 준비될 예정인 상세 API 문서를 대체하지는 않습니다.
 
 ## <a id="toc-babylon"></a>[`babylon`](https://github.com/babel/babylon)
 
-Babylon is Babel's parser. Started as a fork of Acorn, it's fast, simple to use, has plugin-based architecture for non-standard features (as well as future standards).
+Babylon 은 Bable의 분석기(parser) 입니다. Acorn 을 복제(fork) 하여 시작되었고, 빠르고 사용하기 간단하며, 비 표준 (그뿐만 아니라 미래의 표준) 기능을 위해 플러그인 기반의 구조를 가지고 있습니다.
 
-First, let's install it.
+먼저, 설치해봅시다.
 
 ```sh
 $ npm install --save babylon
 ```
 
-Let's start by simply parsing a string of code:
+간단하게 코드의 문자열을 파싱 해보며 시작해봅시다.
 
 ```js
 import * as babylon from "babylon";
@@ -771,7 +771,7 @@ babylon.parse(code);
 // }
 ```
 
-We can also pass options to `parse()` like so:
+`parse()`호출 시 아래와 같이 option들을 넘길 수도 있습니다:
 
 ```js
 babylon.parse(code, {
@@ -780,25 +780,25 @@ babylon.parse(code, {
 });
 ```
 
-`sourceType` can either be `"module"` or `"script"` which is the mode that Babylon should parse in. `"module"` will parse in strict mode and allow module declarations, `"script"` will not.
+`sourceType` `"module"` 또는 `"script"` 가 될 수 있고 babylon이 어떤 모드로 파싱 하는지 정해줍니다. `"module"` 은 strict mode로 파싱하고 모듈 선언을 허용하지만, `"script"` 는 그렇지 않습니다.
 
 > **주의:** `sourceType` 은 기본으로 `"script"` 이며 여기서`import`나 `export` 를 발견하면 에러를 발생할 것입니다. 이 에러를 해결하려면 `sourceType: "module"` 을 넘겨주세요.
 
-Since Babylon is built with a plugin-based architecture, there is also a `plugins` option which will enable the internal plugins. Note that Babylon has not yet opened this API to external plugins, although may do so in the future.
+Babylon은 플러그인 기반 설계로 만들어져서, 내부 플러그인들(`plugins`)을 작동 시킬 수 있는 옵션이 있습니다. 아마 나중에는 그렇게 되겠지만, Babylon은 아직 이 API를 외부 플러그인들에게 오픈하지 않았다는 것을 알아두세요.
 
-To see a full list of plugins, see the [Babylon README](https://github.com/babel/babylon/blob/master/README.md#plugins).
+플러그인들의 모든 목록은 [Babylon README](https://github.com/babel/babylon/blob/master/README.md#plugins) 를 참고하세요..
 
 ## <a id="toc-babel-traverse"></a>[`babel-traverse`](https://github.com/babel/babel/tree/master/packages/babel-traverse)
 
-The Babel Traverse module maintains the overall tree state, and is responsible for replacing, removing, and adding nodes.
+Babel Traverse 모듈은 트리의 모든 상태를 관리하고, 노드들의 교체, 삭제, 추가하는 일을 담당합니다.
 
-Install it by running:
+아래 명령어를 실행하여 설치합니다:
 
 ```sh
 $ npm install --save babel-traverse
 ```
 
-We can use it alongside Babylon to traverse and update nodes:
+노드들을 탐색하고 업데이트하기 위해 Babylon과 함께 사용할 수 있습니다:
 
 ```js
 import * as babylon from "babylon";
@@ -824,9 +824,9 @@ traverse(ast, {
 
 ## <a id="toc-babel-types"></a>[`babel-types`](https://github.com/babel/babel/tree/master/packages/babel-types)
 
-Babel Types is a Lodash-esque utility library for AST nodes. It contains methods for building, validating, and converting AST nodes. It's useful for cleaning up AST logic with well thought out utility methods.
+Babel Types 는 AST 노드들을 위한 Lodash 스타일의 유틸리티 라이브러리입니다. 이 라이브러리는 AST 노드들을 만들고(building), 검사하고(validating), 변경하기(converting) 위한 메소드들을 포함합니다. 검증된 유틸리티 메소드들을 사용하여 AST 로직을 정리할 때 매우 유용합니다.
 
-You can install it by running:
+아래 명령어를 실행하여 설치합니다:
 
 ```sh
 $ npm install --save babel-types
@@ -849,9 +849,9 @@ traverse(ast, {
 
 ### <a id="toc-definitions"></a>정의(Definitions)
 
-Babel Types has definitions for every single type of node, with information on what properties belong where, what values are valid, how to build that node, how the node should be traversed, and aliases of the Node.
+Babel Types 는 모든 노드 type에 대한 정의들을 가지고 있는데, 어떤 속성이 어디에 속하는지, 어떤 값들이 유효한지, 이 노드를 어떻게 만드는지, 노드를 어떻게 탐색해야 하는지, 그리고 노드가 어떤 별명(aliases)을 가지는지에 대한 정보를 가집니다.
 
-A single node type definition looks like this:
+하나의 노드 type 정의는 이렇게 생겼습니다:
 
 ```js
 defineType("BinaryExpression", {
@@ -874,19 +874,19 @@ defineType("BinaryExpression", {
 
 ### <a id="toc-builders"></a>빌더(Builders)
 
-You'll notice the above definition for `BinaryExpression` has a field for a `builder`.
+위의 정의에서 `BinaryExpression` 이 `builder`를 위한 필드를 가지고 있다는 것을 알아차렸을 겁니다.
 
 ```js
 builder: ["operator", "left", "right"]
 ```
 
-This is because each node type gets a builder method, which when used looks like this:
+이는 각 노드 타입이 빌더 메소드를 받기 때문인데, 다음과 같이 사용됩니다:
 
 ```js
 t.binaryExpression("*", t.identifier("a"), t.identifier("b"));
 ```
 
-Which creates an AST like this:
+이 코드는 아래와 같은 AST 를 생성합니다.
 
 ```js
 {
@@ -903,17 +903,17 @@ Which creates an AST like this:
 }
 ```
 
-Which when printed looks like this:
+이것으로 소스 코드로 찍어보면 다음과 같습니다:
 
 ```js
 a * b
 ```
 
-Builders will also validate the nodes they are creating and throw descriptive errors if used improperly. Which leads into the next type of method.
+빌더들은 또한 그들이 생성하는 노드들의 유효성을 검사하여 만약 부적절하다면 상세 에러를 던질 것입니다. 이것은 다음 메소드 설명에 이어집니다.
 
 ### <a id="toc-validators"></a>검증자(Validators)
 
-The definition for `BinaryExpression` also includes information on the `fields` of a node and how to validate them.
+`BinaryExpression` 정의는 노드의 `fields` 정보와 이것을 어떻게 검증(validate) 하는지에 대한 정보도 포함합니다.
 
 ```js
 fields: {
@@ -929,19 +929,19 @@ fields: {
 }
 ```
 
-This is used to create two types of validating methods. The first of which is `isX`.
+이것은 두 종류의 검증 메소드들을 만들기 위해 사용됩니다. 첫번째는 `isX`입니다..
 
 ```js
 t.isBinaryExpression(maybeBinaryExpressionNode);
 ```
 
-This tests to make sure that the node is a binary expression, but you can also pass a second parameter to ensure that the node contains certain properties and values.
+이것은 노드가 binary expression 인지 보장하는 것뿐만 아니라 노드가 특정 속성들과 값들을 가지는지 확인하도록 두 번째 파라미터를 보낼 수 있습니다.
 
 ```js
 t.isBinaryExpression(maybeBinaryExpressionNode, { operator: "*" });
 ```
 
-There is also the more, *ehem*, assertive version of these methods, which will throw errors instead of returning `true` or `false`.
+*ehem*이라는 `true` 나 `false` 를 리턴하는 대신 에러를 던지는 assertive 형식의 메소드도 있습니다.
 
 ```js
 t.assertBinaryExpression(maybeBinaryExpressionNode);
@@ -955,15 +955,15 @@ t.assertBinaryExpression(maybeBinaryExpressionNode, { operator: "*" });
 
 ## <a id="toc-babel-generator"></a>[`babel-generator`](https://github.com/babel/babel/tree/master/packages/babel-generator)
 
-Babel Generator is the code generator for Babel. It takes an AST and turns it into code with sourcemaps.
+Babel Generator는 Babel의 코드 생성기입니다. AST를 받아 소스 코드와 소스맵으로 바꿔줍니다.
 
-Run the following to install it:
+아래 명령어를 실행하여 설치합니다:
 
 ```sh
 $ npm install --save babel-generator
 ```
 
-Then use it
+그 다음 이렇게 사용합니다
 
 ```js
 import * as babylon from "babylon";
@@ -982,7 +982,7 @@ generate(ast, null, code);
 // }
 ```
 
-You can also pass options to `generate()`.
+`generator()` 에게 옵션들(options) 을 넘겨줄 수도 있습니다.
 
 ```js
 generate(ast, {
@@ -996,7 +996,7 @@ generate(ast, {
 
 ## <a id="toc-babel-template"></a>[`babel-template`](https://github.com/babel/babel/tree/master/packages/babel-template)
 
-Babel Template is another tiny but incredibly useful module. It allows you to write strings of code with placeholders that you can use instead of manually building up a massive AST. In computer science, this capability is called quasiquotes.
+Babel Template 은 작지만 굉장히 유용한 모듈입니다. 직접 거대한 AST 를 만드는 대신 데이터가 들어갈 곳을 표시자(placeholders) 로 나타내며 코드를 작성할 수 있게 해줍니다. 컴퓨터 과학 분야에선, 이런 기술을 quasiquotes라고 부릅니다.
 
 ```sh
 $ npm install --save babel-template
@@ -1297,7 +1297,7 @@ path.getStatementParent();
 
 ### <a id="toc-get-sibling-paths"></a>Get Sibling Paths
 
-If a path in a a list like in the body of a `Function`/`Program`, it will have "siblings".
+If a path is in a list like in the body of a `Function`/`Program`, it will have "siblings".
 
   * Check if a path is part of a list with `path.inList`
   * You can get the surrounding siblings with `path.getSibling(index)`,
@@ -1305,7 +1305,7 @@ If a path in a a list like in the body of a `Function`/`Program`, it will have "
   * The path's container (an array of all sibling paths) with `path.container`
   * Get the name of the key of the list container with `path.listKey`
 
-> These APis are used in the [transform-merge-sibling-variables](https://github.com/babel/babili/blob/master/packages/babel-plugin-transform-merge-sibling-variables/src/index.js) plugin used in [babel-minify](https://github.com/babel/babili).
+> These APIs are used in the [transform-merge-sibling-variables](https://github.com/babel/babili/blob/master/packages/babel-plugin-transform-merge-sibling-variables/src/index.js) plugin used in [babel-minify](https://github.com/babel/babili).
 
 ```js
 var a = 1; // pathA, path.key = 0
@@ -1682,11 +1682,11 @@ export default function({ types: t }) {
 The error looks like:
 
     file.js: Error message here
-       7 | 
+       7 |
        8 | let tips = [
     >  9 |   "Click on any AST node with a '+' to expand it",
          |   ^
-      10 | 
+      10 |
       11 |   "Hovering over a node highlights the \
       12 |    corresponding part in the source code",
     

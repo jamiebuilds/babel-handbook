@@ -36,12 +36,11 @@
       * [Frameworks](#toc-frameworks)
       * [React](#toc-react)
       * [Text Editors and IDEs](#toc-text-editors-and-ides)
-  * [Отладка Babel](#toc-debugging-babel)
   * [Поддержка Babel](#toc-babel-support) 
       * [Babel форум](#toc-babel-forum)
       * [Babel чат](#toc-babel-chat)
       * [Вопросы о Babel](#toc-babel-issues)
-      * [Как создать полезный баг репорт по Babel](#toc-creating-an-awesome-babel-bug-report)
+      * [Как создать полезный баг-репорт по Babel](#toc-creating-an-awesome-babel-bug-report)
 
 # <a id="toc-introduction"></a>Введение
 

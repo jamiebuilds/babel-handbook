@@ -37,7 +37,7 @@ Este manual está disponível em outros idiomas, consulte o [arquivo Leia-me](/R
   * [Escrevendo seu primeiro Plugin do Babel](#toc-writing-your-first-babel-plugin)
   * [Operações de transformação](#toc-transformation-operations) 
       * [Visitando](#toc-visiting)
-      * [Get the Path of Sub-Node](#toc-get-the-path-of-a-sub-node)
+      * [Obter o caminho do sub-nó](#toc-get-the-path-of-a-sub-node)
       * [Check if a node is a certain type](#toc-check-if-a-node-is-a-certain-type)
       * [Check if a path is a certain type](#toc-check-if-a-path-is-a-certain-type)
       * [Check if an identifier is referenced](#toc-check-if-an-identifier-is-referenced)
@@ -1164,9 +1164,9 @@ Awesome! Our very first Babel plugin.
 
 ## <a id="toc-visiting"></a>Visitando
 
-### <a id="toc-get-the-path-of-a-sub-node"></a>Get the Path of Sub-Node
+### <a id="toc-get-the-path-of-a-sub-node"></a>Obter o caminho do sub-nó
 
-To access an AST node's property you normally access the node and then the property. `path.node.property`
+Para acessar a propriedade de um nó AST, você normalmente acessa o nó e, em seguida, a propriedade. `path.node.property`
 
 ```js
 // the BinaryExpression AST node has properties: `left`, `right`, `operator`
@@ -1177,7 +1177,7 @@ BinaryExpression(path) {
 }
 ```
 
-If you need to access the `path` of that property instead, use the `get` method of a path, passing in the string to the property.
+Se você precisar acessar o `path` dessa propriedade, em vez disso, use o método `get` do path, passando em string para a propriedade.
 
 ```js
 BinaryExpression(path) {
@@ -1296,7 +1296,7 @@ path.getStatementParent();
 
 ### <a id="toc-get-sibling-paths"></a>Get Sibling Paths
 
-If a path in a a list like in the body of a `Function`/`Program`, it will have "siblings".
+If a path is in a list like in the body of a `Function`/`Program`, it will have "siblings".
 
   * Check if a path is part of a list with `path.inList`
   * You can get the surrounding siblings with `path.getSibling(index)`,
@@ -1304,7 +1304,7 @@ If a path in a a list like in the body of a `Function`/`Program`, it will have "
   * The path's container (an array of all sibling paths) with `path.container`
   * Get the name of the key of the list container with `path.listKey`
 
-> These APis are used in the [transform-merge-sibling-variables](https://github.com/babel/babili/blob/master/packages/babel-plugin-transform-merge-sibling-variables/src/index.js) plugin used in [babel-minify](https://github.com/babel/babili).
+> These APIs are used in the [transform-merge-sibling-variables](https://github.com/babel/babili/blob/master/packages/babel-plugin-transform-merge-sibling-variables/src/index.js) plugin used in [babel-minify](https://github.com/babel/babili).
 
 ```js
 var a = 1; // pathA, path.key = 0
@@ -1681,11 +1681,11 @@ export default function({ types: t }) {
 The error looks like:
 
     file.js: Error message here
-       7 | 
+       7 |
        8 | let tips = [
     >  9 |   "Click on any AST node with a '+' to expand it",
          |   ^
-      10 | 
+      10 |
       11 |   "Hovering over a node highlights the \
       12 |    corresponding part in the source code",
     
@@ -2014,4 +2014,4 @@ class Foo {
 }
 ```
 
-> ***For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) and [@babeljs](https://twitter.com/babeljs) on Twitter.***
+> ***Para futuras atualizações, siga [@thejameskyle](https://twitter.com/thejameskyle) e [@babeljs](https://twitter.com/babeljs) no Twitter.***

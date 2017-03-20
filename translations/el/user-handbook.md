@@ -36,7 +36,6 @@
       * [Πλαισια (Frameworks)](#toc-frameworks)
       * [React](#toc-react)
       * [Κειμενογράφοι και IDEs](#toc-text-editors-and-ides)
-  * [Αποσφαλμάτωση του Babel](#toc-debugging-babel)
   * [Υποστήριξη του Babel](#toc-babel-support) 
       * [Φόρουμ του Babel](#toc-babel-forum)
       * [Χώρος Συνομιλίας Babel](#toc-babel-chat)

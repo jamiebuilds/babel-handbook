@@ -1682,11 +1682,11 @@ export default function({ types: t }) {
 Eroarea arată așa:
 
     file.js: Error message here
-       7 | 
+       7 |
        8 | let tips = [
     >  9 |   "Click on any AST node with a '+' to expand it",
          |   ^
-      10 | 
+      10 |
       11 |   "Hovering over a node highlights the \
       12 |    corresponding part in the source code",
     
