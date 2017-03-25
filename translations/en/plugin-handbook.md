@@ -1823,7 +1823,7 @@ file.js: Error message here
 
 When writing transformations you'll often want to build up some nodes to insert
 into the AST. As mentioned previously, you can do this using the
-[builder](#builder) methods in the [`babel-types`](#babel-types) package.
+[builder](#builders) methods in the [`babel-types`](#babel-types) package.
 
 The method name for a builder is simply the name of the node type you want to
 build except with the first letter lowercased. For example if you wanted to
