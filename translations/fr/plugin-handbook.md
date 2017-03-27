@@ -1695,7 +1695,7 @@ The error looks like:
 
 # <a id="toc-building-nodes"></a>Nœuds de création
 
-Lors de l’écriture des transformations, vous aurez souvent envie de créer certains nœuds pour les insérer dans l’AST. Comme mentionné précédemment, vous pouvez le faire en utilisant les méthodes du [builder](#builder) dans le package [`babel-types`](#babel-types).
+Lors de l’écriture des transformations, vous aurez souvent envie de créer certains nœuds pour les insérer dans l’AST. As mentioned previously, you can do this using the [builder](#builders) methods in the [`babel-types`](#babel-types) package.
 
 Le nom de la méthode pour un constructeur (builder) est simplement le nom du type de nœud que vous voulez construire sauf que la première lettre est en minuscule. Par exemple si vous voulez construire un `MemberExpression` vous utiliserez `t.memberExpression(...)`.
 
