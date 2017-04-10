@@ -825,6 +825,8 @@ For more information consult the
 
 ### <a id="toc-code-style"></a>Code Style
 
+> JSCS has merged with ESLint, so checkout Code Styling with ESLint.
+
 JSCS is an extremely popular tool for taking linting a step further into
 checking the style of the code itself. A core maintainer of both the Babel and
 JSCS projects ([@hzoo](https://github.com/hzoo)) maintains an official
