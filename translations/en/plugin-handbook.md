@@ -1079,7 +1079,7 @@ const code = `function square(n) {
 
 const ast = babylon.parse(code);
 
-generate(ast, null, code);
+generate(ast, {}, code);
 // {
 //   code: "...",
 //   map: "..."
