@@ -2184,8 +2184,9 @@ class Foo {
 
 ## <a id="toc-unit-test-your-plugin"></a> Unit Test your plugin
 
-When developing your plugin, eventually you'll want to test it, the
-[`generator-babel-plugin`](https://github.com/babel/generator-babel-plugin) package
+When developing your plugin, eventually you'll want to test it!
+
+The [`generator-babel-plugin`](https://github.com/babel/generator-babel-plugin) package
 sets up your tests automatically. You may also want to look at
 [`babel-plugin-tester`](https://github.com/kentcdodds/babel-plugin-tester) which
 can also make testing plugins easier.
