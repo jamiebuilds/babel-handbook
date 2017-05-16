@@ -70,6 +70,7 @@ a complete list.
     - [Do not traverse when manual lookup will do](#toc-do-not-traverse-when-manual-lookup-will-do)
   - [Optimizing nested visitors](#toc-optimizing-nested-visitors)
   - [Being aware of nested structures](#toc-being-aware-of-nested-structures)
+  - [Unit Test your plugin](#toc-unit-test-your-plugin)
 
 # <a id="toc-introduction"></a>Introduction
 
@@ -2180,6 +2181,15 @@ class Foo {
   }
 }
 ```
+
+## <a id="toc-unit-test-your-plugin"></a> Unit Test your plugin
+
+When developing your plugin, eventually you'll want to test it!
+
+The [`generator-babel-plugin`](https://github.com/babel/generator-babel-plugin) package
+sets up your tests automatically. You may also want to look at
+[`babel-plugin-tester`](https://github.com/kentcdodds/babel-plugin-tester) which
+can also make testing plugins easier.
 
 > ***For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) and [@babeljs](https://twitter.com/babeljs)
 > on Twitter.***
