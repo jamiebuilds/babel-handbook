@@ -2193,7 +2193,7 @@ class Foo {
 ## <a id="toc-unit-testing"></a>Unit Testing
 
 There are a few primary ways to test babel plugins: snapshot tests, AST tests, and exec tests.
-We'll use jest for this example because it supports
+We'll use [jest](http://facebook.github.io/jest/) for this example because it supports
 snapshot testing out of the box. The example we're creating here is hosted in
 [this repo](https://github.com/brigand/babel-plugin-testing-example).
 
@@ -2321,8 +2321,8 @@ this should be familiar. You can look at
 to get a full sense of what's possible, but here's a simple example:
 
 ```js
-import pluginTester from 'babel-plugin-tester'
-import identifierReversePlugin from '../identifier-reverse-plugin'
+import pluginTester from 'babel-plugin-tester';
+import identifierReversePlugin from '../identifier-reverse-plugin';
 
 pluginTester({
   plugin: identifierReversePlugin,
@@ -2346,7 +2346,7 @@ pluginTester({
       snapshot: true,
     },
   },
-})
+});
 ```
 
 ---
