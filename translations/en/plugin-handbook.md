@@ -2192,8 +2192,7 @@ class Foo {
 
 ## <a id="toc-unit-testing"></a>Unit Testing
 
-There are two primary ways to test babel plugins. The first snapshot tests,
-and the other is testing the AST returned by the plugin.
+There are a few primary ways to test babel plugins: snapshot tests, AST tests, and exec tests.
 We'll use jest for this example because it supports
 snapshot testing out of the box. The example we're creating here is hosted in
 [this repo](https://github.com/brigand/babel-plugin-testing-example).
@@ -2284,6 +2283,30 @@ it('contains baz', () => {
   const declaration = program.body[0].declarations[0];
   assert.equal(declaration.id.name, 'baz');
   // or babelTraverse(program, {visitor: ...})
+});
+```
+
+### Exec Tests
+
+Here we'll be transforming the code, and then evaluating that it behaves correctly.
+Note that we're not using `assert` in the test. This ensures that if our plugin does
+weird stuff like removing the assert line by accident, the test will still fail.
+
+
+```js
+it('foo is an alias to baz', () => {
+  var input = `
+    var foo = 1;
+    // test that foo was renamed to baz
+    var res = baz;
+  `;
+  var {code} = babel.transform(input, {plugins: [plugin]});
+  var f = new Function(`
+    ${code};
+    return res;
+  `);
+  var res = f();
+  assert(res === 1, 'res is 1');
 });
 ```
 
