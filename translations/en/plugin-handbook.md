@@ -2192,8 +2192,9 @@ class Foo {
 
 ## <a id="toc-unit-testing"></a>Unit Testing
 
-There are two primary ways to test babel plugins. The first is making assertions on the AST,
-and the other is snapshot testing. We'll use jest for this example because it supports
+There are two primary ways to test babel plugins. The first snapshot tests,
+and the other is testing the AST returned by the plugin.
+We'll use jest for this example because it supports
 snapshot testing out of the box. The example we're creating here is hosted in
 [this repo](https://github.com/brigand/babel-plugin-testing-example).
 
