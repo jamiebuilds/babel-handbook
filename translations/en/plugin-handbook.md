@@ -420,6 +420,7 @@ function square(n) {
 }
 ```
 ```js
+path.traverse(MyVisitor);
 Called!
 Called!
 Called!
@@ -598,6 +599,7 @@ a + b + c;
 ```
 
 ```js
+path.traverse(MyVisitor);
 Visiting: a
 Visiting: b
 Visiting: c
@@ -667,6 +669,8 @@ const MyVisitor = {
     path.traverse(updateParamNameVisitor, { paramName });
   }
 };
+
+path.traverse(MyVisitor);
 ```
 
 Of course, this is a contrived example but it demonstrates how to eliminate
