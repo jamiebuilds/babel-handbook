@@ -2312,7 +2312,42 @@ it('foo is an alias to baz', () => {
 
 Babel core uses a [similar approach](https://github.com/babel/babel/blob/7.0/CONTRIBUTING.md#writing-tests) to exec tests.
 
-Also see [`babel-plugin-tester`](https://github.com/kentcdodds/babel-plugin-tester) which makes testing plugins easier.
+### [`babel-plugin-tester`](https://github.com/kentcdodds/babel-plugin-tester)
+
+This package makes testing plugins easier. If you're familiar with ESLint's
+[RuleTester](http://eslint.org/docs/developer-guide/working-with-rules#rule-unit-tests)
+this should be familiar. You can look at
+[the docs](https://github.com/kentcdodds/babel-plugin-tester/blob/master/README.md)
+to get a full sense of what's possible, but here's a simple example:
+
+```js
+import pluginTester from 'babel-plugin-tester'
+import identifierReversePlugin from '../identifier-reverse-plugin'
+
+pluginTester({
+  plugin: identifierReversePlugin,
+  fixtures: path.join(__dirname, '__fixtures__'),
+  tests: {
+    'does not change code with no identifiers': '"hello";',
+    'changes this code': {
+      code: 'var hello = "hi";',
+      output: 'var olleh = "hi";',
+    },
+    'using fixtures files': {
+      fixture: 'changed.js',
+      outputFixture: 'changed-output.js',
+    },
+    'using jest snapshots': {
+      code: `
+        function sayHi(person) {
+          return 'Hello ' + person + '!'
+        }
+      `,
+      snapshot: true,
+    },
+  },
+})
+```
 
 ---
 
