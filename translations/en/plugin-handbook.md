@@ -1459,13 +1459,13 @@ If you are doing a sub-traversal in a top level path, you can use 2 provided API
 `path.stop()` stops traversal entirely.
 
 ```js
-path.traverse({
-  Function(path) {
-    path.skip(); // if checking the children is irrelevant
+outerPath.traverse({
+  Function(innerPath) {
+    innerPath.skip(); // if checking the children is irrelevant
   },
-  ReferencedIdentifier(path, state) {
+  ReferencedIdentifier(innerPath, state) {
     state.iife = true;
-    path.stop(); // if you want to save some state and then stop traversal, or deopt
+    innerPath.stop(); // if you want to save some state and then stop traversal, or deopt
   }
 });
 ```
