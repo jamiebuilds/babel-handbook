@@ -36,7 +36,6 @@
       * [框架](#toc-frameworks)
       * [React](#toc-react)
       * [文本编辑器和 IDEs（集成开发环境）](#toc-text-editors-and-ides)
-  * [调试 Babel](#toc-debugging-babel)
   * [Babel 支持](#toc-babel-support) 
       * [Babel 论坛](#toc-babel-forum)
       * [Babel 聊天](#toc-babel-chat)
@@ -230,7 +229,7 @@ console.log("Hello world!");
 $ npm install --save-dev babel-cli
 ```
 
-> **注意：**如果你不清楚为什么要安装在本地，请阅读上面[在项目内运行 Babel CLI](#running-babel-cli--from-within-a-project) 的部分。
+> **Note:** If you are wondering why we are installing this locally, please read the [Running Babel CLI from within a project](#toc-running-babel-cli-from-within-a-project) section above.
 
 然后用 `babel-node` 来替代 `node` 运行所有的代码 。.
 
@@ -297,7 +296,7 @@ babel.transformFromAst(ast, code, options);
 // => { code, map, ast }
 ```
 
-对于上述所有方法，`options` 指的都是 http://babeljs.io/docs/usage/options/
+For all of the above methods, `options` refers to https://babeljs.io/docs/usage/api/#options.
 
 * * *
 
@@ -706,6 +705,8 @@ $ npm run lint
 详细信息请咨询 [`babel-eslint`](https://github.com/babel/babel-eslint) 或者 [`eslint`](http://eslint.org) 的文档。
 
 ### <a id="toc-code-style"></a>代码风格
+
+> JSCS has merged with ESLint, so checkout Code Styling with ESLint.
 
 JSCS 是一个极受欢迎的工具，在语法检查的基础上更进一步检查代码自身的风格。 Babel 和 JSCS 项目的核心维护者之一（[@hzoo](https://github.com/hzoo)）维护着 JSCS 的官方集成。
 

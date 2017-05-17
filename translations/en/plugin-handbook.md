@@ -104,7 +104,7 @@ Each of these steps involve creating or working with an
 [Abstract Syntax Tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree) or
 AST.
 
-> Babel uses an AST modified from [ESTree](https://github.com/estree/estree), with the core spec located [here](https://github.com/babel/babel/blob/master/doc/ast/spec.md).
+> Babel uses an AST modified from [ESTree](https://github.com/estree/estree), with the core spec located [here](https://github.com/babel/babylon/blob/master/ast/spec.md).
 
 ```js
 function square(n) {
@@ -420,6 +420,7 @@ function square(n) {
 }
 ```
 ```js
+path.traverse(MyVisitor);
 Called!
 Called!
 Called!
@@ -498,7 +499,7 @@ You can also use aliases as visitor nodes (as defined in [babel-types](https://g
 
 For example,
 
-`Function` is an alias for `FunctionDeclaration`, `FunctionExpression`, `ArrowFunctionExpression`
+`Function` is an alias for `FunctionDeclaration`, `FunctionExpression`, `ArrowFunctionExpression`, `ObjectMethod` and `ClassMethod`.
 
 ```js
 const MyVisitor = {
@@ -598,6 +599,7 @@ a + b + c;
 ```
 
 ```js
+path.traverse(MyVisitor);
 Visiting: a
 Visiting: b
 Visiting: c
@@ -667,6 +669,8 @@ const MyVisitor = {
     path.traverse(updateParamNameVisitor, { paramName });
   }
 };
+
+path.traverse(MyVisitor);
 ```
 
 Of course, this is a contrived example but it demonstrates how to eliminate
@@ -1080,7 +1084,7 @@ const code = `function square(n) {
 
 const ast = babylon.parse(code);
 
-generate(ast, null, code);
+generate(ast, {}, code);
 // {
 //   code: "...",
 //   map: "..."
@@ -1409,7 +1413,7 @@ path.getStatementParent();
 
 ### <a id="toc-get-sibling-paths"></a>Get Sibling Paths
 
-If a path in a a list like in the body of a `Function`/`Program`, it will have "siblings".
+If a path is in a list like in the body of a `Function`/`Program`, it will have "siblings".
 
 - Check if a path is part of a list with `path.inList`
 - You can get the surrounding siblings with `path.getSibling(index)`,
@@ -1417,7 +1421,7 @@ If a path in a a list like in the body of a `Function`/`Program`, it will have "
 - The path's container (an array of all sibling paths) with `path.container`
 - Get the name of the key of the list container with `path.listKey`
 
-> These APis are used in the [transform-merge-sibling-variables](https://github.com/babel/babili/blob/master/packages/babel-plugin-transform-merge-sibling-variables/src/index.js) plugin used in [babel-minify](https://github.com/babel/babili).
+> These APIs are used in the [transform-merge-sibling-variables](https://github.com/babel/babili/blob/master/packages/babel-plugin-transform-merge-sibling-variables/src/index.js) plugin used in [babel-minify](https://github.com/babel/babili).
 
 ```js
 var a = 1; // pathA, path.key = 0
@@ -1459,13 +1463,13 @@ If you are doing a sub-traversal in a top level path, you can use 2 provided API
 `path.stop()` stops traversal entirely.
 
 ```js
-path.traverse({
-  Function(path) {
-    path.skip(); // if checking the children is irrelevant
+outerPath.traverse({
+  Function(innerPath) {
+    innerPath.skip(); // if checking the children is irrelevant
   },
-  ReferencedIdentifier(path, state) {
+  ReferencedIdentifier(innerPath, state) {
     state.iife = true;
-    path.stop(); // if you want to save some state and then stop traversal, or deopt
+    innerPath.stop(); // if you want to save some state and then stop traversal, or deopt
   }
 });
 ```
@@ -1561,12 +1565,12 @@ FunctionDeclaration(path) {
 ### <a id="toc-inserting-into-a-container"></a>Inserting into a container
 
 If you want to insert into a AST node property like that is an array like `body`.
-It is simialr to `insertBefore`/`insertAfter` other than you having to specify the `listKey` which is usually `body`.
+It is similar to `insertBefore`/`insertAfter` other than you having to specify the `listKey` which is usually `body`.
 
 ```js
 ClassMethod(path) {
-  path.get('body').unshiftContainer('body', t.stringLiteral('before'));
-  path.get('body').pushContainer('body', t.stringLiteral('after'));
+  path.unshiftContainer('body', t.stringLiteral('before'));
+  path.pushContainer('body', t.stringLiteral('after'));
 }
 ```
 
@@ -1809,11 +1813,11 @@ The error looks like:
 
 ```
 file.js: Error message here
-   7 | 
+   7 |
    8 | let tips = [
 >  9 |   "Click on any AST node with a '+' to expand it",
      |   ^
-  10 | 
+  10 |
   11 |   "Hovering over a node highlights the \
   12 |    corresponding part in the source code",
 ```
@@ -1824,7 +1828,7 @@ file.js: Error message here
 
 When writing transformations you'll often want to build up some nodes to insert
 into the AST. As mentioned previously, you can do this using the
-[builder](#builder) methods in the [`babel-types`](#babel-types) package.
+[builder](#builders) methods in the [`babel-types`](#babel-types) package.
 
 The method name for a builder is simply the name of the node type you want to
 build except with the first letter lowercased. For example if you wanted to
@@ -2033,7 +2037,7 @@ It may also be tempting to call `path.traverse` when looking for a particular
 node type.
 
 ```js
-const visitorOne = {
+const nestedVisitor = {
   Identifier(path) {
     // ...
   }
@@ -2041,7 +2045,7 @@ const visitorOne = {
 
 const MyVisitor = {
   FunctionDeclaration(path) {
-    path.get('params').traverse(visitorOne);
+    path.get('params').traverse(nestedVisitor);
   }
 };
 ```
@@ -2077,12 +2081,16 @@ const MyVisitor = {
 };
 ```
 
-However, this creates a new visitor object everytime `FunctionDeclaration()` is
-called above, which Babel then needs to explode and validate every single time.
-This can be costly, so it is better to hoist the visitor up.
+However, this creates a new visitor object every time `FunctionDeclaration()` is
+called. That can be costly, because Babel does some processing each time a new
+visitor object is passed in (such as exploding keys containing multiple types,
+performing validation, and adjusting the object structure). Because Babel stores
+flags on visitor objects indicating that it's already performed that processing,
+it's better to store the visitor in a variable and pass the same object each
+time.
 
 ```js
-const visitorOne = {
+const nestedVisitor = {
   Identifier(path) {
     // ...
   }
@@ -2090,7 +2098,7 @@ const visitorOne = {
 
 const MyVisitor = {
   FunctionDeclaration(path) {
-    path.traverse(visitorOne);
+    path.traverse(nestedVisitor);
   }
 };
 ```
@@ -2117,7 +2125,7 @@ You can pass it in as state to the `traverse()` method and have access to it on
 `this` in the visitor.
 
 ```js
-const visitorOne = {
+const nestedVisitor = {
   Identifier(path) {
     if (path.node.name === this.exampleState) {
       // ...
@@ -2128,7 +2136,7 @@ const visitorOne = {
 const MyVisitor = {
   FunctionDeclaration(path) {
     var exampleState = path.node.params[0].name;
-    path.traverse(visitorOne, { exampleState });
+    path.traverse(nestedVisitor, { exampleState });
   }
 };
 ```
@@ -2244,7 +2252,8 @@ if (bar) console.log(bar);"
 
 If we change 'bar' to 'baz' in our plugin and run jest again, we get this:
 
-```diff    Received value does not match stored snapshot 1.
+```diff
+Received value does not match stored snapshot 1.
 
     - Snapshot
     + Received
@@ -2276,6 +2285,8 @@ it('contains baz', () => {
   // or babelTraverse(program, {visitor: ...})
 });
 ```
+
+Also see [`babel-plugin-tester`](https://github.com/kentcdodds/babel-plugin-tester) which makes testing plugins easier.
 
 > ***For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) and [@babeljs](https://twitter.com/babeljs)
 > on Twitter.***

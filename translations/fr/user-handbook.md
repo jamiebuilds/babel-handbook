@@ -36,7 +36,6 @@ Ce manuel est disponible dans d'autres langues, voir le [README](/README.md) pou
       * [Frameworks](#toc-frameworks)
       * [React](#toc-react)
       * [IDEs et les éditeurs de texte](#toc-text-editors-and-ides)
-  * [Débogage de Babel](#toc-debugging-babel)
   * [Support Babel](#toc-babel-support) 
       * [Forum Babel](#toc-babel-forum)
       * [Tchat Babel](#toc-babel-chat)
@@ -101,7 +100,7 @@ Nous pouvons compiler notre premier fichier comme suit :
 $ babel my-file.js
 ```
 
-Cela videra le résultat compilé directement dans votre terminal. Pour l’écrire dans un fichier, nous devons le préciser avec `--out-file` ou `-o`.
+Cela affichera le résultat compilé directement dans votre terminal. Pour l’écrire dans un fichier, nous devons le préciser avec `--out-file` ou `-o`.
 
 ```sh
 $ babel example.js --out-file compiled.js
@@ -230,7 +229,7 @@ Tout d’abord, assurez-vous que vous avez `babel-cli` qui est installé.
 $ npm install --save-dev babel-cli
 ```
 
-> **Remarque :** Si vous vous demandez pourquoi nous installons ceci en locale, veuillez lire ci-dessus la section [Exécution du CLI de Babel au sein d’un projet](#running-babel-cli--from-within-a-project).
+> **Note:** If you are wondering why we are installing this locally, please read the [Running Babel CLI from within a project](#toc-running-babel-cli-from-within-a-project) section above.
 
 Puis remplacer chaque fois que vous exécutez `node` avec `babel-node`.
 
@@ -297,7 +296,7 @@ babel.transformFromAst(ast, code, options);
 // => { code, map, ast }
 ```
 
-Pour toutes les méthodes ci-dessus, les `options` se réfèrent à http://babeljs.io/docs/usage/options/.
+For all of the above methods, `options` refers to https://babeljs.io/docs/usage/api/#options.
 
 * * *
 
@@ -371,7 +370,7 @@ Puis ajoutez le preset à votre fichier `.babelrc` :
 
 JavaScript a aussi quelques propositions qui font leur chemin dans la norme par le biais du processus de la TC39 (Comité technique derrière le standard ECMAScript).
 
-Ce processus est découpé par un processus en 5 étapes (0-4). Plus les propositions séduisent et plus elles sont susceptibles d'être acceptées dans la norme, elles passent par les différentes étapes pour être finalement acceptées dans la norme à l'étape 4.
+Ce processus est découpé en 5 étapes (0-4). Plus les propositions séduisent et plus elles sont susceptibles d'être acceptées dans la norme, elles passent par les différentes étapes pour être finalement acceptées dans la norme à l'étape 4.
 
 Celles-ci sont groupées dans babel comme 4 preset différents :
 
@@ -431,7 +430,7 @@ function addAll() {
 }
 ```
 
-Malgré cela, le code ne fonctionnera encore pas partout parce que `Array.from` n’existe pas dans tous les environnements JavaScript.
+Malgré cela, le code ne fonctionnera pas encore partout parce que `Array.from` n’existe pas dans tous les environnements JavaScript.
 
     Uncaught TypeError: Array.from is not a function
     
@@ -707,6 +706,8 @@ Pour plus d’informations, consultez la documentation de [`babel-eslint`](https
 
 ### <a id="toc-code-style"></a>Style de code
 
+> JSCS has merged with ESLint, so checkout Code Styling with ESLint.
+
 JSCS est un outil extrêmement populaire pour faire du linting un peu plus poussé en vérifiant le style du code. Un mainteneur principal à la fois du projet Babel et JSCS ([@hzoo](https://github.com/hzoo)) tient à jour une intégration officielle avec JSCS.
 
 Mieux encore, cette intégration maintenant vit elle-même à l'intérieur de JSCS sous l'option `--esnext`. Donc l’intégration Babel est aussi simple que :
@@ -814,7 +815,7 @@ Les issues de Babel peuvent parfois être très difficiles à déboguer à dista
 
 Tout d’abord, essayez d’isoler votre problème. Il est extrêmement peu probable que chaque partie de votre configuration contribue au problème. Si votre problème est un morceau de code, essayez, en supprimant le plus de code possible, de provoquer toujours un problème.
 
-> [WIP]
+> \[WIP\] (Travail en cours)
 
 * * *
 

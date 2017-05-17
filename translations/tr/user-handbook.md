@@ -36,7 +36,6 @@ Bu kitabın diğer dillere tercümeside mevcuttur.Tüm liste için [README](/REA
       * [Frameworkler](#toc-frameworks)
       * [React](#toc-react)
       * [Metin düzenleyicileri ve IDE'ler](#toc-text-editors-and-ides)
-  * [Babel Hata Ayıklama](#toc-debugging-babel)
   * [Babel destek](#toc-babel-support) 
       * [Babel Forum](#toc-babel-forum)
       * [Babel sohbet](#toc-babel-chat)
@@ -230,7 +229,7 @@ Unutmayın ki bu üretim seviyesi kullanımı anlamına gelmez. Bu şekilde dağ
 $ npm install --save-dev babel-cli
 ```
 
-> **Not:** Eğer neden (global yerine) yerel olarak yüklediğimizi merak ediyorsanız lütfen yukarıdaki [Proje içinde Babel CLI çalıştırmak](#running-babel-cli--from-within-a-project) bölümü okuyunuz.
+> **Note:** If you are wondering why we are installing this locally, please read the [Running Babel CLI from within a project](#toc-running-babel-cli-from-within-a-project) section above.
 
 Daha sonra nerede `node` kullandığunız yerlerin yerine `babel-node` yazınız..
 
@@ -300,7 +299,7 @@ babel.transformFromAst(ast, code, options);
 // => { code, map, ast }
 ```
 
-Tüm bu method ve seçenekler için http://babeljs.io/docs/usage/options/. adresine bakınız. 
+For all of the above methods, `options` refers to https://babeljs.io/docs/usage/api/#options.
 
 * * *
 
@@ -710,6 +709,8 @@ $ npm run lint
 For more information consult the [`babel-eslint`](https://github.com/babel/babel-eslint) or [`eslint`](http://eslint.org) documentation.
 
 ### <a id="toc-code-style"></a>Kod stili
+
+> JSCS has merged with ESLint, so checkout Code Styling with ESLint.
 
 JSCS is an extremely popular tool for taking linting a step further into checking the style of the code itself. A core maintainer of both the Babel and JSCS projects ([@hzoo](https://github.com/hzoo)) maintains an official integration with JSCS.
 

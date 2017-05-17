@@ -36,7 +36,6 @@ Niniejszy podręcznik jest dostępny w innych językach. Zobacz [plik README](/R
       * [Frameworki](#toc-frameworks)
       * [React](#toc-react)
       * [Edytory tekstu i IDE](#toc-text-editors-and-ides)
-  * [Debugowanie Babel](#toc-debugging-babel)
   * [Wsparcie Babel](#toc-babel-support) 
       * [Forum Babel](#toc-babel-forum)
       * [Czat Babel](#toc-babel-chat)
@@ -230,7 +229,7 @@ First make sure that you have `babel-cli` installed.
 $ npm install --save-dev babel-cli
 ```
 
-> **Note:** If you are wondering why we are installing this locally, please read the [Running Babel CLI from within a project](#running-babel-cli--from-within-a-project) section above.
+> **Note:** If you are wondering why we are installing this locally, please read the [Running Babel CLI from within a project](#toc-running-babel-cli-from-within-a-project) section above.
 
 Then replace wherever you are running `node` with `babel-node`.
 
@@ -297,7 +296,7 @@ babel.transformFromAst(ast, code, options);
 // => { code, map, ast }
 ```
 
-For all of the above methods, `options` refers to http://babeljs.io/docs/usage/options/.
+For all of the above methods, `options` refers to https://babeljs.io/docs/usage/api/#options.
 
 * * *
 
@@ -706,6 +705,8 @@ $ npm run lint
 For more information consult the [`babel-eslint`](https://github.com/babel/babel-eslint) or [`eslint`](http://eslint.org) documentation.
 
 ### <a id="toc-code-style"></a>Styl kodu
+
+> JSCS has merged with ESLint, so checkout Code Styling with ESLint.
 
 JSCS is an extremely popular tool for taking linting a step further into checking the style of the code itself. A core maintainer of both the Babel and JSCS projects ([@hzoo](https://github.com/hzoo)) maintains an official integration with JSCS.
 

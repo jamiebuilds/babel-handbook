@@ -36,7 +36,6 @@
       * [Πλαισια (Frameworks)](#toc-frameworks)
       * [React](#toc-react)
       * [Κειμενογράφοι και IDEs](#toc-text-editors-and-ides)
-  * [Αποσφαλμάτωση του Babel](#toc-debugging-babel)
   * [Υποστήριξη του Babel](#toc-babel-support) 
       * [Φόρουμ του Babel](#toc-babel-forum)
       * [Χώρος Συνομιλίας Babel](#toc-babel-chat)
@@ -230,7 +229,7 @@ console.log("Hello world!");
 $ npm install --save-dev babel-cli
 ```
 
-> **Σημείωση:** Αν αναρωτιέστε γιατί εγκαθιστάμε αυτό σε τοπικό επίπεδο, παρακαλώ διαβάστε την παραπάνω ενότητα [Λειτουργία του Babel CLI μέσα από ένα project](#running-babel-cli--from-within-a-project).
+> **Note:** If you are wondering why we are installing this locally, please read the [Running Babel CLI from within a project](#toc-running-babel-cli-from-within-a-project) section above.
 
 Στη συνέχεια, αντικαταστήστε όπου εκτελείτε `node` με `babel-node`.
 
@@ -297,7 +296,7 @@ babel.transformFromAst(ast, code, options);
 // => { code, map, ast }
 ```
 
-Όλες οι παραπάνω μέθοδοι, `options` αναφέρονται στο http://babeljs.io/docs/usage/options/.
+For all of the above methods, `options` refers to https://babeljs.io/docs/usage/api/#options.
 
 * * *
 
@@ -706,6 +705,8 @@ $ npm run lint
 Για περισσότερες πληροφορίες συμβουλευτείτε την τεκμηρίωση του [`babel-eslint`](https://github.com/babel/babel-eslint) ή [`eslint`](http://eslint.org).
 
 ### <a id="toc-code-style"></a>Στυλ κώδικα
+
+> JSCS has merged with ESLint, so checkout Code Styling with ESLint.
 
 Το JSCS είναι ένα εξαιρετικά δημοφιλές εργαλείο για να πάτε το linting ένα βήμα παραπέρα στον έλεγχο του στυλ του ίδιου του κώδικα. Ένας κύριος συντηρητής του Babel και των JSCS projects ([@hzoo](https://github.com/hzoo)) διατηρεί την επίσημη ενσωμάτωση με JSCS.
 

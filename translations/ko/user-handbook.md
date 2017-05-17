@@ -36,12 +36,11 @@
       * [프레임워크](#toc-frameworks)
       * [React](#toc-react)
       * [텍스트 편집기와 IDE](#toc-text-editors-and-ides)
-  * [Babel 디버깅하기](#toc-debugging-babel)
   * [Babel 지원](#toc-babel-support) 
       * [Babel 포럼](#toc-babel-forum)
       * [Babel 채팅](#toc-babel-chat)
       * [Babel 이슈](#toc-babel-issues)
-      * [멋진 Babel 버그 리포트 생성](#toc-creating-an-awesome-babel-bug-report)
+      * [멋진 Babel 버그 보고 생성](#toc-creating-an-awesome-babel-bug-report)
 
 # <a id="toc-introduction"></a>소개
 
@@ -230,7 +229,7 @@ console.log("Hello world!");
 $ npm install --save-dev babel-cli
 ```
 
-> **Note:** 여기서 왜 로컬에 설치하는지 궁금하다면 앞의 [프로젝트 내에서 Babel CLI 실행하기](#running-babel-cli--from-within-a-project) 부분을 읽어보세요.
+> **Note:** If you are wondering why we are installing this locally, please read the [Running Babel CLI from within a project](#toc-running-babel-cli-from-within-a-project) section above.
 
 그 다음 `node`를 사용하는 대신 `babel-node`를 사용하세요..
 
@@ -297,7 +296,7 @@ babel.transformFromAst(ast, code, options);
 // => { code, map, ast }
 ```
 
-위의 모든 메서드에서 사용할 수 있는, `options`에 대한 내용은 http://babeljs.io/docs/usage/options/에서 찾아볼 수 있습니다.
+For all of the above methods, `options` refers to https://babeljs.io/docs/usage/api/#options.
 
 * * *
 
@@ -706,6 +705,8 @@ $ npm run lint
 더 자세한 사항은 [`babel-eslint`](https://github.com/babel/babel-eslint) 또는 [`eslint`](http://eslint.org) 문서를 참고하세요.
 
 ### <a id="toc-code-style"></a>코드 스타일
+
+> JSCS has merged with ESLint, so checkout Code Styling with ESLint.
 
 JSCS는 코드 검사의 추가 단계에 있어서 코딩 스타일 자체를 점검하는 매우 인기 있는 코드 검사 도구입니다. Babel과 JSCS 프로젝트의 핵심 관리자 ([@hzoo](https://github.com/hzoo))는 공식적으로 JSCS와의 통합을 제공하고 있습니다.
 

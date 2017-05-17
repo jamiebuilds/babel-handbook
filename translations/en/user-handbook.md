@@ -38,7 +38,6 @@ a complete list.
   - [Frameworks](#toc-frameworks)
     - [React](#toc-react)
   - [Text Editors and IDEs](#toc-text-editors-and-ides)
-- [Debugging Babel](#toc-debugging-babel)
 - [Babel Support](#toc-babel-support)
   - [Babel Forum](#toc-babel-forum)
   - [Babel Chat](#toc-babel-chat)
@@ -276,7 +275,7 @@ $ npm install --save-dev babel-cli
 ```
 
 > **Note:** If you are wondering why we are installing this locally, please read
-> the [Running Babel CLI from within a project](#running-babel-cli--from-within-a-project)
+> the [Running Babel CLI from within a project](#toc-running-babel-cli-from-within-a-project)
 > section above.
 
 Then replace wherever you are running `node` with `babel-node`.
@@ -348,7 +347,7 @@ babel.transformFromAst(ast, code, options);
 ```
 
 For all of the above methods, `options` refers to
-http://babeljs.io/docs/usage/options/.
+https://babeljs.io/docs/usage/api/#options.
 
 ----
 
@@ -825,6 +824,8 @@ For more information consult the
 [`eslint`](http://eslint.org) documentation.
 
 ### <a id="toc-code-style"></a>Code Style
+
+> JSCS has merged with ESLint, so checkout Code Styling with ESLint.
 
 JSCS is an extremely popular tool for taking linting a step further into
 checking the style of the code itself. A core maintainer of both the Babel and

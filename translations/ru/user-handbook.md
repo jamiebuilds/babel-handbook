@@ -36,12 +36,11 @@
       * [Frameworks](#toc-frameworks)
       * [React](#toc-react)
       * [Text Editors and IDEs](#toc-text-editors-and-ides)
-  * [Отладка Babel](#toc-debugging-babel)
   * [Поддержка Babel](#toc-babel-support) 
       * [Babel форум](#toc-babel-forum)
       * [Babel чат](#toc-babel-chat)
       * [Вопросы о Babel](#toc-babel-issues)
-      * [Как создать полезный баг репорт по Babel](#toc-creating-an-awesome-babel-bug-report)
+      * [Как создать полезный баг-репорт по Babel](#toc-creating-an-awesome-babel-bug-report)
 
 # <a id="toc-introduction"></a>Введение
 
@@ -230,7 +229,7 @@ console.log("Hello world!");
 $ npm install --save-dev babel-cli
 ```
 
-> **Примечание:** Если вам интересно, почему используем локальную установку, пожалуйста, прочитайте раздел [Использование Babel CLI в рамках проекта](#running-babel-cli--from-within-a-project).
+> **Note:** If you are wondering why we are installing this locally, please read the [Running Babel CLI from within a project](#toc-running-babel-cli-from-within-a-project) section above.
 
 Затем, переключитесь на работу с `babel-node` везде, где вы работаете с `node`.
 
@@ -297,7 +296,7 @@ babel.transformFromAst(ast, code, options);
 // => { code, map, ast }
 ```
 
-Для всех перечисленных методов, параметры `options` можно найти тут: http://babeljs.io/docs/usage/options/.
+For all of the above methods, `options` refers to https://babeljs.io/docs/usage/api/#options.
 
 * * *
 
@@ -707,6 +706,8 @@ $ npm run lint
 
 ### <a id="toc-code-style"></a>Стиль кода
 
+> JSCS has merged with ESLint, so checkout Code Styling with ESLint.
+
 JSCS is an extremely popular tool for taking linting a step further into checking the style of the code itself. A core maintainer of both the Babel and JSCS projects ([@hzoo](https://github.com/hzoo)) maintains an official integration with JSCS.
 
 Even better, this integration now lives within JSCS itself under the `--esnext` option. So integrating Babel is as easy as:
@@ -788,7 +789,7 @@ We are also looking to grow a self-supporting community, for people who stick ar
 
 ## <a id="toc-babel-chat"></a>Babel чат
 
-Everyone loves [Slack](https://slack.com). If you're looking for immediate support from the community then come chat with us at [slack.babeljs.io](https://slack.babeljs.io).
+Все любят [Slack](https://slack.com). Если вы ищите оперативную помощь со стороны сообщества, тогда заходите к нам в чат [slack.babeljs.io](https://slack.babeljs.io)..
 
 <!--
 ## Babel Stack Overflow

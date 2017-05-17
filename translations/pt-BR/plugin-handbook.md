@@ -37,11 +37,11 @@ Este manual está disponível em outros idiomas, consulte o [arquivo Leia-me](/R
   * [Escrevendo seu primeiro Plugin do Babel](#toc-writing-your-first-babel-plugin)
   * [Operações de transformação](#toc-transformation-operations) 
       * [Visitando](#toc-visiting)
-      * [Get the Path of Sub-Node](#toc-get-the-path-of-a-sub-node)
-      * [Check if a node is a certain type](#toc-check-if-a-node-is-a-certain-type)
-      * [Check if a path is a certain type](#toc-check-if-a-path-is-a-certain-type)
-      * [Check if an identifier is referenced](#toc-check-if-an-identifier-is-referenced)
-      * [Find a specific parent path](#toc-find-a-specific-parent-path)
+      * [Obtendo o caminho do sub-nó](#toc-get-the-path-of-a-sub-node)
+      * [Verificando se um nó possui um certo tipo](#toc-check-if-a-node-is-a-certain-type)
+      * [Verificando se o caminho é de um tipo específico](#toc-check-if-a-path-is-a-certain-type)
+      * [Verificando se um identificador é referenciado](#toc-check-if-an-identifier-is-referenced)
+      * [Encontre o caminho específico de um parente](#toc-find-a-specific-parent-path)
       * [Get Sibling Paths](#toc-get-sibling-paths)
       * [Stopping Traversal](#toc-stopping-traversal)
       * [Manipulação](#toc-manipulation)
@@ -68,6 +68,7 @@ Este manual está disponível em outros idiomas, consulte o [arquivo Leia-me](/R
       * [Não cruzar quando farão pesquisa manual](#toc-do-not-traverse-when-manual-lookup-will-do)
       * [Otimizando os visitantes aninhados](#toc-optimizing-nested-visitors)
       * [Estando ciente das estruturas aninhadas](#toc-being-aware-of-nested-structures)
+      * [Unit Test your plugin](#toc-unit-test-your-plugin)
 
 # <a id="toc-introduction"></a>Introdução
 
@@ -89,7 +90,7 @@ Babel é um compilador JavaScript, especificamente um compilador de código para
 
 Cada um destes passos envolvem criação ou trabalho com uma [Árvore de Sintaxe Abstrata](https://en.wikipedia.org/wiki/Abstract_syntax_tree) ou AST.
 
-> Babel usa um AST modificado de [ESTree](https://github.com/estree/estree), com uma especificação de núcleo localizada [aqui](https://github.com/babel/babel/blob/master/doc/ast/spec.md).
+> Babel uses an AST modified from [ESTree](https://github.com/estree/estree), with the core spec located [here](https://github.com/babel/babylon/blob/master/ast/spec.md).
 
 ```js
 function square(n) {
@@ -369,6 +370,7 @@ function square(n) {
 ```
 
 ```js
+path.traverse(MyVisitor);
 Called!
 Called!
 Called!
@@ -444,7 +446,7 @@ You can also use aliases as visitor nodes (as defined in [babel-types](https://g
 
 For example,
 
-`Function` is an alias for `FunctionDeclaration`, `FunctionExpression`, `ArrowFunctionExpression`
+`Function` is an alias for `FunctionDeclaration`, `FunctionExpression`, `ArrowFunctionExpression`, `ObjectMethod` and `ClassMethod`.
 
 ```js
 const MyVisitor = {
@@ -536,6 +538,7 @@ a + b + c;
 ```
 
 ```js
+path.traverse(MyVisitor);
 Visiting: a
 Visiting: b
 Visiting: c
@@ -602,6 +605,8 @@ const MyVisitor = {
     path.traverse(updateParamNameVisitor, { paramName });
   }
 };
+
+path.traverse(MyVisitor);
 ```
 
 Of course, this is a contrived example but it demonstrates how to eliminate global state from your visitors.
@@ -974,7 +979,7 @@ const code = `function square(n) {
 
 const ast = babylon.parse(code);
 
-generate(ast, null, code);
+generate(ast, {}, code);
 // {
 //   code: "...",
 //   map: "..."
@@ -1164,9 +1169,9 @@ Awesome! Our very first Babel plugin.
 
 ## <a id="toc-visiting"></a>Visitando
 
-### <a id="toc-get-the-path-of-a-sub-node"></a>Get the Path of Sub-Node
+### <a id="toc-get-the-path-of-a-sub-node"></a>Obtendo o caminho do sub-nó
 
-To access an AST node's property you normally access the node and then the property. `path.node.property`
+Para acessar a propriedade de um nó AST, você normalmente acessa o nó e, em seguida, a propriedade. `path.node.property`
 
 ```js
 // the BinaryExpression AST node has properties: `left`, `right`, `operator`
@@ -1177,7 +1182,7 @@ BinaryExpression(path) {
 }
 ```
 
-If you need to access the `path` of that property instead, use the `get` method of a path, passing in the string to the property.
+Se você precisar acessar o `path` dessa propriedade, em vez disso, use o método `get` do path, passando em string para a propriedade.
 
 ```js
 BinaryExpression(path) {
@@ -1188,7 +1193,7 @@ Program(path) {
 }
 ```
 
-### <a id="toc-check-if-a-node-is-a-certain-type"></a>Check if a node is a certain type
+### <a id="toc-check-if-a-node-is-a-certain-type"></a>Verificando se um nó possui um certo tipo
 
 If you want to check what the type of a node is, the preferred way to do so is:
 
@@ -1224,7 +1229,7 @@ BinaryExpression(path) {
 }
 ```
 
-### <a id="toc-check-if-a-path-is-a-certain-type"></a>Check if a path is a certain type
+### <a id="toc-check-if-a-path-is-a-certain-type"></a>Verificando se o caminho é de um tipo específico
 
 A path has the same methods for checking the type of a node:
 
@@ -1246,7 +1251,7 @@ BinaryExpression(path) {
 }
 ```
 
-### <a id="toc-check-if-an-identifier-is-referenced"></a>Check if an identifier is referenced
+### <a id="toc-check-if-an-identifier-is-referenced"></a>Verificando se um identificador é referenciado
 
 ```js
 Identifier(path) {
@@ -1266,7 +1271,7 @@ Identifier(path) {
 }
 ```
 
-### <a id="toc-find-a-specific-parent-path"></a>Find a specific parent path
+### <a id="toc-find-a-specific-parent-path"></a>Encontre o caminho específico de um parente
 
 Sometimes you will need to traverse the tree upwards from a path until a condition is satisfied.
 
@@ -1296,7 +1301,7 @@ path.getStatementParent();
 
 ### <a id="toc-get-sibling-paths"></a>Get Sibling Paths
 
-If a path in a a list like in the body of a `Function`/`Program`, it will have "siblings".
+If a path is in a list like in the body of a `Function`/`Program`, it will have "siblings".
 
   * Check if a path is part of a list with `path.inList`
   * You can get the surrounding siblings with `path.getSibling(index)`,
@@ -1304,7 +1309,7 @@ If a path in a a list like in the body of a `Function`/`Program`, it will have "
   * The path's container (an array of all sibling paths) with `path.container`
   * Get the name of the key of the list container with `path.listKey`
 
-> These APis are used in the [transform-merge-sibling-variables](https://github.com/babel/babili/blob/master/packages/babel-plugin-transform-merge-sibling-variables/src/index.js) plugin used in [babel-minify](https://github.com/babel/babili).
+> These APIs are used in the [transform-merge-sibling-variables](https://github.com/babel/babili/blob/master/packages/babel-plugin-transform-merge-sibling-variables/src/index.js) plugin used in [babel-minify](https://github.com/babel/babili).
 
 ```js
 var a = 1; // pathA, path.key = 0
@@ -1345,13 +1350,13 @@ If you are doing a sub-traversal in a top level path, you can use 2 provided API
 `path.skip()` skips traversing the children of the current path. `path.stop()` stops traversal entirely.
 
 ```js
-path.traverse({
-  Function(path) {
-    path.skip(); // if checking the children is irrelevant
+outerPath.traverse({
+  Function(innerPath) {
+    innerPath.skip(); // if checking the children is irrelevant
   },
-  ReferencedIdentifier(path, state) {
+  ReferencedIdentifier(innerPath, state) {
     state.iife = true;
-    path.stop(); // if you want to save some state and then stop traversal, or deopt
+    innerPath.stop(); // if you want to save some state and then stop traversal, or deopt
   }
 });
 ```
@@ -1439,12 +1444,12 @@ FunctionDeclaration(path) {
 
 ### <a id="toc-inserting-into-a-container"></a>Inserting into a container
 
-If you want to insert into a AST node property like that is an array like `body`. It is simialr to `insertBefore`/`insertAfter` other than you having to specify the `listKey` which is usually `body`.
+If you want to insert into a AST node property like that is an array like `body`. It is similar to `insertBefore`/`insertAfter` other than you having to specify the `listKey` which is usually `body`.
 
 ```js
 ClassMethod(path) {
-  path.get('body').unshiftContainer('body', t.stringLiteral('before'));
-  path.get('body').pushContainer('body', t.stringLiteral('after'));
+  path.unshiftContainer('body', t.stringLiteral('before'));
+  path.pushContainer('body', t.stringLiteral('after'));
 }
 ```
 
@@ -1681,11 +1686,11 @@ export default function({ types: t }) {
 The error looks like:
 
     file.js: Error message here
-       7 | 
+       7 |
        8 | let tips = [
     >  9 |   "Click on any AST node with a '+' to expand it",
          |   ^
-      10 | 
+      10 |
       11 |   "Hovering over a node highlights the \
       12 |    corresponding part in the source code",
     
@@ -1694,7 +1699,7 @@ The error looks like:
 
 # <a id="toc-building-nodes"></a>Construindo nós
 
-When writing transformations you'll often want to build up some nodes to insert into the AST. As mentioned previously, you can do this using the [builder](#builder) methods in the [`babel-types`](#babel-types) package.
+When writing transformations you'll often want to build up some nodes to insert into the AST. As mentioned previously, you can do this using the [builder](#builders) methods in the [`babel-types`](#babel-types) package.
 
 The method name for a builder is simply the name of the node type you want to build except with the first letter lowercased. For example if you wanted to build a `MemberExpression` you would use `t.memberExpression(...)`.
 
@@ -1874,7 +1879,7 @@ path.traverse({
 It may also be tempting to call `path.traverse` when looking for a particular node type.
 
 ```js
-const visitorOne = {
+const nestedVisitor = {
   Identifier(path) {
     // ...
   }
@@ -1882,7 +1887,7 @@ const visitorOne = {
 
 const MyVisitor = {
   FunctionDeclaration(path) {
-    path.get('params').traverse(visitorOne);
+    path.get('params').traverse(nestedVisitor);
   }
 };
 ```
@@ -1915,10 +1920,10 @@ const MyVisitor = {
 };
 ```
 
-However, this creates a new visitor object everytime `FunctionDeclaration()` is called above, which Babel then needs to explode and validate every single time. This can be costly, so it is better to hoist the visitor up.
+However, this creates a new visitor object every time `FunctionDeclaration()` is called. That can be costly, because Babel does some processing each time a new visitor object is passed in (such as exploding keys containing multiple types, performing validation, and adjusting the object structure). Because Babel stores flags on visitor objects indicating that it's already performed that processing, it's better to store the visitor in a variable and pass the same object each time.
 
 ```js
-const visitorOne = {
+const nestedVisitor = {
   Identifier(path) {
     // ...
   }
@@ -1926,7 +1931,7 @@ const visitorOne = {
 
 const MyVisitor = {
   FunctionDeclaration(path) {
-    path.traverse(visitorOne);
+    path.traverse(nestedVisitor);
   }
 };
 ```
@@ -1952,7 +1957,7 @@ const MyVisitor = {
 You can pass it in as state to the `traverse()` method and have access to it on `this` in the visitor.
 
 ```js
-const visitorOne = {
+const nestedVisitor = {
   Identifier(path) {
     if (path.node.name === this.exampleState) {
       // ...
@@ -1963,7 +1968,7 @@ const visitorOne = {
 const MyVisitor = {
   FunctionDeclaration(path) {
     var exampleState = path.node.params[0].name;
-    path.traverse(visitorOne, { exampleState });
+    path.traverse(nestedVisitor, { exampleState });
   }
 };
 ```
@@ -2014,4 +2019,10 @@ class Foo {
 }
 ```
 
-> ***For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) and [@babeljs](https://twitter.com/babeljs) on Twitter.***
+## <a id="toc-unit-test-your-plugin"></a> Unit Test your plugin
+
+When developing your plugin, eventually you'll want to test it!
+
+The [`generator-babel-plugin`](https://github.com/babel/generator-babel-plugin) package sets up your tests automatically. You may also want to look at [`babel-plugin-tester`](https://github.com/kentcdodds/babel-plugin-tester) which can also make testing plugins easier.
+
+> ***Para futuras atualizações, siga [@thejameskyle](https://twitter.com/thejameskyle) e [@babeljs](https://twitter.com/babeljs) no Twitter.***

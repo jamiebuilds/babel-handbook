@@ -36,7 +36,6 @@ Buku pedoman ini tersedia dalam bahasa lain, lihat [README](/README.md) untuk da
       * [Kerangka kerja](#toc-frameworks)
       * [React](#toc-react)
       * [Teks editor dan IDE](#toc-text-editors-and-ides)
-  * [Debugging Babel](#toc-debugging-babel)
   * [Dukungan Babel](#toc-babel-support) 
       * [Forum Babel](#toc-babel-forum)
       * [Chat Babel](#toc-babel-chat)
@@ -45,13 +44,13 @@ Buku pedoman ini tersedia dalam bahasa lain, lihat [README](/README.md) untuk da
 
 # <a id="toc-introduction"></a>Pengenalan
 
-Babel adalah kompiler generik multi-tujuan untuk JavaScript. Dengan menggunakan Babel Anda dapat menggunakan (dan membuat) generasi JavaScript berikutnya, serta generasi alat JavaScript berikutnya.
+Babel adalah kompiler generik multi-fungsi untuk JavaScript. Dengan menggunakan Babel Anda dapat menggunakan (dan membuat) JavaScript generasi berikutnya, serta tooling JavaScript generasi berikutnya.
 
-JavaScript sebagai bahasa yang terus berkembang, dengan spesifikasi baru dan usulan-usulan yang keluar dengan fitur terbaru sepanjang waktu. Menggunakan Babel akan memungkinkan Anda untuk menggunakan berbagai fitur bertahun-tahun sebelum mereka tersedia di mana-mana.
+JavaScript sebagai bahasa yang terus berkembang, dengan spesifikasi terbaru dan proposal yang keluar dengan fitur terbaru sepanjang waktu. Menggunakan Babel akan memungkinkan Anda untuk menggunakan berbagai fitur terbaru sebelum mereka tersedia.
 
-Babel melakukan ini dengan menyusun turun kode JavaScript yang ditulis dengan standar terbaru ke versi yang akan bekerja di mana-mana hari ini. Proses ini dikenal sebagai sumber-ke-sumber kompilasi, juga dikenal sebagai transpiling.
+Babel melakukan ini dengan menyusun turun kode JavaScript yang ditulis dengan standar terbaru ke versi yang akan bekerja di mana-mana hari ini. Proses ini dikenal sebagai source-to-source compiling, juga dikenal sebagai transpiling.
 
-Sebagai contoh, Babel bisa mengubah sintaks fungsi panah baru pada ES2015 dari:
+Sebagai contoh, Babel bisa mengubah sintaks arrow-function pada ES2015 dari:
 
 ```js
 const square = n => n * n;
@@ -65,13 +64,13 @@ const square = function square(n) {
 };
 ```
 
-Selain itu, Babel dapat melakukan lebih banyak hal lagi karena Babel dapat mengekstensi sintaks lain seperti sintaks JSX untuk React dan sintaks Flow untuk memeriksa tipe statis.
+Selain itu, Babel dapat melakukan lebih banyak hal lagi karena Babel dapat mengekstensi sintaks lain seperti sintaks JSX untuk React dan sintaks Flow untuk static type checking.
 
-Lebih dari itu, semuanya di Babel hanya sebuah plugin dan siapa saja bisa menggunakan dan membuat plugin mereka sendiri yang menggunakan kekuatan penuh dari Babel untuk melakukan apa pun yang mereka inginkan.
+Lebih dari itu, semuanya di Babel hanya sebuah plugin dan siapa saja bisa menggunakan dan membuat plugin mereka sendiri yang menggunakan "kekuatan penuh" dari Babel untuk melakukan apa pun yang mereka inginkan.
 
-*Bahkan lebih* dari itu, Babel dibagi menjadi beberapa modul inti yang siapa pun dapat menggunakannya untuk membangun generasi alat javascript berikutnya.
+*Bahkan lebih* dari itu, Babel dibagi menjadi beberapa modul inti yang siapa pun dapat menggunakannya untuk membangun tooling Javascript generasi berikutnya.
 
-Banyak orang telah melakukan, ekosistem yang telah bermunculan di sekitar Babel besar dan sangat beragam. Seluruh buku ini aku akan membahas baik bagaimana tool Babel bekerja seperti beberapa hal yang berguna dari seluruh masyarakat.
+Banyak orang juga telah melakukannya, ekosistem yang bermunculan di sekitar Babel sangat besar dan beragam. Melalui buku ini saya akan membahas baik bagaimana tool Babel bekerja dan juga beberapa hal yang berguna yang terkumpul dari seluruh komunitas.
 
 > ***Untuk pembaruan terbaru, ikuti [@thejameskyle](https://twitter.com/thejameskyle) di Twitter.***
 
@@ -79,15 +78,15 @@ Banyak orang telah melakukan, ekosistem yang telah bermunculan di sekitar Babel 
 
 # <a id="toc-setting-up-babel"></a>Mempersiapkan Babel
 
-Karena komunitas JavaScript tidak membangun satu alat, kerangka, platform, dll, Babel telah resmi integrasi untuk semua perkakas utama. Semuanya dari Gulp sampai Browserify, dari Ember sampai dengan Meteor, tidak peduli pengaturan yang anda buat disana mungkin ada integrasi resmi.
+Karena komunitas JavaScript banyak memiliki build tool, kerangka, platform, dll, Babel juga memiliki semua integrasi resmi untuk semua build tool. Semuanya dari Gulp sampai Browserify, dari Ember sampai dengan Meteor, tidak peduli apapun pengaturan yang anda buat, mungkin saja ada integrasi resminya.
 
-Untuk tujuan buku ini, kita hanya akan membahas cara-cara built-in menyiapkan Babel, tetapi Anda juga dapat mengunjungi interaktif [halaman setup](http://babeljs.io/docs/setup) untuk semua integrasi.
+Sesuai tujuan buku ini, kita hanya akan membahas cara-cara built-in menyiapkan Babel, tetapi Anda juga dapat mengunjungi [halaman setup](http://babeljs.io/docs/setup) interaktif untuk semua integrasi.
 
-> **Catatan:** Panduan ini akan merujuk pada baris perintah perangkat seperti `node` dan `npm`. Sebelum melanjutkan lebih jauh Anda harus nyaman dengan alat-alat ini.
+> **Catatan:** Panduan ini akan merujuk pada baris perintah perangkat seperti `node` dan `npm`. Sebelum melanjutkan lebih jauh Anda harus nyaman dengan tool ini.
 
 ## <a id="toc-babel-cli"></a>`babel-cli`
 
-Babel's CLI adalah cara sederhana untuk mengkompilasi file dengan Babel dari command line atau terminal.
+Babel's CLI adalah cara sederhana untuk meng-compile file dengan Babel dari command line atau terminal.
 
 Pertama mari kita menginstalnya secara global untuk mempelajari dasar-dasar.
 
@@ -95,13 +94,13 @@ Pertama mari kita menginstalnya secara global untuk mempelajari dasar-dasar.
 $ npm install --global babel-cli
 ```
 
-Kita dapat mengkompilasi file pertama kita seperti:
+Kita dapat meng-compile file pertama kita seperti:
 
 ```sh
 $ babel my-file.js
 ```
 
-Ini akan membuang output dikompilasi langsung ke terminal Anda. Untuk menulis ke file kita akan menentukan `--out-file` atau `-o`.
+Ini akan menghasilkan output yang ter-compile langsung ke terminal Anda. Untuk menulisnya ke dalam file kita dapat menambahkan `--out-file` atau `-o`.
 
 ```sh
 $ babel example.js --out-file compiled.js
@@ -109,7 +108,7 @@ $ babel example.js --out-file compiled.js
 $ babel example.js -o compiled.js
 ```
 
-Jika kita ingin menyusun seluruh direktori ke direktori baru kita dapat melakukannya dengan menggunakan `-out-dir` atau `-d`.
+Jika kita ingin meng-compile seluruh direktori ke direktori baru kita dapat melakukannya dengan menggunakan `-out-dir` atau `-d`.
 
 ```sh
 $ babel src --out-dir lib
@@ -117,14 +116,14 @@ $ babel src --out-dir lib
 $ babel src -d lib
 ```
 
-### <a id="toc-running-babel-cli-from-within-a-project"></a>Menjalankan Babel CLI dalam sebuah proyek
+### <a id="toc-running-babel-cli-from-within-a-project"></a>Menjalankan Babel CLI dalam sebuah project
 
-Meskipun Anda *dapat* menginstal Babel CLI secara global pada mesin Anda, itu jauh lebih baik untuk menginstalnya **secara lokal** untuk setiap proyek.
+Meskipun Anda *dapat* menginstal Babel CLI secara global, Anda lebih baik untuk menginstalnya **secara lokal** untuk setiap project.
 
 Ada dua alasan utama untuk ini.
 
-  1. Proyek-proyek yang berbeda di mesin yang sama dapat bergantung pada versi yang berbeda dari Babel yang memungkinkan Anda untuk memperbarui satu per satu waktu.
-  2. Itu berarti Anda tidak memiliki ketergantungan implisit terhadap lingkungan Anda bekerja di. Membuat proyek Anda jauh lebih portabel dan mudah untuk setup.
+  1. Project-project yang berbeda di mesin yang sama bisa bergantung pada versi Babel yang berbeda, yang memungkinkan Anda untuk memperbarui salah satunya.
+  2. Itu berarti Anda tidak memiliki ketergantungan implisit terhadap environment mesin anda. Membuat project Anda jauh lebih portabel dan mudah untuk di-setup.
 
 Kita dapat menginstal Babel CLI secara lokal dengan menjalankan:
 
@@ -132,13 +131,13 @@ Kita dapat menginstal Babel CLI secara lokal dengan menjalankan:
 $ npm install --save-dev babel-cli
 ```
 
-> **Catatan:** Karena umumnya ide yang buruk untuk menjalankan Babel global Anda mungkin ingin menghapus salinan global dengan menjalankan:
+> **Catatan:** Karena menjalankan Babel secara global adalah ide yang buruk, Anda mungkin ingin menghapus instalasi Babel global dengan menjalankan:
 > 
 > ```sh
 $ npm uninstall --global babel-cli
 ```
 
-Setelah itu selesai menginstal, file `package.json` Anda akan terlihat seperti ini:
+Setelah selesai menginstal, file `package.json` Anda harusnya terlihat seperti ini:
 
 ```json
 {
@@ -150,9 +149,9 @@ Setelah itu selesai menginstal, file `package.json` Anda akan terlihat seperti i
 }
 ```
 
-Sekarang bukan menjalankan Babel langsung dari baris perintah kami akan memasukkan perintah kami di **npm script** yang akan menggunakan versi lokal kami.
+Sekarang, daripada menjalankan Babel langsung dari command line, kita akan memasukkan command kita di dalam **npm script** yang tentunya akan menggunakan Babel yang terinstal di dalam folder project.
 
-Cukup tambahkan sebuah field `"scripts"` untuk `package.json` anda dan menempatkan perintah babel di dalam sana sebagai `membangun`.
+Cukup tambahkan sebuah field `"scripts"` di `package.json` dan tulis command babel di dalam sana sebagai `"build"`.
 
 ```diff
   {
@@ -167,50 +166,50 @@ Cukup tambahkan sebuah field `"scripts"` untuk `package.json` anda dan menempatk
   }
 ```
 
-Sekarang dari terminal kita kita dapat menjalankan:
+Sekarang dari terminal kita dapat menjalankan:
 
 ```js
 npm run build
 ```
 
-Ini akan menjalankan Babel dengan cara yang sama seperti sebelumnya, hanya sekarang kami menggunakan salinan lokal.
+Perintah ini akan menjalankan Babel dengan cara yang sama seperti sebelumnya, namun perbedaanya sekarang kita menggunakan Babel yang terinstal di dalam folder project.
 
 ## <a id="toc-babel-register"></a>`babel-register`
 
-Metode yang paling umum berikutnya menjalankan Babel adalah melalui `babel-register`. Pilihan ini akan memungkinkan Anda untuk menjalankan Babel hanya dengan mengharuskan file, yang dapat mengintegrasikan dengan setup Anda lebih baik.
+Metode yang paling umum berikutnya untuk menjalankan Babel adalah melalui `babel-register`. Cara ini akan memungkinkan Anda untuk menjalankan Babel hanya dengan meng-"require()" sebuah file.
 
-Catatan bahwa ini tidak dimaksudkan untuk penggunaan produksi. Hal ini dianggap praktik buruk untuk menggunakan kode yang mendapat disusun dengan cara ini. Hal ini jauh lebih baik untuk mengkompilasi terlebih dahulu sebelum penggelaran. Namun karya ini cukup baik untuk membangun script atau hal-hal lain yang Anda jalankan secara lokal.
+Catatan: Cara ini tidak dimaksudkan untuk production. Hal ini dianggap bad-practice untuk menjalankan babel-register di dalam server production. Lebih baik untuk meng-compile project anda terlebih dahulu sebelum di-deploy ke production. Walaupun tidak baik digunakan di production, cara ini terbilang cukup baik untuk digunakan ketika sedang men-develop project di mesin lokal kita.
 
-Pertama mari kita membuat `index.js` file di proyek kami.
+Pertama mari kita buat `index.js` file di dalam folder project kita.
 
 ```js
 console.log("Hello world!");
 ```
 
-Kalau kita harus menjalankan hal ini dengan `node index.js` ini tidak dikompilasi dengan Babel. Jadi bukannya melakukan itu, kita akan setup `babel-register`.
+Jika kita jalankan dengan `node index.js`, kode kita tidak akan di-compile dengan Babel. Jadi daripada melakukannya dengan cara tersebut, kita akan setup `babel-register`.
 
-Pertama Instal `babel-register`.
+Pertama install `babel-register`.
 
 ```sh
 $ npm install --save-dev babel-register
 ```
 
-Selanjutnya, buat `register.js` file dalam proyek dan tuliskan kode berikut ini:
+Selanjutnya, buat file `register.js` dalam folder project dan tuliskan kode berikut ini:
 
 ```js
 require("babel-register");
 require("./index.js");
 ```
 
-Apa yang dilakukan adalah *registers* Babel di Node modul sistem dan mulai menyusun setiap file yang `require` ' d.
+Maksud kode tersebut adalah *menambahkan* Babel di modul sistem Node dan mulai meng-compile setiap file yang di- `require()`.
 
-Sekarang, daripada menjalankan `simpul index.js` kita dapat menggunakan `register.js` sebagai gantinya.
+Sekarang, daripada menjalankan `node index.js` kita dapat menggunakan `register.js` sebagai gantinya.
 
 ```sh
 $ node register.js
 ```
 
-> **Catatan:** Anda tidak dapat mendaftar Babel pada file yang sama yang Anda ingin mengkompilasi. Sebagai node mengeksekusi file sebelum Babel memiliki kesempatan untuk mengkompilasi.
+> **Catatan:** Anda tidak dapat mendaftarkan Babel pada file yang akan anda compile. Karena Node akan mengeksekusi file sebelum Babel memiliki kesempatan untuk meng-compile-nya.
 > 
 > ```js
 require("babel-register");
@@ -222,7 +221,7 @@ console.log("Hello world!");
 
 Jika Anda hanya menjalankan beberapa kode melalui `node` CLI cara termudah untuk mengintegrasikan Babel mungkin menggunakan `babel-node` CLI yang sebagian besar hanya penurunan pengganti `node` CLI.
 
-Catatan bahwa ini tidak dimaksudkan untuk penggunaan produksi. Hal ini dianggap praktik buruk untuk menggunakan kode yang mendapat disusun dengan cara ini. Hal ini jauh lebih baik untuk mengkompilasi terlebih dahulu sebelum penggelaran. Namun karya ini cukup baik untuk membangun script atau hal-hal lain yang Anda jalankan secara lokal.
+Catatan: Cara ini tidak dimaksudkan untuk production. Hal ini dianggap bad-practice untuk menjalankan babel-register di dalam server production. Lebih baik untuk meng-compile project anda terlebih dahulu sebelum di-deploy ke production. Walaupun tidak baik digunakan di production, cara ini terbilang cukup baik untuk digunakan ketika sedang men-develop project di mesin lokal kita.
 
 Pertama, pastikan bahwa Anda memiliki `babel-cli` diinstal.
 
@@ -230,7 +229,7 @@ Pertama, pastikan bahwa Anda memiliki `babel-cli` diinstal.
 $ npm install --save-dev babel-cli
 ```
 
-> **Catatan:** Jika Anda bertanya-tanya mengapa kita menginstal ini secara lokal, silakan baca bagian [CLI Babel berjalan dari dalam sebuah proyek](#running-babel-cli--from-within-a-project) di atas.
+> **Note:** If you are wondering why we are installing this locally, please read the [Running Babel CLI from within a project](#toc-running-babel-cli-from-within-a-project) section above.
 
 Lalu timpa dimanapun Anda menjalankan `node` dengan `babel node`.
 
@@ -297,7 +296,7 @@ babel.transformFromAst(ast, code, options);
 // => { code, map, ast }
 ```
 
-Untuk semua metode di atas, `pilihan` mengacu pada http://babeljs.io/docs/usage/options/.
+For all of the above methods, `options` refers to https://babeljs.io/docs/usage/api/#options.
 
 * * *
 
@@ -706,6 +705,8 @@ $ npm run lint
 Untuk informasi lebih lanjut lihat dokumentasi [`babel-eslint`](https://github.com/babel/babel-eslint) atau [`eslint`](http://eslint.org).
 
 ### <a id="toc-code-style"></a>Gaya kode
+
+> JSCS has merged with ESLint, so checkout Code Styling with ESLint.
 
 JSCS adalah alat yang sangat populer untuk mengambil linting langkah lebih jauh ke dalam memeriksa gaya kode itu sendiri. Pengelola inti Babel dan JSCS proyek ([@hzoo](https://github.com/hzoo)) mempertahankan integrasi resmi dengan JSCS.
 
