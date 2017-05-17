@@ -498,7 +498,7 @@ You can also use aliases as visitor nodes (as defined in [babel-types](https://g
 
 For example,
 
-`Function` is an alias for `FunctionDeclaration`, `FunctionExpression`, `ArrowFunctionExpression`
+`Function` is an alias for `FunctionDeclaration`, `FunctionExpression`, `ArrowFunctionExpression`, `ObjectMethod` and `ClassMethod`.
 
 ```js
 const MyVisitor = {
