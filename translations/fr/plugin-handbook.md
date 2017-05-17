@@ -68,6 +68,7 @@ Ce manuel est disponible dans d'autres langues, consulter le [README](/README.md
       * [N'utilisez pas "traverse" lorsqu'une lecture manuelle est possible](#toc-do-not-traverse-when-manual-lookup-will-do)
       * [Optimisation des visiteurs imbriqués](#toc-optimizing-nested-visitors)
       * [Etre conscient des structures imbriqués](#toc-being-aware-of-nested-structures)
+      * [Unit Test your plugin](#toc-unit-test-your-plugin)
 
 # <a id="toc-introduction"></a>Introduction
 
@@ -89,7 +90,7 @@ Babel est un compilateur JavaScript, plus précisément un compilateur de code s
 
 Chacune de ces étapes implique la création ou le travail avec une [Arbre de syntaxe abstraite](https://en.wikipedia.org/wiki/Abstract_syntax_tree) ou AST.
 
-> Babel utilise un AST modifié [ESTree](https://github.com/estree/estree), avec la base technique trouvée [ici](https://github.com/babel/babel/blob/master/doc/ast/spec.md).
+> Babel uses an AST modified from [ESTree](https://github.com/estree/estree), with the core spec located [here](https://github.com/babel/babylon/blob/master/ast/spec.md).
 
 ```js
 function square(n) {
@@ -370,6 +371,7 @@ function square(n) {
 ```
 
 ```js
+path.traverse(MyVisitor);
 Called!
 Called!
 Called!
@@ -445,7 +447,7 @@ You can also use aliases as visitor nodes (as defined in [babel-types](https://g
 
 Par exemple,
 
-`Function` est un alias pour `FunctionDeclaration`, `FunctionExpression`, `ArrowFunctionExpression`
+`Function` is an alias for `FunctionDeclaration`, `FunctionExpression`, `ArrowFunctionExpression`, `ObjectMethod` and `ClassMethod`.
 
 ```js
 const MyVisitor = {
@@ -537,6 +539,7 @@ a + b + c;
 ```
 
 ```js
+path.traverse(MyVisitor);
 Visiting: a
 Visiting: b
 Visiting: c
@@ -603,6 +606,8 @@ const MyVisitor = {
     path.traverse(updateParamNameVisitor, { paramName });
   }
 };
+
+path.traverse(MyVisitor);
 ```
 
 Bien sûr, il s’agit d’un exemple artificiel mais il montre comment éliminer l’état global de vos visiteurs.
@@ -975,7 +980,7 @@ const code = `function square(n) {
 
 const ast = babylon.parse(code);
 
-generate(ast, null, code);
+generate(ast, {}, code);
 // {
 //   code: "...",
 //   map: "..."
@@ -1346,13 +1351,13 @@ If you are doing a sub-traversal in a top level path, you can use 2 provided API
 `path.skip()` skips traversing the children of the current path. `path.stop()` stops traversal entirely.
 
 ```js
-path.traverse({
-  Function(path) {
-    path.skip(); // if checking the children is irrelevant
+outerPath.traverse({
+  Function(innerPath) {
+    innerPath.skip(); // if checking the children is irrelevant
   },
-  ReferencedIdentifier(path, state) {
+  ReferencedIdentifier(innerPath, state) {
     state.iife = true;
-    path.stop(); // if you want to save some state and then stop traversal, or deopt
+    innerPath.stop(); // if you want to save some state and then stop traversal, or deopt
   }
 });
 ```
@@ -1440,7 +1445,7 @@ FunctionDeclaration(path) {
 
 ### <a id="toc-inserting-into-a-container"></a>Inserting into a container
 
-If you want to insert into a AST node property like that is an array like `body`. It is simialr to `insertBefore`/`insertAfter` other than you having to specify the `listKey` which is usually `body`.
+If you want to insert into a AST node property like that is an array like `body`. It is similar to `insertBefore`/`insertAfter` other than you having to specify the `listKey` which is usually `body`.
 
 ```js
 ClassMethod(path) {
@@ -1875,7 +1880,7 @@ path.traverse({
 Il peut être tentant d'appeler `path.traverse` pour rechercher un type de nœud particulier.
 
 ```js
-const visitorOne = {
+const nestedVisitor = {
   Identifier(path) {
     // ...
   }
@@ -1883,7 +1888,7 @@ const visitorOne = {
 
 const MyVisitor = {
   FunctionDeclaration(path) {
-    path.get('params').traverse(visitorOne);
+    path.get('params').traverse(nestedVisitor);
   }
 };
 ```
@@ -1916,10 +1921,10 @@ const MyVisitor = {
 };
 ```
 
-Toutefois, cela crée un nouvel objet visiteur chaque fois que `FunctionDeclaration()` est appelé ci-dessus, Babel a besoin alors de les exploser et de les valider à chaque fois. Cela peut être coûteux, il est donc préférable de hisser le visiteur.
+However, this creates a new visitor object every time `FunctionDeclaration()` is called. That can be costly, because Babel does some processing each time a new visitor object is passed in (such as exploding keys containing multiple types, performing validation, and adjusting the object structure). Because Babel stores flags on visitor objects indicating that it's already performed that processing, it's better to store the visitor in a variable and pass the same object each time.
 
 ```js
-const visitorOne = {
+const nestedVisitor = {
   Identifier(path) {
     // ...
   }
@@ -1927,7 +1932,7 @@ const visitorOne = {
 
 const MyVisitor = {
   FunctionDeclaration(path) {
-    path.traverse(visitorOne);
+    path.traverse(nestedVisitor);
   }
 };
 ```
@@ -1953,7 +1958,7 @@ const MyVisitor = {
 Vous pouvez le fournir en paramètre de la méthode `traverse()`, puis y accéder grâce à l'opérateur `this` au sein du visiteur.
 
 ```js
-const visitorOne = {
+const nestedVisitor = {
   Identifier(path) {
     if (path.node.name === this.exampleState) {
       // ...
@@ -1964,7 +1969,7 @@ const visitorOne = {
 const MyVisitor = {
   FunctionDeclaration(path) {
     var exampleState = path.node.params[0].name;
-    path.traverse(visitorOne, { exampleState });
+    path.traverse(nestedVisitor, { exampleState });
   }
 };
 ```
@@ -2014,5 +2019,11 @@ class Foo {
   }
 }
 ```
+
+## <a id="toc-unit-test-your-plugin"></a> Unit Test your plugin
+
+When developing your plugin, eventually you'll want to test it!
+
+The [`generator-babel-plugin`](https://github.com/babel/generator-babel-plugin) package sets up your tests automatically. You may also want to look at [`babel-plugin-tester`](https://github.com/kentcdodds/babel-plugin-tester) which can also make testing plugins easier.
 
 > ***Pour les prochaines mises à jour, suivez [@thejameskyle](https://twitter.com/thejameskyle) et [@babeljs](https://twitter.com/babeljs) sur Twitter.***

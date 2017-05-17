@@ -706,6 +706,8 @@ $ npm run lint
 
 ### <a id="toc-code-style"></a>代码风格
 
+> JSCS has merged with ESLint, so checkout Code Styling with ESLint.
+
 JSCS 是一个极受欢迎的工具，在语法检查的基础上更进一步检查代码自身的风格。 Babel 和 JSCS 项目的核心维护者之一（[@hzoo](https://github.com/hzoo)）维护着 JSCS 的官方集成。
 
 更妙的是，JSCS 自己通过 `--esnext` 选项实现了这种集成，于是和 Babel 的集成就简化成了直接在命令行运行：

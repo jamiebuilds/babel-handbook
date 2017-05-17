@@ -1,6 +1,6 @@
-# Babel Plugin Handbook
+# Manual para Plugins Babel
 
-Este documento cubre cómo crear [plugins](https://babeljs.io/docs/advanced/plugins/) para [Babel](https://babeljs.io).
+Este documento abarca cómo crear [plugins](https://babeljs.io/docs/advanced/plugins/) para [Babel](https://babeljs.io).
 
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
@@ -68,14 +68,15 @@ Este manual está disponible en otros idiomas, mira el archivo [README](/README.
       * [Do not traverse when manual lookup will do](#toc-do-not-traverse-when-manual-lookup-will-do)
       * [Optimizing nested visitors](#toc-optimizing-nested-visitors)
       * [Being aware of nested structures](#toc-being-aware-of-nested-structures)
+      * [Unit Test your plugin](#toc-unit-test-your-plugin)
 
 # <a id="toc-introduction"></a>Introducción
 
-Babel es un compilador multi propósito para Javascript. Más que eso es una colección de módulos que pueden ser usados en diferentes formas de análisis estático.
+Babel es un compilador multipropósito para Javascript. Más que eso es una colección de módulos que pueden ser usados en diferentes formas de análisis estático.
 
 > Análisis estático es el proceso de analizar código sin ejecutarlo. (Análisis de código durante la ejecución se conoce como análisis dinámico). El propósito del análisis estático varía enormemente. Puede ser utilizado para compilar, resaltar ó transformar código. También en procesos de linting, optimización ó minificación, entre muchos otros.
 
-Babel puede ser usado para construir diferentes tipos de herramientas, las cuales que nos pueden ayudar a ser más productivos y escribir mejores programas.
+Babel puede ser usado para construir diferentes tipos de herramientas, las cuales nos pueden ayudar a ser más productivos y escribir mejores programas.
 
 > ***Para futuras actualizaciones, sigue a [@thejameskyle](https://twitter.com/thejameskyle) en Twitter.***
 
@@ -87,9 +88,9 @@ Babel es un compilador de JavaScript, específicamente un compilador de fuente a
 
 ## <a id="toc-asts"></a>ASTs
 
-Cada uno de estos pasos implican crear o trabajar con un [Árbol de sintaxis abstracta](https://en.wikipedia.org/wiki/Abstract_syntax_tree) ó AST por sus siglas en inglés.
+Cada uno de estos pasos implican crear o trabajar con un [Árbol de Sintaxis Abstracta](https://en.wikipedia.org/wiki/Abstract_syntax_tree) ó AST por sus siglas en inglés.
 
-> Babel utiliza un AST modificado desde [Estree alberga centro](https://github.com/estree/estree), las especificaciones bases se encuentran [aquí](https://github.com/babel/babel/blob/master/doc/ast/spec.md).
+> Babel uses an AST modified from [ESTree](https://github.com/estree/estree), with the core spec located [here](https://github.com/babel/babylon/blob/master/ast/spec.md).
 
 ```js
 function square(n) {
@@ -99,7 +100,7 @@ function square(n) {
 
 > Si deseas tener una mejor idea de los nodos AST, visita [AST Explorer](http://astexplorer.net/). [Aquí](http://astexplorer.net/#/Z1exs6BWMq) hay un enlace que contiene el código del ejemplo anterior.
 
-El mismo programa puede ser representado en un árbol como este:
+Este mismo programa puede ser representado en un árbol como este:
 
 ```md
 - FunctionDeclaration:
@@ -370,6 +371,7 @@ function square(n) {
 ```
 
 ```js
+path.traverse(MyVisitor);
 Called!
 Called!
 Called!
@@ -445,7 +447,7 @@ También puedes usar alias como nodos visitadores (como se define en [babel-type
 
 Por ejemplo,
 
-`Function` es un alias para `FunctionDeclaration`, `FunctionExpression`, `ArrowFunctionExpression`
+`Function` is an alias for `FunctionDeclaration`, `FunctionExpression`, `ArrowFunctionExpression`, `ObjectMethod` and `ClassMethod`.
 
 ```js
 const MyVisitor = {
@@ -537,6 +539,7 @@ a + b + c;
 ```
 
 ```js
+path.traverse(MyVisitor);
 Visiting: a
 Visiting: b
 Visiting: c
@@ -603,6 +606,8 @@ const MyVisitor = {
     path.traverse(updateParamNameVisitor, { paramName });
   }
 };
+
+path.traverse(MyVisitor);
 ```
 
 Por su puesto, este es un ejemplo inventado, pero que demuestra como eliminar el estado global desde uno de tus visitadores.
@@ -623,7 +628,7 @@ function scopeOne() {
 }
 ```
 
-Whenever you create a reference in JavaScript, whether that be by a variable, function, class, param, import, label, etc., it belongs to the current scope.
+En Javascript, cada referencia creada, ya sea a una variable, función, clase, parámetro, import, etiqueta, etc, pertenece al ámbito actual.
 
 ```js
 var global = "I am in the global scope";
@@ -637,7 +642,7 @@ function scopeOne() {
 }
 ```
 
-Code within a deeper scope may use a reference from a higher scope.
+Código dentro de un ámbito más profundo puede llegar a usar una referencia de un ámbito anterior.
 
 ```js
 function scopeOne() {
@@ -649,7 +654,7 @@ function scopeOne() {
 }
 ```
 
-A lower scope might also create a reference of the same name without modifying it.
+Un ámbito menor puede incluso crear una referencia de el mismo nombre sin modificarla.
 
 ```js
 function scopeOne() {
@@ -661,11 +666,11 @@ function scopeOne() {
 }
 ```
 
-When writing a transform, we want to be wary of scope. We need to make sure we don't break existing code while modifying different parts of it.
+Cuando escribimos una transformación queremos estar alerta con el ámbito. Necesitamos estar seguros de no romper código existente mientras modificamos las diferentes partes de este.
 
-We may want to add new references and make sure they don't collide with existing ones. Or maybe we just want to find where a variable is referenced. We want to be able to track these references within a given scope.
+Podríamos querer incluir nuevas referencias y estar seguros de que no choquen con las existentes. O tal vez solo queramos encontrar donde una variable está siendo referenciada. Queremos tener la capacidad de rastrear estas referencias dentro de un ámbito determinado.
 
-A scope can be represented as:
+Un ámbito puede ser representado como:
 
 ```js
 {
@@ -677,9 +682,9 @@ A scope can be represented as:
 }
 ```
 
-When you create a new scope you do so by giving it a path and a parent scope. Then during the traversal process it collects all the references ("bindings") within that scope.
+Cuando crea un nuevo ámbito, lo hace asignándole una ruta y un ámbito padre. Entonces durante el proceso de recorrido recopila todas las referencias ("enlaces") dentro de ese ámbito.
 
-Once that's done, there's all sorts of methods you can use on scopes. We'll get into those later though.
+Una vez haya terminado, hay todo tipo de métodos que puede usar en ese ámbito. Hablaremos de estos más adelante.
 
 #### <a id="toc-bindings"></a>Bindings
 
@@ -975,7 +980,7 @@ const code = `function square(n) {
 
 const ast = babylon.parse(code);
 
-generate(ast, null, code);
+generate(ast, {}, code);
 // {
 //   code: "...",
 //   map: "..."
@@ -1346,13 +1351,13 @@ If you are doing a sub-traversal in a top level path, you can use 2 provided API
 `path.skip()` skips traversing the children of the current path. `path.stop()` stops traversal entirely.
 
 ```js
-path.traverse({
-  Function(path) {
-    path.skip(); // if checking the children is irrelevant
+outerPath.traverse({
+  Function(innerPath) {
+    innerPath.skip(); // if checking the children is irrelevant
   },
-  ReferencedIdentifier(path, state) {
+  ReferencedIdentifier(innerPath, state) {
     state.iife = true;
-    path.stop(); // if you want to save some state and then stop traversal, or deopt
+    innerPath.stop(); // if you want to save some state and then stop traversal, or deopt
   }
 });
 ```
@@ -1440,7 +1445,7 @@ FunctionDeclaration(path) {
 
 ### <a id="toc-inserting-into-a-container"></a>Inserting into a container
 
-If you want to insert into a AST node property like that is an array like `body`. It is simialr to `insertBefore`/`insertAfter` other than you having to specify the `listKey` which is usually `body`.
+If you want to insert into a AST node property like that is an array like `body`. It is similar to `insertBefore`/`insertAfter` other than you having to specify the `listKey` which is usually `body`.
 
 ```js
 ClassMethod(path) {
@@ -1875,7 +1880,7 @@ path.traverse({
 It may also be tempting to call `path.traverse` when looking for a particular node type.
 
 ```js
-const visitorOne = {
+const nestedVisitor = {
   Identifier(path) {
     // ...
   }
@@ -1883,7 +1888,7 @@ const visitorOne = {
 
 const MyVisitor = {
   FunctionDeclaration(path) {
-    path.get('params').traverse(visitorOne);
+    path.get('params').traverse(nestedVisitor);
   }
 };
 ```
@@ -1916,10 +1921,10 @@ const MyVisitor = {
 };
 ```
 
-However, this creates a new visitor object everytime `FunctionDeclaration()` is called above, which Babel then needs to explode and validate every single time. This can be costly, so it is better to hoist the visitor up.
+However, this creates a new visitor object every time `FunctionDeclaration()` is called. That can be costly, because Babel does some processing each time a new visitor object is passed in (such as exploding keys containing multiple types, performing validation, and adjusting the object structure). Because Babel stores flags on visitor objects indicating that it's already performed that processing, it's better to store the visitor in a variable and pass the same object each time.
 
 ```js
-const visitorOne = {
+const nestedVisitor = {
   Identifier(path) {
     // ...
   }
@@ -1927,7 +1932,7 @@ const visitorOne = {
 
 const MyVisitor = {
   FunctionDeclaration(path) {
-    path.traverse(visitorOne);
+    path.traverse(nestedVisitor);
   }
 };
 ```
@@ -1953,7 +1958,7 @@ const MyVisitor = {
 You can pass it in as state to the `traverse()` method and have access to it on `this` in the visitor.
 
 ```js
-const visitorOne = {
+const nestedVisitor = {
   Identifier(path) {
     if (path.node.name === this.exampleState) {
       // ...
@@ -1964,7 +1969,7 @@ const visitorOne = {
 const MyVisitor = {
   FunctionDeclaration(path) {
     var exampleState = path.node.params[0].name;
-    path.traverse(visitorOne, { exampleState });
+    path.traverse(nestedVisitor, { exampleState });
   }
 };
 ```
@@ -2014,5 +2019,11 @@ class Foo {
   }
 }
 ```
+
+## <a id="toc-unit-test-your-plugin"></a> Unit Test your plugin
+
+When developing your plugin, eventually you'll want to test it!
+
+The [`generator-babel-plugin`](https://github.com/babel/generator-babel-plugin) package sets up your tests automatically. You may also want to look at [`babel-plugin-tester`](https://github.com/kentcdodds/babel-plugin-tester) which can also make testing plugins easier.
 
 > ***For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) and [@babeljs](https://twitter.com/babeljs) on Twitter.***

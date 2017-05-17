@@ -706,6 +706,8 @@ $ npm run lint
 
 ### <a id="toc-code-style"></a>Στυλ κώδικα
 
+> JSCS has merged with ESLint, so checkout Code Styling with ESLint.
+
 Το JSCS είναι ένα εξαιρετικά δημοφιλές εργαλείο για να πάτε το linting ένα βήμα παραπέρα στον έλεγχο του στυλ του ίδιου του κώδικα. Ένας κύριος συντηρητής του Babel και των JSCS projects ([@hzoo](https://github.com/hzoo)) διατηρεί την επίσημη ενσωμάτωση με JSCS.
 
 Ακόμα καλύτερα, αυτή η ολοκλήρωση τώρα ζει μέσα στο JSCS το ίδιο υπό την `--esnext` επιλογή. Έτσι η ενσωμάτωση του Babel γίνεται τόσο απλά:

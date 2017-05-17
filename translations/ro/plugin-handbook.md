@@ -68,6 +68,7 @@ Acest manual este disponibil și în alte limbi, a se vedea [README](/README.md)
       * [Evitați traversarea când o căutare manuală este suficientă](#toc-do-not-traverse-when-manual-lookup-will-do)
       * [Optimizarea vizitatorilor imbricați](#toc-optimizing-nested-visitors)
       * [Atenție la structuri imbricate](#toc-being-aware-of-nested-structures)
+      * [Teste Unitare pentru plugin](#toc-unit-test-your-plugin)
 
 # <a id="toc-introduction"></a>Introducere
 
@@ -89,7 +90,7 @@ Babel este un compilator de JavaScript, mai exact un compilator sursă-la-sursă
 
 Fiecare dintre acești pași implică crearea sau lucrul cu un [Arbore Abstract de Sintaxă](https://en.wikipedia.org/wiki/Abstract_syntax_tree) sau AST.
 
-> Babel folosește un AST modificat din [ESTree](https://github.com/estree/estree), cu specificațiile interne aflate [aici](https://github.com/babel/babel/blob/master/doc/ast/spec.md).
+> Babel folosește un AST modificat din [ESTree](https://github.com/estree/estree), cu specificațiile interne aflate [aici](https://github.com/babel/babylon/blob/master/ast/spec.md).
 
 ```js
 function square(n) {
@@ -370,6 +371,7 @@ function square(n) {
 ```
 
 ```js
+path.traverse(MyVisitor);
 Called!
 Called!
 Called!
@@ -445,7 +447,7 @@ Puteţi deasemenea utiliza un alias ca noduri de vizitator (conform definiției 
 
 De exemplu,
 
-`Function` este un alias pentru `FunctionDeclaration`, `FunctionExpression`, `ArrowFunctionExpression`
+`Function` este un alias pentru `FunctionDeclaration`, `FunctionExpression`, `ArrowFunctionExpression`, `ObjectMethod` and `ClassMethod`.
 
 ```js
 const MyVisitor = {
@@ -537,6 +539,7 @@ a + b + c;
 ```
 
 ```js
+path.traverse(MyVisitor);
 Visiting: a
 Visiting: b
 Visiting: c
@@ -603,6 +606,8 @@ const MyVisitor = {
     path.traverse(updateParamNameVisitor, { paramName });
   }
 };
+
+path.traverse(MyVisitor);
 ```
 
 Desigur, acesta este un exemplu teoretic, însă demonstrează cum să eliminăm starea globală din vizitatori.
@@ -975,7 +980,7 @@ const code = `function square(n) {
 
 const ast = babylon.parse(code);
 
-generate(ast, null, code);
+generate(ast, {}, code);
 // {
 //   code: "...",
 //   map: "..."
@@ -1346,13 +1351,13 @@ Dacă faceți o sub-traversare într-un traseu de nivel superior, puteţi folosi
 `path.skip()` skips traversing the children of the current path. `path.stop()` stops traversal entirely.
 
 ```js
-path.traverse({
-  Function(path) {
-    path.skip(); // if checking the children is irrelevant
+outerPath.traverse({
+  Function(innerPath) {
+    innerPath.skip(); // if checking the children is irrelevant
   },
-  ReferencedIdentifier(path, state) {
+  ReferencedIdentifier(innerPath, state) {
     state.iife = true;
-    path.stop(); // if you want to save some state and then stop traversal, or deopt
+    innerPath.stop(); // if you want to save some state and then stop traversal, or deopt
   }
 });
 ```
@@ -1875,7 +1880,7 @@ path.traverse({
 De asemenea, poate fi tentant să apelați `path.traverse` atunci când căutați un anumit tip de nod.
 
 ```js
-const visitorOne = {
+const nestedVisitor = {
   Identifier(path) {
     // ...
   }
@@ -1883,7 +1888,7 @@ const visitorOne = {
 
 const MyVisitor = {
   FunctionDeclaration(path) {
-    path.get('params').traverse(visitorOne);
+    path.get('params').traverse(nestedVisitor);
   }
 };
 ```
@@ -1916,10 +1921,10 @@ const MyVisitor = {
 };
 ```
 
-Însă acest lucru creează un nou obiect vizitator de fiecare dată când `FunctionDeclaration()` este apelată, iar Babel trebuie să o spargă şi să o valideze de fiecare dată. Acest lucru poate fi costisitor, așadar este mai bine să declarați vizitatorul înainte.
+Cu toate acestea, acest lucru creează un nou obiect de vizitator de fiecare dată când este chemat `FunctionDeclaration()`. Acest lucru poate fi costisitor, deoarece Babel face unele procesări de fiecare dată când un obiect vizitator nou este pasat (cum ar fi desfacerea cheilor care conţin mai multe tipuri, validarea şi ajustarea structurii obiectului). Deoarece Babel stochează fanioane pe obiectele vizitator care indică faptul că acesta a efectuat deja această transformare, este mai bine pentru a stoca vizitatorul într-o variabilă şi pasarea aceluiași obiect de fiecare dată.
 
 ```js
-const visitorOne = {
+const nestedVisitor = {
   Identifier(path) {
     // ...
   }
@@ -1927,7 +1932,7 @@ const visitorOne = {
 
 const MyVisitor = {
   FunctionDeclaration(path) {
-    path.traverse(visitorOne);
+    path.traverse(nestedVisitor);
   }
 };
 ```
@@ -1953,7 +1958,7 @@ const MyVisitor = {
 Puteţi să-l pasați ca stare metodei `traverse()` şi să aveți acces la ea pe obiectul `this` al vizitatorului.
 
 ```js
-const visitorOne = {
+const nestedVisitor = {
   Identifier(path) {
     if (path.node.name === this.exampleState) {
       // ...
@@ -1964,7 +1969,7 @@ const visitorOne = {
 const MyVisitor = {
   FunctionDeclaration(path) {
     var exampleState = path.node.params[0].name;
-    path.traverse(visitorOne, { exampleState });
+    path.traverse(nestedVisitor, { exampleState });
   }
 };
 ```
@@ -2014,5 +2019,11 @@ class Foo {
   }
 }
 ```
+
+## <a id="toc-unit-test-your-plugin"></a> Teste Unitare pentru plugin
+
+Când dezvoltați un plugin, în cele din urmă veţi dori să testaţi-l!
+
+Pachetul [`generator-babel-plugin`](https://github.com/babel/generator-babel-plugin) setează automat testele. Puteți arunca un ochi si peste [`babel-plug-in-tester`](https://github.com/kentcdodds/babel-plugin-tester) care vă poate face mai ușoară testarea plugin-urilor.
 
 > ***Pentru actualizări, urmăriţi [@thejameskyle](https://twitter.com/thejameskyle) şi [@babeljs](https://twitter.com/babeljs) pe Twitter.***

@@ -68,6 +68,7 @@
       * [可以手动查找就不要遍历](#toc-do-not-traverse-when-manual-lookup-will-do)
       * [优化嵌套的访问者对象](#toc-optimizing-nested-visitors)
       * [留意嵌套结构](#toc-being-aware-of-nested-structures)
+      * [Unit Test your plugin](#toc-unit-test-your-plugin)
 
 # <a id="toc-introduction"></a>介绍
 
@@ -89,7 +90,7 @@ Babel 是 JavaScript 编译器，更确切地说是源码到源码的编译器�
 
 这个处理过程中的每一步都涉及到创建或是操作[抽象语法树](https://en.wikipedia.org/wiki/Abstract_syntax_tree)，亦称 AST。
 
-> Babel 使用一个基于 [ESTree](https://github.com/estree/estree) 并修改过的 AST，它的内核说明文档可以在[这里](https://github.com/babel/babel/blob/master/doc/ast/spec.md)找到。.
+> Babel uses an AST modified from [ESTree](https://github.com/estree/estree), with the core spec located [here](https://github.com/babel/babylon/blob/master/ast/spec.md).
 
 ```js
 function square(n) {
@@ -370,6 +371,7 @@ function square(n) {
 ```
 
 ```js
+path.traverse(MyVisitor);
 Called!
 Called!
 Called!
@@ -445,7 +447,7 @@ const MyVisitor = {
 
 例如，
 
-`Function` 是 `FunctionDeclaration`、`FunctionExpression`和`ArrowFunctionExpression`的别名
+`Function` is an alias for `FunctionDeclaration`, `FunctionExpression`, `ArrowFunctionExpression`, `ObjectMethod` and `ClassMethod`.
 
 ```js
 const MyVisitor = {
@@ -537,6 +539,7 @@ a + b + c;
 ```
 
 ```js
+path.traverse(MyVisitor);
 Visiting: a
 Visiting: b
 Visiting: c
@@ -603,6 +606,8 @@ const MyVisitor = {
     path.traverse(updateParamNameVisitor, { paramName });
   }
 };
+
+path.traverse(MyVisitor);
 ```
 
 当然，这只是一个刻意编写的例子，不过它演示了如何从访问者中消除全局状态。
@@ -976,7 +981,7 @@ const code = `function square(n) {
 
 const ast = babylon.parse(code);
 
-generate(ast, null, code);
+generate(ast, {}, code);
 // {
 //   code: "...",
 //   map: "..."
@@ -1347,13 +1352,13 @@ If you are doing a sub-traversal in a top level path, you can use 2 provided API
 `path.skip()` skips traversing the children of the current path. `path.stop()` stops traversal entirely.
 
 ```js
-path.traverse({
-  Function(path) {
-    path.skip(); // if checking the children is irrelevant
+outerPath.traverse({
+  Function(innerPath) {
+    innerPath.skip(); // if checking the children is irrelevant
   },
-  ReferencedIdentifier(path, state) {
+  ReferencedIdentifier(innerPath, state) {
     state.iife = true;
-    path.stop(); // if you want to save some state and then stop traversal, or deopt
+    innerPath.stop(); // if you want to save some state and then stop traversal, or deopt
   }
 });
 ```
@@ -1441,7 +1446,7 @@ FunctionDeclaration(path) {
 
 ### <a id="toc-inserting-into-a-container"></a>Inserting into a container
 
-If you want to insert into a AST node property like that is an array like `body`. It is simialr to `insertBefore`/`insertAfter` other than you having to specify the `listKey` which is usually `body`.
+If you want to insert into a AST node property like that is an array like `body`. It is similar to `insertBefore`/`insertAfter` other than you having to specify the `listKey` which is usually `body`.
 
 ```js
 ClassMethod(path) {
@@ -1876,7 +1881,7 @@ path.traverse({
 It may also be tempting to call `path.traverse` when looking for a particular node type.
 
 ```js
-const visitorOne = {
+const nestedVisitor = {
   Identifier(path) {
     // ...
   }
@@ -1884,7 +1889,7 @@ const visitorOne = {
 
 const MyVisitor = {
   FunctionDeclaration(path) {
-    path.get('params').traverse(visitorOne);
+    path.get('params').traverse(nestedVisitor);
   }
 };
 ```
@@ -1917,10 +1922,10 @@ const MyVisitor = {
 };
 ```
 
-However, this creates a new visitor object everytime `FunctionDeclaration()` is called above, which Babel then needs to explode and validate every single time. This can be costly, so it is better to hoist the visitor up.
+However, this creates a new visitor object every time `FunctionDeclaration()` is called. That can be costly, because Babel does some processing each time a new visitor object is passed in (such as exploding keys containing multiple types, performing validation, and adjusting the object structure). Because Babel stores flags on visitor objects indicating that it's already performed that processing, it's better to store the visitor in a variable and pass the same object each time.
 
 ```js
-const visitorOne = {
+const nestedVisitor = {
   Identifier(path) {
     // ...
   }
@@ -1928,7 +1933,7 @@ const visitorOne = {
 
 const MyVisitor = {
   FunctionDeclaration(path) {
-    path.traverse(visitorOne);
+    path.traverse(nestedVisitor);
   }
 };
 ```
@@ -1954,7 +1959,7 @@ const MyVisitor = {
 You can pass it in as state to the `traverse()` method and have access to it on `this` in the visitor.
 
 ```js
-const visitorOne = {
+const nestedVisitor = {
   Identifier(path) {
     if (path.node.name === this.exampleState) {
       // ...
@@ -1965,7 +1970,7 @@ const visitorOne = {
 const MyVisitor = {
   FunctionDeclaration(path) {
     var exampleState = path.node.params[0].name;
-    path.traverse(visitorOne, { exampleState });
+    path.traverse(nestedVisitor, { exampleState });
   }
 };
 ```
@@ -2015,5 +2020,11 @@ class Foo {
   }
 }
 ```
+
+## <a id="toc-unit-test-your-plugin"></a> Unit Test your plugin
+
+When developing your plugin, eventually you'll want to test it!
+
+The [`generator-babel-plugin`](https://github.com/babel/generator-babel-plugin) package sets up your tests automatically. You may also want to look at [`babel-plugin-tester`](https://github.com/kentcdodds/babel-plugin-tester) which can also make testing plugins easier.
 
 > ***For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) and [@babeljs](https://twitter.com/babeljs) on Twitter.***

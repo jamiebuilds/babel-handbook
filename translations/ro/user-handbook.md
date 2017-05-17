@@ -706,6 +706,8 @@ Pentru mai multe informaţii consultaţi documentaţia [`babel-eslint`](https://
 
 ### <a id="toc-code-style"></a>Stil de cod
 
+> JSCS a fuzionat cu ESLint, așadar aruncați un ochi peste Code Styling cu ESLint.
+
 JSCS este un instrument extrem de popular care duce linting-ul un pas mai departe în verificarea stilului codului. Responsabilul de bază pentru proiectele Babel şi JSCS ([@hzoo](https://github.com/hzoo)) menține o integrare oficială cu JSCS.
 
 Mai mult de atât, această integrare face parte acum din JSCS sub opțiunea `--exnext`. Așadar integrarea cu Babel este extrem de simplă:
