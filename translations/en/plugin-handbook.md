@@ -2310,7 +2310,7 @@ it('foo is an alias to baz', () => {
 });
 ```
 
-Babel core uses a [similar approach](https://github.com/babel/babel/blob/7.0/CONTRIBUTING.md#writing-tests) to exec tests.
+Babel core uses a [similar approach](https://github.com/babel/babel/blob/7.0/CONTRIBUTING.md#writing-tests) to snapshot and exec tests.
 
 ### [`babel-plugin-tester`](https://github.com/kentcdodds/babel-plugin-tester)
 
