@@ -104,7 +104,7 @@ Each of these steps involve creating or working with an
 [Abstract Syntax Tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree) or
 AST.
 
-> Babel uses an AST modified from [ESTree](https://github.com/estree/estree), with the core spec located [here](https://github.com/babel/babel/blob/master/doc/ast/spec.md).
+> Babel uses an AST modified from [ESTree](https://github.com/estree/estree), with the core spec located [here](https://github.com/babel/babylon/blob/master/ast/spec.md).
 
 ```js
 function square(n) {
