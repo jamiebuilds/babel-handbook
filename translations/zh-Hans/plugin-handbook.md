@@ -1002,7 +1002,7 @@ generate(ast, {
 
 ## <a id="toc-babel-template"></a>[`babel-template`](https://github.com/babel/babel/tree/master/packages/babel-template)
 
-babel-template 是另一个虽然很小但却非常有用的模块。 它能让你编写字符串形式且带有占位符的代码来代替手动编码， 尤其是生成的大规模 AST的时候。 在计算机科学中，这种能力被称为准引用（quasiquotes）。
+babel-template 是另一个虽然很小但却非常有用的模块。 尤其是生成的大规模 AST的时候, 它能让你编写字符串形式且带有占位符的代码来代替手动编码。 在计算机科学中，这种能力被称为准引用（quasiquotes）。
 
 ```sh
 $ npm install --save babel-template
@@ -1173,7 +1173,7 @@ sebmck === dork;
 
 ### <a id="toc-get-the-path-of-a-sub-node"></a>获取子节点的Path
 
-To access an AST node's property you normally access the node and then the property. `path.node.property`
+为了获取到node AST的属性，你通常需要通过`path.node.property`来直接从node节点上获取
 
 ```js
 // the BinaryExpression AST node has properties: `left`, `right`, `operator`
@@ -1183,8 +1183,7 @@ BinaryExpression(path) {
   path.node.operator;
 }
 ```
-
-If you need to access the `path` of that property instead, use the `get` method of a path, passing in the string to the property.
+如果你不想使用`path`属性来获取值，你可以使用`get`函数，只需要传入一个字符串作为参数即可。
 
 ```js
 BinaryExpression(path) {
@@ -1197,7 +1196,7 @@ Program(path) {
 
 ### <a id="toc-check-if-a-node-is-a-certain-type"></a>检查节点的类型
 
-If you want to check what the type of a node is, the preferred way to do so is:
+如果你需要检查这个节点的类型，推荐采用下面的方案：
 
 ```js
 BinaryExpression(path) {
@@ -1207,7 +1206,7 @@ BinaryExpression(path) {
 }
 ```
 
-You can also do a shallow check for properties on that node:
+而且你还可以通过传入一个对象的方式来进行属性检查
 
 ```js
 BinaryExpression(path) {
@@ -1217,7 +1216,7 @@ BinaryExpression(path) {
 }
 ```
 
-This is functionally equivalent to:
+上面的调用就等价于:
 
 ```js
 BinaryExpression(path) {
@@ -1233,7 +1232,7 @@ BinaryExpression(path) {
 
 ### <a id="toc-check-if-a-path-is-a-certain-type"></a>检查路径（Path）类型
 
-A path has the same methods for checking the type of a node:
+一个路径同样还有相同的方法用来检查node的类型:
 
 ```js
 BinaryExpression(path) {
@@ -1243,7 +1242,7 @@ BinaryExpression(path) {
 }
 ```
 
-is equivalent to doing:
+上面等价于：
 
 ```js
 BinaryExpression(path) {
@@ -1253,7 +1252,7 @@ BinaryExpression(path) {
 }
 ```
 
-### <a id="toc-check-if-an-identifier-is-referenced"></a>Check if an identifier is referenced
+### <a id="toc-check-if-an-identifier-is-referenced"></a>检查一个identifier是否含有外部引用
 
 ```js
 Identifier(path) {
@@ -1263,7 +1262,7 @@ Identifier(path) {
 }
 ```
 
-Alternatively:
+等价于：
 
 ```js
 Identifier(path) {
@@ -1273,11 +1272,10 @@ Identifier(path) {
 }
 ```
 
-### <a id="toc-find-a-specific-parent-path"></a>Find a specific parent path
+### <a id="toc-find-a-specific-parent-path"></a>找出一个合适的父级作用域调用路径
+有的时候你需要一直向上搜索，直到在一个路径找到一个满足需求的条件
 
-Sometimes you will need to traverse the tree upwards from a path until a condition is satisfied.
-
-Call the provided `callback` with the `NodePath`s of all the parents. When the `callback` returns a truthy value, we return that `NodePath`.
+在`nodePath`的所有父级元素上调用`callback`函数，如果`callback`函数返回`true`， 那么就说明找到了这个合适的父级作用域调用路径，并返回对应的`NodePath`。
 
 ```js
 path.findParent((path) => path.isObjectExpression());
