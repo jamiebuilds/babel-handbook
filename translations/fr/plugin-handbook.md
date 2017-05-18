@@ -90,7 +90,7 @@ Babel est un compilateur JavaScript, plus précisément un compilateur de code s
 
 Chacune de ces étapes implique la création ou le travail avec une [Arbre de syntaxe abstraite](https://en.wikipedia.org/wiki/Abstract_syntax_tree) ou AST.
 
-> Babel uses an AST modified from [ESTree](https://github.com/estree/estree), with the core spec located [here](https://github.com/babel/babylon/blob/master/ast/spec.md).
+> Babel utilise un AST modifié de [ESTree](https://github.com/estree/estree), avec la spécification principale située [ici](https://github.com/babel/babylon/blob/master/ast/spec.md).
 
 ```js
 function square(n) {
@@ -433,7 +433,7 @@ const MyVisitor = {
 };
 ```
 
-If necessary, you can also apply the same function for multiple visitor nodes by separating them with a `|` in the method name as a string like `Identifier|MemberExpression`.
+Si nécessaire, vous pouvez également appliquer la même fonction pour plusieurs nœuds visiteur en les séparant avec un `|` dans le nom de la méthode sous forme de chaîne comme `Identifier|MemberExpression`.
 
 Example usage in the [flow-comments](https://github.com/babel/babel/blob/2b6ff53459d97218b0cf16f8a51c14a165db1fd2/packages/babel-plugin-transform-flow-comments/src/index.js#L47) plugin
 
