@@ -229,7 +229,7 @@ Tout d’abord, assurez-vous que vous avez `babel-cli` qui est installé.
 $ npm install --save-dev babel-cli
 ```
 
-> **Note:** If you are wondering why we are installing this locally, please read the [Running Babel CLI from within a project](#toc-running-babel-cli-from-within-a-project) section above.
+> **Remarque :** Si vous vous demandez pourquoi nous installons ceci en locale, veuillez lire ci-dessus la section [Exécution du CLI de Babel au sein d’un projet](#toc-running-babel-cli-from-within-a-project).
 
 Puis remplacer chaque fois que vous exécutez `node` avec `babel-node`.
 
@@ -296,7 +296,7 @@ babel.transformFromAst(ast, code, options);
 // => { code, map, ast }
 ```
 
-For all of the above methods, `options` refers to https://babeljs.io/docs/usage/api/#options.
+Pour toutes les méthodes ci-dessus, les `options` se réfèrent à https://babeljs.io/docs/usage/api/#options.
 
 * * *
 
@@ -706,7 +706,7 @@ Pour plus d’informations, consultez la documentation de [`babel-eslint`](https
 
 ### <a id="toc-code-style"></a>Style de code
 
-> JSCS has merged with ESLint, so checkout Code Styling with ESLint.
+> JSC a fusionné avec ESLint, donc vérifiez le style du code avec ESLint.
 
 JSCS est un outil extrêmement populaire pour faire du linting un peu plus poussé en vérifiant le style du code. Un mainteneur principal à la fois du projet Babel et JSCS ([@hzoo](https://github.com/hzoo)) tient à jour une intégration officielle avec JSCS.
 

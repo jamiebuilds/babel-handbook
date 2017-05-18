@@ -68,7 +68,7 @@ Acest manual este disponibil și în alte limbi, a se vedea [README](/README.md)
       * [Evitați traversarea când o căutare manuală este suficientă](#toc-do-not-traverse-when-manual-lookup-will-do)
       * [Optimizarea vizitatorilor imbricați](#toc-optimizing-nested-visitors)
       * [Atenție la structuri imbricate](#toc-being-aware-of-nested-structures)
-      * [Teste Unitare pentru plugin](#toc-unit-test-your-plugin)
+      * [Unit Testing](#toc-unit-testing)
 
 # <a id="toc-introduction"></a>Introducere
 
@@ -2020,10 +2020,144 @@ class Foo {
 }
 ```
 
-## <a id="toc-unit-test-your-plugin"></a> Teste Unitare pentru plugin
+## <a id="toc-unit-testing"></a>Unit Testing
 
-Când dezvoltați un plugin, în cele din urmă veţi dori să testaţi-l!
+There are a few primary ways to test babel plugins: snapshot tests, AST tests, and exec tests. We'll use [jest](http://facebook.github.io/jest/) for this example because it supports snapshot testing out of the box. The example we're creating here is hosted in [this repo](https://github.com/brigand/babel-plugin-testing-example).
 
-Pachetul [`generator-babel-plugin`](https://github.com/babel/generator-babel-plugin) setează automat testele. Puteți arunca un ochi si peste [`babel-plug-in-tester`](https://github.com/kentcdodds/babel-plugin-tester) care vă poate face mai ușoară testarea plugin-urilor.
+First we need a babel plugin, we'll put this in src/index.js.
+
+```js
+<br />module.exports = function testPlugin(babel) {
+  return {
+    visitor: {
+      Identifier(path) {
+        if (path.node.name === 'foo') {
+          path.node.name = 'bar';
+        }
+      }
+    }
+  };
+};
+```
+
+### Snapshot Tests
+
+Next, install our dependencies with `npm install --save-dev babel-core jest`, and then we can begin writing our first test: the snapshot. Snapshot tests allow us to visually inspect the output of our babel plugin. We give it an input, tell it to make a snapshot, and it saves it to a file. We check in the snapshots into git. This allows us to see when we've affected the output of any of our test cases. It also gives use a diff in pull requests. Of course you could do this with any test framework, but with jest updating the snapshots is as easy as `jest -u`.
+
+```js
+// src/__tests__/index-test.js
+const babel = require('babel-core');
+const plugin = require('../');
+
+var example = `
+var foo = 1;
+if (foo) console.log(foo);
+`;
+
+it('works', () => {
+  const {code} = babel.transform(example, {plugins: [plugin]});
+  expect(code).toMatchSnapshot();
+});
+```
+
+This gives us a snapshot file in `src/__tests__/__snapshots__/index-test.js.snap`.
+
+```js
+exports[`test works 1`] = `
+"
+var bar = 1;
+if (bar) console.log(bar);"
+`;
+```
+
+If we change 'bar' to 'baz' in our plugin and run jest again, we get this:
+
+```diff
+Received value does not match stored snapshot 1.
+
+    - Snapshot
+    + Received
+
+    @@ -1,3 +1,3 @@
+     "
+    -var bar = 1;
+    -if (bar) console.log(bar);"
+    +var baz = 1;
+    +if (baz) console.log(baz);"
+```
+
+We see how our change to the plugin code affected the output of our plugin, and if the output looks good to us, we can run `jest -u` to update the snapshot.
+
+### AST Tests
+
+In addition to snapshot testing, we can manually inspect the AST. This is a simple but brittle example. For more involved situations you may wish to leverage babel-traverse. It allows you to specify an object with a `visitor` key, exactly like you use for the plugin itself.
+
+```js
+it('contains baz', () => {
+  const {ast} = babel.transform(example, {plugins: [plugin]});
+  const program = ast.program;
+  const declaration = program.body[0].declarations[0];
+  assert.equal(declaration.id.name, 'baz');
+  // or babelTraverse(program, {visitor: ...})
+});
+```
+
+### Exec Tests
+
+Here we'll be transforming the code, and then evaluating that it behaves correctly. Note that we're not using `assert` in the test. This ensures that if our plugin does weird stuff like removing the assert line by accident, the test will still fail.
+
+```js
+it('foo is an alias to baz', () => {
+  var input = `
+    var foo = 1;
+    // test that foo was renamed to baz
+    var res = baz;
+  `;
+  var {code} = babel.transform(input, {plugins: [plugin]});
+  var f = new Function(`
+    ${code};
+    return res;
+  `);
+  var res = f();
+  assert(res === 1, 'res is 1');
+});
+```
+
+Babel core uses a [similar approach](https://github.com/babel/babel/blob/7.0/CONTRIBUTING.md#writing-tests) to snapshot and exec tests.
+
+### [`babel-plugin-tester`](https://github.com/kentcdodds/babel-plugin-tester)
+
+This package makes testing plugins easier. If you're familiar with ESLint's [RuleTester](http://eslint.org/docs/developer-guide/working-with-rules#rule-unit-tests) this should be familiar. You can look at [the docs](https://github.com/kentcdodds/babel-plugin-tester/blob/master/README.md) to get a full sense of what's possible, but here's a simple example:
+
+```js
+import pluginTester from 'babel-plugin-tester';
+import identifierReversePlugin from '../identifier-reverse-plugin';
+
+pluginTester({
+  plugin: identifierReversePlugin,
+  fixtures: path.join(__dirname, '__fixtures__'),
+  tests: {
+    'does not change code with no identifiers': '"hello";',
+    'changes this code': {
+      code: 'var hello = "hi";',
+      output: 'var olleh = "hi";',
+    },
+    'using fixtures files': {
+      fixture: 'changed.js',
+      outputFixture: 'changed-output.js',
+    },
+    'using jest snapshots': {
+      code: `
+        function sayHi(person) {
+          return 'Hello ' + person + '!'
+        }
+      `,
+      snapshot: true,
+    },
+  },
+});
+```
+
+* * *
 
 > ***Pentru actualizări, urmăriţi [@thejameskyle](https://twitter.com/thejameskyle) şi [@babeljs](https://twitter.com/babeljs) pe Twitter.***
