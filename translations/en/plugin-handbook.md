@@ -1418,7 +1418,7 @@ If a path is in a list like in the body of a `Function`/`Program`, it will have 
 - Check if a path is part of a list with `path.inList`
 - You can get the surrounding siblings with `path.getSibling(index)`,
 - The current path's index in the container with `path.key`,
-- The path's container (an array of all sibling paths) with `path.container`
+- The path's container (an array of all sibling nodes) with `path.container`
 - Get the name of the key of the list container with `path.listKey`
 
 > These APIs are used in the [transform-merge-sibling-variables](https://github.com/babel/babili/blob/master/packages/babel-plugin-transform-merge-sibling-variables/src/index.js) plugin used in [babel-minify](https://github.com/babel/babili).
