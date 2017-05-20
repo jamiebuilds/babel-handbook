@@ -41,8 +41,8 @@ Ce manuel est disponible dans d'autres langues, consulter le [README](/README.md
       * [Vérification si un nœud est un certain type](#toc-check-if-a-node-is-a-certain-type)
       * [Vérification si un chemin est un certain type](#toc-check-if-a-path-is-a-certain-type)
       * [Vérification si un identificateur est référencé](#toc-check-if-an-identifier-is-referenced)
-      * [Find a specific parent path](#toc-find-a-specific-parent-path)
-      * [Get Sibling Paths](#toc-get-sibling-paths)
+      * [Trouver un chemin d'un parent spécifique](#toc-find-a-specific-parent-path)
+      * [Récupérer les chemins des frères](#toc-get-sibling-paths)
       * [Stopping Traversal](#toc-stopping-traversal)
       * [Manipulation](#toc-manipulation)
       * [Remplacement d’un nœud](#toc-replacing-a-node)
@@ -72,9 +72,9 @@ Ce manuel est disponible dans d'autres langues, consulter le [README](/README.md
 
 # <a id="toc-introduction"></a>Introduction
 
-Babel est un compilateur multi-purpose générique pour JavaScript. Plus que cela, c'est une collection de modules qui peuvent être utilisées de nombreuses formes différentes d'analyse statique.
+Babel est un compilateur multifonction générique pour JavaScript. Plus que cela, c'est une collection de modules qui peut être utilisée pour plusieurs formes différentes d'analyse statique.
 
-> Analyse statique est le processus d'analyse du code sans l'exécuter. (L'analyse du code lors de l'exécution est appelée: analyse dynamique). Le but de l'analyse statique varie grandement. Il peut être utilisé pour le "linting", la compilation, le "highlighting", la transformation du code, l'optimisation, la minification et bien plus.
+> L'analyse statique est le processus d'analyse du code sans l'exécuter. (L'analyse du code lors de l'exécution est appelée analyse dynamique). Le but de l'analyse statique varie grandement. Il peut être utilisé pour le "linting", la compilation, le "highlighting", la transformation du code, l'optimisation, la minification et bien plus.
 
 Vous pouvez utiliser Babel pour construire différents types d'outils qui peuvent vous aider à être plus productifs et écrire de meilleurs logiciels.
 
@@ -435,7 +435,7 @@ const MyVisitor = {
 
 Si nécessaire, vous pouvez également appliquer la même fonction pour plusieurs nœuds visiteur en les séparant avec un `|` dans le nom de la méthode sous forme de chaîne comme `Identifier|MemberExpression`.
 
-Example usage in the [flow-comments](https://github.com/babel/babel/blob/2b6ff53459d97218b0cf16f8a51c14a165db1fd2/packages/babel-plugin-transform-flow-comments/src/index.js#L47) plugin
+Exemple d’utilisation dans le plugin de [flow-comments](https://github.com/babel/babel/blob/2b6ff53459d97218b0cf16f8a51c14a165db1fd2/packages/babel-plugin-transform-flow-comments/src/index.js#L47)
 
 ```js
 const MyVisitor = {
@@ -443,11 +443,11 @@ const MyVisitor = {
 };
 ```
 
-You can also use aliases as visitor nodes (as defined in [babel-types](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions)).
+Vous pouvez également utiliser des alias comme nœuds visiteur (tel que défini dans [babel-types](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions)).
 
 Par exemple,
 
-`Function` is an alias for `FunctionDeclaration`, `FunctionExpression`, `ArrowFunctionExpression`, `ObjectMethod` and `ClassMethod`.
+`Function` est un alias pour `FunctionDeclaration`, `FunctionExpression`, `ArrowFunctionExpression`, `ObjectMethod` et `ClassMethod`.
 
 ```js
 const MyVisitor = {
@@ -1272,7 +1272,7 @@ Identifier(path) {
 }
 ```
 
-### <a id="toc-find-a-specific-parent-path"></a>Find a specific parent path
+### <a id="toc-find-a-specific-parent-path"></a>Trouver un chemin d'un parent spécifique
 
 Sometimes you will need to traverse the tree upwards from a path until a condition is satisfied.
 
@@ -1300,7 +1300,7 @@ Walk up the tree until we hit a parent node path in a list
 path.getStatementParent();
 ```
 
-### <a id="toc-get-sibling-paths"></a>Get Sibling Paths
+### <a id="toc-get-sibling-paths"></a>Récupérer les chemins des frères
 
 If a path is in a list like in the body of a `Function`/`Program`, it will have "siblings".
 

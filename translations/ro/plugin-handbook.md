@@ -68,7 +68,7 @@ Acest manual este disponibil și în alte limbi, a se vedea [README](/README.md)
       * [Evitați traversarea când o căutare manuală este suficientă](#toc-do-not-traverse-when-manual-lookup-will-do)
       * [Optimizarea vizitatorilor imbricați](#toc-optimizing-nested-visitors)
       * [Atenție la structuri imbricate](#toc-being-aware-of-nested-structures)
-      * [Unit Testing](#toc-unit-testing)
+      * [Testarea Unitara](#toc-unit-testing)
 
 # <a id="toc-introduction"></a>Introducere
 
@@ -2020,11 +2020,11 @@ class Foo {
 }
 ```
 
-## <a id="toc-unit-testing"></a>Unit Testing
+## <a id="toc-unit-testing"></a>Testarea Unitara
 
-There are a few primary ways to test babel plugins: snapshot tests, AST tests, and exec tests. We'll use [jest](http://facebook.github.io/jest/) for this example because it supports snapshot testing out of the box. The example we're creating here is hosted in [this repo](https://github.com/brigand/babel-plugin-testing-example).
+Există câteva moduri de bază pentru a testa plugin-uri babel: teste de imagine, teste de AST şi teste de execuție. Vom folosi [jest](http://facebook.github.io/jest/) pentru acest exemplu deoarece suportă implicit teste de imagine. Exemplul creat aici este găzduit în [acest repo](https://github.com/brigand/babel-plugin-testing-example).
 
-First we need a babel plugin, we'll put this in src/index.js.
+În primul rând avem nevoie de un plugin de babel, pe care-l vom pune în src/index.js.
 
 ```js
 <br />module.exports = function testPlugin(babel) {
@@ -2040,9 +2040,9 @@ First we need a babel plugin, we'll put this in src/index.js.
 };
 ```
 
-### Snapshot Tests
+### Teste de imagine
 
-Next, install our dependencies with `npm install --save-dev babel-core jest`, and then we can begin writing our first test: the snapshot. Snapshot tests allow us to visually inspect the output of our babel plugin. We give it an input, tell it to make a snapshot, and it saves it to a file. We check in the snapshots into git. This allows us to see when we've affected the output of any of our test cases. It also gives use a diff in pull requests. Of course you could do this with any test framework, but with jest updating the snapshots is as easy as `jest -u`.
+Apoi, instalăm dependenţele noastre cu `npm install --save-dev babel-core jest`, şi apoi putem începe scrierea primului nostru test: imaginea. Testele de imagine ne permit să inspectăm vizual rezultatul plug-in-ului babel. Îi pasăm date de intrare, îi spunem să creeze imaginea rezultatului şi să o salveaze într-un fişier. Adăugăm imaginile în git. Acest lucru ne permite să vedem atunci când este afectat rezultatul oricăruia dintre cazurile noastre de testare. Deasemenea, ne arată și diferența dintre cele 2 variante în Pull Requests. Desigur, ai putea face acest lucru cu orice framework de testare, dar cu jest actualizarea imaginilor este foarte ușoară: `jest -u`.
 
 ```js
 // src/__tests__/index-test.js
@@ -2060,7 +2060,7 @@ it('works', () => {
 });
 ```
 
-This gives us a snapshot file in `src/__tests__/__snapshots__/index-test.js.snap`.
+Codul de mai sus ne creează un fişier de imagine în `src/__tests__/__snapshots__/index-test.js.snap`.
 
 ```js
 exports[`test works 1`] = `
@@ -2070,10 +2070,10 @@ if (bar) console.log(bar);"
 `;
 ```
 
-If we change 'bar' to 'baz' in our plugin and run jest again, we get this:
+Dacă vom schimba din 'bar' în 'baz' plugin-ul şi rulăm jest din nou, vom obține acest lucru:
 
 ```diff
-Received value does not match stored snapshot 1.
+Valoarea primită nu este identică cu cea salvată 1.
 
     - Snapshot
     + Received
@@ -2086,11 +2086,11 @@ Received value does not match stored snapshot 1.
     +if (baz) console.log(baz);"
 ```
 
-We see how our change to the plugin code affected the output of our plugin, and if the output looks good to us, we can run `jest -u` to update the snapshot.
+Putem vedea cum modificarea noastră în codul de plug-in a afectat rezultatul plugin-ului nostru, iar în cazul în care noul rezultat este ceea ce ne dorim, putem rula `jest -u` pentru a actualiza imaginea salvată.
 
-### AST Tests
+### Teste AST
 
-In addition to snapshot testing, we can manually inspect the AST. This is a simple but brittle example. For more involved situations you may wish to leverage babel-traverse. It allows you to specify an object with a `visitor` key, exactly like you use for the plugin itself.
+În plus faţă de testarea de imagine, putem inspecta manual și AST-ul. Acesta este un exemplu simplu, dar fragil. Pentru situaţii reale, aţi putea folosi babel-traverse. Acest lucru vă permite să specificaţi un obiect cu o cheie de `vizitator`, exact cum utilizaţi pentru plugin-ul în sine.
 
 ```js
 it('contains baz', () => {
@@ -2102,9 +2102,9 @@ it('contains baz', () => {
 });
 ```
 
-### Exec Tests
+### Teste de Execuție
 
-Here we'll be transforming the code, and then evaluating that it behaves correctly. Note that we're not using `assert` in the test. This ensures that if our plugin does weird stuff like removing the assert line by accident, the test will still fail.
+Aici vom transforma codul, şi apoi vom evalua dacă se comportă corect. Reţineţi că nu vom utiliza `assert` în test. Acest lucru asigură faptul că dacă plugin-ul nostru efectuează chestii ciudate, ca eliminarea linie assert din greșeală, testul va eșua.
 
 ```js
 it('foo is an alias to baz', () => {
@@ -2123,11 +2123,11 @@ it('foo is an alias to baz', () => {
 });
 ```
 
-Babel core uses a [similar approach](https://github.com/babel/babel/blob/7.0/CONTRIBUTING.md#writing-tests) to snapshot and exec tests.
+Babel core foloseşte o [abordare similară](https://github.com/babel/babel/blob/7.0/CONTRIBUTING.md#writing-tests) a testelor de imagine şi de execuție.
 
 ### [`babel-plugin-tester`](https://github.com/kentcdodds/babel-plugin-tester)
 
-This package makes testing plugins easier. If you're familiar with ESLint's [RuleTester](http://eslint.org/docs/developer-guide/working-with-rules#rule-unit-tests) this should be familiar. You can look at [the docs](https://github.com/kentcdodds/babel-plugin-tester/blob/master/README.md) to get a full sense of what's possible, but here's a simple example:
+Acest pachet ușurează testarea plugin-urilor. Dacă sunteţi familiarizat cu [RuleTester](http://eslint.org/docs/developer-guide/working-with-rules#rule-unit-tests) din ESLint, acest lucru ar trebui să vă fie cunoscut. Puteți urmări [documentația](https://github.com/kentcdodds/babel-plugin-tester/blob/master/README.md) pentru lista completă de posibilități, dar iată un exemplu simplu:
 
 ```js
 import pluginTester from 'babel-plugin-tester';
