@@ -2104,7 +2104,7 @@ it('contains baz', () => {
 
 ### Teste de Execuție
 
-Aici vom transforma codul, şi apoi vom evalua dacă se comportă corect. Reţineţi că nu vom utiliza `assert` în test. Acest lucru asigură faptul că dacă plugin-ul nostru efectuează chestii ciudate, ca eliminarea linie assert din greșeală, testul va eșua.
+Aici vom transforma codul şi apoi vom evalua dacă se comportă corect. Reţineţi că nu vom utiliza `assert` în test. Acest lucru asigură faptul că dacă plugin-ul nostru efectuează chestii ciudate, ca de exemplu eliminarea linie assert din greșeală, testul va eșua.
 
 ```js
 it('foo is an alias to baz', () => {
