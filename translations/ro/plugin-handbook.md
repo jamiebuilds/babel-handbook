@@ -1307,7 +1307,7 @@ path.getStatementParent();
   * Verificaţi dacă un traseu este parte dintr-o listă cu `path.inList`
   * Puteţi obţine fraţii din jur cu `path.getSibling(index)`,
   * Indicele traseului curent în containerul cu `path.key`,
-  * Containerului traseului (o serie cu toate traseele fraților) cu `path.container`
+  * Containerului traseului (o serie cu toate traseele nodurilor frați) cu `path.container`
   * Obţine numele cheii containerului listei cu `path.listKey`
 
 > Aceste API-uri sunt utilizate în plugin-ul [transform-merge-sibling-variables](https://github.com/babel/babili/blob/master/packages/babel-plugin-transform-merge-sibling-variables/src/index.js) utilizat în [babel-minify](https://github.com/babel/babili).
