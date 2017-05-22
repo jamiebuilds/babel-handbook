@@ -1449,8 +1449,8 @@ If you want to insert into a AST node property like that is an array like `body`
 
 ```js
 ClassMethod(path) {
-  path.unshiftContainer('body', t.stringLiteral('before'));
-  path.pushContainer('body', t.stringLiteral('after'));
+  path.get('body').unshiftContainer('body', t.expressionStatement(t.stringLiteral('before')));
+  path.get('body').pushContainer('body', t.expressionStatement(t.stringLiteral('after')));
 }
 ```
 

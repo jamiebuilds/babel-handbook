@@ -1449,8 +1449,8 @@ Dacă doriţi să inseraţi într-o proprietate de nod AST ca asta este un array
 
 ```js
 ClassMethod(path) {
-  path.unshiftContainer('body', t.stringLiteral('before'));
-  path.pushContainer('body', t.stringLiteral('after'));
+  path.get('body').unshiftContainer('body', t.expressionStatement(t.stringLiteral('before')));
+  path.get('body').pushContainer('body', t.expressionStatement(t.stringLiteral('after')));
 }
 ```
 
