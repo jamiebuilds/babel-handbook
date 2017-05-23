@@ -1421,7 +1421,7 @@ If a path is in a list like in the body of a `Function`/`Program`, it will have 
 - The path's container (an array of all sibling nodes) with `path.container`
 - Get the name of the key of the list container with `path.listKey`
 
-> These APIs are used in the [transform-merge-sibling-variables](https://github.com/babel/babili/blob/master/packages/babel-plugin-transform-merge-sibling-variables/src/index.js) plugin used in [babel-minify](https://github.com/babel/babili).
+> These APIs are used in the [transform-merge-sibling-variables](https://github.com/babel/babili/blob/master/packages/babel-plugin-transform-merge-sibling-variables/src/index.js) plugin used in [babili](https://github.com/babel/babili).
 
 ```js
 var a = 1; // pathA, path.key = 0
