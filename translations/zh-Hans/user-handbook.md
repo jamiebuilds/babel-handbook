@@ -799,7 +799,7 @@ Babel 的社区非常庞大并且增长速度很快，伴随着我们成长的�
 
 ## <a id="toc-babel-issues"></a>Babel 问题
 
-Babel 使用了 [Phabricator](http://phabricator.org) 这个非常棒的问题跟踪应用，这是一个能让 Github 问题追踪变成昨日黄花的开源软件开发平台。
+Babel 使用了 [Phabricator](http://phabricator.org) 这个非常棒的问题跟踪应用，这是一个能让 Github 问题追踪变成明日黄花的开源软件开发平台。
 
 Babel 的 Phabricator 地址是：[phabricator.babeljs.io](https://phabricator.babeljs.io) 你可以在 [maniphest](https://phabricator.babeljs.io/maniphest/) 查看所有打开和关闭的问题。.
 
