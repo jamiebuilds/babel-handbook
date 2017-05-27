@@ -54,7 +54,7 @@ JavaScript as a language is constantly evolving, with new specs and proposals
 coming out with new features all the time. Using Babel will allow you to use
 many of these features years before they are available everywhere.
 
-Babel does this by compiling down JavaScript code written with the latest
+Babel compiles JavaScript code written with the latest
 standards into a version that will work everywhere today. This process is known
 as source-to-source compiling, also known as transpiling.
 
@@ -73,8 +73,8 @@ const square = function square(n) {
 };
 ```
 
-However, Babel can do much more than this as Babel has support for syntax
-extensions such as the JSX syntax for React and Flow syntax support for static
+However, Babel can do much more than this. Babel has support for syntax
+extensions, such as the JSX syntax for React and Flow syntax support for static
 type checking.
 
 Further than that, everything in Babel is simply a plugin and anyone can go out
@@ -524,8 +524,14 @@ $ npm install --save babel-polyfill
 
 Then simply include the polyfill at the top of any file that requires it:
 
-```js
-import "babel-polyfill";
+```diff
++ import "babel-polyfill";
+
+function addAll() {
+  return Array.from(arguments).reduce(function(a, b) {
+    return a + b;
+  });
+}
 ```
 
 ## <a id="toc-babel-runtime"></a>`babel-runtime`
