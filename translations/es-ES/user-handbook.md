@@ -1,6 +1,6 @@
 # Manual de usuario de Babel
 
-Este documento abarca todo lo que siempre quizo saber sobre como usar [Babel](https://babeljs.io) y sus herramientas relacionadas.
+Este documento abarca todo lo que siempre quiso saber sobre cómo usar [Babel](https://babeljs.io) y sus herramientas relacionadas.
 
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
