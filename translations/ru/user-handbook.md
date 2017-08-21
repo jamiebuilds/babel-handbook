@@ -209,11 +209,9 @@ $ node register.js
 
 > **Примечание:** Вы не сможете зарегистрировать Babel в том же файле, который собираетесь компилировать, поскольку node исполняет этот файл перед тем, как Babel доходит до его компиляции.
 > 
-> ```js
-require("babel-register");
-// not compiled:
-console.log("Hello world!");
-```
+> `require("babel-register");` 
+> `// not compiled:`
+> `console.log("Hello world!");`
 
 ## <a id="toc-babel-node"></a>`babel-node`
 
