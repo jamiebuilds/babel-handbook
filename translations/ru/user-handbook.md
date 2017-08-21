@@ -133,9 +133,7 @@ $ npm install --save-dev babel-cli
 
 > **Примечание:** Так как запускать Babel глобально мы будем считать плохой идеей, для деинсталляции глобальной копии Babel вы можете использовать:
 > 
-> ```sh
-$ npm uninstall --global babel-cli
-```
+> `npm uninstall --global babel-cli`
 
 После завершения установки, ваш файл `package.json` должен выглядеть примерно так:
 
