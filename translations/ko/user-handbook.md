@@ -229,7 +229,7 @@ console.log("Hello world!");
 $ npm install --save-dev babel-cli
 ```
 
-> **Note:** If you are wondering why we are installing this locally, please read the [Running Babel CLI from within a project](#toc-running-babel-cli-from-within-a-project) section above.
+> **Note:** 왜 이것을 로컬에 설치하는지 궁금하다면, [프로젝트에서 Babel CLI 실행하기](#toc-running-babel-cli-from-within-a-project) 부분을 읽어 보세요.
 
 그 다음 `node`를 사용하는 대신 `babel-node`를 사용하세요..
 

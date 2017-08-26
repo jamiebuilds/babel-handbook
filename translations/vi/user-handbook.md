@@ -4,11 +4,11 @@ This document covers everything you ever wanted to know about using [Babel](http
 
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
-This handbook is available in other languages, see the [README](/README.md) for a complete list.
+Tài liệu này hỗ trợ nhiều ngôn ngữ khác nhau, xem file [README](/README.md) để biết thêm chi tiết.
 
-# Table of Contents
+# Mục lục
 
-  * [Introduction](#toc-introduction)
+  * [Giới thiệu](#toc-introduction)
   * [Setting up Babel](#toc-setting-up-babel) 
       * [`babel-cli`](#toc-babel-cli)
       * [Running Babel CLI from within a project](#toc-running-babel-cli-from-within-a-project)
@@ -42,7 +42,7 @@ This handbook is available in other languages, see the [README](/README.md) for 
       * [Babel Issues](#toc-babel-issues)
       * [Creating an awesome Babel bug report](#toc-creating-an-awesome-babel-bug-report)
 
-# <a id="toc-introduction"></a>Introduction
+# <a id="toc-introduction"></a>Giới thiệu
 
 Babel is a generic multi-purpose compiler for JavaScript. Using Babel you can use (and create) the next generation of JavaScript, as well as the next generation of JavaScript tooling.
 

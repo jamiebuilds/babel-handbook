@@ -131,7 +131,7 @@ Nós podemos instalar o Cliente do Babel localmente com o seguinte comando:
 npm install --save-dev babel-cli
 ```
 
-> **Note:** Since it's generally a bad idea to run Babel globally you may want to uninstall the global copy by running:
+> **Nota:** Como geralmente é uma má idéia executar Babel globalmente, você pode querer desinstalar a cópia global executando:
 > 
 > ```sh
 $ npm uninstall --global babel-cli
@@ -229,7 +229,7 @@ Primeiramente, tenha certeza que você tem `babel-cli` instalado.
 npm install --save-dev babel-cli
 ```
 
-> **Note:** If you are wondering why we are installing this locally, please read the [Running Babel CLI from within a project](#toc-running-babel-cli-from-within-a-project) section above.
+> **Nota:** Se você está se perguntando por que estamos instalando isso localmente, leia a seção acima, [executando a CLI do Babel dentro de um projeto](#toc-running-babel-cli-from-within-a-project).
 
 Em seguida, substitua todas as declarações `node` por `babel-node`.
 
@@ -296,7 +296,7 @@ babel.transformFromAst(ast, code, options);
 // => { code, map, ast }
 ```
 
-For all of the above methods, `options` refers to https://babeljs.io/docs/usage/api/#options.
+Para todos os métodos acima, o parâmetro, `options`, refere-se ao: https://babeljs.io/docs/usage/api/#options.
 
 * * *
 

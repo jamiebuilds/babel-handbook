@@ -1,18 +1,18 @@
 # Babel Plugin Handbook
 
-This document covers how to create [Babel](https://babeljs.io) [plugins](https://babeljs.io/docs/advanced/plugins/).
+Tài liệu này hướng dẫn làm cách nào để tạo ra [Babel](https://babeljs.io) [plugins](https://babeljs.io/docs/advanced/plugins/).
 
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
-This handbook is available in other languages, see the [README](/README.md) for a complete list.
+Tài liệu này hỗ trợ nhiều ngôn ngữ khác nhau, xem file [README](/README.md) để biết thêm chi tiết.
 
-# Table of Contents
+# Mục lục
 
-  * [Introduction](#toc-introduction)
-  * [Basics](#toc-basics) 
-      * [ASTs](#toc-asts)
-      * [Stages of Babel](#toc-stages-of-babel)
-      * [Parse](#toc-parse) 
+  * [Giới thiệu](#toc-introduction)
+  * [Cở bản](#toc-basics) 
+      * [Cây AST](#toc-asts)
+      * [Quy trình của Babel](#toc-stages-of-babel)
+      * [Bộ Parse](#toc-parse) 
           * [Lexical Analysis](#toc-lexical-analysis)
           * [Syntactic Analysis](#toc-syntactic-analysis)
       * [Transform](#toc-transform)
@@ -34,7 +34,7 @@ This handbook is available in other languages, see the [README](/README.md) for 
       * [Converters](#toc-converters)
       * [babel-generator](#toc-babel-generator)
       * [babel-template](#toc-babel-template)
-  * [Writing your first Babel Plugin](#toc-writing-your-first-babel-plugin)
+  * [Bắt đầu viết Babel Plugin](#toc-writing-your-first-babel-plugin)
   * [Transformation Operations](#toc-transformation-operations) 
       * [Visiting](#toc-visiting)
       * [Get the Path of Sub-Node](#toc-get-the-path-of-a-sub-node)
@@ -70,7 +70,7 @@ This handbook is available in other languages, see the [README](/README.md) for 
       * [Being aware of nested structures](#toc-being-aware-of-nested-structures)
       * [Unit Testing](#toc-unit-testing)
 
-# <a id="toc-introduction"></a>Introduction
+# <a id="toc-introduction"></a>Giới thiệu
 
 Babel is a generic multi-purpose compiler for JavaScript. More than that it is a collection of modules that can be used for many different forms of static analysis.
 
@@ -82,11 +82,11 @@ You can use Babel to build many different types of tools that can help you be mo
 
 * * *
 
-# <a id="toc-basics"></a>Basics
+# <a id="toc-basics"></a>Cở bản
 
-Babel is a JavaScript compiler, specifically a source-to-source compiler, often called a "transpiler". This means that you give Babel some JavaScript code, Babel modifies the code, and generates the new code back out.
+Babel là 1 trình biên dịch (compiler) dành cho Javascript, đặt biệt là nó là trình biên dịch source-to-source và thường gọi là "transpiler". Có nghĩa là code Javascript của bạn sẽ được Babel xử lí và cho ra 1 code mới.
 
-## <a id="toc-asts"></a>ASTs
+## <a id="toc-asts"></a>Cây AST
 
 Each of these steps involve creating or working with an [Abstract Syntax Tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree) or AST.
 
@@ -159,7 +159,7 @@ Or as a JavaScript Object like this:
 }
 ```
 
-You'll notice that each level of the AST has a similar structure:
+Bạn có thể thấy mỗi một cấp của cây AST có cấu trúc tương đồng nhau:
 
 ```js
 {
@@ -223,19 +223,19 @@ There are additional properties on every Node that Babel generates which describ
 
 These properties `start`, `end`, `loc`, appear in every single Node.
 
-## <a id="toc-stages-of-babel"></a>Stages of Babel
+## <a id="toc-stages-of-babel"></a>Quy trình của Babel
 
-The three primary stages of Babel are **parse**, **transform**, **generate**.
+Có 3 bước chính trong quá trình biên dịch của Babel: **parse**, **transform**, **generate**.
 
-### <a id="toc-parse"></a>Parse
+### <a id="toc-parse"></a>Bộ Parse
 
-The **parse** stage, takes code and outputs an AST. There are two phases of parsing in Babel: [**Lexical Analysis**](https://en.wikipedia.org/wiki/Lexical_analysis) and [**Syntactic Analysis**](https://en.wikipedia.org/wiki/Parsing).
+Ở bước **parse**, đầu vào là code và đầu ra là cây AST. Có 2 quá trình của quá trình parse: [**Lexical Analysis**](https://en.wikipedia.org/wiki/Lexical_analysis) và [**Syntactic Analysis**](https://en.wikipedia.org/wiki/Parsing).
 
 #### <a id="toc-lexical-analysis"></a>Lexical Analysis
 
-Lexical Analysis will take a string of code and turn it into a stream of **tokens**.
+Lexical Analysis sẽ nhận vào là code dưới dạng là chuỗi (string) và chuyển hoá nó thành tập hợp các **token**.
 
-You can think of tokens as a flat array of language syntax pieces.
+Có thể hiểu token như mảng 1 chiều chứa các cú pháp của ngôn ngữ.
 
 ```js
 n * n;
@@ -250,7 +250,7 @@ n * n;
 ]
 ```
 
-Each of the `type`s here have a set of properties describing the token:
+Mỗi thuộc tính `type` chứa các thuộc tính mô tả token:
 
 ```js
 {
@@ -271,7 +271,7 @@ Each of the `type`s here have a set of properties describing the token:
 }
 ```
 
-Like AST nodes they also have a `start`, `end`, and `loc`.
+Cũng giống node trong cây AST, các token cũng có các thuộc tính `start`, `end`, and `loc`.
 
 #### <a id="toc-syntactic-analysis"></a>Syntactic Analysis
 
@@ -1028,9 +1028,9 @@ console.log(generate(ast).code);
 var myModule = require("my-module");
 ```
 
-# <a id="toc-writing-your-first-babel-plugin"></a>Writing your first Babel Plugin
+# <a id="toc-writing-your-first-babel-plugin"></a>Bắt đầu viết Babel Plugin
 
-Now that you're familiar with all the basics of Babel, let's tie it together with the plugin API.
+Tới thời điểm này chắc bạn đã quen với một số khái niệm cơ bản về Babel. Vì vậy, hãy cùng ráp mọi thứ lại với nhau sử dụng các plugin API để tạo ra 1 babel plugin đơn giản.
 
 Start off with a `function` that gets passed the current [`babel`](https://github.com/babel/babel/tree/master/packages/babel-core) object.
 

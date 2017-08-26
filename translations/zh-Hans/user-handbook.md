@@ -296,7 +296,7 @@ babel.transformFromAst(ast, code, options);
 // => { code, map, ast }
 ```
 
-For all of the above methods, `options` refers to https://babeljs.io/docs/usage/api/#options.
+对于上述所有方法，`options` 指的都是 http://babeljs.io/docs/usage/options/
 
 * * *
 
@@ -706,7 +706,7 @@ $ npm run lint
 
 ### <a id="toc-code-style"></a>代码风格
 
-> JSCS has merged with ESLint, so checkout Code Styling with ESLint.
+> JSCS已经和ESLint合并，所以请查看ESLint的代码风格。
 
 JSCS 是一个极受欢迎的工具，在语法检查的基础上更进一步检查代码自身的风格。 Babel 和 JSCS 项目的核心维护者之一（[@hzoo](https://github.com/hzoo)）维护着 JSCS 的官方集成。
 

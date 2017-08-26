@@ -43,13 +43,13 @@ Ce manuel est disponible dans d'autres langues, consulter le [README](/README.md
       * [Vérification si un identificateur est référencé](#toc-check-if-an-identifier-is-referenced)
       * [Trouver un chemin d'un parent spécifique](#toc-find-a-specific-parent-path)
       * [Récupérer les chemins des frères](#toc-get-sibling-paths)
-      * [Stopping Traversal](#toc-stopping-traversal)
+      * [Arrêt du parcours](#toc-stopping-traversal)
       * [Manipulation](#toc-manipulation)
       * [Remplacement d’un nœud](#toc-replacing-a-node)
       * [Remplacement d’un nœud par plusieurs nœuds](#toc-replacing-a-node-with-multiple-nodes)
       * [Remplacement d’un nœud avec une chaîne source](#toc-replacing-a-node-with-a-source-string)
       * [Insertion d'un nœud enfant](#toc-inserting-a-sibling-node)
-      * [Inserting into a container](#toc-inserting-into-a-container)
+      * [Insertion dans un conteneur](#toc-inserting-into-a-container)
       * [Suppression d'un nœud](#toc-removing-a-node)
       * [Remplacement d'un parent](#toc-replacing-a-parent)
       * [Suppression d'un parent](#toc-removing-a-parent)
@@ -59,8 +59,8 @@ Ce manuel est disponible dans d'autres langues, consulter le [README](/README.md
       * [Poussée d'une déclaration de variable vers un scope parent](#toc-pushing-a-variable-declaration-to-a-parent-scope)
       * [Renommage d'une liaison et de ses références](#toc-rename-a-binding-and-its-references)
   * [Options du plugin](#toc-plugin-options) 
-      * [Pre and Post in Plugins](#toc-pre-and-post-in-plugins)
-      * [Enabling Syntax in Plugins](#toc-enabling-syntax-in-plugins)
+      * [Pré et Post dans les plugins](#toc-pre-and-post-in-plugins)
+      * [Activation de la syntaxe dans les plugins](#toc-enabling-syntax-in-plugins)
   * [Nœuds de création](#toc-building-nodes)
   * [Meilleures pratiques](#toc-best-practices) 
       * [Éviter de traverser l'AST autant que possible](#toc-avoid-traversing-the-ast-as-much-as-possible)
@@ -68,7 +68,7 @@ Ce manuel est disponible dans d'autres langues, consulter le [README](/README.md
       * [N'utilisez pas "traverse" lorsqu'une lecture manuelle est possible](#toc-do-not-traverse-when-manual-lookup-will-do)
       * [Optimisation des visiteurs imbriqués](#toc-optimizing-nested-visitors)
       * [Etre conscient des structures imbriqués](#toc-being-aware-of-nested-structures)
-      * [Unit Testing](#toc-unit-testing)
+      * [Tests unitaires](#toc-unit-testing)
 
 # <a id="toc-introduction"></a>Introduction
 
@@ -658,10 +658,10 @@ Une portée plus basse pourrait également créer une référence du même nom s
 
 ```js
 function scopeOne() {
-  var one = "I am in the scope created by `scopeOne()`";
+  var one = "Je suis dans la portée créée par `scopeOne()`";
 
   function scopeTwo() {
-    var one = "I am creating a new `one` but leaving reference in `scopeOne()` alone.";
+    var one = "Je crée un nouveau `one` mais en laissant la référence `scopeOne()` seule.";
   }
 }
 ```
@@ -692,12 +692,12 @@ Les références appartiennent toutes à une portée particulière, cette relati
 
 ```js
 function scopeOnce() {
-  var ref = "This is a binding";
+  var ref = "Ceci est une liaison";
 
-  ref; // This is a reference to a binding
+  ref; // Ceci est une référence à un liaison
 
   function scopeTwo() {
-    ref; // This is a reference to a binding from a lower scope
+    ref; // Ceci est une référence à une liaison à partir d'une portée inférieure
   }
 }
 ```
@@ -726,13 +726,13 @@ Avec cette information, vous pouvez trouver toutes les références qui ont un l
 
 ```js
 function scopeOne() {
-  var ref1 = "This is a constant binding";
+  var ref1 = "Ceci est une liaison constante";
 
   becauseNothingEverChangesTheValueOf(ref1);
 
   function scopeTwo() {
-    var ref2 = "This is *not* a constant binding";
-    ref2 = "Because this changes the value";
+    var ref2 = "Ceci *n'est pas* une liaison constante";
+    ref2 = "Car la valeur est modifiée";
   }
 }
 ```
@@ -1175,7 +1175,7 @@ Génial ! Notre tout premier plugin Babel.
 Pour accéder à la propriété d’un nœud de l’AST, vous accéder normalement au nœud, puis à la propriété. `Path.Node.Property`
 
 ```js
-// the BinaryExpression AST node has properties: `left`, `right`, `operator`
+// le nœud AST BinaryExpression possède des propriétés : `left`, `right`, `operator`
 BinaryExpression(path) {
   path.node.left;
   path.node.right;
@@ -1183,7 +1183,7 @@ BinaryExpression(path) {
 }
 ```
 
-Si au lieu de cela, vous avez besoin d'accéder au `path` de ces propriétés, utilisez la méthode `get` d’un chemin, en passant la chaîne de la propriété.
+Si au lieu de cela, vous avez besoin d'accéder au `path` de cette propriété, utilisez la méthode `get` d’un chemin, en passant la chaîne de la propriété.
 
 ```js
 BinaryExpression(path) {
@@ -1232,7 +1232,7 @@ BinaryExpression(path) {
 
 ### <a id="toc-check-if-a-path-is-a-certain-type"></a>Vérification si un chemin est un certain type
 
-A path has the same methods for checking the type of a node:
+Un chemin a les mêmes méthodes pour contrôler le type d’un nœud :
 
 ```js
 BinaryExpression(path) {
@@ -1242,7 +1242,7 @@ BinaryExpression(path) {
 }
 ```
 
-is equivalent to doing:
+équivaut à faire :
 
 ```js
 BinaryExpression(path) {
@@ -1274,27 +1274,27 @@ Identifier(path) {
 
 ### <a id="toc-find-a-specific-parent-path"></a>Trouver un chemin d'un parent spécifique
 
-Sometimes you will need to traverse the tree upwards from a path until a condition is satisfied.
+Parfois, vous aurez besoin de remonter l’arborescence d’un chemin jusqu'à ce qu’une condition soit satisfaite.
 
-Call the provided `callback` with the `NodePath`s of all the parents. When the `callback` returns a truthy value, we return that `NodePath`.
+Appelez le `callback` fourni avec les `NodePath`s de tous les parents. Lorsque le `callback` renvoie une valeur truthy, nous retournons ce `NodePath`.
 
 ```js
 path.findParent((path) => path.isObjectExpression());
 ```
 
-If the current path should be included as well:
+Si le chemin actuel doit être inclus :
 
 ```js
 path.find((path) => path.isObjectExpression());
 ```
 
-Find the closest parent function or program:
+Trouver le programme ou la fonction parent le plus proche :
 
 ```js
 path.getFunctionParent();
 ```
 
-Walk up the tree until we hit a parent node path in a list
+Remonter l’arborescence jusqu'à ce que nous accédions à un chemin du nœud parent dans une liste
 
 ```js
 path.getStatementParent();
@@ -1302,15 +1302,15 @@ path.getStatementParent();
 
 ### <a id="toc-get-sibling-paths"></a>Récupérer les chemins des frères
 
-If a path is in a list like in the body of a `Function`/`Program`, it will have "siblings".
+Si un chemin est une liste, comme pour le corps de `Function` ou `Program`, il aura des « frères ».
 
-  * Check if a path is part of a list with `path.inList`
-  * You can get the surrounding siblings with `path.getSibling(index)`,
-  * The current path's index in the container with `path.key`,
-  * The path's container (an array of all sibling nodes) with `path.container`
-  * Get the name of the key of the list container with `path.listKey`
+  * Vérifiez si un chemin fait partie d’une liste avec `path.inList`
+  * Vous pouvez obtenir les frère environnants avec `path.getSibling(index)`,
+  * L'index du chemin dans le conteneur avec `path.key`,
+  * Le conteneur du chemin (un tableau de tous les nœuds frères) avec `path.container`
+  * Obtenez le nom de la clé du conteneur de liste avec `path.listKey`
 
-> These APIs are used in the [transform-merge-sibling-variables](https://github.com/babel/babili/blob/master/packages/babel-plugin-transform-merge-sibling-variables/src/index.js) plugin used in [babel-minify](https://github.com/babel/babili).
+> Ces API sont utilisées dans le plugin [transform-merge-sibling-variables](https://github.com/babel/babili/blob/master/packages/babel-plugin-transform-merge-sibling-variables/src/index.js) utilisé dans [babel-minify](https://github.com/babel/babili).
 
 ```js
 var a = 1; // pathA, path.key = 0
@@ -1336,9 +1336,9 @@ export default function({ types: t }) {
 }
 ```
 
-### <a id="toc-stopping-traversal"></a>Stopping Traversal
+### <a id="toc-stopping-traversal"></a>Arrêt du parcours
 
-If your plugin needs to not run in a certain situation, the simpliest thing to do is to write an early return.
+Si votre plugin ne doit pas fonctionner dans certaine situation, la chose la plus simple à faire, c'est d’écrire un retour anticipé.
 
 ```js
 BinaryExpression(path) {
@@ -1346,18 +1346,18 @@ BinaryExpression(path) {
 }
 ```
 
-If you are doing a sub-traversal in a top level path, you can use 2 provided API methods:
+Si vous sous-parcourez un chemin de niveau supérieur, vous pouvez utiliser 2 méthodes fournies de l’API :
 
-`path.skip()` skips traversing the children of the current path. `path.stop()` stops traversal entirely.
+`path.skip()` saute le parcours du fils du chemin courant. `path.stop()` arrête de parcourir entièrement.
 
 ```js
 outerPath.traverse({
   Function(innerPath) {
-    innerPath.skip(); // if checking the children is irrelevant
+    innerPath.skip(); // si la vérification des enfants n'est pas pertinent
   },
   ReferencedIdentifier(innerPath, state) {
     state.iife = true;
-    innerPath.stop(); // if you want to save some state and then stop traversal, or deopt
+    innerPath.stop(); // si vous souhaitez enregistrer un état puis arrêter le parcours
   }
 });
 ```
@@ -1443,7 +1443,7 @@ FunctionDeclaration(path) {
 
 > **Remarque :** Cela doit toujours être une instruction ou un tableau d’instructions. Cet exemple utilise les mêmes heuristiques que ceux mentionnés dans [Remplacement d'un nœud par plusieurs nœuds](#replacing-a-node-with-multiple-nodes).
 
-### <a id="toc-inserting-into-a-container"></a>Inserting into a container
+### <a id="toc-inserting-into-a-container"></a>Insertion dans un conteneur
 
 If you want to insert into a AST node property like that is an array like `body`. It is similar to `insertBefore`/`insertAfter` other than you having to specify the `listKey` which is usually `body`.
 
@@ -1480,7 +1480,7 @@ FunctionDeclaration(path) {
 
 ### <a id="toc-replacing-a-parent"></a>Remplacement d'un parent
 
-Just call `replaceWith` with the parentPath: `path.parentPath`
+Il suffit d’appeler `replaceWith` avec le parentPath : `path.parentPath`
 
 ```js
 BinaryExpression(path) {
@@ -1523,9 +1523,9 @@ FunctionDeclaration(path) {
 }
 ```
 
-This will walk up the scope tree and check for that particular binding.
+Ceci traversera l’arborescence de la portée et vérifiera la liaison particulière.
 
-You can also check if a scope has its **own** binding:
+Vous pouvez également vérifier si une portée a sa **propre** liaison :
 
 ```js
 FunctionDeclaration(path) {
@@ -1537,7 +1537,7 @@ FunctionDeclaration(path) {
 
 ### <a id="toc-generating-a-uid"></a>Génération d'un UID
 
-This will generate an identifier that doesn't collide with any locally defined variables.
+Cela générera un identificateur qui n’empiète pas sur les variables définies localement.
 
 ```js
 FunctionDeclaration(path) {
@@ -1550,7 +1550,7 @@ FunctionDeclaration(path) {
 
 ### <a id="toc-pushing-a-variable-declaration-to-a-parent-scope"></a>Poussée d'une déclaration de variable vers un scope parent
 
-Sometimes you may want to push a `VariableDeclaration` so you can assign to it.
+Parfois, vous voudrez peut-être pousser une `VariableDeclaration` pour pouvoir l'assigner.
 
 ```js
 FunctionDeclaration(path) {
@@ -1584,7 +1584,7 @@ FunctionDeclaration(path) {
   }
 ```
 
-Alternatively, you can rename a binding to a generated unique identifier:
+Alternativement, vous pouvez renommer une liaison vers un identificateur unique généré :
 
 ```js
 FunctionDeclaration(path) {
@@ -1604,7 +1604,7 @@ FunctionDeclaration(path) {
 
 # <a id="toc-plugin-options"></a>Options du plugin
 
-If you would like to let your users customize the behavior of your Babel plugin you can accept plugin specific options which users can specify like this:
+Si vous souhaitez permettre à vos utilisateurs de personnaliser le comportement de votre plugin Babel, vous pouvez accepter des options de plugin spécifiques que les utilisateurs peuvent définir de cette façon :
 
 ```js
 {
@@ -1617,7 +1617,7 @@ If you would like to let your users customize the behavior of your Babel plugin 
 }
 ```
 
-These options then get passed into plugin visitors through the `state` object:
+Ces options sont alors passées dans les visiteurs du plugin à travers l'objet `state` :
 
 ```js
 export default function({ types: t }) {
@@ -1632,11 +1632,11 @@ export default function({ types: t }) {
 }
 ```
 
-These options are plugin-specific and you cannot access options from other plugins.
+Ces options sont spécifiques au plugin et vous ne pouvez pas accéder aux options des autres plugins.
 
-## <a id="toc-pre-and-post-in-plugins"></a> Pre and Post in Plugins
+## <a id="toc-pre-and-post-in-plugins"></a> Pré et Post dans les plugins
 
-Plugins can have functions that are run before or after plugins. They can be used for setup or cleanup/analysis purposes.
+Les plugins peuvent avoir des fonctions qui sont exécutées avant ou après les plugins. Elles peuvent être utilisées à des fins d’installation ou de nettoyage/analyse.
 
 ```js
 export default function({ types: t }) {
@@ -1656,7 +1656,7 @@ export default function({ types: t }) {
 }
 ```
 
-## <a id="toc-enabling-syntax-in-plugins"></a> Enabling Syntax in Plugins
+## <a id="toc-enabling-syntax-in-plugins"></a> Activation de la syntaxe dans les plugins
 
 Plugins can enable [babylon plugins](https://github.com/babel/babylon#plugins) so that users don't need to install/enable them. This prevents a parsing error without inheriting the syntax plugin.
 
@@ -1684,7 +1684,7 @@ export default function({ types: t }) {
 }
 ```
 
-The error looks like:
+L’erreur ressemblera à :
 
     file.js: Error message here
        7 |
@@ -1700,7 +1700,7 @@ The error looks like:
 
 # <a id="toc-building-nodes"></a>Nœuds de création
 
-Lors de l’écriture des transformations, vous aurez souvent envie de créer certains nœuds pour les insérer dans l’AST. As mentioned previously, you can do this using the [builder](#builders) methods in the [`babel-types`](#babel-types) package.
+Lors de l’écriture des transformations, vous aurez souvent envie de créer certains nœuds pour les insérer dans l’AST. Comme mentionné précédemment, vous pouvez le faire en utilisant les méthodes du [builder](#builders) dans le package [`babel-types`](#babel-types).
 
 Le nom de la méthode pour un constructeur (builder) est simplement le nom du type de nœud que vous voulez construire sauf que la première lettre est en minuscule. Par exemple si vous voulez construire un `MemberExpression` vous utiliserez `t.memberExpression(...)`.
 
@@ -1741,8 +1741,8 @@ builder: ["object", "property", "computed"],
 > Veuillez notez que parfois il y a plus de propriétés personnalisables sur le nœud que celles contenues dans le tableau `builder` . Cela doit empêcher le constructeur d'avoir trop d'arguments. Dans ces cas, vous devrez définir manuellement les propriétés. Un exemple de ceci, c'est [`ClassMethod`](https://github.com/babel/babel/blob/bbd14f88c4eea88fa584dd877759dd6b900bf35e/packages/babel-types/src/definitions/es2015.js#L238-L276).
 
 ```js
-// Example
-// because the builder doesn't contain `async` as a property
+// Exemple
+// parce que le builder ne contient pas la propriété `async`
 var node = t.classMethod(
   "constructor",
   t.identifier("constructor"),
@@ -2020,7 +2020,7 @@ class Foo {
 }
 ```
 
-## <a id="toc-unit-testing"></a>Unit Testing
+## <a id="toc-unit-testing"></a>Tests unitaires
 
 There are a few primary ways to test babel plugins: snapshot tests, AST tests, and exec tests. We'll use [jest](http://facebook.github.io/jest/) for this example because it supports snapshot testing out of the box. The example we're creating here is hosted in [this repo](https://github.com/brigand/babel-plugin-testing-example).
 
@@ -2098,7 +2098,7 @@ it('contains baz', () => {
   const program = ast.program;
   const declaration = program.body[0].declarations[0];
   assert.equal(declaration.id.name, 'baz');
-  // or babelTraverse(program, {visitor: ...})
+  // ou babelTraverse(program, {visitor: ...})
 });
 ```
 
@@ -2110,7 +2110,7 @@ Here we'll be transforming the code, and then evaluating that it behaves correct
 it('foo is an alias to baz', () => {
   var input = `
     var foo = 1;
-    // test that foo was renamed to baz
+    // test que foo a été renommé en baz
     var res = baz;
   `;
   var {code} = babel.transform(input, {plugins: [plugin]});

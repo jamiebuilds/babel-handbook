@@ -16,10 +16,10 @@ Handboken finns på andra språk, se [README](/README.md) för en komplett lista
           * [Lexikalisk analys](#toc-lexical-analysis)
           * [Syntaktisk analys](#toc-syntactic-analysis)
       * [Transform](#toc-transform)
-      * [Generate](#toc-generate)
+      * [Generera](#toc-generate)
       * [Traversal](#toc-traversal)
       * [Visitors](#toc-visitors)
-      * [Paths](#toc-paths) 
+      * [Sökväg](#toc-paths) 
           * [Paths in Visitors](#toc-paths-in-visitors)
       * [State](#toc-state)
       * [Scopes](#toc-scopes) 
@@ -34,7 +34,7 @@ Handboken finns på andra språk, se [README](/README.md) för en komplett lista
       * [Converters](#toc-converters)
       * [babel-generator](#toc-babel-generator)
       * [babel-template](#toc-babel-template)
-  * [Writing your first Babel Plugin](#toc-writing-your-first-babel-plugin)
+  * [Skriva din första Babel-Plugin](#toc-writing-your-first-babel-plugin)
   * [Transformation Operations](#toc-transformation-operations) 
       * [Visiting](#toc-visiting)
       * [Get the Path of Sub-Node](#toc-get-the-path-of-a-sub-node)
@@ -233,7 +233,7 @@ De tre primära stadierna av Babel är **parse**, **transform** och **generate**
 
 #### <a id="toc-lexical-analysis"></a>Lexikalisk analys
 
-Lexical Analysis will take a string of code and turn it into a stream of **tokens**.
+Lexikalisk analys tar en kodsträng och omvandlar den till en ström av **tokens**.
 
 You can think of tokens as a flat array of language syntax pieces.
 
@@ -281,7 +281,7 @@ Syntactic Analysis will take a stream of tokens and turn it into an AST represen
 
 The [transform](https://en.wikipedia.org/wiki/Program_transformation) stage takes an AST and traverses through it, adding, updating, and removing nodes as it goes along. This is by far the most complex part of Babel or any compiler. This is where plugins operate and so it will be the subject of most of this handbook. So we won't dive too deep right now.
 
-### <a id="toc-generate"></a>Generate
+### <a id="toc-generate"></a>Generera
 
 The [code generation](https://en.wikipedia.org/wiki/Code_generation_(compiler)) stage takes the final AST and turns it back into a string of code, also creating [source maps](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/).
 
@@ -455,7 +455,7 @@ const MyVisitor = {
 };
 ```
 
-### <a id="toc-paths"></a>Paths
+### <a id="toc-paths"></a>Sökväg
 
 An AST generally has many Nodes, but how do Nodes relate to one another? We could have one giant mutable object that you manipulate and have full access to, or we can simplify this with **Paths**.
 
@@ -1028,7 +1028,7 @@ console.log(generate(ast).code);
 var myModule = require("my-module");
 ```
 
-# <a id="toc-writing-your-first-babel-plugin"></a>Writing your first Babel Plugin
+# <a id="toc-writing-your-first-babel-plugin"></a>Skriva din första Babel-Plugin
 
 Now that you're familiar with all the basics of Babel, let's tie it together with the plugin API.
 

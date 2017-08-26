@@ -1,6 +1,6 @@
-# Babel Plugin Handbook
+# Pedoman Plungin Babel
 
-Dokumen ini berisi langkah-langkah pembuatan [Babel](https://babeljs.io) [plugin](https://babeljs.io/docs/advanced/plugins/).
+Dokumen ini berisi langkah pembuatan [Babel](https://babeljs.io) [plugin](https://babeljs.io/docs/advanced/plugins/).
 
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 

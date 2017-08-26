@@ -40,27 +40,27 @@
       * [获取子节点的Path](#toc-get-the-path-of-a-sub-node)
       * [检查节点（Node）类型](#toc-check-if-a-node-is-a-certain-type)
       * [检查路径（Path）类型](#toc-check-if-a-path-is-a-certain-type)
-      * [Check if an identifier is referenced](#toc-check-if-an-identifier-is-referenced)
-      * [Find a specific parent path](#toc-find-a-specific-parent-path)
-      * [Get Sibling Paths](#toc-get-sibling-paths)
-      * [Stopping Traversal](#toc-stopping-traversal)
+      * [检查标识符（Identifier）是否被引用](#toc-check-if-an-identifier-is-referenced)
+      * [找到特定的父路径](#toc-find-a-specific-parent-path)
+      * [获取同级路径](#toc-get-sibling-paths)
+      * [停止遍历](#toc-stopping-traversal)
       * [处理](#toc-manipulation)
-      * [Replacing a node](#toc-replacing-a-node)
+      * [替换一个节点](#toc-replacing-a-node)
       * [用多节点替换单节点](#toc-replacing-a-node-with-multiple-nodes)
-      * [Replacing a node with a source string](#toc-replacing-a-node-with-a-source-string)
+      * [用字符串源码替换节点](#toc-replacing-a-node-with-a-source-string)
       * [插入兄弟节点](#toc-inserting-a-sibling-node)
-      * [Inserting into a container](#toc-inserting-into-a-container)
+      * [插入到容器（container）中](#toc-inserting-into-a-container)
       * [删除节点](#toc-removing-a-node)
       * [替换父节点](#toc-replacing-a-parent)
       * [删除父节点](#toc-removing-a-parent)
       * [Scope（作用域）](#toc-scope)
-      * [Checking if a local variable is bound](#toc-checking-if-a-local-variable-is-bound)
+      * [检查本地变量是否被绑定](#toc-checking-if-a-local-variable-is-bound)
       * [生成UID](#toc-generating-a-uid)
-      * [Pushing a variable declaration to a parent scope](#toc-pushing-a-variable-declaration-to-a-parent-scope)
-      * [Rename a binding and its references](#toc-rename-a-binding-and-its-references)
+      * [提升变量声明至父级作用域](#toc-pushing-a-variable-declaration-to-a-parent-scope)
+      * [重命名绑定及其引用](#toc-rename-a-binding-and-its-references)
   * [插件选项](#toc-plugin-options) 
-      * [Pre and Post in Plugins](#toc-pre-and-post-in-plugins)
-      * [Enabling Syntax in Plugins](#toc-enabling-syntax-in-plugins)
+      * [插件的准备和收尾工作](#toc-pre-and-post-in-plugins)
+      * [在插件中启用其他语法](#toc-enabling-syntax-in-plugins)
   * [构建节点](#toc-building-nodes)
   * [最佳实践](#toc-best-practices) 
       * [尽量避免遍历抽象语法树（AST）](#toc-avoid-traversing-the-ast-as-much-as-possible)
@@ -68,7 +68,7 @@
       * [可以手动查找就不要遍历](#toc-do-not-traverse-when-manual-lookup-will-do)
       * [优化嵌套的访问者对象](#toc-optimizing-nested-visitors)
       * [留意嵌套结构](#toc-being-aware-of-nested-structures)
-      * [Unit Testing](#toc-unit-testing)
+      * [单元测试](#toc-unit-testing)
 
 # <a id="toc-introduction"></a>介绍
 
@@ -90,7 +90,7 @@ Babel 是 JavaScript 编译器，更确切地说是源码到源码的编译器�
 
 这个处理过程中的每一步都涉及到创建或是操作[抽象语法树](https://en.wikipedia.org/wiki/Abstract_syntax_tree)，亦称 AST。
 
-> Babel uses an AST modified from [ESTree](https://github.com/estree/estree), with the core spec located [here](https://github.com/babel/babylon/blob/master/ast/spec.md).
+> Babel 使用一个基于 [ESTree](https://github.com/estree/estree) 并修改过的 AST，它的内核说明文档可以在[这里](https://github. com/babel/babel/blob/master/doc/ast/spec. md)找到。.
 
 ```js
 function square(n) {
@@ -1041,7 +1041,7 @@ export default function(babel) {
 }
 ```
 
-Since you'll be using it so often, you'll likely want to grab just `babel.types` like so:
+由于你将会经常这样使用，所以直接取出 `babel.types` 会更方便：（译注：这是 ES2015 语法中的对象解构，即 Destructuring）
 
 ```js
 export default function({ types: t }) {
@@ -1173,7 +1173,7 @@ sebmck === dork;
 
 ### <a id="toc-get-the-path-of-a-sub-node"></a>获取子节点的Path
 
-To access an AST node's property you normally access the node and then the property. `path.node.property`
+为了得到一个AST节点的属性值，我们一般先访问到该节点，然后利用 `path.node.property` 方法即可。
 
 ```js
 // the BinaryExpression AST node has properties: `left`, `right`, `operator`
@@ -1184,7 +1184,7 @@ BinaryExpression(path) {
 }
 ```
 
-If you need to access the `path` of that property instead, use the `get` method of a path, passing in the string to the property.
+如果你想访问到该属性内部的`path`，使用path对象的`get`方法，传递该属性的字符串形式作为参数。
 
 ```js
 BinaryExpression(path) {
@@ -1197,7 +1197,7 @@ Program(path) {
 
 ### <a id="toc-check-if-a-node-is-a-certain-type"></a>检查节点的类型
 
-If you want to check what the type of a node is, the preferred way to do so is:
+如果你想检查节点的类型，最好的方式是：
 
 ```js
 BinaryExpression(path) {
@@ -1207,7 +1207,7 @@ BinaryExpression(path) {
 }
 ```
 
-You can also do a shallow check for properties on that node:
+你同样可以对节点的属性们做浅层检查：
 
 ```js
 BinaryExpression(path) {
@@ -1217,7 +1217,7 @@ BinaryExpression(path) {
 }
 ```
 
-This is functionally equivalent to:
+功能上等价于：
 
 ```js
 BinaryExpression(path) {
@@ -1233,7 +1233,7 @@ BinaryExpression(path) {
 
 ### <a id="toc-check-if-a-path-is-a-certain-type"></a>检查路径（Path）类型
 
-A path has the same methods for checking the type of a node:
+一个路径具有相同的方法检查节点的类型：
 
 ```js
 BinaryExpression(path) {
@@ -1243,7 +1243,7 @@ BinaryExpression(path) {
 }
 ```
 
-is equivalent to doing:
+就相当于：
 
 ```js
 BinaryExpression(path) {
@@ -1253,7 +1253,7 @@ BinaryExpression(path) {
 }
 ```
 
-### <a id="toc-check-if-an-identifier-is-referenced"></a>Check if an identifier is referenced
+### <a id="toc-check-if-an-identifier-is-referenced"></a>检查标识符（Identifier）是否被引用
 
 ```js
 Identifier(path) {
@@ -1263,7 +1263,7 @@ Identifier(path) {
 }
 ```
 
-Alternatively:
+或者：
 
 ```js
 Identifier(path) {
@@ -1273,43 +1273,43 @@ Identifier(path) {
 }
 ```
 
-### <a id="toc-find-a-specific-parent-path"></a>Find a specific parent path
+### <a id="toc-find-a-specific-parent-path"></a>找到特定的父路径
 
-Sometimes you will need to traverse the tree upwards from a path until a condition is satisfied.
+有时你需要从一个路径向上遍历语法树，直到满足相应的条件。
 
-Call the provided `callback` with the `NodePath`s of all the parents. When the `callback` returns a truthy value, we return that `NodePath`.
+对于每一个父路径调用`callback`并将其`NodePath`当作参数，当`callback`返回真值时，则将其`NodePath`返回。.
 
 ```js
 path.findParent((path) => path.isObjectExpression());
 ```
 
-If the current path should be included as well:
+如果也需要遍历当前节点：
 
 ```js
 path.find((path) => path.isObjectExpression());
 ```
 
-Find the closest parent function or program:
+查找最接近的父函数或程序：
 
 ```js
 path.getFunctionParent();
 ```
 
-Walk up the tree until we hit a parent node path in a list
+向上遍历语法树，直到找到在列表中的父节点路径
 
 ```js
 path.getStatementParent();
 ```
 
-### <a id="toc-get-sibling-paths"></a>Get Sibling Paths
+### <a id="toc-get-sibling-paths"></a>获取同级路径
 
-If a path is in a list like in the body of a `Function`/`Program`, it will have "siblings".
+如果一个路径是在一个 `Function`／`Program`中的列表里面，它就有同级节点。
 
-  * Check if a path is part of a list with `path.inList`
-  * You can get the surrounding siblings with `path.getSibling(index)`,
-  * The current path's index in the container with `path.key`,
-  * The path's container (an array of all sibling nodes) with `path.container`
-  * Get the name of the key of the list container with `path.listKey`
+  * 使用`path.inList`来判断路径是否有同级节点，
+  * 使用`path.getSibling(index)`来获得同级路径,
+  * 使用 `path.key`获取路径所在容器的索引,
+  * 使用 `path.container`获取路径的容器（包含所有同级节点的数组）
+  * 使用 `path.listKey`获取容器的key
 
 > These APIs are used in the [transform-merge-sibling-variables](https://github.com/babel/babili/blob/master/packages/babel-plugin-transform-merge-sibling-variables/src/index.js) plugin used in [babel-minify](https://github.com/babel/babili).
 
@@ -1337,7 +1337,7 @@ export default function({ types: t }) {
 }
 ```
 
-### <a id="toc-stopping-traversal"></a>Stopping Traversal
+### <a id="toc-stopping-traversal"></a>停止遍历
 
 If your plugin needs to not run in a certain situation, the simpliest thing to do is to write an early return.
 
@@ -1365,7 +1365,7 @@ outerPath.traverse({
 
 ## <a id="toc-manipulation"></a>处理
 
-### <a id="toc-replacing-a-node"></a>Replacing a node
+### <a id="toc-replacing-a-node"></a>替换一个节点
 
 ```js
 BinaryExpression(path) {
@@ -1405,7 +1405,7 @@ ReturnStatement(path) {
 
 > **Note:** When replacing an expression with multiple nodes, they must be statements. This is because Babel uses heuristics extensively when replacing nodes which means that you can do some pretty crazy transformations that would be extremely verbose otherwise.
 
-### <a id="toc-replacing-a-node-with-a-source-string"></a>Replacing a node with a source string
+### <a id="toc-replacing-a-node-with-a-source-string"></a>用字符串源码替换节点
 
 ```js
 FunctionDeclaration(path) {
@@ -1444,7 +1444,7 @@ FunctionDeclaration(path) {
 
 > **Note:** This should always be a statement or an array of statements. This uses the same heuristics mentioned in [Replacing a node with multiple nodes](#replacing-a-node-with-multiple-nodes).
 
-### <a id="toc-inserting-into-a-container"></a>Inserting into a container
+### <a id="toc-inserting-into-a-container"></a>插入到容器（container）中
 
 If you want to insert into a AST node property like that is an array like `body`. It is similar to `insertBefore`/`insertAfter` other than you having to specify the `listKey` which is usually `body`.
 
@@ -1514,7 +1514,7 @@ BinaryExpression(path) {
 
 ## <a id="toc-scope"></a>Scope（作用域）
 
-### <a id="toc-checking-if-a-local-variable-is-bound"></a>Checking if a local variable is bound
+### <a id="toc-checking-if-a-local-variable-is-bound"></a>检查本地变量是否被绑定
 
 ```js
 FunctionDeclaration(path) {
@@ -1569,7 +1569,7 @@ FunctionDeclaration(path) {
 + };
 ```
 
-### <a id="toc-rename-a-binding-and-its-references"></a>Rename a binding and its references
+### <a id="toc-rename-a-binding-and-its-references"></a>重命名绑定及其引用
 
 ```js
 FunctionDeclaration(path) {
@@ -1635,7 +1635,7 @@ export default function({ types: t }) {
 
 These options are plugin-specific and you cannot access options from other plugins.
 
-## <a id="toc-pre-and-post-in-plugins"></a> Pre and Post in Plugins
+## <a id="toc-pre-and-post-in-plugins"></a> 插件的准备和收尾工作
 
 Plugins can have functions that are run before or after plugins. They can be used for setup or cleanup/analysis purposes.
 
@@ -1657,7 +1657,7 @@ export default function({ types: t }) {
 }
 ```
 
-## <a id="toc-enabling-syntax-in-plugins"></a> Enabling Syntax in Plugins
+## <a id="toc-enabling-syntax-in-plugins"></a> 在插件中启用其他语法
 
 Plugins can enable [babylon plugins](https://github.com/babel/babylon#plugins) so that users don't need to install/enable them. This prevents a parsing error without inheriting the syntax plugin.
 
@@ -2021,7 +2021,7 @@ class Foo {
 }
 ```
 
-## <a id="toc-unit-testing"></a>Unit Testing
+## <a id="toc-unit-testing"></a>单元测试
 
 There are a few primary ways to test babel plugins: snapshot tests, AST tests, and exec tests. We'll use [jest](http://facebook.github.io/jest/) for this example because it supports snapshot testing out of the box. The example we're creating here is hosted in [this repo](https://github.com/brigand/babel-plugin-testing-example).
 
@@ -2041,7 +2041,7 @@ First we need a babel plugin, we'll put this in src/index.js.
 };
 ```
 
-### Snapshot Tests
+### 快照测试
 
 Next, install our dependencies with `npm install --save-dev babel-core jest`, and then we can begin writing our first test: the snapshot. Snapshot tests allow us to visually inspect the output of our babel plugin. We give it an input, tell it to make a snapshot, and it saves it to a file. We check in the snapshots into git. This allows us to see when we've affected the output of any of our test cases. It also gives use a diff in pull requests. Of course you could do this with any test framework, but with jest updating the snapshots is as easy as `jest -u`.
 
