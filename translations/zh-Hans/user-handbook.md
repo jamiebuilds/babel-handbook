@@ -100,7 +100,7 @@ $ npm install --global babel-cli
 $ babel my-file.js
 ```
 
-这将把编译后的结果直接输出至终端。使用 `--out-file` 或着 `-o` 可以将结果写入到指定的文件。.
+这将把编译后的结果直接输出至终端。使用 `--out-file` 或着 `-o` 可以将结果写入到指定的文件。
 
 ```sh
 $ babel example.js --out-file compiled.js
@@ -108,7 +108,7 @@ $ babel example.js --out-file compiled.js
 $ babel example.js -o compiled.js
 ```
 
-如果我们想要把一个目录整个编译成一个新的目录，可以使用 `--out-dir` 或者 `-d`。.
+如果我们想要把一个目录整个编译成一个新的目录，可以使用 `--out-dir` 或者 `-d`。
 
 ```sh
 $ babel src --out-dir lib
@@ -151,7 +151,7 @@ $ npm uninstall --global babel-cli
 
 现在，我们不直接从命令行运行 Babel 了，取而代之我们将把运行命令写在 **npm scripts** 里，这样可以使用 Babel 的本地版本。
 
-只需将 `"scripts"` 字段添加到你的 `package.json` 文件内并且把 babel 命令写成 `build` 字段。.
+只需将 `"scripts"` 字段添加到你的 `package.json` 文件内并且把 babel 命令写成 `build` 字段。
 
 ```diff
   {
@@ -186,9 +186,9 @@ npm run build
 console.log("Hello world!");
 ```
 
-如果我们用 `node index.js` 来运行它是不会使用 Babel 来编译的。所以我们需要设置 `babel-register`。.
+如果我们用 `node index.js` 来运行它是不会使用 Babel 来编译的。所以我们需要设置 `babel-register`。
 
-首先安装 `babel-register`。.
+首先安装 `babel-register`。
 
 ```sh
 $ npm install --save-dev babel-register
@@ -231,7 +231,7 @@ $ npm install --save-dev babel-cli
 
 > **Note:** If you are wondering why we are installing this locally, please read the [Running Babel CLI from within a project](#toc-running-babel-cli-from-within-a-project) section above.
 
-然后用 `babel-node` 来替代 `node` 运行所有的代码 。.
+然后用 `babel-node` 来替代 `node` 运行所有的代码 。
 
 如果用 npm `scripts` 的话只需要这样做：
 
@@ -251,13 +251,13 @@ $ npm install --save-dev babel-cli
 + ./node_modules/.bin/babel-node script.js
 ```
 
-> 提示：你可以使用 [`npm-run`](https://www.npmjs.com/package/npm-run)。.
+> 提示：你可以使用 [`npm-run`](https://www.npmjs.com/package/npm-run)。
 
 ## <a id="toc-babel-core"></a>`babel-core`
 
 如果你需要以编程的方式来使用 Babel，可以使用 `babel-core` 这个包。
 
-首先安装 `babel-core`。.
+首先安装 `babel-core`。
 
 ```sh
 $ npm install babel-core
@@ -267,7 +267,7 @@ $ npm install babel-core
 var babel = require("babel-core");
 ```
 
-字符串形式的 JavaScript 代码可以直接使用 `babel.transform` 来编译。.
+字符串形式的 JavaScript 代码可以直接使用 `babel.transform` 来编译。
 
 ```js
 babel.transform("code();", options);
@@ -381,7 +381,7 @@ JavaScript 还有一些提案，正在积极通过 TC39（ECMAScript 标准背�
 
 > 注意 stage-4 预设是不存在的因为它就是上面的 `es2015` 预设。
 
-以上每种预设都依赖于紧随的后期阶段预设。例如，`babel-preset-stage-1` 依赖 `babel-preset-stage-2`，后者又依赖 `babel-preset-stage-3`。.
+以上每种预设都依赖于紧随的后期阶段预设。例如，`babel-preset-stage-1` 依赖 `babel-preset-stage-2`，后者又依赖 `babel-preset-stage-3`。
 
 使用的时候只需要安装你想要的阶段就可以了：
 
@@ -521,7 +521,7 @@ Babel 预设就是一些预先配置好的插件的集合，如果你想要做�
 $ npm install --save-dev babel-plugin-transform-es2015-classes
 ```
 
-然后往 `.babelrc` 文件添加 `plugins` 字段。.
+然后往 `.babelrc` 文件添加 `plugins` 字段。
 
 ```diff
   {
@@ -533,9 +533,9 @@ $ npm install --save-dev babel-plugin-transform-es2015-classes
 
 这能让你对正在使用的转换器进行更细致的控制。
 
-完整的官方插件列表请见 [Babel 插件页面](http://babeljs.io/docs/plugins/)。.
+完整的官方插件列表请见 [Babel 插件页面](http://babeljs.io/docs/plugins/)。
 
-同时也别忘了看看[由社区构建的其他插件](https://www.npmjs.com/search?q=babel-plugin)。 如果你想学习如何编写自己的插件可以阅读 [Babel 插件手册](plugin-handbook.md)。.
+同时也别忘了看看[由社区构建的其他插件](https://www.npmjs.com/search?q=babel-plugin)。 如果你想学习如何编写自己的插件可以阅读 [Babel 插件手册](plugin-handbook.md)。
 
 ## <a id="toc-plugin-options"></a>插件选项
 
@@ -552,7 +552,7 @@ $ npm install --save-dev babel-plugin-transform-es2015-classes
   }
 ```
 
-> 接下来几周内我会更新插件文档来详细介绍每一个选项。[关注我以获知更新](https://twitter.com/thejameskyle)。.
+> 接下来几周内我会更新插件文档来详细介绍每一个选项。[关注我以获知更新](https://twitter.com/thejameskyle)。
 
 ## <a id="toc-customizing-babel-based-on-environment"></a>基于环境自定义 Babel
 
@@ -577,7 +577,7 @@ Babel 插件解决许多不同的问题。 其中大多数是开发工具，可�
 
 Babel 将根据当前环境来开启 `env` 下的配置。
 
-当前环境可以使用 `process.env.BABEL_ENV` 来获得。 如果 `BABEL_ENV` 不可用，将会替换成 `NODE_ENV`，并且如果后者也没有设置，那么缺省值是`"development"`。.
+当前环境可以使用 `process.env.BABEL_ENV` 来获得。 如果 `BABEL_ENV` 不可用，将会替换成 `NODE_ENV`，并且如果后者也没有设置，那么缺省值是`"development"`。
 
 **Unix**
 
@@ -595,13 +595,13 @@ $ [COMMAND]
 
 > **注意：**`[COMMAND]` 指的是任意一个用来运行 Babel 的命令（如：`babel`，`babel-node`，或是 `node`，如果你使用了 register 钩子的话）。
 > 
-> **提示：**如果你想要让命令能够跨 unix 和 windows 平台运行的话，可以使用 [`cross-env`](https://www.npmjs.com/package/cross-env)。.
+> **提示：**如果你想要让命令能够跨 unix 和 windows 平台运行的话，可以使用 [`cross-env`](https://www.npmjs.com/package/cross-env)。
 
 ## <a id="toc-making-your-own-preset"></a>制作你自己的预设（preset）
 
 手动指定插件？插件选项？环境特定设置？所有这些配置都会在你的项目里产生大量的重复工作。
 
-为此，我们鼓励社区创建自己的预设。 这可能是一个针对特定 [node 版本](https://github.com/leebenson/babel-preset-node5)的预设，或是适用于你[整个](https://github.com/cloudflare/babel-preset-cf)[公司](https://github.com/airbnb/babel-preset-airbnb)的预设。.
+为此，我们鼓励社区创建自己的预设。 这可能是一个针对特定 [node 版本](https://github.com/leebenson/babel-preset-node5)的预设，或是适用于你[整个](https://github.com/cloudflare/babel-preset-cf)[公司](https://github.com/airbnb/babel-preset-airbnb)的预设。
 
 创建预设非常容易。比方说你这样一个 `.babelrc` 文件：
 
@@ -664,13 +664,13 @@ module.exports = {
 
 [ESLint](http://eslint.org) 是最流行的语法检查工具之一，因此我们维护了一个官方的 [`babel-eslint`](https://github.com/babel/babel-eslint) 整合软件包。
 
-首先安装 `eslint` 和 `babel-eslint`。.
+首先安装 `eslint` 和 `babel-eslint`。
 
 ```sh
 $ npm install --save-dev eslint babel-eslint
 ```
 
-然后创建或使用项目现有的 `.eslintrc` 文件并设置 `parser` 为 `babel-eslint`。.
+然后创建或使用项目现有的 `.eslintrc` 文件并设置 `parser` 为 `babel-eslint`。
 
 ```diff
   {
@@ -746,9 +746,9 @@ Documentation.js 使用 Babel 来支持所有最新的语法，包括用于在�
 
 ### <a id="toc-react"></a>React
 
-React 已经大幅改变了他们的 API 以适应 ES2015 的类语法（[此处了解更新的 API](https://babeljs.io/blog/2015/06/07/react-on-es6-plus)）。 特别是 React 现在依赖 Babel 编译它的 JSX 语法且弃用了它原有的自定义工具。 你可以按照[上述说明](#babel-preset-react)安装 `babel-preset-react` 包来开始。.
+React 已经大幅改变了他们的 API 以适应 ES2015 的类语法（[此处了解更新的 API](https://babeljs.io/blog/2015/06/07/react-on-es6-plus)）。 特别是 React 现在依赖 Babel 编译它的 JSX 语法且弃用了它原有的自定义工具。 你可以按照[上述说明](#babel-preset-react)安装 `babel-preset-react` 包来开始。
 
-React 社区采用 Babel 并围绕它来运行，现在社区已经创建了[大量的转换器（transforms）](https://www.npmjs.com/search?q=babel-plugin+react)。.
+React 社区采用 Babel 并围绕它来运行，现在社区已经创建了[大量的转换器（transforms）](https://www.npmjs.com/search?q=babel-plugin+react)。
 
 最令人瞩目的是 [`babel-plugin-react-transform`](https://github.com/gaearon/babel-plugin-react-transform) 插件，它集成了大量 [React 专用转换器](https://github.com/gaearon/babel-plugin-react-transform#transforms)可以启用诸如 *热模块重载*等其他调试工具。
 
@@ -785,11 +785,11 @@ Babel 的社区非常庞大并且增长速度很快，伴随着我们成长的�
 
 ## <a id="toc-babel-forum"></a>Babel 论坛
 
-[Discourse](http://www.discourse.org) 免费为我们提供了一个托管版本的论坛（我们爱死他们了！）。 如果你是个论坛控请不要错过 [discuss.babeljs.io](https://discuss.babeljs.io)。.
+[Discourse](http://www.discourse.org) 免费为我们提供了一个托管版本的论坛（我们爱死他们了！）。 如果你是个论坛控请不要错过 [discuss.babeljs.io](https://discuss.babeljs.io)。
 
 ## <a id="toc-babel-chat"></a>Babel 聊天
 
-无人不爱 [Slack](https://slack.com)。如果你正在寻求来自社区的即时支持，那就来 [slack.babeljs.io](https://slack.babeljs.io) 和我们聊天吧。.
+无人不爱 [Slack](https://slack.com)。如果你正在寻求来自社区的即时支持，那就来 [slack.babeljs.io](https://slack.babeljs.io) 和我们聊天吧。
 
 <!--
 ## Babel Stack Overflow
@@ -801,7 +801,7 @@ Babel 的社区非常庞大并且增长速度很快，伴随着我们成长的�
 
 Babel 使用了 [Phabricator](http://phabricator.org) 这个非常棒的问题跟踪应用，这是一个能让 Github 问题追踪变成昨日黄花的开源软件开发平台。
 
-Babel 的 Phabricator 地址是：[phabricator.babeljs.io](https://phabricator.babeljs.io) 你可以在 [maniphest](https://phabricator.babeljs.io/maniphest/) 查看所有打开和关闭的问题。.
+Babel 的 Phabricator 地址是：[phabricator.babeljs.io](https://phabricator.babeljs.io) 你可以在 [maniphest](https://phabricator.babeljs.io/maniphest/) 查看所有打开和关闭的问题。
 
 如果你想要打开一个新的问题：
 
