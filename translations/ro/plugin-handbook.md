@@ -90,7 +90,7 @@ Babel este un compilator de JavaScript, mai exact un compilator sursă-la-sursă
 
 Fiecare dintre acești pași implică crearea sau lucrul cu un [Arbore Abstract de Sintaxă](https://en.wikipedia.org/wiki/Abstract_syntax_tree) sau AST.
 
-> Babel folosește un AST modificat din [ESTree](https://github.com/estree/estree), cu specificațiile interne aflate [aici](https://github.com/babel/babylon/blob/master/ast/spec.md).
+> Babel folosește un AST modificat din [ESTree](https://github.com/estree/estree), cu specificațiile interne aflate [aici](https://github.com/babel/babel/blob/master/packages/babylon/ast/spec.md).
 
 ```js
 function square(n) {
@@ -1818,7 +1818,7 @@ member.expression.property
 
 Este foarte puţin probabil că veți memora vreodată semnăturile metodei constructor pentru fiecare tip de nod. Așadar, ar trebui să vă rezervați ceva timp să înţelegeți cum sunt generate acestea din definiţiile nodului.
 
-Puteţi găsi toate [definiţiile aici](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions) şi le puteţi vedea [documentate aici](https://github.com/babel/babel/blob/master/doc/ast/spec.md)
+Puteţi găsi toate [definiţiile aici](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions) şi le puteţi vedea [documentate aici](https://github.com/babel/babel/blob/master/packages/babylon/ast/spec.md)
 
 * * *
 

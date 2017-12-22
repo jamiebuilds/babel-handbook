@@ -90,7 +90,7 @@ Babel est un compilateur JavaScript, plus précisément un compilateur de code s
 
 Chacune de ces étapes implique la création ou le travail avec une [Arbre de syntaxe abstraite](https://en.wikipedia.org/wiki/Abstract_syntax_tree) ou AST.
 
-> Babel utilise un AST modifié de [ESTree](https://github.com/estree/estree), avec la spécification principale située [ici](https://github.com/babel/babylon/blob/master/ast/spec.md).
+> Babel utilise un AST modifié de [ESTree](https://github.com/estree/estree), avec la spécification principale située [ici](https://github.com/babel/babel/blob/master/packages/babylon/ast/spec.md).
 
 ```js
 function square(n) {
@@ -1818,7 +1818,7 @@ member.expression.property
 
 Il est très improbable que vous appreniez par cœur les signatures de méthode du constructeur pour chaque type de nœud. Donc vous devriez prendre du temps et comprendre comment ils sont générés depuis les définitions du nœud.
 
-Vous pouvez trouver toutes les [définitions actuelles ici](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions) et vous pouvez les voir [documentées ici](https://github.com/babel/babel/blob/master/doc/ast/spec.md)
+Vous pouvez trouver toutes les [définitions actuelles ici](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions) et vous pouvez les voir [documentées ici](https://github.com/babel/babel/blob/master/packages/babylon/ast/spec.md)
 
 * * *
 

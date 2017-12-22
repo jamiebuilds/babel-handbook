@@ -90,7 +90,7 @@ Babel은 JavaScript 컴파일러입니다. 정확히는 source-to-source 컴파�
 
 각 과정들은 [추상 구문 트리(AST)](https://en.wikipedia.org/wiki/Abstract_syntax_tree)를 생성하거나 이것을 다루게됩니다.
 
-> Babel uses an AST modified from [ESTree](https://github.com/estree/estree), with the core spec located [here](https://github.com/babel/babylon/blob/master/ast/spec.md).
+> Babel uses an AST modified from [ESTree](https://github.com/estree/estree), with the core spec located [here](https://github.com/babel/babel/blob/master/packages/babylon/ast/spec.md).
 
 ```js
 function square(n) {
@@ -1818,7 +1818,7 @@ member.expression.property
 
 It's very unlikely that you will ever memorize the builder method signatures for every node type. So you should take some time and understand how they are generated from the node definitions.
 
-You can find all of the actual [definitions here](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions) and you can see them [documented here](https://github.com/babel/babel/blob/master/doc/ast/spec.md)
+You can find all of the actual [definitions here](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions) and you can see them [documented here](https://github.com/babel/babel/blob/master/packages/babylon/ast/spec.md)
 
 * * *
 
