@@ -45,22 +45,22 @@ Este manual está disponível em outros idiomas, consulte o [arquivo Leia-me](/R
       * [Get Sibling Paths](#toc-get-sibling-paths)
       * [Stopping Traversal](#toc-stopping-traversal)
       * [Manipulação](#toc-manipulation)
-      * [Replacing a node](#toc-replacing-a-node)
-      * [Replacing a node with multiple nodes](#toc-replacing-a-node-with-multiple-nodes)
-      * [Replacing a node with a source string](#toc-replacing-a-node-with-a-source-string)
-      * [Inserting a sibling node](#toc-inserting-a-sibling-node)
-      * [Inserting into a container](#toc-inserting-into-a-container)
-      * [Removing a node](#toc-removing-a-node)
-      * [Replacing a parent](#toc-replacing-a-parent)
-      * [Removing a parent](#toc-removing-a-parent)
+      * [Substituindo um nó](#toc-replacing-a-node)
+      * [Substituindo um nó com vários nós](#toc-replacing-a-node-with-multiple-nodes)
+      * [Substituindo um nó com um valor de string](#toc-replacing-a-node-with-a-source-string)
+      * [Inserindo um nó irmão](#toc-inserting-a-sibling-node)
+      * [Colocando em um container](#toc-inserting-into-a-container)
+      * [Removendo o nó pai](#toc-removing-a-node)
+      * [Substituindo um nó pai](#toc-replacing-a-parent)
+      * [Removendo o nó pai](#toc-removing-a-parent)
       * [Escopo](#toc-scope)
-      * [Checking if a local variable is bound](#toc-checking-if-a-local-variable-is-bound)
-      * [Generating a UID](#toc-generating-a-uid)
-      * [Pushing a variable declaration to a parent scope](#toc-pushing-a-variable-declaration-to-a-parent-scope)
-      * [Rename a binding and its references](#toc-rename-a-binding-and-its-references)
+      * [Verificando se uma variável local está vinculada](#toc-checking-if-a-local-variable-is-bound)
+      * [Gerando um UID](#toc-generating-a-uid)
+      * [Empurrando uma declaração de variável para um escopo pai](#toc-pushing-a-variable-declaration-to-a-parent-scope)
+      * [Renomear um binding e suas referências](#toc-rename-a-binding-and-its-references)
   * [Opções do plugin](#toc-plugin-options) 
-      * [Pre and Post in Plugins](#toc-pre-and-post-in-plugins)
-      * [Enabling Syntax in Plugins](#toc-enabling-syntax-in-plugins)
+      * [Antes e Depois em Plugins](#toc-pre-and-post-in-plugins)
+      * [Habilitando Sintaxe em Plugins](#toc-enabling-syntax-in-plugins)
   * [Construindo nós](#toc-building-nodes)
   * [Melhores práticas](#toc-best-practices) 
       * [Evitar cruzar o máximo possível o AST](#toc-avoid-traversing-the-ast-as-much-as-possible)
@@ -68,7 +68,7 @@ Este manual está disponível em outros idiomas, consulte o [arquivo Leia-me](/R
       * [Não cruzar quando farão pesquisa manual](#toc-do-not-traverse-when-manual-lookup-will-do)
       * [Otimizando os visitantes aninhados](#toc-optimizing-nested-visitors)
       * [Estando ciente das estruturas aninhadas](#toc-being-aware-of-nested-structures)
-      * [Unit Testing](#toc-unit-testing)
+      * [Teste Unitário](#toc-unit-testing)
 
 # <a id="toc-introduction"></a>Introdução
 
@@ -100,7 +100,7 @@ function square(n) {
 
 > Confira [Explorando a AST](http://astexplorer.net/) para ter uma melhor noção de nós de AST. [Aqui](http://astexplorer.net/#/Z1exs6BWMq) está um link para ele, com o código de exemplo acima.
 
-This same program can be represented as a tree like this:
+Este mesmo programa pode ser representado como uma lista assim:
 
 ```md
 - FunctionDeclaration:
@@ -351,7 +351,7 @@ const MyVisitor = {
   }
 };
 
-// You can also create a visitor and add methods on it later
+// Você também pode criar um Visitor e adicionar métodos depois
 let visitor = {};
 visitor.MemberExpression = function() {};
 visitor.FunctionDeclaration = function() {}
@@ -444,7 +444,7 @@ const MyVisitor = {
 
 You can also use aliases as visitor nodes (as defined in [babel-types](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions)).
 
-For example,
+Por exemplo,
 
 `Function` is an alias for `FunctionDeclaration`, `FunctionExpression`, `ArrowFunctionExpression`, `ObjectMethod` and `ClassMethod`.
 
@@ -456,11 +456,11 @@ const MyVisitor = {
 
 ### <a id="toc-paths"></a>Paths
 
-An AST generally has many Nodes, but how do Nodes relate to one another? We could have one giant mutable object that you manipulate and have full access to, or we can simplify this with **Paths**.
+An AST generally has many Nodes, but how do Nodes relate to one another? Podemos ter um enorme objeto mutável, no qual você pode manipular e ter total acesso, ou, podemos simplificar isso com os **Paths**.
 
-A **Path** is an object representation of the link between two nodes.
+Um **Path**, é um objeto que representa a ligação entre dois nós.
 
-For example if we take the following node and its child:
+Por exemplo, se tomarmos o seguinte nó e seu filho:
 
 ```js
 {
@@ -473,7 +473,7 @@ For example if we take the following node and its child:
 }
 ```
 
-And represent the child `Identifier` as a path, it looks something like this:
+E representar o `Indentifier` do nó filho como um caminho, parece algo como isto:
 
 ```js
 {
@@ -523,7 +523,7 @@ In a sense, paths are a **reactive** representation of a node's position in the 
 
 #### <a id="toc-paths-in-visitors"></a>Paths in Visitors
 
-When you have a visitor that has a `Identifier()` method, you're actually visiting the path instead of the node. This way you are mostly working with the reactive representation of a node instead of the node itself.
+When you have a visitor that has a `Identifier()` method, you're actually visiting the path instead of the node. Desta forma, você está trabalhando, principalmente, com a representação reativa de um nó em vez do próprio nó.
 
 ```js
 const MyVisitor = {
@@ -546,9 +546,9 @@ Visiting: c
 
 ### <a id="toc-state"></a>State
 
-State is the enemy of AST transformation. State will bite you over and over again and your assumptions about state will almost always be proven wrong by some syntax that you didn't consider.
+Estado (global e local) são os inimigos da AST. Eles irão pregar tanta peça em você, que você vai acabar vendo que seus conhecimentos sobre estado estarão errados devido a alguma sintaxe que você não considerava.
 
-Take the following code:
+Veja o seguinte código:
 
 ```js
 function square(n) {
@@ -556,7 +556,7 @@ function square(n) {
 }
 ```
 
-Let's write a quick hacky visitor that will rename `n` to `x`.
+Vamos escrever um Visitor que vai renomear `n` para `x`.
 
 ```js
 let paramName;
@@ -1363,7 +1363,7 @@ outerPath.traverse({
 
 ## <a id="toc-manipulation"></a>Manipulação
 
-### <a id="toc-replacing-a-node"></a>Replacing a node
+### <a id="toc-replacing-a-node"></a>Substituindo um nó
 
 ```js
 BinaryExpression(path) {
@@ -1380,7 +1380,7 @@ BinaryExpression(path) {
   }
 ```
 
-### <a id="toc-replacing-a-node-with-multiple-nodes"></a>Replacing a node with multiple nodes
+### <a id="toc-replacing-a-node-with-multiple-nodes"></a>Substituindo um nó com vários nós
 
 ```js
 ReturnStatement(path) {
@@ -1403,7 +1403,7 @@ ReturnStatement(path) {
 
 > **Note:** When replacing an expression with multiple nodes, they must be statements. This is because Babel uses heuristics extensively when replacing nodes which means that you can do some pretty crazy transformations that would be extremely verbose otherwise.
 
-### <a id="toc-replacing-a-node-with-a-source-string"></a>Replacing a node with a source string
+### <a id="toc-replacing-a-node-with-a-source-string"></a>Substituindo um nó com um valor de string
 
 ```js
 FunctionDeclaration(path) {
@@ -1423,7 +1423,7 @@ FunctionDeclaration(path) {
 
 > **Note:** It's not recommended to use this API unless you're dealing with dynamic source strings, otherwise it's more efficient to parse the code outside of the visitor.
 
-### <a id="toc-inserting-a-sibling-node"></a>Inserting a sibling node
+### <a id="toc-inserting-a-sibling-node"></a>Inserindo um nó irmão
 
 ```js
 FunctionDeclaration(path) {
@@ -1442,7 +1442,7 @@ FunctionDeclaration(path) {
 
 > **Note:** This should always be a statement or an array of statements. This uses the same heuristics mentioned in [Replacing a node with multiple nodes](#replacing-a-node-with-multiple-nodes).
 
-### <a id="toc-inserting-into-a-container"></a>Inserting into a container
+### <a id="toc-inserting-into-a-container"></a>Colocando em um container
 
 If you want to insert into a AST node property like that is an array like `body`. It is similar to `insertBefore`/`insertAfter` other than you having to specify the `listKey` which is usually `body`.
 
@@ -1463,7 +1463,7 @@ ClassMethod(path) {
  }
 ```
 
-### <a id="toc-removing-a-node"></a>Removing a node
+### <a id="toc-removing-a-node"></a>Removendo o nó pai
 
 ```js
 FunctionDeclaration(path) {
@@ -1477,7 +1477,7 @@ FunctionDeclaration(path) {
 - }
 ```
 
-### <a id="toc-replacing-a-parent"></a>Replacing a parent
+### <a id="toc-replacing-a-parent"></a>Substituindo um nó pai
 
 Just call `replaceWith` with the parentPath: `path.parentPath`
 
@@ -1496,7 +1496,7 @@ BinaryExpression(path) {
   }
 ```
 
-### <a id="toc-removing-a-parent"></a>Removing a parent
+### <a id="toc-removing-a-parent"></a>Removendo o nó pai
 
 ```js
 BinaryExpression(path) {
@@ -1512,7 +1512,7 @@ BinaryExpression(path) {
 
 ## <a id="toc-scope"></a>Escopo
 
-### <a id="toc-checking-if-a-local-variable-is-bound"></a>Checking if a local variable is bound
+### <a id="toc-checking-if-a-local-variable-is-bound"></a>Verificando se uma variável local está vinculada
 
 ```js
 FunctionDeclaration(path) {
@@ -1534,7 +1534,7 @@ FunctionDeclaration(path) {
 }
 ```
 
-### <a id="toc-generating-a-uid"></a>Generating a UID
+### <a id="toc-generating-a-uid"></a>Gerando um UID
 
 This will generate an identifier that doesn't collide with any locally defined variables.
 
@@ -1547,7 +1547,7 @@ FunctionDeclaration(path) {
 }
 ```
 
-### <a id="toc-pushing-a-variable-declaration-to-a-parent-scope"></a>Pushing a variable declaration to a parent scope
+### <a id="toc-pushing-a-variable-declaration-to-a-parent-scope"></a>Empurrando uma declaração de variável para um escopo pai
 
 Sometimes you may want to push a `VariableDeclaration` so you can assign to it.
 
@@ -1567,7 +1567,7 @@ FunctionDeclaration(path) {
 + };
 ```
 
-### <a id="toc-rename-a-binding-and-its-references"></a>Rename a binding and its references
+### <a id="toc-rename-a-binding-and-its-references"></a>Renomear um binding e suas referências
 
 ```js
 FunctionDeclaration(path) {
@@ -1633,7 +1633,7 @@ export default function({ types: t }) {
 
 These options are plugin-specific and you cannot access options from other plugins.
 
-## <a id="toc-pre-and-post-in-plugins"></a> Pre and Post in Plugins
+## <a id="toc-pre-and-post-in-plugins"></a> Antes e Depois em Plugins
 
 Plugins can have functions that are run before or after plugins. They can be used for setup or cleanup/analysis purposes.
 
@@ -1655,7 +1655,7 @@ export default function({ types: t }) {
 }
 ```
 
-## <a id="toc-enabling-syntax-in-plugins"></a> Enabling Syntax in Plugins
+## <a id="toc-enabling-syntax-in-plugins"></a> Habilitando Sintaxe em Plugins
 
 Plugins can enable [babylon plugins](https://github.com/babel/babylon#plugins) so that users don't need to install/enable them. This prevents a parsing error without inheriting the syntax plugin.
 
@@ -2019,7 +2019,7 @@ class Foo {
 }
 ```
 
-## <a id="toc-unit-testing"></a>Unit Testing
+## <a id="toc-unit-testing"></a>Teste Unitário
 
 There are a few primary ways to test babel plugins: snapshot tests, AST tests, and exec tests. We'll use [jest](http://facebook.github.io/jest/) for this example because it supports snapshot testing out of the box. The example we're creating here is hosted in [this repo](https://github.com/brigand/babel-plugin-testing-example).
 

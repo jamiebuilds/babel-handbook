@@ -37,30 +37,30 @@
   * [첫 Babel 플러그인 작성](#toc-writing-your-first-babel-plugin)
   * [변환 작업](#toc-transformation-operations) 
       * [방문하기(Visiting)](#toc-visiting)
-      * [Get the Path of Sub-Node](#toc-get-the-path-of-a-sub-node)
-      * [Check if a node is a certain type](#toc-check-if-a-node-is-a-certain-type)
-      * [Check if a path is a certain type](#toc-check-if-a-path-is-a-certain-type)
-      * [Check if an identifier is referenced](#toc-check-if-an-identifier-is-referenced)
-      * [Find a specific parent path](#toc-find-a-specific-parent-path)
-      * [Get Sibling Paths](#toc-get-sibling-paths)
-      * [Stopping Traversal](#toc-stopping-traversal)
-      * [조작(Manipulation)](#toc-manipulation)
-      * [Replacing a node](#toc-replacing-a-node)
-      * [Replacing a node with multiple nodes](#toc-replacing-a-node-with-multiple-nodes)
-      * [Replacing a node with a source string](#toc-replacing-a-node-with-a-source-string)
-      * [Inserting a sibling node](#toc-inserting-a-sibling-node)
-      * [Inserting into a container](#toc-inserting-into-a-container)
-      * [Removing a node](#toc-removing-a-node)
-      * [Replacing a parent](#toc-replacing-a-parent)
-      * [Removing a parent](#toc-removing-a-parent)
-      * [범위(Scope)](#toc-scope)
-      * [Checking if a local variable is bound](#toc-checking-if-a-local-variable-is-bound)
-      * [Generating a UID](#toc-generating-a-uid)
-      * [Pushing a variable declaration to a parent scope](#toc-pushing-a-variable-declaration-to-a-parent-scope)
-      * [Rename a binding and its references](#toc-rename-a-binding-and-its-references)
+      * [서브-노드의 경로 얻기](#toc-get-the-path-of-a-sub-node)
+      * [노드가 어떤 형식인지 확인하기](#toc-check-if-a-node-is-a-certain-type)
+      * [경로가 어떤 형식인지 확인하기](#toc-check-if-a-path-is-a-certain-type)
+      * [식별자가 참조되었는지 확인하기](#toc-check-if-an-identifier-is-referenced)
+      * [특정한 부모 경로 찾기](#toc-find-a-specific-parent-path)
+      * [형제 경로 얻기](#toc-get-sibling-paths)
+      * [탐색 중지하기](#toc-stopping-traversal)
+      * [노드 변형하기](#toc-manipulation)
+      * [노드 교체하기](#toc-replacing-a-node)
+      * [노드 하나를 여러 개의 노드로 교체하기](#toc-replacing-a-node-with-multiple-nodes)
+      * [노드 하나를 소스 문자열로 교체하기](#toc-replacing-a-node-with-a-source-string)
+      * [형제 노드를 삽입하기](#toc-inserting-a-sibling-node)
+      * [컨테이너에 삽입하기](#toc-inserting-into-a-container)
+      * [노드 삭제하기](#toc-removing-a-node)
+      * [부모 교체하기](#toc-replacing-a-parent)
+      * [부모 삭제하기](#toc-removing-a-parent)
+      * [스코프](#toc-scope)
+      * [지역 변수가 바인딩되었는지 확인하기](#toc-checking-if-a-local-variable-is-bound)
+      * [UID 생성하기](#toc-generating-a-uid)
+      * [부모 스코프에 변수 선언 집어넣기](#toc-pushing-a-variable-declaration-to-a-parent-scope)
+      * [바인딩과 참조의 이름 바꾸기](#toc-rename-a-binding-and-its-references)
   * [플러그인 옵션](#toc-plugin-options) 
-      * [Pre and Post in Plugins](#toc-pre-and-post-in-plugins)
-      * [Enabling Syntax in Plugins](#toc-enabling-syntax-in-plugins)
+      * [플러그인의 전처리와 후처리](#toc-pre-and-post-in-plugins)
+      * [플러그인에서 구문 활성화하기](#toc-enabling-syntax-in-plugins)
   * [노드 만들기(Building Nodes)](#toc-building-nodes)
   * [모범 사례](#toc-best-practices) 
       * [가능한 AST 탐색을 피하라](#toc-avoid-traversing-the-ast-as-much-as-possible)
@@ -68,11 +68,11 @@
       * [수동 조회할 땐 탐색하지 마라](#toc-do-not-traverse-when-manual-lookup-will-do)
       * [중첩된 방문자들 최적화하기](#toc-optimizing-nested-visitors)
       * [중첩된 구조(nested structures) 인지하기](#toc-being-aware-of-nested-structures)
-      * [Unit Testing](#toc-unit-testing)
+      * [단위 테스트](#toc-unit-testing)
 
 # <a id="toc-introduction"></a>소개
 
-바벨은 일반적으로 다목적 자바스크립트 컴파일러입니다. 더 나아가 많은 형태의 정적 분석 (Static analysis) 에 사용되는 모듈들의 모음(collection) 이기도 합니다.
+Babel은 일반적으로 다목적 자바스크립트 컴파일러입니다. 더 나아가 많은 형태의 정적 분석 (Static analysis) 에 사용되는 모듈들의 모음(collection) 이기도 합니다.
 
 > 정적 분석(Static analysis) 이란 코드를 실행하지 않고 분석하는 작업 입니다. 코드를 실행하는 동안 분석하는 것은 동적 분석(dynamic analysis) 으로 알려져 있습니다. 정적 분석의 목적은 매우 다양합니다. 구문 검사 (linting), 컴파일링, 코드 하이라이팅, 코드 변환, 최적화, 압축(minification) 등 매우 많은 용도로 사용될 수 있습니다.
 
@@ -90,7 +90,7 @@ Babel은 JavaScript 컴파일러입니다. 정확히는 source-to-source 컴파�
 
 각 과정들은 [추상 구문 트리(AST)](https://en.wikipedia.org/wiki/Abstract_syntax_tree)를 생성하거나 이것을 다루게됩니다.
 
-> Babel uses an AST modified from [ESTree](https://github.com/estree/estree), with the core spec located [here](https://github.com/babel/babylon/blob/master/ast/spec.md).
+> Babel은 [ESTree](https://github.com/estree/estree)에서 수정된 AST를 사용하며, 핵심 스팩은 [여기](https://github.com/babel/babylon/blob/master/ast/spec.md)에 있습니다.
 
 ```js
 function square(n) {
@@ -447,7 +447,7 @@ const MyVisitor = {
 
 예를 들어,
 
-`Function` is an alias for `FunctionDeclaration`, `FunctionExpression`, `ArrowFunctionExpression`, `ObjectMethod` and `ClassMethod`.
+`Function` 은 `FunctionDeclaration`, `FunctionExpression`, `ArrowFunctionExpression`, `ObjectMethod` 그리고 `ClassMethod` 에 대한 별명입니다..
 
 ```js
 const MyVisitor = {
@@ -617,7 +617,7 @@ path.traverse(MyVisitor);
 다음으로 [**scope**](https://en.wikipedia.org/wiki/Scope_(computer_science)) 개념을 소개합니다. 자바스크립트는 [lexical scoping](https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scoping_vs._dynamic_scoping)을 가지고 있는데, 이것은 트리 구조이며 블록은 새로운 scope을 생성합니다.
 
 ```js
-// global scope
+// 전역 스코프
 
 function scopeOne() {
   // scope 1
@@ -694,10 +694,10 @@ Scope는 다음과 같이 나타낼 수 있습니다:
 function scopeOnce() {
   var ref = "This is a binding";
 
-  ref; // This is a reference to a binding
+  ref; // 바인딩에 대한 참조입니다
 
   function scopeTwo() {
-    ref; // This is a reference to a binding from a lower scope
+    ref; // 낮은 스코프의 바인딩에 대한 참조입니다
   }
 }
 ```
@@ -837,7 +837,7 @@ Babel Types 는 AST 노드들을 위한 Lodash 스타일의 유틸리티 라이�
 $ npm install --save babel-types
 ```
 
-Then start using it:
+그다음 이렇게 사용할 수 있습니다:
 
 ```js
 import traverse from "babel-traverse";
@@ -1170,7 +1170,7 @@ Awesome! Our very first Babel plugin.
 
 ## <a id="toc-visiting"></a>방문하기(Visiting)
 
-### <a id="toc-get-the-path-of-a-sub-node"></a>Get the Path of Sub-Node
+### <a id="toc-get-the-path-of-a-sub-node"></a>서브-노드의 경로 얻기
 
 To access an AST node's property you normally access the node and then the property. `path.node.property`
 
@@ -1194,9 +1194,9 @@ Program(path) {
 }
 ```
 
-### <a id="toc-check-if-a-node-is-a-certain-type"></a>Check if a node is a certain type
+### <a id="toc-check-if-a-node-is-a-certain-type"></a>노드가 어떤 형식인지 확인하기
 
-If you want to check what the type of a node is, the preferred way to do so is:
+노드의 형식이 무엇인지 확인하고 싶을 때 가장 권장되는 방법은 다음과 같습니다:
 
 ```js
 BinaryExpression(path) {
@@ -1206,7 +1206,7 @@ BinaryExpression(path) {
 }
 ```
 
-You can also do a shallow check for properties on that node:
+또한 해당 노드의 속성에 대해 얕은 검사 (shallow check) 를 할 수도 있습니다.
 
 ```js
 BinaryExpression(path) {
@@ -1216,7 +1216,7 @@ BinaryExpression(path) {
 }
 ```
 
-This is functionally equivalent to:
+이 코드는 아래의 코드와 동일한 기능을 합니다:
 
 ```js
 BinaryExpression(path) {
@@ -1230,7 +1230,7 @@ BinaryExpression(path) {
 }
 ```
 
-### <a id="toc-check-if-a-path-is-a-certain-type"></a>Check if a path is a certain type
+### <a id="toc-check-if-a-path-is-a-certain-type"></a>경로가 어떤 형식인지 확인하기
 
 A path has the same methods for checking the type of a node:
 
@@ -1252,7 +1252,7 @@ BinaryExpression(path) {
 }
 ```
 
-### <a id="toc-check-if-an-identifier-is-referenced"></a>Check if an identifier is referenced
+### <a id="toc-check-if-an-identifier-is-referenced"></a>식별자가 참조되었는지 확인하기
 
 ```js
 Identifier(path) {
@@ -1272,7 +1272,7 @@ Identifier(path) {
 }
 ```
 
-### <a id="toc-find-a-specific-parent-path"></a>Find a specific parent path
+### <a id="toc-find-a-specific-parent-path"></a>특정한 부모 경로 찾기
 
 Sometimes you will need to traverse the tree upwards from a path until a condition is satisfied.
 
@@ -1300,7 +1300,7 @@ Walk up the tree until we hit a parent node path in a list
 path.getStatementParent();
 ```
 
-### <a id="toc-get-sibling-paths"></a>Get Sibling Paths
+### <a id="toc-get-sibling-paths"></a>형제 경로 얻기
 
 If a path is in a list like in the body of a `Function`/`Program`, it will have "siblings".
 
@@ -1336,7 +1336,7 @@ export default function({ types: t }) {
 }
 ```
 
-### <a id="toc-stopping-traversal"></a>Stopping Traversal
+### <a id="toc-stopping-traversal"></a>탐색 중지하기
 
 If your plugin needs to not run in a certain situation, the simpliest thing to do is to write an early return.
 
@@ -1364,7 +1364,7 @@ outerPath.traverse({
 
 ## <a id="toc-manipulation"></a>조작(Manipulation)
 
-### <a id="toc-replacing-a-node"></a>Replacing a node
+### <a id="toc-replacing-a-node"></a>노드 교체하기
 
 ```js
 BinaryExpression(path) {
@@ -1381,7 +1381,7 @@ BinaryExpression(path) {
   }
 ```
 
-### <a id="toc-replacing-a-node-with-multiple-nodes"></a>Replacing a node with multiple nodes
+### <a id="toc-replacing-a-node-with-multiple-nodes"></a>노드 하나를 여러 개의 노드로 교체하기
 
 ```js
 ReturnStatement(path) {
@@ -1404,7 +1404,7 @@ ReturnStatement(path) {
 
 > **Note:** When replacing an expression with multiple nodes, they must be statements. This is because Babel uses heuristics extensively when replacing nodes which means that you can do some pretty crazy transformations that would be extremely verbose otherwise.
 
-### <a id="toc-replacing-a-node-with-a-source-string"></a>Replacing a node with a source string
+### <a id="toc-replacing-a-node-with-a-source-string"></a>노드 하나를 소스 문자열로 교체하기
 
 ```js
 FunctionDeclaration(path) {
@@ -1424,7 +1424,7 @@ FunctionDeclaration(path) {
 
 > **Note:** It's not recommended to use this API unless you're dealing with dynamic source strings, otherwise it's more efficient to parse the code outside of the visitor.
 
-### <a id="toc-inserting-a-sibling-node"></a>Inserting a sibling node
+### <a id="toc-inserting-a-sibling-node"></a>형제 노드를 삽입하기
 
 ```js
 FunctionDeclaration(path) {
@@ -1443,7 +1443,7 @@ FunctionDeclaration(path) {
 
 > **Note:** This should always be a statement or an array of statements. This uses the same heuristics mentioned in [Replacing a node with multiple nodes](#replacing-a-node-with-multiple-nodes).
 
-### <a id="toc-inserting-into-a-container"></a>Inserting into a container
+### <a id="toc-inserting-into-a-container"></a>컨테이너에 삽입하기
 
 If you want to insert into a AST node property like that is an array like `body`. It is similar to `insertBefore`/`insertAfter` other than you having to specify the `listKey` which is usually `body`.
 
@@ -1464,7 +1464,7 @@ ClassMethod(path) {
  }
 ```
 
-### <a id="toc-removing-a-node"></a>Removing a node
+### <a id="toc-removing-a-node"></a>노드 삭제하기
 
 ```js
 FunctionDeclaration(path) {
@@ -1478,7 +1478,7 @@ FunctionDeclaration(path) {
 - }
 ```
 
-### <a id="toc-replacing-a-parent"></a>Replacing a parent
+### <a id="toc-replacing-a-parent"></a>부모 교체하기
 
 Just call `replaceWith` with the parentPath: `path.parentPath`
 
@@ -1497,7 +1497,7 @@ BinaryExpression(path) {
   }
 ```
 
-### <a id="toc-removing-a-parent"></a>Removing a parent
+### <a id="toc-removing-a-parent"></a>부모 삭제하기
 
 ```js
 BinaryExpression(path) {
@@ -1513,7 +1513,7 @@ BinaryExpression(path) {
 
 ## <a id="toc-scope"></a>범위(Scope)
 
-### <a id="toc-checking-if-a-local-variable-is-bound"></a>Checking if a local variable is bound
+### <a id="toc-checking-if-a-local-variable-is-bound"></a>지역 변수가 바인딩되었는지 확인하기
 
 ```js
 FunctionDeclaration(path) {
@@ -1535,7 +1535,7 @@ FunctionDeclaration(path) {
 }
 ```
 
-### <a id="toc-generating-a-uid"></a>Generating a UID
+### <a id="toc-generating-a-uid"></a>UID 생성하기
 
 This will generate an identifier that doesn't collide with any locally defined variables.
 
@@ -1548,7 +1548,7 @@ FunctionDeclaration(path) {
 }
 ```
 
-### <a id="toc-pushing-a-variable-declaration-to-a-parent-scope"></a>Pushing a variable declaration to a parent scope
+### <a id="toc-pushing-a-variable-declaration-to-a-parent-scope"></a>부모 스코프에 변수 선언 집어넣기
 
 Sometimes you may want to push a `VariableDeclaration` so you can assign to it.
 
@@ -1568,7 +1568,7 @@ FunctionDeclaration(path) {
 + };
 ```
 
-### <a id="toc-rename-a-binding-and-its-references"></a>Rename a binding and its references
+### <a id="toc-rename-a-binding-and-its-references"></a>바인딩과 참조의 이름 바꾸기
 
 ```js
 FunctionDeclaration(path) {
@@ -1634,7 +1634,7 @@ export default function({ types: t }) {
 
 These options are plugin-specific and you cannot access options from other plugins.
 
-## <a id="toc-pre-and-post-in-plugins"></a> Pre and Post in Plugins
+## <a id="toc-pre-and-post-in-plugins"></a> 플러그인의 전처리와 후처리
 
 Plugins can have functions that are run before or after plugins. They can be used for setup or cleanup/analysis purposes.
 
@@ -1656,7 +1656,7 @@ export default function({ types: t }) {
 }
 ```
 
-## <a id="toc-enabling-syntax-in-plugins"></a> Enabling Syntax in Plugins
+## <a id="toc-enabling-syntax-in-plugins"></a> 플러그인에서 구문 활성화하기
 
 Plugins can enable [babylon plugins](https://github.com/babel/babylon#plugins) so that users don't need to install/enable them. This prevents a parsing error without inheriting the syntax plugin.
 
@@ -1668,7 +1668,7 @@ export default function({ types: t }) {
 }
 ```
 
-## <a id="toc-throwing-a-syntax-error"></a> Throwing a Syntax Error
+## <a id="toc-throwing-a-syntax-error"></a> 구문 오류 throw 하기
 
 If you want to throw an error with babel-code-frame and a message:
 
@@ -1824,7 +1824,7 @@ You can find all of the actual [definitions here](https://github.com/babel/babel
 
 # <a id="toc-best-practices"></a>모범 사례
 
-## <a id="toc-create-helper-builders-and-checkers"></a> Create Helper Builders and Checkers
+## <a id="toc-create-helper-builders-and-checkers"></a> 헬퍼 빌더와 체커 만들기
 
 It's pretty simple to extract certain checks (if a node is a certain type) into their own helper functions as well as extracting out helpers for specific node types.
 
@@ -2020,7 +2020,7 @@ class Foo {
 }
 ```
 
-## <a id="toc-unit-testing"></a>Unit Testing
+## <a id="toc-unit-testing"></a>단위 테스트
 
 There are a few primary ways to test babel plugins: snapshot tests, AST tests, and exec tests. We'll use [jest](http://facebook.github.io/jest/) for this example because it supports snapshot testing out of the box. The example we're creating here is hosted in [this repo](https://github.com/brigand/babel-plugin-testing-example).
 
@@ -2040,7 +2040,7 @@ First we need a babel plugin, we'll put this in src/index.js.
 };
 ```
 
-### Snapshot Tests
+### Snapshot 테스트
 
 Next, install our dependencies with `npm install --save-dev babel-core jest`, and then we can begin writing our first test: the snapshot. Snapshot tests allow us to visually inspect the output of our babel plugin. We give it an input, tell it to make a snapshot, and it saves it to a file. We check in the snapshots into git. This allows us to see when we've affected the output of any of our test cases. It also gives use a diff in pull requests. Of course you could do this with any test framework, but with jest updating the snapshots is as easy as `jest -u`.
 
@@ -2088,7 +2088,7 @@ Received value does not match stored snapshot 1.
 
 We see how our change to the plugin code affected the output of our plugin, and if the output looks good to us, we can run `jest -u` to update the snapshot.
 
-### AST Tests
+### AST 테스트
 
 In addition to snapshot testing, we can manually inspect the AST. This is a simple but brittle example. For more involved situations you may wish to leverage babel-traverse. It allows you to specify an object with a `visitor` key, exactly like you use for the plugin itself.
 
@@ -2102,9 +2102,9 @@ it('contains baz', () => {
 });
 ```
 
-### Exec Tests
+### Exec 테스트
 
-Here we'll be transforming the code, and then evaluating that it behaves correctly. Note that we're not using `assert` in the test. This ensures that if our plugin does weird stuff like removing the assert line by accident, the test will still fail.
+여기선 코드를 변환시켜보고, 올바르게 동작하는지 확인해보겠습니다. Note that we're not using `assert` in the test. This ensures that if our plugin does weird stuff like removing the assert line by accident, the test will still fail.
 
 ```js
 it('foo is an alias to baz', () => {
@@ -2160,4 +2160,4 @@ pluginTester({
 
 * * *
 
-> ***For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) and [@babeljs](https://twitter.com/babeljs) on Twitter.***
+> ***향후 업데이트를 받아보려면 Twitter에 있는 [@thejameskyle](https://twitter.com/thejameskyle) 와 [@babeljs](https://twitter.com/babeljs) 를 팔로우하세요.***

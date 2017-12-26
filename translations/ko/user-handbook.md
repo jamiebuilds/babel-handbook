@@ -799,15 +799,14 @@ Babel은 아주 크고 빠르게 성장하는 커뮤니티를 가지고 있으�
 
 ## <a id="toc-babel-issues"></a>Babel 이슈
 
-Babel은 GitHub를 과거의 악몽으로 만들 정도인 놀라운 오픈 소스 개발 플랫폼 [Phabricator](http://phabricator.org)가 제공하는 이슈 트레커를 사용하고 있습니다.
+Babel uses the issue tracker provided by [Github](http://github.com).
 
-Babel의 Phabricator는 [phabricator.babeljs.io](https://phabricator.babeljs.io)에서 사용할 수 있습니다. [maniphest](https://phabricator.babeljs.io/maniphest/)에서 모든 열렸거나 닫힌 이슈를 확인할 수 있습니다.
+You can see all the open and closed issues on [Github](https://github.com/babel/babel/issues).
 
 만약 새로운 이슈를 만들고 싶다면:
 
-  * [먼저 해당 이슈가 이미 있는지 검색하세요](https://phabricator.babeljs.io/maniphest/query/advanced/)
-  * [로그인](https://phabricator.babeljs.io/auth/start/)하거나 [새 계정](https://phabricator.babeljs.io/auth/register/)을 만듭니다 (GitHub, Facebook, Twitter, Google, 등을 통해 로그인할 수도 있습니다)
-  * [새 버그 이슈를 생성](https://phabricator.babeljs.io/maniphest/task/create/?projects=PHID-PROJ-2ufzspoyuk4udiwfnzls#R)하거나 [새 기능을 요청](https://phabricator.babeljs.io/maniphest/task/create/?projects=PHID-PROJ-dfaevtocl5zgjtstjijd#R)합니다
+  * [먼저 해당 이슈가 이미 있는지 검색하세요](https://github.com/babel/babel/issues)
+  * [Create a new bug report](https://github.com/babel/babel/issues/new) or [request a new feature](https://github.com/babel/babel/issues/new)
 
 ### <a id="toc-creating-an-awesome-babel-bug-report"></a>멋진 Babel 버그 보고 생성
 

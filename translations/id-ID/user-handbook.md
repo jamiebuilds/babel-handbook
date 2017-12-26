@@ -799,15 +799,14 @@ Semua orang menyukai [kendur](https://slack.com). Jika Anda sedang mencari dukun
 
 ## <a id="toc-babel-issues"></a>Masalah Babel
 
-Babel menggunakan pelacak isu mengagumkan yang disediakan oleh [Phabricator](http://phabricator.org) platform pengembangan perangkat lunak open source yang membuat isu-isu GitHub mimpi buruk di masa lalu.
+Babel uses the issue tracker provided by [Github](http://github.com).
 
-Phabricator Babel's tersedia di [phabricator.babeljs.io](https://phabricator.babeljs.io). Anda dapat melihat semua masalah terbuka dan tertutup pada [maniphest](https://phabricator.babeljs.io/maniphest/).
+You can see all the open and closed issues on [Github](https://github.com/babel/babel/issues).
 
 Jika Anda ingin membuka masalah baru:
 
-  * [Mencari masalah yang ada](https://phabricator.babeljs.io/maniphest/query/advanced/)
-  * [Login](https://phabricator.babeljs.io/auth/start/) atau [membuat account](https://phabricator.babeljs.io/auth/register/) (Anda juga dapat login menggunakan GitHub, Facebook, Twitter, Google, dll.)
-  * [Membuat laporan bug](https://phabricator.babeljs.io/maniphest/task/create/?projects=PHID-PROJ-2ufzspoyuk4udiwfnzls#R) atau [permintaan fitur baru](https://phabricator.babeljs.io/maniphest/task/create/?projects=PHID-PROJ-dfaevtocl5zgjtstjijd#R)
+  * [Mencari masalah yang ada](https://github.com/babel/babel/issues)
+  * [Create a new bug report](https://github.com/babel/babel/issues/new) or [request a new feature](https://github.com/babel/babel/issues/new)
 
 ### <a id="toc-creating-an-awesome-babel-bug-report"></a>Membuat laporan bug Babel yang mengagumkan
 

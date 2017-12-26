@@ -283,7 +283,7 @@ ASTのノードと同様、typeもまた`start`、`end`、`loc`といったプ�
 
 ### <a id="toc-generate"></a>ジェネレーター
 
-The [code generation](https://en.wikipedia.org/wiki/Code_generation_(compiler)) stage takes the final AST and turns it back into a string of code, also creating [source maps](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/).
+[generate](https://en.wikipedia.org/wiki/Code_generation_(compiler))（code generation）ステージは、ASTをふたたびコードの文字列に変換するステージです。さらに、このステージは[source map](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/)も生成します。.
 
 code generationの処理は単純明快です。それは、ASTのツリーをdepth-firstの順番で走査することで、変換結果としてのコードの文字列を構築します。
 

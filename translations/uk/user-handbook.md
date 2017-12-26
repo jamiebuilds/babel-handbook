@@ -799,15 +799,14 @@ React кардинально змінили своє API для того щоб 
 
 ## <a id="toc-babel-issues"></a>Проблеми Babel
 
-Babel має прекрасну систему відстеження помилок, надану [Phabricator](http://phabricator.org), платформою розробки програмного забезпечення з відкритим кодом, що робить GitHub нічним жахом з минулого.
+Babel uses the issue tracker provided by [Github](http://github.com).
 
-Phabricator для Babel доступний на [phabricator.babeljs.io](https://phabricator.babeljs.io). Там ви зможете побачити всі відкриті та закриті питання в розділі [maniphest](https://phabricator.babeljs.io/maniphest/).
+You can see all the open and closed issues on [Github](https://github.com/babel/babel/issues).
 
 Якщо ви виявили проблему і хочете відкрити для цього нову тему:
 
-  * [Пошукайте вже існуючу тему](https://phabricator.babeljs.io/maniphest/query/advanced/)
-  * [Увійдіть](https://phabricator.babeljs.io/auth/start/) чи [Створіть обліковий запис](https://phabricator.babeljs.io/auth/register/) (ви можете також увійти, використовуючи GitHub, Facebook, Twitter, Google, тощо)
-  * [Створіть нове повідомлення про помилку](https://phabricator.babeljs.io/maniphest/task/create/?projects=PHID-PROJ-2ufzspoyuk4udiwfnzls#R) або [запитайте новий функціонал](https://phabricator.babeljs.io/maniphest/task/create/?projects=PHID-PROJ-dfaevtocl5zgjtstjijd#R)
+  * [Пошукайте вже існуючу тему](https://github.com/babel/babel/issues)
+  * [Create a new bug report](https://github.com/babel/babel/issues/new) or [request a new feature](https://github.com/babel/babel/issues/new)
 
 ### <a id="toc-creating-an-awesome-babel-bug-report"></a>Як створити гарний баг-репорт
 

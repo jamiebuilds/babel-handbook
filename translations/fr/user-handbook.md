@@ -799,15 +799,14 @@ Tout le monde aime [Slack](https://slack.com). Si vous cherchez un soutien immé
 
 ## <a id="toc-babel-issues"></a>Issues (anomalies) de Babel
 
-Babel utilise le génial gestionnaire d’issues de [Phabricator](http://phabricator.org), une plate-forme de développement de logiciel open source qui permet de rendre les issues de GitHub comme un lointain cauchemar.
+Babel uses the issue tracker provided by [Github](http://github.com).
 
-Le Phabricator de Babel est disponible [phabricator.babeljs.io](https://phabricator.babeljs.io). Vous pouvez voir toutes les issues ouvertes et fermées sur [maniphest](https://phabricator.babeljs.io/maniphest/).
+You can see all the open and closed issues on [Github](https://github.com/babel/babel/issues).
 
 Si vous souhaitez ouvrir une nouvelle issue :
 
-  * [Recherchez dans les issues existantes](https://phabricator.babeljs.io/maniphest/query/advanced/)
-  * [Connectez-vous](https://phabricator.babeljs.io/auth/start/) ou [créer un compte](https://phabricator.babeljs.io/auth/register/) (vous pouvez également vous connecter en utilisant GitHub, Facebook, Twitter, Google, etc)
-  * [Créer un nouveau rapport de bogue](https://phabricator.babeljs.io/maniphest/task/create/?projects=PHID-PROJ-2ufzspoyuk4udiwfnzls#R) ou [demander une nouvelle fonctionnalité](https://phabricator.babeljs.io/maniphest/task/create/?projects=PHID-PROJ-dfaevtocl5zgjtstjijd#R)
+  * [Recherchez dans les issues existantes](https://github.com/babel/babel/issues)
+  * [Create a new bug report](https://github.com/babel/babel/issues/new) or [request a new feature](https://github.com/babel/babel/issues/new)
 
 ### <a id="toc-creating-an-awesome-babel-bug-report"></a>Création d'un génial rapport de bogue
 

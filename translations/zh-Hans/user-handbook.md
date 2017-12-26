@@ -229,7 +229,7 @@ console.log("Hello world!");
 $ npm install --save-dev babel-cli
 ```
 
-> **Note:** If you are wondering why we are installing this locally, please read the [Running Babel CLI from within a project](#toc-running-babel-cli-from-within-a-project) section above.
+> **注意:** 如果您想知道我们为什么要在本地安装，请阅读 上面[在项目内运行Babel CLI](#toc-running-babel-cli-from-within-a-project)的部分。
 
 然后用 `babel-node` 来替代 `node` 运行所有的代码 。.
 
@@ -799,24 +799,23 @@ Babel 的社区非常庞大并且增长速度很快，伴随着我们成长的�
 
 ## <a id="toc-babel-issues"></a>Babel 问题
 
-Babel 使用了 [Phabricator](http://phabricator.org) 这个非常棒的问题跟踪应用，这是一个能让 Github 问题追踪变成昨日黄花的开源软件开发平台。
+Babel使用[Github](http://github.com)提供的问题跟踪器。.
 
-Babel 的 Phabricator 地址是：[phabricator.babeljs.io](https://phabricator.babeljs.io) 你可以在 [maniphest](https://phabricator.babeljs.io/maniphest/) 查看所有打开和关闭的问题。.
+您可以在[Github](https://github.com/babel/babel/issues)上看到所有的开放和封闭的问题.
 
 如果你想要打开一个新的问题：
 
-  * [先搜搜看有没有现存的类似问题](https://phabricator.babeljs.io/maniphest/query/advanced/)
-  * [登录](https://phabricator.babeljs.io/auth/start/)或[注册账号](https://phabricator.babeljs.io/auth/register/)（你可以使用 GitHub, Facebook, Twitter, Google 等账号直接登录)
-  * [创建新的错误报告](https://phabricator.babeljs.io/maniphest/task/create/?projects=PHID-PROJ-2ufzspoyuk4udiwfnzls#R)或者[请求新的功能特性](https://phabricator.babeljs.io/maniphest/task/create/?projects=PHID-PROJ-dfaevtocl5zgjtstjijd#R)
-
-### <a id="toc-creating-an-awesome-babel-bug-report"></a>创建漂亮的 Babel 错误报告
-
-Babel 的问题有时候很难远程调试，所以我们希望能获取尽可能详细的信息来帮助我们解决问题。 花点时间去撰写一份好的错误报告会让你的问题更快得到解决。
-
-首先，尝试隔离问题。 并非设置过程的每一步都是导致问题的原因。 如果你的问题是一段输入代码，试着尽可能把与问题不相关的代码都删除掉。
-
-> [WIP]
-
-* * *
-
-> ***在 Twitter 上关注 [@thejameskyle](https://twitter.com/thejameskyle)，第一时间获取更新。***
+  * [先搜搜看有没有现存的类似问题](https://github.com/babel/babel/issues)
+  * 创建一个新的错误报告</> 或请求新功能</></li> </ul> 
+    
+    ### <a id="toc-creating-an-awesome-babel-bug-report"></a>创建漂亮的 Babel 错误报告
+    
+    Babel 的问题有时候很难远程调试，所以我们希望能获取尽可能详细的信息来帮助我们解决问题。 花点时间去撰写一份好的错误报告会让你的问题更快得到解决。
+    
+    首先，尝试隔离问题。 并非设置过程的每一步都是导致问题的原因。 如果你的问题是一段输入代码，试着尽可能把与问题不相关的代码都删除掉。
+    
+    > [WIP]
+    
+    * * *
+    
+    > ***在 Twitter 上关注 [@thejameskyle](https://twitter.com/thejameskyle)，第一时间获取更新。***

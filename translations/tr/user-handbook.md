@@ -803,15 +803,14 @@ Everyone loves [Slack](https://slack.com). If you're looking for immediate suppo
 
 ## <a id="toc-babel-issues"></a>Babel sorunları
 
-Babel uses the awesome issue tracker provided by [Phabricator](http://phabricator.org) an open source software development platform that makes GitHub issues a nightmare of the past.
+Babel uses the issue tracker provided by [Github](http://github.com).
 
-Babel's Phabricator is available at [phabricator.babeljs.io](https://phabricator.babeljs.io). You can see all the open and closed issues on [maniphest](https://phabricator.babeljs.io/maniphest/).
+You can see all the open and closed issues on [Github](https://github.com/babel/babel/issues).
 
 If you want to open a new issue:
 
-  * [Search for an existing issue](https://phabricator.babeljs.io/maniphest/query/advanced/)
-  * [Login](https://phabricator.babeljs.io/auth/start/) or [Create an account](https://phabricator.babeljs.io/auth/register/) (You can also login using GitHub, Facebook, Twitter, Google, etc.)
-  * [Create a new bug report](https://phabricator.babeljs.io/maniphest/task/create/?projects=PHID-PROJ-2ufzspoyuk4udiwfnzls#R) or [request a new feature](https://phabricator.babeljs.io/maniphest/task/create/?projects=PHID-PROJ-dfaevtocl5zgjtstjijd#R)
+  * [Search for an existing issue](https://github.com/babel/babel/issues)
+  * [Create a new bug report](https://github.com/babel/babel/issues/new) or [request a new feature](https://github.com/babel/babel/issues/new)
 
 ### <a id="toc-creating-an-awesome-babel-bug-report"></a>Harika bir Babil hata raporu oluşturma
 

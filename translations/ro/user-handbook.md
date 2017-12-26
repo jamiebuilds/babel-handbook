@@ -799,15 +799,14 @@ Toată lumea iubeşte [Slack](https://slack.com). Dacă sunteţi în căutare pe
 
 ## <a id="toc-babel-issues"></a>Probleme Babel
 
-Babel utilizează un manager de probleme minunat furnizat de [Phabricator](http://phabricator.org), o platformă open source, mult mai simplă decât soluția oferită de Github.
+Babel utilizează issue tracker-ul oferit de [Github](http://github.com).
 
-Aceasta este disponibilă la [phabricator.babeljs.io](https://phabricator.babeljs.io). Puteţi vedea toate problemele existente şi rezolvate în [maniphest](https://phabricator.babeljs.io/maniphest/).
+Puteţi vedea toate problemele existente şi rezolvate pe [Github](https://github.com/babel/babel/issues).
 
 Dacă doriţi să raportați o nouă problemă:
 
-  * [Căutați dacă nu cumva a fost creată de altcineva înainte](https://phabricator.babeljs.io/maniphest/query/advanced/)
-  * [Autentificați-vă](https://phabricator.babeljs.io/auth/start/) sau [Creeați-vă un cont](https://phabricator.babeljs.io/auth/register/) (puteţi, de asemenea, să vă autentificați folosind GitHub, Facebook, Twitter, Google, etc.)
-  * [Raporta-ți o problemă](https://phabricator.babeljs.io/maniphest/task/create/?projects=PHID-PROJ-2ufzspoyuk4udiwfnzls#R) sau [solicitați o funcționalitate nouă](https://phabricator.babeljs.io/maniphest/task/create/?projects=PHID-PROJ-dfaevtocl5zgjtstjijd#R)
+  * [Căutați dacă nu cumva a fost creată de altcineva înainte](https://github.com/babel/babel/issues)
+  * [Raportați un bug](https://github.com/babel/babel/issues/new) sau [solicitați o funcționalitate nouă](https://github.com/babel/babel/issues/new)
 
 ### <a id="toc-creating-an-awesome-babel-bug-report"></a>Raportarea unei probleme Babel
 

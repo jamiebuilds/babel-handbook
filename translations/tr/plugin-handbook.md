@@ -1,131 +1,131 @@
-# Babel Plugin Handbook
+# Babel Handbook eklentisi
 
-This document covers how to create [Babel](https://babeljs.io) [plugins](https://babeljs.io/docs/advanced/plugins/).
+Bu belge [Babel ](https://babeljs.io) [eklentisinin](https://babeljs.io/docs/advanced/plugins/) nasıl oluşturulacağını kapsar..
 
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
-This handbook is available in other languages, see the [README](/README.md) for a complete list.
+Bu el kitabı diğer diller için de mevcuttur, görmek için  README </> bölümüne bakın. Bütün liste.</p> 
 
-# Table of Contents
+# içindekiler
 
-  * [Introduction](#toc-introduction)
-  * [Basics](#toc-basics) 
+  * [Başlangıç](#toc-introduction)
+  * [Temel](#toc-basics) 
       * [ASTs](#toc-asts)
-      * [Stages of Babel](#toc-stages-of-babel)
-      * [Parse](#toc-parse) 
-          * [Lexical Analysis](#toc-lexical-analysis)
-          * [Syntactic Analysis](#toc-syntactic-analysis)
-      * [Transform](#toc-transform)
-      * [Generate](#toc-generate)
-      * [Traversal](#toc-traversal)
-      * [Visitors](#toc-visitors)
-      * [Paths](#toc-paths) 
-          * [Paths in Visitors](#toc-paths-in-visitors)
-      * [State](#toc-state)
-      * [Scopes](#toc-scopes) 
-          * [Bindings](#toc-bindings)
-  * [API](#toc-api) 
-      * [babylon](#toc-babylon)
-      * [babel-traverse](#toc-babel-traverse)
-      * [babel-types](#toc-babel-types)
-      * [Definitions](#toc-definitions)
-      * [Builders](#toc-builders)
-      * [Validators](#toc-validators)
-      * [Converters](#toc-converters)
-      * [babel-generator](#toc-babel-generator)
-      * [babel-template](#toc-babel-template)
-  * [Writing your first Babel Plugin](#toc-writing-your-first-babel-plugin)
-  * [Transformation Operations](#toc-transformation-operations) 
-      * [Visiting](#toc-visiting)
-      * [Get the Path of Sub-Node](#toc-get-the-path-of-a-sub-node)
-      * [Check if a node is a certain type](#toc-check-if-a-node-is-a-certain-type)
-      * [Check if a path is a certain type](#toc-check-if-a-path-is-a-certain-type)
-      * [Check if an identifier is referenced](#toc-check-if-an-identifier-is-referenced)
-      * [Find a specific parent path](#toc-find-a-specific-parent-path)
-      * [Get Sibling Paths](#toc-get-sibling-paths)
-      * [Stopping Traversal](#toc-stopping-traversal)
-      * [Manipulation](#toc-manipulation)
-      * [Replacing a node](#toc-replacing-a-node)
-      * [Replacing a node with multiple nodes](#toc-replacing-a-node-with-multiple-nodes)
-      * [Replacing a node with a source string](#toc-replacing-a-node-with-a-source-string)
-      * [Inserting a sibling node](#toc-inserting-a-sibling-node)
-      * [Inserting into a container](#toc-inserting-into-a-container)
-      * [Removing a node](#toc-removing-a-node)
-      * [Replacing a parent](#toc-replacing-a-parent)
-      * [Removing a parent](#toc-removing-a-parent)
-      * [Scope](#toc-scope)
-      * [Checking if a local variable is bound](#toc-checking-if-a-local-variable-is-bound)
-      * [Generating a UID](#toc-generating-a-uid)
-      * [Pushing a variable declaration to a parent scope](#toc-pushing-a-variable-declaration-to-a-parent-scope)
-      * [Rename a binding and its references](#toc-rename-a-binding-and-its-references)
-  * [Plugin Options](#toc-plugin-options) 
-      * [Pre and Post in Plugins](#toc-pre-and-post-in-plugins)
-      * [Enabling Syntax in Plugins](#toc-enabling-syntax-in-plugins)
-  * [Building Nodes](#toc-building-nodes)
-  * [Best Practices](#toc-best-practices) 
-      * [Avoid traversing the AST as much as possible](#toc-avoid-traversing-the-ast-as-much-as-possible)
-      * [Merge visitors whenever possible](#toc-merge-visitors-whenever-possible)
-      * [Do not traverse when manual lookup will do](#toc-do-not-traverse-when-manual-lookup-will-do)
-      * [Optimizing nested visitors](#toc-optimizing-nested-visitors)
-      * [Being aware of nested structures](#toc-being-aware-of-nested-structures)
-      * [Unit Testing](#toc-unit-testing)
+      * [Babel aşamaları](#toc-stages-of-babel)
+      * [İncelemek](#toc-parse) 
+          * [Sözlük analizi](#toc-lexical-analysis)
+          * [Sözdizimsel analiz](#toc-syntactic-analysis)
+      * [Dönüştür](#toc-transform)
+      * [Oluştur](#toc-generate)
+      * [Geçmek](#toc-traversal)
+      * [Ziyaretçiler](#toc-visitors)
+      * [Patika](#toc-paths) 
+          * [Ziyaretçi Yolları](#toc-paths-in-visitors)
+      * [Durum](#toc-state)
+      * [Kapsam](#toc-scopes) 
+          * [Bağlamak](#toc-bindings)
+  * [UPA](#toc-api) 
+      * [Babil](#toc-babylon)
+      * [Uğultuyu Geçmek](#toc-babel-traverse)
+      * [Uğultu Tipi](#toc-babel-types)
+      * [Tanım ](#toc-definitions)
+      * [İşçiler](#toc-builders)
+      * [Yetkili](#toc-validators)
+      * [Çeviriciler](#toc-converters)
+      * [babel oluşturucu](#toc-babel-generator)
+      * [babel tema](#toc-babel-template)
+  * [İlk Babel eklentinizi yazın](#toc-writing-your-first-babel-plugin)
+  * [Dönüşüm işlemleri](#toc-transformation-operations) 
+      * [Ziyaret ediliyor](#toc-visiting)
+      * [İyi Noktaya Gelmenin Yolunu Bul](#toc-get-the-path-of-a-sub-node)
+      * [Bir düğümün belirli bir tür olup olmadığını kontrol edin](#toc-check-if-a-node-is-a-certain-type)
+      * [Bir yolun belirli bir tür olup olmadığını kontrol edin](#toc-check-if-a-path-is-a-certain-type)
+      * [Bir belirleyicinin referanslı olup olmadığını kontrol edin](#toc-check-if-an-identifier-is-referenced)
+      * [Belirli bir anayol bul](#toc-find-a-specific-parent-path)
+      * [Kardeş yollar edinin](#toc-get-sibling-paths)
+      * [Dolaşımı durdur](#toc-stopping-traversal)
+      * [Manipülasyon](#toc-manipulation)
+      * [Bir düğümü değiştir](#toc-replacing-a-node)
+      * [Bir düğümü birden fazla düğümle değiştir](#toc-replacing-a-node-with-multiple-nodes)
+      * [Bir düğümü kaynak dizesi değiştir](#toc-replacing-a-node-with-a-source-string)
+      * [Kardeş düğüm ekle](#toc-inserting-a-sibling-node)
+      * [Bir konteyner içine yerleştir](#toc-inserting-into-a-container)
+      * [Düğüm kaldır](#toc-removing-a-node)
+      * [Velisini Sayıklamak](#toc-replacing-a-parent)
+      * [Velisini Terk Etmek](#toc-removing-a-parent)
+      * [Kapsam](#toc-scope)
+      * [Veriler Karşılanıyorsa Onayla](#toc-checking-if-a-local-variable-is-bound)
+      * [Kullanıcı Arayüzü Oluşturmak](#toc-generating-a-uid)
+      * [Değişken bildirimi bir üst kapsama gönderiliyor](#toc-pushing-a-variable-declaration-to-a-parent-scope)
+      * [Bağlantı ve Referanslarını Yeniden adlandır](#toc-rename-a-binding-and-its-references)
+  * [Eklenti Seçenekleri](#toc-plugin-options) 
+      * [Eklentilerin öncesi ve sonrası](#toc-pre-and-post-in-plugins)
+      * [Syntax eklentisini aktifleştir](#toc-enabling-syntax-in-plugins)
+  * [Bağlantıları yapmak](#toc-building-nodes)
+  * [En iyi pratik](#toc-best-practices) 
+      * [AST 'yi geçmekten mümkün olduğunca kaçının](#toc-avoid-traversing-the-ast-as-much-as-possible)
+      * [Mümkün olunca ziyaretçileri birleştir](#toc-merge-visitors-whenever-possible)
+      * [Manüel arama yapılırsa çaprazlama yapmayın](#toc-do-not-traverse-when-manual-lookup-will-do)
+      * [İç içe geçmiş ziyaretçiler optimize ediliyor](#toc-optimizing-nested-visitors)
+      * [İç içe geçmiş yapıları fark edin](#toc-being-aware-of-nested-structures)
+      * [Ünite Testi](#toc-unit-testing)
 
-# <a id="toc-introduction"></a>Introduction
+# <a id="toc-introduction"></a>Başlangıç
 
-Babel is a generic multi-purpose compiler for JavaScript. More than that it is a collection of modules that can be used for many different forms of static analysis.
+Babel, JavaScript için genel bir çok amaçlı derleyicidir. Dahası, birçok farklı statik form analizi için kullanılabilen modül koleksiyonudur.
 
-> Static analysis is the process of analyzing code without executing it. (Analysis of code while executing it is known as dynamic analysis). The purpose of static analysis varies greatly. It can be used for linting, compiling, code highlighting, code transformation, optimization, minification, and much more.
+> Statik analiz, kodları çalıştırmadan analiz eder. (Kodların analizi yapılırken bunlar dinamik analiz olarak tanınır). Statik analizin amaçları büyük ölçüde değişir. Bu linting, derleme, kod vurgulama, kod dönüştürme, optimize, minimize ve daha fazlası için kullanılabilir.
 
-You can use Babel to build many different types of tools that can help you be more productive and write better programs.
+Daha iyi ve daha üretken programlar yazmak, size yardımcı olabilecek bir çok farklı araç türü oluşturmak için Babel'i kullanabilirsiniz.
 
 > ***Gelecek güncellemeler için [@thejameskyle](https://twitter.com/thejameskyle)'i Twitter'dan takip edin.***
 
 * * *
 
-# <a id="toc-basics"></a>Basics
+# <a id="toc-basics"></a>Temel
 
-Babel is a JavaScript compiler, specifically a source-to-source compiler, often called a "transpiler". This means that you give Babel some JavaScript code, Babel modifies the code, and generates the new code back out.
+Babel JavaScript derleyicidir, özellikle kaynaktan kaynağa derleyicidir, çoğunlukla "transpiller" denilir. Bu şu anlama gelir, "Siz Babel'e bazı JavaScript kodlarını verirsiniz, Babel bunları değiştirip size yeni kodlar verir".
 
 ## <a id="toc-asts"></a>ASTs
 
-Each of these steps involve creating or working with an [Abstract Syntax Tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree) or AST.
+Bu adımların her biri " [Abstract Syntax Tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree) veya AST " oluşturur veya beraber çalışır.
 
-> Babel uses an AST modified from [ESTree](https://github.com/estree/estree), with the core spec located [here](https://github.com/babel/babylon/blob/master/ast/spec.md).
+> Babel, [ESTree](https://github.com/estree/estree) 'den dönüştürülmüş AST kullanır, çekirdek spesifikasyonu belirtilmiş [here](https://github.com/babel/babylon/blob/master/ast/spec.md) ile.
 
 ```js
-function square(n) {
-  return n * n;
+işlev kare(n) {
+  dön n * n;
 }
 ```
 
-> Check out [AST Explorer](http://astexplorer.net/) to get a better sense of the AST nodes. [Here](http://astexplorer.net/#/Z1exs6BWMq) is a link to it with the example code above pasted in.
+> AST düğümlerini daha iyi anlamak için " [AST Explorer](http://astexplorer.net/) " kontrol edin. [Here](http://astexplorer.net/#/Z1exs6BWMq), yukarıdaki örnek kod ile yapıştırılan bir bağlantıdır.
 
-This same program can be represented as a tree like this:
+Bu aynı program böyle bir ağaç gibi temsil edilebilir:
 
 ```md
-- FunctionDeclaration:
-  - id:
-    - Identifier:
-      - name: square
-  - params [1]
-    - Identifier
-      - name: n
-  - body:
-    - BlockStatement
-      - body [1]
-        - ReturnStatement
-          - argument
-            - BinaryExpression
-              - operator: *
-              - left
-                - Identifier
-                  - name: n
-              - right
-                - Identifier
-                  - name: n
+-İşlevBeyanı:
+-kimliği
+-tanımlayıcı
+-isim: kare
+-parametreler [1]
+-tanımlayıcı
+-name: n
+-vücut:
+-Blokİfadesi
+-vücut [1]
+-Dönüşİfadesi
+-argüman
+-İkiliİfade
+-operatör: *
+-sol
+-tanımlayıcı
+-isim: n
+-sağ
+-tanımlayıcı
+-isim: n
 ```
 
-Or as a JavaScript Object like this:
+Yada bu şekilde JavaScript nesnesi olarak:
 
 ```js
 {
@@ -159,7 +159,7 @@ Or as a JavaScript Object like this:
 }
 ```
 
-You'll notice that each level of the AST has a similar structure:
+AST'nin her bir seviyesinin benzer bir yapıya sahip olduğunu fark edeceksiniz:
 
 ```js
 {
@@ -186,11 +186,11 @@ You'll notice that each level of the AST has a similar structure:
 }
 ```
 
-> Note: Some properties have been removed for simplicity.
+> Not: Bazı yapılar basitlik için kaldırılmıştır.
 
-Each of these are known as a **Node**. An AST can be made up of a single Node, or hundreds if not thousands of Nodes. Together they are able to describe the syntax of a program that can be used for static analysis.
+Bunların her biri **Node** olarak biliniyor. AST tek bir düğümden oluşabilir, veya yüzlerce, binlerce düğüm değilse. Statik analiz için kullanılabilen bir programın söz dizimini birlikte tanımlayabilirler.
 
-Every Node has this interface:
+Her düğüm bu arayüze sahiptir:
 
 ```typescript
 interface Node {
@@ -198,9 +198,9 @@ interface Node {
 }
 ```
 
-The `type` field is a string representing the type of Node the object is (ie. `"FunctionDeclaration"`, `"Identifier"`, or `"BinaryExpression"`). Each type of Node defines an additional set of properties that describe that particular node type.
+`type` alanı, nesnenin bulunduğu düğüm türünü temsil eden bir dizedir (ör. `"FunctionDeclaration"`, `"Identifier"`, or `"BinaryExpression"`). Her düğüm türü, belirli düğüm türünü tanımlayan ek bir özellik kümesi tanımlar.
 
-There are additional properties on every Node that Babel generates which describe the position of the Node in the original source code.
+Her düğümde Babel'in oluşturduğu ek özellikler vardır. Düğümün orijinal kaynak kodundaki konumunu tanımlar.
 
 ```js
 {
@@ -221,21 +221,21 @@ There are additional properties on every Node that Babel generates which describ
 }
 ```
 
-These properties `start`, `end`, `loc`, appear in every single Node.
+Bu özellikler `start`, `end`, `loc`, her bir düğümde görülür.
 
-## <a id="toc-stages-of-babel"></a>Stages of Babel
+## <a id="toc-stages-of-babel"></a>Babel aşamaları
 
-The three primary stages of Babel are **parse**, **transform**, **generate**.
+Babel 'in üç ana aşaması **parse**, **transform**, **generate**.
 
-### <a id="toc-parse"></a>Parse
+### <a id="toc-parse"></a>İncelemek
 
-The **parse** stage, takes code and outputs an AST. There are two phases of parsing in Babel: [**Lexical Analysis**](https://en.wikipedia.org/wiki/Lexical_analysis) and [**Syntactic Analysis**](https://en.wikipedia.org/wiki/Parsing).
+**parse** aşaması, kod alır ve bir AST çıktılar. Babel 'de ayrıştırma için iki faz vardır [**Lexical Analysis**](https://en.wikipedia.org/wiki/Lexical_analysis) ve [**Syntactic Analysis**](https://en.wikipedia.org/wiki/Parsing).
 
-#### <a id="toc-lexical-analysis"></a>Lexical Analysis
+#### <a id="toc-lexical-analysis"></a>Sözlük analizi
 
-Lexical Analysis will take a string of code and turn it into a stream of **tokens**.
+Sözcüksel Analiz, bir dizi kod alır ve onu bir akış haline getirir. **tokens**.
 
-You can think of tokens as a flat array of language syntax pieces.
+İşaretleri düz bir dil söz dizimi dizisi olarak düşünebilirsiniz.
 
 ```js
 n * n;
@@ -250,7 +250,7 @@ n * n;
 ]
 ```
 
-Each of the `type`s here have a set of properties describing the token:
+`type`s her biri burada belirteci tanımlayan bir özellik kümesine sahip:
 
 ```js
 {
@@ -271,23 +271,23 @@ Each of the `type`s here have a set of properties describing the token:
 }
 ```
 
-Like AST nodes they also have a `start`, `end`, and `loc`.
+AST düğümleri gibi ayrıca `start`, `end`, and `loc` var.
 
-#### <a id="toc-syntactic-analysis"></a>Syntactic Analysis
+#### <a id="toc-syntactic-analysis"></a>Sözdizimsel analiz
 
-Syntactic Analysis will take a stream of tokens and turn it into an AST representation. Using the information in the tokens, this phase will reformat them as an AST which represents the structure of the code in a way that makes it easier to work with.
+Söz dizimsel Analiz, belirteç akışı alıp bir temsili AST'ye dönüştürür. Belirteçlerdeki bilgileri kullanma, onları çalışmak için daha kolay olan kodun yapısını temsil eden bir AST olarak kodlayan bir yapıya dönüştürür.
 
-### <a id="toc-transform"></a>Transform
+### <a id="toc-transform"></a>Dönüştür
 
-The [transform](https://en.wikipedia.org/wiki/Program_transformation) stage takes an AST and traverses through it, adding, updating, and removing nodes as it goes along. This is by far the most complex part of Babel or any compiler. This is where plugins operate and so it will be the subject of most of this handbook. So we won't dive too deep right now.
+The [transform](https://en.wikipedia.org/wiki/Program_transformation) stage takes an AST and traverses through it, adding, updating, and removing nodes as it goes along. This is by far the most complex part of Babel or any compiler. Burası eklentilerin yönetildiği yer ve bu kitapçığın bir çok başlığı bu olacak. Şuan için çok derine inmek istemiyoruz.
 
-### <a id="toc-generate"></a>Generate
+### <a id="toc-generate"></a>Oluştur
 
 The [code generation](https://en.wikipedia.org/wiki/Code_generation_(compiler)) stage takes the final AST and turns it back into a string of code, also creating [source maps](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/).
 
 Code generation is pretty simple: you traverse through the AST depth-first, building a string that represents the transformed code.
 
-## <a id="toc-traversal"></a>Traversal
+## <a id="toc-traversal"></a>Geçmek
 
 When you want to transform an AST you have to [traverse the tree](https://en.wikipedia.org/wiki/Tree_traversal) recursively.
 
@@ -339,7 +339,7 @@ The `BinaryExpression` has an `operator`, a `left`, and a `right`. The operator 
 
 This traversal process happens throughout the Babel transform stage.
 
-### <a id="toc-visitors"></a>Visitors
+### <a id="toc-visitors"></a>Ziyaretçiler
 
 When we talk about "going" to a node, we actually mean we are **visiting** them. The reason we use that term is because there is this concept of a [**visitor**](https://en.wikipedia.org/wiki/Visitor_pattern).
 
@@ -365,8 +365,8 @@ This is a basic visitor that when used during a traversal will call the `Identif
 So with this code the `Identifier()` method will be called four times with each `Identifier` (including `square`).
 
 ```js
-function square(n) {
-  return n * n;
+işlev kare(n) {
+  dön n * n;
 }
 ```
 
@@ -455,7 +455,7 @@ const MyVisitor = {
 };
 ```
 
-### <a id="toc-paths"></a>Paths
+### <a id="toc-paths"></a>Patika
 
 An AST generally has many Nodes, but how do Nodes relate to one another? We could have one giant mutable object that you manipulate and have full access to, or we can simplify this with **Paths**.
 
@@ -522,7 +522,7 @@ As well as tons and tons of methods related to adding, updating, moving, and rem
 
 In a sense, paths are a **reactive** representation of a node's position in the tree and all sorts of information about the node. Whenever you call a method that modifies the tree, this information is updated. Babel manages all of this for you to make working with nodes easy and as stateless as possible.
 
-#### <a id="toc-paths-in-visitors"></a>Paths in Visitors
+#### <a id="toc-paths-in-visitors"></a>Ziyaretçi Yolları
 
 When you have a visitor that has a `Identifier()` method, you're actually visiting the path instead of the node. This way you are mostly working with the reactive representation of a node instead of the node itself.
 
@@ -545,7 +545,7 @@ Visiting: b
 Visiting: c
 ```
 
-### <a id="toc-state"></a>State
+### <a id="toc-state"></a>Durum
 
 State is the enemy of AST transformation. State will bite you over and over again and your assumptions about state will almost always be proven wrong by some syntax that you didn't consider.
 
@@ -612,7 +612,7 @@ path.traverse(MyVisitor);
 
 Of course, this is a contrived example but it demonstrates how to eliminate global state from your visitors.
 
-### <a id="toc-scopes"></a>Scopes
+### <a id="toc-scopes"></a>Kapsam
 
 Next let's introduce the concept of a [**scope**](https://en.wikipedia.org/wiki/Scope_(computer_science)). JavaScript has [lexical scoping](https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scoping_vs._dynamic_scoping), which is a tree structure where blocks create new scope.
 
@@ -686,7 +686,7 @@ When you create a new scope you do so by giving it a path and a parent scope. Th
 
 Once that's done, there's all sorts of methods you can use on scopes. We'll get into those later though.
 
-#### <a id="toc-bindings"></a>Bindings
+#### <a id="toc-bindings"></a>Bağlamak
 
 References all belong to a particular scope; this relationship is known as a **binding**.
 
@@ -739,7 +739,7 @@ function scopeOne() {
 
 * * *
 
-# <a id="toc-api"></a>API
+# <a id="toc-api"></a>UPA
 
 Babel is actually a collection of modules. In this section we'll walk through the major ones, explaining what they do and how to use them.
 
@@ -852,7 +852,7 @@ traverse(ast, {
 });
 ```
 
-### <a id="toc-definitions"></a>Definitions
+### <a id="toc-definitions"></a>Tanım 
 
 Babel Types has definitions for every single type of node, with information on what properties belong where, what values are valid, how to build that node, how the node should be traversed, and aliases of the Node.
 
@@ -877,7 +877,7 @@ defineType("BinaryExpression", {
 });
 ```
 
-### <a id="toc-builders"></a>Builders
+### <a id="toc-builders"></a>İşçiler
 
 You'll notice the above definition for `BinaryExpression` has a field for a `builder`.
 
@@ -916,7 +916,7 @@ a * b
 
 Builders will also validate the nodes they are creating and throw descriptive errors if used improperly. Which leads into the next type of method.
 
-### <a id="toc-validators"></a>Validators
+### <a id="toc-validators"></a>Yetkili
 
 The definition for `BinaryExpression` also includes information on the `fields` of a node and how to validate them.
 
@@ -954,7 +954,7 @@ t.assertBinaryExpression(maybeBinaryExpressionNode, { operator: "*" });
 // Error: Expected type "BinaryExpression" with option { "operator": "*" }
 ```
 
-### <a id="toc-converters"></a>Converters
+### <a id="toc-converters"></a>Çeviriciler
 
 > [WIP]
 
@@ -1028,7 +1028,7 @@ console.log(generate(ast).code);
 var myModule = require("my-module");
 ```
 
-# <a id="toc-writing-your-first-babel-plugin"></a>Writing your first Babel Plugin
+# <a id="toc-writing-your-first-babel-plugin"></a>İlk Babel eklentinizi yazın
 
 Now that you're familiar with all the basics of Babel, let's tie it together with the plugin API.
 
@@ -1166,11 +1166,11 @@ Awesome! Our very first Babel plugin.
 
 * * *
 
-# <a id="toc-transformation-operations"></a>Transformation Operations
+# <a id="toc-transformation-operations"></a>Dönüşüm işlemleri
 
-## <a id="toc-visiting"></a>Visiting
+## <a id="toc-visiting"></a>Ziyaret ediliyor
 
-### <a id="toc-get-the-path-of-a-sub-node"></a>Get the Path of Sub-Node
+### <a id="toc-get-the-path-of-a-sub-node"></a>İyi Noktaya Gelmenin Yolunu Bul
 
 To access an AST node's property you normally access the node and then the property. `path.node.property`
 
@@ -1194,7 +1194,7 @@ Program(path) {
 }
 ```
 
-### <a id="toc-check-if-a-node-is-a-certain-type"></a>Check if a node is a certain type
+### <a id="toc-check-if-a-node-is-a-certain-type"></a>Bir düğümün belirli bir tür olup olmadığını kontrol edin
 
 If you want to check what the type of a node is, the preferred way to do so is:
 
@@ -1230,7 +1230,7 @@ BinaryExpression(path) {
 }
 ```
 
-### <a id="toc-check-if-a-path-is-a-certain-type"></a>Check if a path is a certain type
+### <a id="toc-check-if-a-path-is-a-certain-type"></a>Bir yolun belirli bir tür olup olmadığını kontrol edin
 
 A path has the same methods for checking the type of a node:
 
@@ -1252,7 +1252,7 @@ BinaryExpression(path) {
 }
 ```
 
-### <a id="toc-check-if-an-identifier-is-referenced"></a>Check if an identifier is referenced
+### <a id="toc-check-if-an-identifier-is-referenced"></a>Bir belirleyicinin referanslı olup olmadığını kontrol edin
 
 ```js
 Identifier(path) {
@@ -1272,7 +1272,7 @@ Identifier(path) {
 }
 ```
 
-### <a id="toc-find-a-specific-parent-path"></a>Find a specific parent path
+### <a id="toc-find-a-specific-parent-path"></a>Belirli bir anayol bul
 
 Sometimes you will need to traverse the tree upwards from a path until a condition is satisfied.
 
@@ -1300,7 +1300,7 @@ Walk up the tree until we hit a parent node path in a list
 path.getStatementParent();
 ```
 
-### <a id="toc-get-sibling-paths"></a>Get Sibling Paths
+### <a id="toc-get-sibling-paths"></a>Kardeş yollar edinin
 
 If a path is in a list like in the body of a `Function`/`Program`, it will have "siblings".
 
@@ -1336,7 +1336,7 @@ export default function({ types: t }) {
 }
 ```
 
-### <a id="toc-stopping-traversal"></a>Stopping Traversal
+### <a id="toc-stopping-traversal"></a>Dolaşımı durdur
 
 If your plugin needs to not run in a certain situation, the simpliest thing to do is to write an early return.
 
@@ -1364,7 +1364,7 @@ outerPath.traverse({
 
 ## <a id="toc-manipulation"></a>Manipulation
 
-### <a id="toc-replacing-a-node"></a>Replacing a node
+### <a id="toc-replacing-a-node"></a>Bir düğümü değiştir
 
 ```js
 BinaryExpression(path) {
@@ -1381,7 +1381,7 @@ BinaryExpression(path) {
   }
 ```
 
-### <a id="toc-replacing-a-node-with-multiple-nodes"></a>Replacing a node with multiple nodes
+### <a id="toc-replacing-a-node-with-multiple-nodes"></a>Bir düğümü birden fazla düğümle değiştir
 
 ```js
 ReturnStatement(path) {
@@ -1404,7 +1404,7 @@ ReturnStatement(path) {
 
 > **Note:** When replacing an expression with multiple nodes, they must be statements. This is because Babel uses heuristics extensively when replacing nodes which means that you can do some pretty crazy transformations that would be extremely verbose otherwise.
 
-### <a id="toc-replacing-a-node-with-a-source-string"></a>Replacing a node with a source string
+### <a id="toc-replacing-a-node-with-a-source-string"></a>Bir düğümü kaynak dizesi değiştir
 
 ```js
 FunctionDeclaration(path) {
@@ -1424,7 +1424,7 @@ FunctionDeclaration(path) {
 
 > **Note:** It's not recommended to use this API unless you're dealing with dynamic source strings, otherwise it's more efficient to parse the code outside of the visitor.
 
-### <a id="toc-inserting-a-sibling-node"></a>Inserting a sibling node
+### <a id="toc-inserting-a-sibling-node"></a>Kardeş düğüm ekle
 
 ```js
 FunctionDeclaration(path) {
@@ -1443,7 +1443,7 @@ FunctionDeclaration(path) {
 
 > **Note:** This should always be a statement or an array of statements. This uses the same heuristics mentioned in [Replacing a node with multiple nodes](#replacing-a-node-with-multiple-nodes).
 
-### <a id="toc-inserting-into-a-container"></a>Inserting into a container
+### <a id="toc-inserting-into-a-container"></a>Bir konteyner içine yerleştir
 
 If you want to insert into a AST node property like that is an array like `body`. It is similar to `insertBefore`/`insertAfter` other than you having to specify the `listKey` which is usually `body`.
 
@@ -1464,7 +1464,7 @@ ClassMethod(path) {
  }
 ```
 
-### <a id="toc-removing-a-node"></a>Removing a node
+### <a id="toc-removing-a-node"></a>Düğüm kaldır
 
 ```js
 FunctionDeclaration(path) {
@@ -1478,7 +1478,7 @@ FunctionDeclaration(path) {
 - }
 ```
 
-### <a id="toc-replacing-a-parent"></a>Replacing a parent
+### <a id="toc-replacing-a-parent"></a>Velisini Sayıklamak
 
 Just call `replaceWith` with the parentPath: `path.parentPath`
 
@@ -1497,7 +1497,7 @@ BinaryExpression(path) {
   }
 ```
 
-### <a id="toc-removing-a-parent"></a>Removing a parent
+### <a id="toc-removing-a-parent"></a>Velisini Terk Etmek
 
 ```js
 BinaryExpression(path) {
@@ -1513,7 +1513,7 @@ BinaryExpression(path) {
 
 ## <a id="toc-scope"></a>Scope
 
-### <a id="toc-checking-if-a-local-variable-is-bound"></a>Checking if a local variable is bound
+### <a id="toc-checking-if-a-local-variable-is-bound"></a>Veriler Karşılanıyorsa Onayla
 
 ```js
 FunctionDeclaration(path) {
@@ -1535,7 +1535,7 @@ FunctionDeclaration(path) {
 }
 ```
 
-### <a id="toc-generating-a-uid"></a>Generating a UID
+### <a id="toc-generating-a-uid"></a>Kullanıcı Arayüzü Oluşturmak
 
 This will generate an identifier that doesn't collide with any locally defined variables.
 
@@ -1548,7 +1548,7 @@ FunctionDeclaration(path) {
 }
 ```
 
-### <a id="toc-pushing-a-variable-declaration-to-a-parent-scope"></a>Pushing a variable declaration to a parent scope
+### <a id="toc-pushing-a-variable-declaration-to-a-parent-scope"></a>Değişken bildirimi bir üst kapsama gönderiliyor
 
 Sometimes you may want to push a `VariableDeclaration` so you can assign to it.
 
@@ -1568,7 +1568,7 @@ FunctionDeclaration(path) {
 + };
 ```
 
-### <a id="toc-rename-a-binding-and-its-references"></a>Rename a binding and its references
+### <a id="toc-rename-a-binding-and-its-references"></a>Bağlantı ve Referanslarını Yeniden adlandır
 
 ```js
 FunctionDeclaration(path) {
@@ -1602,7 +1602,7 @@ FunctionDeclaration(path) {
 
 * * *
 
-# <a id="toc-plugin-options"></a>Plugin Options
+# <a id="toc-plugin-options"></a>Eklenti Seçenekleri
 
 If you would like to let your users customize the behavior of your Babel plugin you can accept plugin specific options which users can specify like this:
 
@@ -1634,7 +1634,7 @@ export default function({ types: t }) {
 
 These options are plugin-specific and you cannot access options from other plugins.
 
-## <a id="toc-pre-and-post-in-plugins"></a> Pre and Post in Plugins
+## <a id="toc-pre-and-post-in-plugins"></a> Eklentilerin öncesi ve sonrası
 
 Plugins can have functions that are run before or after plugins. They can be used for setup or cleanup/analysis purposes.
 
@@ -1656,7 +1656,7 @@ export default function({ types: t }) {
 }
 ```
 
-## <a id="toc-enabling-syntax-in-plugins"></a> Enabling Syntax in Plugins
+## <a id="toc-enabling-syntax-in-plugins"></a> Syntax eklentisini aktifleştir
 
 Plugins can enable [babylon plugins](https://github.com/babel/babylon#plugins) so that users don't need to install/enable them. This prevents a parsing error without inheriting the syntax plugin.
 
@@ -1698,7 +1698,7 @@ The error looks like:
 
 * * *
 
-# <a id="toc-building-nodes"></a>Building Nodes
+# <a id="toc-building-nodes"></a>Bağlantıları yapmak
 
 When writing transformations you'll often want to build up some nodes to insert into the AST. As mentioned previously, you can do this using the [builder](#builders) methods in the [`babel-types`](#babel-types) package.
 
@@ -1822,7 +1822,7 @@ You can find all of the actual [definitions here](https://github.com/babel/babel
 
 * * *
 
-# <a id="toc-best-practices"></a>Best Practices
+# <a id="toc-best-practices"></a>En iyi pratik
 
 ## <a id="toc-create-helper-builders-and-checkers"></a> Create Helper Builders and Checkers
 
@@ -1838,13 +1838,13 @@ function buildAssignment(left, right) {
 }
 ```
 
-## <a id="toc-avoid-traversing-the-ast-as-much-as-possible"></a>Avoid traversing the AST as much as possible
+## <a id="toc-avoid-traversing-the-ast-as-much-as-possible"></a>AST 'yi geçmekten mümkün olduğunca kaçının
 
 Traversing the AST is expensive, and it's easy to accidentally traverse the AST more than necessary. This could be thousands if not tens of thousands of extra operations.
 
 Babel optimizes this as much as possible, merging visitors together if it can in order to do everything in a single traversal.
 
-### <a id="toc-merge-visitors-whenever-possible"></a>Merge visitors whenever possible
+### <a id="toc-merge-visitors-whenever-possible"></a>Mümkün olunca ziyaretçileri birleştir
 
 When writing visitors, it may be tempting to call `path.traverse` in multiple places where they are logically necessary.
 
@@ -1875,7 +1875,7 @@ path.traverse({
 });
 ```
 
-### <a id="toc-do-not-traverse-when-manual-lookup-will-do"></a>Do not traverse when manual lookup will do
+### <a id="toc-do-not-traverse-when-manual-lookup-will-do"></a>Manüel arama yapılırsa çaprazlama yapmayın
 
 It may also be tempting to call `path.traverse` when looking for a particular node type.
 
@@ -1905,7 +1905,7 @@ const MyVisitor = {
 };
 ```
 
-## <a id="toc-optimizing-nested-visitors"></a>Optimizing nested visitors
+## <a id="toc-optimizing-nested-visitors"></a>İç içe geçmiş ziyaretçiler optimize ediliyor
 
 When you are nesting visitors, it might make sense to write them nested in your code.
 
@@ -1974,7 +1974,7 @@ const MyVisitor = {
 };
 ```
 
-## <a id="toc-being-aware-of-nested-structures"></a>Being aware of nested structures
+## <a id="toc-being-aware-of-nested-structures"></a>İç içe geçmiş yapıları fark edin
 
 Sometimes when thinking about a given transform, you might forget that the given structure can be nested.
 
@@ -2020,7 +2020,7 @@ class Foo {
 }
 ```
 
-## <a id="toc-unit-testing"></a>Unit Testing
+## <a id="toc-unit-testing"></a>Ünite Testi
 
 There are a few primary ways to test babel plugins: snapshot tests, AST tests, and exec tests. We'll use [jest](http://facebook.github.io/jest/) for this example because it supports snapshot testing out of the box. The example we're creating here is hosted in [this repo](https://github.com/brigand/babel-plugin-testing-example).
 

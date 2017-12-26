@@ -799,15 +799,14 @@ $ npm run lint
 
 ## <a id="toc-babel-issues"></a>Προβλήματα με το Babel
 
-Το Babel χρησιμοποιεί το φοβερό issue tracker που παρέχetai από to [Phabricator](http://phabricator.org) μια πλατφόρμα ανάπτυξης λογισμικού ανοικτού κώδικα προς το κοινό που κάνει τα GitHub ζητήματα εφιάλτη του παρελθόντος.
+Babel uses the issue tracker provided by [Github](http://github.com).
 
-Το Phabricator του Babel είναι διαθέσιμο στο [phabricator.babeljs.io](https://phabricator.babeljs.io). Μπορείτε να δείτε όλα τα ανοικτά και κλειστά θέματα σχετικά με το [maniphest](https://phabricator.babeljs.io/maniphest/).
+You can see all the open and closed issues on [Github](https://github.com/babel/babel/issues).
 
 Εάν θέλετε να ανοίξετε ένα νέο θέμα:
 
-  * [Αναζήτηση για ένα υπάρχον θέμα](https://phabricator.babeljs.io/maniphest/query/advanced/)
-  * [Σύνδεση](https://phabricator.babeljs.io/auth/start/) ή [Δημιουργία λογαριασμού](https://phabricator.babeljs.io/auth/register/) (μπορείτε επίσης να εισέλθετε χρησιμοποιώντας GitHub, Facebook, Twitter, Google, κλπ.)
-  * [Δημιουργήσετε μια νέα αναφορά σφάλματος](https://phabricator.babeljs.io/maniphest/task/create/?projects=PHID-PROJ-2ufzspoyuk4udiwfnzls#R) ή να [ζητήσετε ένα νέο χαρακτηριστικό](https://phabricator.babeljs.io/maniphest/task/create/?projects=PHID-PROJ-dfaevtocl5zgjtstjijd#R)
+  * [Αναζήτηση για ένα υπάρχον θέμα](https://github.com/babel/babel/issues)
+  * [Create a new bug report](https://github.com/babel/babel/issues/new) or [request a new feature](https://github.com/babel/babel/issues/new)
 
 ### <a id="toc-creating-an-awesome-babel-bug-report"></a>Δημιουργούντας μια καταπληκτική αναφορά σφάλματος για το Babel
 

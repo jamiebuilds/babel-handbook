@@ -90,7 +90,7 @@ Babel es un compilador de JavaScript, específicamente un compilador de fuente a
 
 Cada uno de estos pasos implican crear o trabajar con un [Árbol de Sintaxis Abstracta](https://en.wikipedia.org/wiki/Abstract_syntax_tree) ó AST por sus siglas en inglés.
 
-> Babel uses an AST modified from [ESTree](https://github.com/estree/estree), with the core spec located [here](https://github.com/babel/babylon/blob/master/ast/spec.md).
+> Babel utiliza un AST modificada de [ESTree](https://github.com/estree/estree), con la especificación base disponible [aquí](https://github.com/babel/babylon/blob/master/ast/spec.md).
 
 ```js
 function square(n) {
@@ -447,7 +447,7 @@ También puedes usar alias como nodos visitadores (como se define en [babel-type
 
 Por ejemplo,
 
-`Function` is an alias for `FunctionDeclaration`, `FunctionExpression`, `ArrowFunctionExpression`, `ObjectMethod` and `ClassMethod`.
+`Function` es un álias para `FunctionDeclaration`, `FunctionExpression`, `ArrowFunctionExpression`, `ObjectMethod` and `ClassMethod`.
 
 ```js
 const MyVisitor = {

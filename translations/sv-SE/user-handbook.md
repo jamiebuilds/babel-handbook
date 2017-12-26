@@ -1,6 +1,6 @@
-# Babel User Handbook
+# Babel användarhandbok
 
-This document covers everything you ever wanted to know about using [Babel](https://babeljs.io) and related tooling.
+Det här dokumentet tar upp allt du någonsin skulle vilja veta om hur du använder [Babel](https://babeljs.io) och dess relaterade verktyg.
 
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
@@ -9,7 +9,7 @@ Handboken finns på andra språk, se [README](/README.md) för en komplett lista
 # Innehållsförteckning
 
   * [Introduktion](#toc-introduction)
-  * [Setting up Babel](#toc-setting-up-babel) 
+  * [Ställa in Babel](#toc-setting-up-babel) 
       * [`babel-cli`](#toc-babel-cli)
       * [Running Babel CLI from within a project](#toc-running-babel-cli-from-within-a-project)
       * [`babel-register`](#toc-babel-register)
@@ -44,19 +44,19 @@ Handboken finns på andra språk, se [README](/README.md) för en komplett lista
 
 # <a id="toc-introduction"></a>Introduktion
 
-Babel is a generic multi-purpose compiler for JavaScript. Using Babel you can use (and create) the next generation of JavaScript, as well as the next generation of JavaScript tooling.
+Babel är en generisk "multi-purpose" kompilator för JavaScript. Med hjälp av Babel kan du använda (och skapa) de nästkommande generationerna av JavaScript och JavaScript-verktyg.
 
-JavaScript as a language is constantly evolving, with new specs and proposals coming out with new features all the time. Using Babel will allow you to use many of these features years before they are available everywhere.
+JavaScript som språk utvecklas ständigt med nya specifikationer, funktioner. Därpå kommer även ständigt nya förslag på hur språket kan vidareutvecklas. Med hjälp av Babel kan använda många av dessa funktioner år innan de är tillgängliga överallt.
 
-Babel does this by compiling down JavaScript code written with the latest standards into a version that will work everywhere today. This process is known as source-to-source compiling, also known as transpiling.
+Babel gör detta genom att omvandla JavaScript-kod som skrivs med de senaste standarderna till en version som fungerar överallt idag. Denna process kallas "source-to-source compiling", även känt som transpilering.
 
-For example, Babel could transform the new ES2015 arrow function syntax from this:
+Till exempel skulle Babel kunna förvandla nya ES2015 pilfunktionssyntaxen från detta:
 
 ```js
 const square = n => n * n;
 ```
 
-Into the following:
+Till detta:
 
 ```js
 const square = function square(n) {
@@ -64,25 +64,25 @@ const square = function square(n) {
 };
 ```
 
-However, Babel can do much more than this as Babel has support for syntax extensions such as the JSX syntax for React and Flow syntax support for static type checking.
+Men Babel kan göra mycket mer än så. Babel har stöd för syntaxtillägg såsom JSX för React och Flow för statisk typkontroll.
 
-Further than that, everything in Babel is simply a plugin and anyone can go out and create their own plugins using the full power of Babel to do whatever they want.
+Än mer: allt i Babel är helt enkelt en plugin och alla kan gå ut och skapa egna plugins som använder den fulla kraften i Babel för att göra vad de vill.
 
-*Even further* than that, Babel is broken down into a number of core modules that anyone can use to build the next generation of JavaScript tooling.
+*I ytterligare grad* så är Babel uppdelat i ett antal centrala moduler vilka vem som helst kan använda för att bygga nästa generation av JavaScript verktyg.
 
-Many people do too, the ecosystem that has sprung up around Babel is massive and very diverse. Throughout this handbook I'll be covering both how built-in Babel tools work as well as some useful things from around the community.
+Många människor gör också det. Ekosystemet som har vuxit upp runt Babel är massivt och mycket varierande. I denna handbok jag kommer att ta upp hur inbyggda Babel-verktyg fungerar samt en del användbara saker från oberoende utvecklare.
 
 > ***För framtida uppdateringar, följ [@thejameskyle](https://twitter.com/thejameskyle) på Twitter.***
 
 * * *
 
-# <a id="toc-setting-up-babel"></a>Setting up Babel
+# <a id="toc-setting-up-babel"></a>Ställa in Babel
 
-Since the JavaScript community has no single build tool, framework, platform, etc., Babel has official integrations for all of the major tooling. Everything from Gulp to Browserify, from Ember to Meteor, no matter what your setup looks like there is probably an official integration.
+Eftersom JavaScript utvecklare inte har ett enda byggverktyg, ramverk eller liknande så stödjer Babel officiellt integreringsmöjligheter för alla de mer populära verktygen. Allt från Gulp till Browserify, från Ember till Meteor. Det spelar ingen roll hur din setup ser ut: det finns lär finnas en officiellt stödd integreringsmöjlighet i Babel som tillgodoser dina behov.
 
-For the purposes of this handbook, we're just going to cover the built-in ways of setting up Babel, but you can also visit the interactive [setup page](http://babeljs.io/docs/setup) for all of the integrations.
+Denna handbok kommer endast att ta upp de inbyggda sätten att konfigurera Babel, men du kan också besöka den interaktiva [installationssidan](http://babeljs.io/docs/setup) för alla att kunna konfigurera allt.
 
-> **Note:** This guide is going to refer to command line tools like `node` and `npm`. Before continuing any further you should be comfortable with these tools.
+> **Obs:** Denna guide kommer att hänvisa till kommandoradsverktyg som `node` och `npm`. Innan du fortsätter något bör du vara bekväm med dessa verktyg.
 
 ## <a id="toc-babel-cli"></a>`babel-cli`
 
@@ -799,15 +799,14 @@ Everyone loves [Slack](https://slack.com). If you're looking for immediate suppo
 
 ## <a id="toc-babel-issues"></a>Babel Issues
 
-Babel uses the awesome issue tracker provided by [Phabricator](http://phabricator.org) an open source software development platform that makes GitHub issues a nightmare of the past.
+Babel uses the issue tracker provided by [Github](http://github.com).
 
-Babel's Phabricator is available at [phabricator.babeljs.io](https://phabricator.babeljs.io). You can see all the open and closed issues on [maniphest](https://phabricator.babeljs.io/maniphest/).
+You can see all the open and closed issues on [Github](https://github.com/babel/babel/issues).
 
 If you want to open a new issue:
 
-  * [Search for an existing issue](https://phabricator.babeljs.io/maniphest/query/advanced/)
-  * [Login](https://phabricator.babeljs.io/auth/start/) or [Create an account](https://phabricator.babeljs.io/auth/register/) (You can also login using GitHub, Facebook, Twitter, Google, etc.)
-  * [Create a new bug report](https://phabricator.babeljs.io/maniphest/task/create/?projects=PHID-PROJ-2ufzspoyuk4udiwfnzls#R) or [request a new feature](https://phabricator.babeljs.io/maniphest/task/create/?projects=PHID-PROJ-dfaevtocl5zgjtstjijd#R)
+  * [Search for an existing issue](https://github.com/babel/babel/issues)
+  * [Create a new bug report](https://github.com/babel/babel/issues/new) or [request a new feature](https://github.com/babel/babel/issues/new)
 
 ### <a id="toc-creating-an-awesome-babel-bug-report"></a>Creating an awesome Babel bug report
 

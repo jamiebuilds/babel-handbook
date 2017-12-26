@@ -1311,9 +1311,9 @@ path.getStatementParent();
   * 使用 `path.container`获取路径的容器（包含所有同级节点的数组）
   * 使用 `path.listKey`获取容器的key
 
-> These APIs are used in the [transform-merge-sibling-variables](https://github.com/babel/babili/blob/master/packages/babel-plugin-transform-merge-sibling-variables/src/index.js) plugin used in [babel-minify](https://github.com/babel/babili).
-
-```js
+> 这些API用于 babel-minify </>中使用的 transform-merge-sibling-variables </>插件.</p> </blockquote> 
+> 
+> ```js
 var a = 1; // pathA, path.key = 0
 var b = 2; // pathB, path.key = 1
 var c = 3; // pathC, path.key = 2
@@ -1339,7 +1339,7 @@ export default function({ types: t }) {
 
 ### <a id="toc-stopping-traversal"></a>停止遍历
 
-If your plugin needs to not run in a certain situation, the simpliest thing to do is to write an early return.
+如果你的插件需要在某种情况下不运行，最简单的做法是尽早写回。
 
 ```js
 BinaryExpression(path) {
@@ -1347,7 +1347,7 @@ BinaryExpression(path) {
 }
 ```
 
-If you are doing a sub-traversal in a top level path, you can use 2 provided API methods:
+如果您在顶级路径中进行子遍历，则可以使用2个提供的API方法：
 
 `path.skip()` skips traversing the children of the current path. `path.stop()` stops traversal entirely.
 
@@ -1403,11 +1403,11 @@ ReturnStatement(path) {
   }
 ```
 
-> **Note:** When replacing an expression with multiple nodes, they must be statements. This is because Babel uses heuristics extensively when replacing nodes which means that you can do some pretty crazy transformations that would be extremely verbose otherwise.
-
-### <a id="toc-replacing-a-node-with-a-source-string"></a>用字符串源码替换节点
-
-```js
+> **注意：</>当用多个节点替换一个表达式时，它们必须是   声明。 这是因为Babel在更换节点时广泛使用启发式算法，这意味着您可以做一些非常疯狂的转换，否则将会非常冗长。</p> </blockquote> 
+> 
+> ### <a id="toc-replacing-a-node-with-a-source-string"></a>用字符串源码替换节点
+> 
+> ```js
 FunctionDeclaration(path) {
   path.replaceWithSourceString(`function add(a, b) {
     return a + b;
@@ -1423,11 +1423,11 @@ FunctionDeclaration(path) {
   }
 ```
 
-> **Note:** It's not recommended to use this API unless you're dealing with dynamic source strings, otherwise it's more efficient to parse the code outside of the visitor.
-
-### <a id="toc-inserting-a-sibling-node"></a>插入兄弟节点
-
-```js
+> **注意：</>不建议使用这个API，除非您正在处理动态的源码字符串，否则在访问者外部解析代码更有效率。</p> </blockquote> 
+> 
+> ### <a id="toc-inserting-a-sibling-node"></a>插入兄弟节点
+> 
+> ```js
 FunctionDeclaration(path) {
   path.insertBefore(t.expressionStatement(t.stringLiteral("Because I'm easy come, easy go.")));
   path.insertAfter(t.expressionStatement(t.stringLiteral("A little high, little low.")));
@@ -1442,13 +1442,14 @@ FunctionDeclaration(path) {
 + "A little high, little low.";
 ```
 
-> **Note:** This should always be a statement or an array of statements. This uses the same heuristics mentioned in [Replacing a node with multiple nodes](#replacing-a-node-with-multiple-nodes).
-
-### <a id="toc-inserting-into-a-container"></a>插入到容器（container）中
-
-If you want to insert into a AST node property like that is an array like `body`. It is similar to `insertBefore`/`insertAfter` other than you having to specify the `listKey` which is usually `body`.
-
-```js
+> 注意：</>这里同样应该使用声明或者一个声明数组。 这个使用了在用多个节点替换一个节点</>中提到的相同的启发式算法。.</p> </blockquote> 
+> 
+> ### <a id="toc-inserting-into-a-container"></a>插入到容器（container）中
+> 
+> 如果您想要在AST节点属性中插入一个像` body </ 0>那样的数组。
+它与 <code> insertBefore `/` insertAfter ` 类似, 但您必须指定 ` listKey ` (通常是 ` 正文 `).
+> 
+> ```js
 ClassMethod(path) {
   path.get('body').unshiftContainer('body', t.expressionStatement(t.stringLiteral('before')));
   path.get('body').pushContainer('body', t.expressionStatement(t.stringLiteral('after')));
@@ -1481,15 +1482,14 @@ FunctionDeclaration(path) {
 
 ### <a id="toc-replacing-a-parent"></a>替换父节点
 
-Just call `replaceWith` with the parentPath: `path.parentPath`
+只需使用parentPath：` path.parentPath </>调用<code> replaceWith </>即可</p>
 
-```js
-BinaryExpression(path) {
+<pre><code class="js">BinaryExpression(path) {
   path.parentPath.replaceWith(
     t.expressionStatement(t.stringLiteral("Anyway the wind blows, doesn't really matter to me, to me."))
   );
 }
-```
+`</pre> 
 
 ```diff
   function square(n) {
@@ -1524,9 +1524,9 @@ FunctionDeclaration(path) {
 }
 ```
 
-This will walk up the scope tree and check for that particular binding.
+这将遍历范围树并检查特定的绑定。
 
-You can also check if a scope has its **own** binding:
+您也可以检查一个作用域是否有**自己的</>绑定：</p> 
 
 ```js
 FunctionDeclaration(path) {
@@ -1538,7 +1538,7 @@ FunctionDeclaration(path) {
 
 ### <a id="toc-generating-a-uid"></a>创建一个 UID
 
-This will generate an identifier that doesn't collide with any locally defined variables.
+这将生成一个标识符，不会与任何本地定义的变量相冲突。
 
 ```js
 FunctionDeclaration(path) {
@@ -1551,15 +1551,14 @@ FunctionDeclaration(path) {
 
 ### <a id="toc-pushing-a-variable-declaration-to-a-parent-scope"></a>提升变量声明至父级作用域
 
-Sometimes you may want to push a `VariableDeclaration` so you can assign to it.
+有时你可能想要推送一个` VariableDeclaration </>，这样你就可以分配给它。</p>
 
-```js
-FunctionDeclaration(path) {
+<pre><code class="js">FunctionDeclaration(path) {
   const id = path.scope.generateUidIdentifierBasedOnNode(path.node.id);
   path.remove();
   path.scope.parent.push({ id, init: path.node });
 }
-```
+`</pre> 
 
 ```diff
 - function square(n) {
@@ -1585,7 +1584,7 @@ FunctionDeclaration(path) {
   }
 ```
 
-Alternatively, you can rename a binding to a generated unique identifier:
+或者，您可以将绑定重命名为生成的唯一标识符：
 
 ```js
 FunctionDeclaration(path) {
@@ -1605,7 +1604,7 @@ FunctionDeclaration(path) {
 
 # <a id="toc-plugin-options"></a>插件选项
 
-If you would like to let your users customize the behavior of your Babel plugin you can accept plugin specific options which users can specify like this:
+如果您想让您的用户自定义您的Babel插件的行为您可以接受用户可以指定的插件特定选项，如下所示：
 
 ```js
 {
@@ -1618,10 +1617,9 @@ If you would like to let your users customize the behavior of your Babel plugin 
 }
 ```
 
-These options then get passed into plugin visitors through the `state` object:
+这些选项会通过`状态</>对象传递给插件访问者：</p>
 
-```js
-export default function({ types: t }) {
+<pre><code class="js">export default function({ types: t }) {
   return {
     visitor: {
       FunctionDeclaration(path, state) {
@@ -1631,13 +1629,13 @@ export default function({ types: t }) {
     }
   }
 }
-```
+`</pre> 
 
-These options are plugin-specific and you cannot access options from other plugins.
+这些选项是特定于插件的，您不能访问其他插件中的选项。
 
 ## <a id="toc-pre-and-post-in-plugins"></a> 插件的准备和收尾工作
 
-Plugins can have functions that are run before or after plugins. They can be used for setup or cleanup/analysis purposes.
+插件可以具有在插件之前或之后运行的函数。它们可以用于设置或清理/分析目的。
 
 ```js
 export default function({ types: t }) {
@@ -1659,7 +1657,7 @@ export default function({ types: t }) {
 
 ## <a id="toc-enabling-syntax-in-plugins"></a> 在插件中启用其他语法
 
-Plugins can enable [babylon plugins](https://github.com/babel/babylon#plugins) so that users don't need to install/enable them. This prevents a parsing error without inheriting the syntax plugin.
+插件可以启用babylon plugins</>，以便用户不需要安装/启用它们。 这可以防止解析错误，而不会继承语法插件。</p> 
 
 ```js
 export default function({ types: t }) {
@@ -1669,9 +1667,9 @@ export default function({ types: t }) {
 }
 ```
 
-## <a id="toc-throwing-a-syntax-error"></a> Throwing a Syntax Error
+## <a id="toc-throwing-a-syntax-error"></a> 抛出一个语法错误
 
-If you want to throw an error with babel-code-frame and a message:
+如果您想用babel-code-frame和一个消息抛出一个错误：
 
 ```js
 export default function({ types: t }) {
@@ -1685,7 +1683,7 @@ export default function({ types: t }) {
 }
 ```
 
-The error looks like:
+该错误看起来像：
 
     file.js: Error message here
        7 |
@@ -1701,16 +1699,15 @@ The error looks like:
 
 # <a id="toc-building-nodes"></a>构建节点
 
-When writing transformations you'll often want to build up some nodes to insert into the AST. As mentioned previously, you can do this using the [builder](#builders) methods in the [`babel-types`](#babel-types) package.
+编写转换时，通常需要构建一些要插入的节点进入AST。 如前所述，您可以使用` babel-types </>包中的<a href="#builders">builder </>方法。</p>
 
-The method name for a builder is simply the name of the node type you want to build except with the first letter lowercased. For example if you wanted to build a `MemberExpression` you would use `t.memberExpression(...)`.
+<p>构建器的方法名称就是您想要的节点类型的名称，除了第一个字母小写。 例如，如果您想建立一个<code> MemberExpression </>您可以使用<code> t.memberExpression（...）</>.</p>
 
-The arguments of these builders are decided by the node definition. There's some work that's being done to generate easy-to-read documentation on the definitions, but for now they can all be found [here](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions).
+<p>这些构建器的参数由节点定义决定。 有一些正在做的工作，以生成易于阅读的文件定义，但现在他们都可以在<a href="https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions">此处</a>找到。.</p>
 
-A node definition looks like the following:
+<p>节点定义如下所示：</p>
 
-```js
-defineType("MemberExpression", {
+<pre><code class="js">defineType("MemberExpression", {
   builder: ["object", "property", "computed"],
   visitor: ["object", "property"],
   aliases: ["Expression", "LVal"],
@@ -1729,20 +1726,20 @@ defineType("MemberExpression", {
     }
   }
 });
-```
+`</pre> 
 
-Here you can see all the information about this particular node type, including how to build it, traverse it, and validate it.
+在这里你可以看到关于这个特定节点类型的所有信息，包括如何构建它，遍历它，并验证它。
 
-By looking at the `builder` property, you can see the 3 arguments that will be needed to call the builder method (`t.memberExpression`).
-
-```js
-builder: ["object", "property", "computed"],
-```
-
-> Note that sometimes there are more properties that you can customize on the node than the `builder` array contains. This is to keep the builder from having too many arguments. In these cases you need to set the properties manually. An example of this is [`ClassMethod`](https://github.com/babel/babel/blob/bbd14f88c4eea88fa584dd877759dd6b900bf35e/packages/babel-types/src/definitions/es2015.js#L238-L276).
+通过查看 ` 生成器 ` 属性, 可以看到调用生成器方法所需的3个参数 (` t. 情况 `).
 
 ```js
-// Example
+生成器: ["object", "property", "computed"],
+```
+
+> 请注意，有时在节点上可以定制的属性比``构建器</>数组包含的属性更多。 这是为了防止生成器有太多的参数。 在这些情况下，您需要手动设置属性。 一个例子是<class> ClassMethod </>.</p>
+</blockquote>
+
+<pre><code class="js">// Example
 // because the builder doesn't contain `async` as a property
 var node = t.classMethod(
   "constructor",
@@ -1752,11 +1749,11 @@ var node = t.classMethod(
 )
 // set it manually after creation
 node.async = true;
-```
-
-You can see the validation for the builder arguments with the `fields` object.
-
-```js
+``</pre> 
+> 
+> You can see the validation for the builder arguments with the `fields` object.
+> 
+> ```js
 fields: {
   object: {
     validate: assertNodeType("Expression")
@@ -2105,7 +2102,7 @@ it('contains baz', () => {
 
 ### Exec Tests
 
-Here we'll be transforming the code, and then evaluating that it behaves correctly. Note that we're not using `assert` in the test. This ensures that if our plugin does weird stuff like removing the assert line by accident, the test will still fail.
+在这里，我们将转换代码，然后评估它的行为是否正确。 Note that we're not using `assert` in the test. This ensures that if our plugin does weird stuff like removing the assert line by accident, the test will still fail.
 
 ```js
 it('foo is an alias to baz', () => {
@@ -2124,11 +2121,11 @@ it('foo is an alias to baz', () => {
 });
 ```
 
-Babel core uses a [similar approach](https://github.com/babel/babel/blob/7.0/CONTRIBUTING.md#writing-tests) to snapshot and exec tests.
+Babel核心使用类似的方法</>去获取快照和执行测试。</p> 
 
 ### [`babel-plugin-tester`](https://github.com/kentcdodds/babel-plugin-tester)
 
-This package makes testing plugins easier. If you're familiar with ESLint's [RuleTester](http://eslint.org/docs/developer-guide/working-with-rules#rule-unit-tests) this should be familiar. You can look at [the docs](https://github.com/kentcdodds/babel-plugin-tester/blob/master/README.md) to get a full sense of what's possible, but here's a simple example:
+这个包使测试插件更容易。 如果您熟悉ESLint的[ RuleTester](http://eslint.org/docs/developer-guide/working-with-rules#rule-unit-tests)您应该对这是熟悉的。 您可以看看[the docs](https://github.com/kentcdodds/babel-plugin-tester/blob/master/README.md)去充分了解可能的情况，但这里有一个简单的例子：
 
 ```js
 import pluginTester from 'babel-plugin-tester';
@@ -2161,4 +2158,4 @@ pluginTester({
 
 * * *
 
-> ***For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) and [@babeljs](https://twitter.com/babeljs) on Twitter.***
+> ***对于将来的更新，请跟随 @thejameskyle </>和 @babeljs </> 的Twitter。</em></strong></p> </blockquote>
