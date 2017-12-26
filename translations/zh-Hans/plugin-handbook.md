@@ -2088,24 +2088,22 @@ We see how our change to the plugin code affected the output of our plugin, and 
 
 ### AST Tests
 
-In addition to snapshot testing, we can manually inspect the AST. This is a simple but brittle example. For more involved situations you may wish to leverage babel-traverse. It allows you to specify an object with a `visitor` key, exactly like you use for the plugin itself.
+除了快照测试外，我们还可以手动检查AST。 这是一个简单但是脆弱的例子。 对于更多涉及的情况，您可能希望利用Babel-遍历。 它允许您用`访问者</>键指定一个对象，就像您使用插件本身。</p>
 
-```js
-it('contains baz', () => {
+<pre><code class="js">it('contains baz', () => {
   const {ast} = babel.transform(example, {plugins: [plugin]});
   const program = ast.program;
   const declaration = program.body[0].declarations[0];
   assert.equal(declaration.id.name, 'baz');
   // or babelTraverse(program, {visitor: ...})
 });
-```
+`</pre> 
 
 ### Exec Tests
 
-在这里，我们将转换代码，然后评估它的行为是否正确。 Note that we're not using `assert` in the test. This ensures that if our plugin does weird stuff like removing the assert line by accident, the test will still fail.
+在这里，我们将转换代码，然后评估它的行为是否正确。 请注意，我们在测试中没有使用``assert</>。 这确保如果我们的插件做了奇怪的操作，如意外删除断言线，但测试仍然失败。</p>
 
-```js
-it('foo is an alias to baz', () => {
+<pre><code class="js">it('foo is an alias to baz', () => {
   var input = `
     var foo = 1;
     // test that foo was renamed to baz
@@ -2119,7 +2117,7 @@ it('foo is an alias to baz', () => {
   var res = f();
   assert(res === 1, 'res is 1');
 });
-```
+``</pre> 
 
 Babel核心使用类似的方法</>去获取快照和执行测试。</p> 
 
