@@ -1905,7 +1905,7 @@ const MyVisitor = {
 
 ## <a id="toc-optimizing-nested-visitors"></a>优化嵌套的访问者对象
 
-When you are nesting visitors, it might make sense to write them nested in your code.
+当您嵌套访问者（visitor）时，把它们嵌套在您的代码中可能是有意义的。
 
 ```js
 const MyVisitor = {
@@ -1919,10 +1919,14 @@ const MyVisitor = {
 };
 ```
 
-However, this creates a new visitor object every time `FunctionDeclaration()` is called. That can be costly, because Babel does some processing each time a new visitor object is passed in (such as exploding keys containing multiple types, performing validation, and adjusting the object structure). Because Babel stores flags on visitor objects indicating that it's already performed that processing, it's better to store the visitor in a variable and pass the same object each time.
+但是，每当调用`FunctionDeclaration()</>时都会创建一个新的访问者对象。 That can be costly, because Babel does some processing each time a new
+visitor object is passed in (such as exploding keys containing multiple types,
+performing validation, and adjusting the object structure). Because Babel stores
+flags on visitor objects indicating that it's already performed that processing,
+it's better to store the visitor in a variable and pass the same object each
+time.</p>
 
-```js
-const nestedVisitor = {
+<pre><code class="js">const nestedVisitor = {
   Identifier(path) {
     // ...
   }
@@ -1933,9 +1937,9 @@ const MyVisitor = {
     path.traverse(nestedVisitor);
   }
 };
-```
+`</pre> 
 
-If you need some state within the nested visitor, like so:
+如果您在嵌套的访问者中需要一些状态，像这样：
 
 ```js
 const MyVisitor = {
@@ -1953,7 +1957,7 @@ const MyVisitor = {
 };
 ```
 
-You can pass it in as state to the `traverse()` method and have access to it on `this` in the visitor.
+您可以将它作为状态传递给`traverse()</ 0>方法，并有权访问<code>this`在访问者中。
 
 ```js
 const nestedVisitor = {
@@ -1974,9 +1978,9 @@ const MyVisitor = {
 
 ## <a id="toc-being-aware-of-nested-structures"></a>留意嵌套结构
 
-Sometimes when thinking about a given transform, you might forget that the given structure can be nested.
+有时候在考虑给定的转换时，可能会忘记给定的转换结构可以是嵌套的。
 
-For example, imagine we want to lookup the `constructor` `ClassMethod` from the `Foo` `ClassDeclaration`.
+例如，想象一下，我们想要查找`构造函数` ` ClassMethod ` ` Foo ` ` ClassDeclaration `.
 
 ```js
 class Foo {
@@ -2004,10 +2008,9 @@ const MyVisitor = {
 }
 ```
 
-We are ignoring the fact that classes can be nested and using the traversal above we will hit a nested `constructor` as well:
+我们忽略了类可以嵌套的事实，使用遍历的话，上面我们也会得到一个嵌套的`构造函数</>：</p>
 
-```js
-class Foo {
+<pre><code class="js">class Foo {
   constructor() {
     class Bar {
       constructor() {
@@ -2016,13 +2019,13 @@ class Foo {
     }
   }
 }
-```
+`</pre> 
 
 ## <a id="toc-unit-testing"></a>单元测试
 
-There are a few primary ways to test babel plugins: snapshot tests, AST tests, and exec tests. We'll use [jest](http://facebook.github.io/jest/) for this example because it supports snapshot testing out of the box. The example we're creating here is hosted in [this repo](https://github.com/brigand/babel-plugin-testing-example).
+有几种主要的方法来测试babel插件：快照测试，AST测试和执行测试。 对于这个例子，我们将使用 jest </>，因为它支持盒外快照测试。 我们在这里创建的示例是托管在这个 repo</>.</p> 
 
-First we need a babel plugin, we'll put this in src/index.js.
+首先我们需要一个babel插件，我们将把它放在src / index.js中。
 
 ```js
 <br />module.exports = function testPlugin(babel) {
@@ -2040,10 +2043,10 @@ First we need a babel plugin, we'll put this in src/index.js.
 
 ### 快照测试
 
-Next, install our dependencies with `npm install --save-dev babel-core jest`, and then we can begin writing our first test: the snapshot. Snapshot tests allow us to visually inspect the output of our babel plugin. We give it an input, tell it to make a snapshot, and it saves it to a file. We check in the snapshots into git. This allows us to see when we've affected the output of any of our test cases. It also gives use a diff in pull requests. Of course you could do this with any test framework, but with jest updating the snapshots is as easy as `jest -u`.
+接下来，用`` npm install --save-dev babel-core jest </>安装我们的依赖关系，
+那么我们可以开始写我们的第一个测试：快照。 快照测试允许我们直观地检查我们的babel插件的输出。 我们给它一个输入，告诉它一个快照，并将其保存到一个文件。 我们检查快照到git中。 这允许我们来看看我们什么时候影响了我们任何试用例子测试的输出。 它也给出了使用差异在拉请求的时候。 当然，您可以用任何测试框架来做到这一点，但是要更新一下快照就像<code>jest -u </>一样简单.</p>
 
-```js
-// src/__tests__/index-test.js
+<pre><code class="js">// src/__tests__/index-test.js
 const babel = require('babel-core');
 const plugin = require('../');
 
@@ -2056,22 +2059,21 @@ it('works', () => {
   const {code} = babel.transform(example, {plugins: [plugin]});
   expect(code).toMatchSnapshot();
 });
-```
+``</pre> 
 
-This gives us a snapshot file in `src/__tests__/__snapshots__/index-test.js.snap`.
+这给了我们一个快照文件在`` src / __ tests __ / __ snapshots __ / index-test.js.snap </>.</p>
 
-```js
-exports[`test works 1`] = `
+<pre><code class="js">exports[`test works 1`] = `
 "
 var bar = 1;
 if (bar) console.log(bar);"
 `;
-```
+``</pre> 
 
-If we change 'bar' to 'baz' in our plugin and run jest again, we get this:
+如果我们在插件中将“bar”更改为“baz”并再次运行，则可以得到以下结果：
 
 ```diff
-Received value does not match stored snapshot 1.
+接收到的值与存储的快照1不匹配。
 
     - Snapshot
     + Received
@@ -2084,11 +2086,11 @@ Received value does not match stored snapshot 1.
     +if (baz) console.log(baz);"
 ```
 
-We see how our change to the plugin code affected the output of our plugin, and if the output looks good to us, we can run `jest -u` to update the snapshot.
+我们看到我们对插件代码的改变如何影响了我们插件的输出 如果输出看起来不错，我们可以运行`jest -u </>来更新快照。</p>
 
-### AST Tests
+<h3>AST 测试</h3>
 
-除了快照测试外，我们还可以手动检查AST。 这是一个简单但是脆弱的例子。 对于更多涉及的情况，您可能希望利用Babel-遍历。 它允许您用`访问者</>键指定一个对象，就像您使用插件本身。</p>
+<p>除了快照测试外，我们还可以手动检查AST。 这是一个简单但是脆弱的例子。 对于更多涉及的情况，您可能希望利用Babel-遍历。 它允许您用<code>访问者</>键指定一个对象，就像您使用插件本身。</p>
 
 <pre><code class="js">it('contains baz', () => {
   const {ast} = babel.transform(example, {plugins: [plugin]});

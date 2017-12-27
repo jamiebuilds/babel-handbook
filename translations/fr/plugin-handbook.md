@@ -1445,7 +1445,7 @@ FunctionDeclaration(path) {
 
 ### <a id="toc-inserting-into-a-container"></a>Insertion dans un conteneur
 
-If you want to insert into a AST node property like that is an array like `body`. It is similar to `insertBefore`/`insertAfter` other than you having to specify the `listKey` which is usually `body`.
+Si vous voulez insérer dans un nœud AST une propriété qui est un tableau comme `body`. C'est similaire à `insertBefore` et `insertAfter` sauf que vous devez spécifier `listKey` qui est généralement `body`.
 
 ```js
 ClassMethod(path) {
@@ -1658,7 +1658,7 @@ export default function({ types: t }) {
 
 ## <a id="toc-enabling-syntax-in-plugins"></a> Activation de la syntaxe dans les plugins
 
-Plugins can enable [babylon plugins](https://github.com/babel/babylon#plugins) so that users don't need to install/enable them. This prevents a parsing error without inheriting the syntax plugin.
+Les plugins peuvent activer [babylon plugins](https://github.com/babel/babylon#plugins) pour que les utilisateurs n'aient pas besoin de les installer/activer. Cela empêche une erreur d'analyse sans hériter du plugin de syntaxe.
 
 ```js
 export default function({ types: t }) {
@@ -1668,9 +1668,9 @@ export default function({ types: t }) {
 }
 ```
 
-## <a id="toc-throwing-a-syntax-error"></a> Throwing a Syntax Error
+## <a id="toc-throwing-a-syntax-error"></a> Lancer une erreur de syntaxe
 
-If you want to throw an error with babel-code-frame and a message:
+Si vous souhaitez lever une erreur avec babel-code-frame et un message :
 
 ```js
 export default function({ types: t }) {
@@ -1824,9 +1824,9 @@ Vous pouvez trouver toutes les [définitions actuelles ici](https://github.com/b
 
 # <a id="toc-best-practices"></a>Meilleures pratiques
 
-## <a id="toc-create-helper-builders-and-checkers"></a> Create Helper Builders and Checkers
+## <a id="toc-create-helper-builders-and-checkers"></a> Créer des constructeurs d'assistance et des vérificateurs
 
-It's pretty simple to extract certain checks (if a node is a certain type) into their own helper functions as well as extracting out helpers for specific node types.
+Il est assez simple d'extraire certaines vérifications (si un nœud est un certain type) dans leurs propres fonctions d'aide, ainsi que d'extraire des aides pour des types de nœuds spécifiques.
 
 ```js
 function isAssignment(node) {
@@ -1921,7 +1921,7 @@ const MyVisitor = {
 };
 ```
 
-However, this creates a new visitor object every time `FunctionDeclaration()` is called. That can be costly, because Babel does some processing each time a new visitor object is passed in (such as exploding keys containing multiple types, performing validation, and adjusting the object structure). Because Babel stores flags on visitor objects indicating that it's already performed that processing, it's better to store the visitor in a variable and pass the same object each time.
+Cependant, ceci crée un nouvel objet visiteur chaque fois que `FunctionDeclaration()` est appelée. Cela peut être coûteux, car Babel effectue un traitement chaque fois qu'un nouvel objet visiteur est transmis (comme l'explosion de clés contenant plusieurs types, la validation et l'ajustement de la structure de l'objet). Parce que Babel stocke des flags sur les objets visiteurs indiquant qu'il a déjà effectué ce traitement, il est préférable de stocker le visiteur dans une variable et de transmettre le même objet à chaque fois.
 
 ```js
 const nestedVisitor = {
@@ -2022,9 +2022,9 @@ class Foo {
 
 ## <a id="toc-unit-testing"></a>Tests unitaires
 
-There are a few primary ways to test babel plugins: snapshot tests, AST tests, and exec tests. We'll use [jest](http://facebook.github.io/jest/) for this example because it supports snapshot testing out of the box. The example we're creating here is hosted in [this repo](https://github.com/brigand/babel-plugin-testing-example).
+Il existe quelques méthodes principales pour tester les plugins babel : les tests instantanés, les tests AST et les tests d'exécution. Nous utiliserons [jest](http://facebook.github.io/jest/) pour cet exemple car il prend en charge le test instantané dès la sortie de la boîte. L'exemple que nous créons ici est hébergé dans [ce dépôt](https://github.com/brigand/babel-plugin-testing-example).
 
-First we need a babel plugin, we'll put this in src/index.js.
+Nous avons d'abord besoin d'un plugin babel, nous allons le mettre dans src/index.js.
 
 ```js
 <br />module.exports = function testPlugin(babel) {
@@ -2040,9 +2040,9 @@ First we need a babel plugin, we'll put this in src/index.js.
 };
 ```
 
-### Snapshot Tests
+### Tests instantanés
 
-Next, install our dependencies with `npm install --save-dev babel-core jest`, and then we can begin writing our first test: the snapshot. Snapshot tests allow us to visually inspect the output of our babel plugin. We give it an input, tell it to make a snapshot, and it saves it to a file. We check in the snapshots into git. This allows us to see when we've affected the output of any of our test cases. It also gives use a diff in pull requests. Of course you could do this with any test framework, but with jest updating the snapshots is as easy as `jest -u`.
+Ensuite, installez nos dépendances avec `npm install --save-dev babel-core jest`, et nous pourrons commencer à écrire notre premier test : l'instantané. Les tests d'instantanés nous permettent d'inspecter visuellement la sortie de notre plugin babel. Nous lui donnons une entrée, puis nous lui disons de faire un instantané, et de l'enregistrer dans un fichier. Nous vérifions les instantanés dans git. Cela nous permet de voir quand nous avons affecté la sortie de l'un de nos cas de test. Cela donne aussi un diff dans les pull requests. Bien sûr, vous pouvez le faire avec n'importe quel framework de test, mais avec jest la mise à jour des instantanés est assez simple avec `jest -u`.
 
 ```js
 // src/__tests__/index-test.js
@@ -2060,7 +2060,7 @@ it('works', () => {
 });
 ```
 
-This gives us a snapshot file in `src/__tests__/__snapshots__/index-test.js.snap`.
+Cela nous donne un fichier instantané dans `src/__tests__/__snapshots__/index-test.js.snap`.
 
 ```js
 exports[`test works 1`] = `
@@ -2070,7 +2070,7 @@ if (bar) console.log(bar);"
 `;
 ```
 
-If we change 'bar' to 'baz' in our plugin and run jest again, we get this:
+Si nous changeons 'bar' en 'baz' dans notre plugin et que nous recommençons l'exécution de jest, nous obtenons ceci :
 
 ```diff
 Received value does not match stored snapshot 1.
@@ -2086,11 +2086,11 @@ Received value does not match stored snapshot 1.
     +if (baz) console.log(baz);"
 ```
 
-We see how our change to the plugin code affected the output of our plugin, and if the output looks good to us, we can run `jest -u` to update the snapshot.
+Nous voyons comment notre modification du code du plugin a affecté la sortie de notre plugin, et si la sortie nous semble bonne, nous pouvons lancer `jest -u` pour mettre à jour l'instantané.
 
-### AST Tests
+### Tests AST
 
-In addition to snapshot testing, we can manually inspect the AST. This is a simple but brittle example. For more involved situations you may wish to leverage babel-traverse. It allows you to specify an object with a `visitor` key, exactly like you use for the plugin itself.
+En plus des tests d'instantanés, nous pouvons inspecter manuellement l'AST. C'est un exemple simple mais fragile. Pour les situations plus complexes, vous pouvez utiliser babel-traverse. Il vous permet de spécifier un objet avec une clé `visitor`, exactement comme vous l'utilisez pour le plugin lui-même.
 
 ```js
 it('contains baz', () => {
@@ -2102,9 +2102,9 @@ it('contains baz', () => {
 });
 ```
 
-### Exec Tests
+### Tests d'exécution
 
-Here we'll be transforming the code, and then evaluating that it behaves correctly. Note that we're not using `assert` in the test. This ensures that if our plugin does weird stuff like removing the assert line by accident, the test will still fail.
+Ici, nous allons transformer le code, puis évaluer s'il se comporte correctement. Notez que nous n'utilisons pas `assert` dans le test. Cela garantit que si notre plugin fait des choses bizarres comme la suppression de la ligne d'assertion par accident, le test échouera toujours.
 
 ```js
 it('foo is an alias to baz', () => {
@@ -2123,11 +2123,11 @@ it('foo is an alias to baz', () => {
 });
 ```
 
-Babel core uses a [similar approach](https://github.com/babel/babel/blob/7.0/CONTRIBUTING.md#writing-tests) to snapshot and exec tests.
+Le cœur de Babel utilise une [approche similaire](https://github.com/babel/babel/blob/7.0/CONTRIBUTING.md#writing-tests) pour les tests instantanés et d’exécutions.
 
 ### [`babel-plugin-tester`](https://github.com/kentcdodds/babel-plugin-tester)
 
-This package makes testing plugins easier. If you're familiar with ESLint's [RuleTester](http://eslint.org/docs/developer-guide/working-with-rules#rule-unit-tests) this should be familiar. You can look at [the docs](https://github.com/kentcdodds/babel-plugin-tester/blob/master/README.md) to get a full sense of what's possible, but here's a simple example:
+Ce paquet facilite les tests de plugins. Si vous connaissez le [RuleTester](http://eslint.org/docs/developer-guide/working-with-rules#rule-unit-tests) d'ESLint, cela devrait vous être familier. Vous pouvez regarder [les docs](https://github.com/kentcdodds/babel-plugin-tester/blob/master/README.md) pour avoir une idée complète de ce qui est possible, mais voici un exemple simple :
 
 ```js
 import pluginTester from 'babel-plugin-tester';

@@ -799,14 +799,14 @@ Tout le monde aime [Slack](https://slack.com). Si vous cherchez un soutien immé
 
 ## <a id="toc-babel-issues"></a>Issues (anomalies) de Babel
 
-Babel uses the issue tracker provided by [Github](http://github.com).
+Babel utilise le suivi des problèmes fourni par [Github](http://github.com).
 
-You can see all the open and closed issues on [Github](https://github.com/babel/babel/issues).
+Vous pouvez voir tous les problèmes ouverts et fermés sur [Github](https://github.com/babel/babel/issues).
 
 Si vous souhaitez ouvrir une nouvelle issue :
 
   * [Recherchez dans les issues existantes](https://github.com/babel/babel/issues)
-  * [Create a new bug report](https://github.com/babel/babel/issues/new) or [request a new feature](https://github.com/babel/babel/issues/new)
+  * [Créez un nouveau rapport de bogue](https://github.com/babel/babel/issues/new) ou [demandez une nouvelle fonctionnalité](https://github.com/babel/babel/issues/new)
 
 ### <a id="toc-creating-an-awesome-babel-bug-report"></a>Création d'un génial rapport de bogue
 
