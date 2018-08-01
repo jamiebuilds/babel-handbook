@@ -1423,11 +1423,11 @@ FunctionDeclaration(path) {
   }
 ```
 
-> **注意：</>不建议使用这个API，除非您正在处理动态的源码字符串，否则在访问者外部解析代码更有效率。</p> </blockquote> 
-> 
-> ### <a id="toc-inserting-a-sibling-node"></a>插入兄弟节点
-> 
-> ```js
+> **注意：**不建议使用这个API，除非您正在处理动态的源码字符串，否则在访问者外部解析代码更有效率。</p> </blockquote> 
+
+### <a id="toc-inserting-a-sibling-node"></a>插入兄弟节点
+
+```js
 FunctionDeclaration(path) {
   path.insertBefore(t.expressionStatement(t.stringLiteral("Because I'm easy come, easy go.")));
   path.insertAfter(t.expressionStatement(t.stringLiteral("A little high, little low.")));
@@ -1734,7 +1734,7 @@ defineType("MemberExpression", {
 
 在这里你可以看到关于这个特定节点类型的所有信息，包括如何构建它，遍历它，并验证它。
 
-通过查看 ` 生成器 ` 属性, 可以看到调用生成器方法所需的3个参数 (` t. 情况 `).
+通过查看 ` 生成器 ` 属性, 可以看到调用生成器方法 (`t.memberExpression`)所需的3个参数。
 
 ```js
 生成器: ["object", "property", "computed"],
@@ -1924,7 +1924,7 @@ const MyVisitor = {
 };
 ```
 
-但是，每当调用`FunctionDeclaration()</>时都会创建一个新的访问者对象。 That can be costly, because Babel does some processing each time a new
+但是，每当调用`FunctionDeclaration()`时都会创建一个新的访问者对象。 That can be costly, because Babel does some processing each time a new
 visitor object is passed in (such as exploding keys containing multiple types,
 performing validation, and adjusting the object structure). Because Babel stores
 flags on visitor objects indicating that it's already performed that processing,
@@ -1963,7 +1963,7 @@ const MyVisitor = {
 };
 ```
 
-您可以将它作为状态传递给`traverse()</ 0>方法，并有权访问<code>this`在访问者中。
+您可以将它作为状态传递给`traverse()`方法，并有权访问`this`在访问者中。
 
 ```js
 const nestedVisitor = {
@@ -2095,7 +2095,7 @@ if (bar) console.log(bar);"
     +if (baz) console.log(baz);"
 ```
 
-我们看到我们对插件代码的改变如何影响了我们插件的输出 如果输出看起来不错，我们可以运行`jest -u </>来更新快照。</p>
+我们看到我们对插件代码的改变如何影响了我们插件的输出 如果输出看起来不错，我们可以运行`jest -u`来更新快照。  
 
 ### AST 测试
 
@@ -2132,11 +2132,11 @@ it('foo is an alias to baz', () => {
 });
 ```
 
-Babel核心使用类似的方法</>去获取快照和执行测试。</p> 
+Babel核心使用[类似的方法](https://github.com/babel/babel/blob/7.0/CONTRIBUTING.md#writing-tests)去获取快照和执行测试。</p> 
 
 ### [`babel-plugin-tester`](https://github.com/kentcdodds/babel-plugin-tester)
 
-这个包使测试插件更容易。 如果您熟悉ESLint的[ RuleTester](http://eslint.org/docs/developer-guide/working-with-rules#rule-unit-tests)您应该对这是熟悉的。 您可以看看[the docs](https://github.com/kentcdodds/babel-plugin-tester/blob/master/README.md)去充分了解可能的情况，但这里有一个简单的例子：
+这个包使测试插件更容易。 如果您熟悉ESLint的[ RuleTester](http://eslint.org/docs/developer-guide/working-with-rules#rule-unit-tests)您应该对这是熟悉的。 您可以看看[这个文档](https://github.com/kentcdodds/babel-plugin-tester/blob/master/README.md)去充分了解可能的情况，但这里有一个简单的例子：
 
 ```js
 import pluginTester from 'babel-plugin-tester';
