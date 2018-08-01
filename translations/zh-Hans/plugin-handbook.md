@@ -1423,7 +1423,7 @@ FunctionDeclaration(path) {
   }
 ```
 
-> **注意：**不建议使用这个API，除非您正在处理动态的源码字符串，否则在访问者外部解析代码更有效率。</p> </blockquote> 
+> **注意：**不建议使用这个API，除非您正在处理动态的源码字符串，否则在访问者外部解析代码更有效率。  
 
 ### <a id="toc-inserting-a-sibling-node"></a>插入兄弟节点
 
