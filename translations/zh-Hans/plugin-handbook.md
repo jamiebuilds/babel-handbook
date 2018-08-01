@@ -1311,9 +1311,9 @@ path.getStatementParent();
   * 使用 `path.container`获取路径的容器（包含所有同级节点的数组）
   * 使用 `path.listKey`获取容器的key
 
-> 这些API用于 babel-minify </>中使用的 transform-merge-sibling-variables </>插件.</p> </blockquote> 
-> 
-> ```js
+> 这些API用于[babel-minify](https://github.com/babel/babili)中使用的[transform-merge-sibling-variables](https://github.com/babel/babili/blob/master/packages/babel-plugin-transform-merge-sibling-variables/src/index.js)插件。  
+
+```js
 var a = 1; // pathA, path.key = 0
 var b = 2; // pathB, path.key = 1
 var c = 3; // pathC, path.key = 2
@@ -1403,11 +1403,11 @@ ReturnStatement(path) {
   }
 ```
 
-> **注意：</>当用多个节点替换一个表达式时，它们必须是   声明。 这是因为Babel在更换节点时广泛使用启发式算法，这意味着您可以做一些非常疯狂的转换，否则将会非常冗长。</p> </blockquote> 
-> 
-> ### <a id="toc-replacing-a-node-with-a-source-string"></a>用字符串源码替换节点
-> 
-> ```js
+> **注意：**当用多个节点替换一个表达式时，它们必须是声明。 这是因为Babel在更换节点时广泛使用启发式算法，这意味着您可以做一些非常疯狂的转换，否则将会非常冗长。  
+ 
+### <a id="toc-replacing-a-node-with-a-source-string"></a>用字符串源码替换节点
+
+```js
 FunctionDeclaration(path) {
   path.replaceWithSourceString(`function add(a, b) {
     return a + b;
@@ -1442,14 +1442,14 @@ FunctionDeclaration(path) {
 + "A little high, little low.";
 ```
 
-> 注意：</>这里同样应该使用声明或者一个声明数组。 这个使用了在用多个节点替换一个节点</>中提到的相同的启发式算法。.</p> </blockquote> 
-> 
-> ### <a id="toc-inserting-into-a-container"></a>插入到容器（container）中
-> 
-> 如果您想要在AST节点属性中插入一个像` body </ 0>那样的数组。
-它与 <code> insertBefore `/` insertAfter ` 类似, 但您必须指定 ` listKey ` (通常是 ` 正文 `).
-> 
-> ```js
+> **注意：**这里同样应该使用声明或者一个声明数组。 这个使用了在用[多个节点替换一个节点](#replacing-a-node-with-multiple-nodes)中提到的相同的启发式算法。  
+ 
+### <a id="toc-inserting-into-a-container"></a>插入到容器（container）中
+
+> 如果您想要在AST节点属性中插入一个像`body`那样的数组。
+它与`insertBefore`/` insertAfter` 类似, 但您必须指定 `listKey` (通常是 `正文 `).
+
+```js
 ClassMethod(path) {
   path.get('body').unshiftContainer('body', t.expressionStatement(t.stringLiteral('before')));
   path.get('body').pushContainer('body', t.expressionStatement(t.stringLiteral('after')));
@@ -1527,7 +1527,7 @@ FunctionDeclaration(path) {
 
 这将遍历范围树并检查特定的绑定。
 
-您也可以检查一个作用域是否有**自己的</>绑定：</p> 
+您也可以检查一个作用域是否有**自己**的绑定：
 
 ```js
 FunctionDeclaration(path) {
@@ -1740,8 +1740,7 @@ defineType("MemberExpression", {
 生成器: ["object", "property", "computed"],
 ```
 
-> 请注意，有时在节点上可以定制的属性比``构建器</>数组包含的属性更多。 这是为了防止生成器有太多的参数。 在这些情况下，您需要手动设置属性。 一个例子是<class> ClassMethod </>.</p>
-</blockquote>
+> 请注意，有时在节点上可以定制的属性比`构建器`数组包含的属性更多。 这是为了防止生成器有太多的参数。 在这些情况下，您需要手动设置属性。 一个例子是`ClassMethod`.  
 
 ```js
 // Example
@@ -2014,7 +2013,7 @@ const MyVisitor = {
 }
 ```
 
-我们忽略了类可以嵌套的事实，使用遍历的话，上面我们也会得到一个嵌套的`构造函数</>：</p>
+我们忽略了类可以嵌套的事实，使用遍历的话，上面我们也会得到一个嵌套的`构造函数`：  
 
 ```
 class Foo {
