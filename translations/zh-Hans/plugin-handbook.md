@@ -1312,8 +1312,8 @@ path.getStatementParent();
   * 使用 `path.listKey`获取容器的key
 
 > 这些API用于 babel-minify </>中使用的 transform-merge-sibling-variables </>插件.</p> </blockquote> 
-> 
-> ```js
+
+```js
 var a = 1; // pathA, path.key = 0
 var b = 2; // pathB, path.key = 1
 var c = 3; // pathC, path.key = 2
@@ -1404,10 +1404,10 @@ ReturnStatement(path) {
 ```
 
 > **注意：</>当用多个节点替换一个表达式时，它们必须是   声明。 这是因为Babel在更换节点时广泛使用启发式算法，这意味着您可以做一些非常疯狂的转换，否则将会非常冗长。</p> </blockquote> 
-> 
+
 > ### <a id="toc-replacing-a-node-with-a-source-string"></a>用字符串源码替换节点
-> 
-> ```js
+
+```js
 FunctionDeclaration(path) {
   path.replaceWithSourceString(`function add(a, b) {
     return a + b;
@@ -1424,10 +1424,10 @@ FunctionDeclaration(path) {
 ```
 
 > **注意：</>不建议使用这个API，除非您正在处理动态的源码字符串，否则在访问者外部解析代码更有效率。</p> </blockquote> 
-> 
+
 > ### <a id="toc-inserting-a-sibling-node"></a>插入兄弟节点
-> 
-> ```js
+
+```js
 FunctionDeclaration(path) {
   path.insertBefore(t.expressionStatement(t.stringLiteral("Because I'm easy come, easy go.")));
   path.insertAfter(t.expressionStatement(t.stringLiteral("A little high, little low.")));
@@ -1448,8 +1448,8 @@ FunctionDeclaration(path) {
 > 
 > 如果您想要在AST节点属性中插入一个像` body </ 0>那样的数组。
 它与 <code> insertBefore `/` insertAfter ` 类似, 但您必须指定 ` listKey ` (通常是 ` 正文 `).
-> 
-> ```js
+ 
+```js
 ClassMethod(path) {
   path.get('body').unshiftContainer('body', t.expressionStatement(t.stringLiteral('before')));
   path.get('body').pushContainer('body', t.expressionStatement(t.stringLiteral('after')));
@@ -1752,8 +1752,8 @@ node.async = true;
 ``</pre> 
 > 
 > You can see the validation for the builder arguments with the `fields` object.
-> 
-> ```js
+
+```js
 fields: {
   object: {
     validate: assertNodeType("Expression")
