@@ -1407,7 +1407,7 @@ ReturnStatement(path) {
 > 
 > ### <a id="toc-replacing-a-node-with-a-source-string"></a>用字符串源码替换节点
 > 
-> ```js
+```js
 FunctionDeclaration(path) {
   path.replaceWithSourceString(`function add(a, b) {
     return a + b;
@@ -1427,7 +1427,7 @@ FunctionDeclaration(path) {
 > 
 > ### <a id="toc-inserting-a-sibling-node"></a>插入兄弟节点
 > 
-> ```js
+```js
 FunctionDeclaration(path) {
   path.insertBefore(t.expressionStatement(t.stringLiteral("Because I'm easy come, easy go.")));
   path.insertAfter(t.expressionStatement(t.stringLiteral("A little high, little low.")));
@@ -1449,7 +1449,8 @@ FunctionDeclaration(path) {
 > 如果您想要在AST节点属性中插入一个像` body </ 0>那样的数组。
 它与 <code> insertBefore `/` insertAfter ` 类似, 但您必须指定 ` listKey ` (通常是 ` 正文 `).
 > 
-> ```js
+> 
+```js
 ClassMethod(path) {
   path.get('body').unshiftContainer('body', t.expressionStatement(t.stringLiteral('before')));
   path.get('body').pushContainer('body', t.expressionStatement(t.stringLiteral('after')));
