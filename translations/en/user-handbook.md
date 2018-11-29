@@ -743,11 +743,11 @@ your preset.
 }
 ```
 
-Then create an `index.js` file that exports the contents of your `.babelrc`
+Then create an `index.js` file that exports a function that returns the contents of your `.babelrc`
 file, replacing plugin/preset strings with `require` calls.
 
 ```js
-module.exports = {
+module.exports = () => {
   presets: [
     require("babel-preset-es2015"),
     require("babel-preset-react")
