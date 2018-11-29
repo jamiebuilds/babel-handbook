@@ -747,7 +747,7 @@ Then create an `index.js` file that exports a function that returns the contents
 file, replacing plugin/preset strings with `require` calls.
 
 ```js
-module.exports = () => {
+module.exports = () => ({
   presets: [
     require("babel-preset-es2015"),
     require("babel-preset-react")
@@ -755,7 +755,7 @@ module.exports = () => {
   plugins: [
     require("babel-plugin-transform-flow-strip-types")
   ]
-};
+});
 ```
 
 Then simply publish this to npm and you can use it like you would any preset.
