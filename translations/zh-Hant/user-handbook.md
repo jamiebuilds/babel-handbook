@@ -209,13 +209,12 @@ require("./index.js");
 $ node register.js
 ```
 
-> **注意：**您不能在想編譯的檔案中注冊 Babel。因為 node 會在 Babel 編譯它前就先執行它。
-> 
+> **注意：** 您不能在想編譯的檔案中注冊 Babel。因為 node 會在 Babel 編譯它前就先執行它。 
 > ```js
-require("babel-register");
-// not compiled:
-console.log("Hello world!");
-```
+> require("babel-register");
+> // not compiled:
+> console.log("Hello world!");
+> ```
 
 ## <a id="toc-babel-node"></a>`babel-node`
 
