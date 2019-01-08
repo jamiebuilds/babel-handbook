@@ -82,7 +82,7 @@ const square = function square(n) {
 
 基於本手冊的宗旨，我們只會提到 Babel 內建的安裝方式。不過您可參閱互動式的[安裝頁面](http://babeljs.io/docs/setup)來得知其他整合方式的詳情。
 
-> **注意：**本指南會提到一些命令列工具，例如：`node` 和 `npm`。在閱讀下去之前，請確保您對這些工具有夠的了解。
+> **注意：** 本指南會提到一些命令列工具，例如：`node` 和 `npm`。在閱讀下去之前，請確保您對這些工具有夠的了解。
 
 ## <a id="toc-babel-cli"></a>`babel-cli`
 
@@ -131,11 +131,11 @@ $ babel src -d lib
 $ npm install --save-dev babel-cli
 ```
 
-> **注意：**既然一般而言，在全域下執行 Babel 不是個好做法。您或許會想解除安裝全域下的 Babel，請執行：
-> 
+> **注意：** 既然一般而言，在全域下執行 Babel 不是個好做法。您或許會想解除安裝全域下的 Babel，請執行：
+>
 > ```sh
-$ npm uninstall --global babel-cli
-```
+> $ npm uninstall --global babel-cli
+> ```
 
 安裝完成後，你的 `package.json` 檔看起來應該像這樣：
 
@@ -322,7 +322,7 @@ For all of the above methods, `options` refers to https://babeljs.io/docs/usage/
 
 這個檔案就是您用來設定 Babel，讓它執行您想做的事。
 
-> **注意：**儘管您還是有其他方式可把各種選項傳給 Babel，但 `.babelrc` 檔仍是最常規、最好的方式。
+> **注意：** 儘管您還是有其他方式可把各種選項傳給 Babel，但 `.babelrc` 檔仍是最常規、最好的方式。
 
 ## <a id="toc-babel-preset-es2015"></a>`babel-preset-es2015`
 
