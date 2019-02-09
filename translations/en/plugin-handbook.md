@@ -27,7 +27,7 @@ a complete list.
     - [Scopes](#toc-scopes)
       - [Bindings](#toc-bindings)
 - [API](#toc-api)
-  - [babylon](#toc-babylon)
+  - [babel-parser](#toc-babel-parser)
   - [babel-traverse](#toc-babel-traverse)
   - [babel-types](#toc-babel-types)
     - [Definitions](#toc-definitions)
@@ -104,7 +104,7 @@ Each of these steps involve creating or working with an
 [Abstract Syntax Tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree) or
 AST.
 
-> Babel uses an AST modified from [ESTree](https://github.com/estree/estree), with the core spec located [here](https://github.com/babel/babylon/blob/master/ast/spec.md).
+> Babel uses an AST modified from [ESTree](https://github.com/estree/estree), with the core spec located [here](https://github.com/babel/babel/blob/master/packages/babel-parser/ast/spec.md).
 
 ```js
 function square(n) {
@@ -827,28 +827,28 @@ the major ones, explaining what they do and how to use them.
 > Note: This is not a replacement for detailed API documentation which will be
 available elsewhere shortly.
 
-## <a id="toc-babylon"></a>[`babylon`](https://github.com/babel/babylon)
+## <a id="toc-babel-parser"></a>[`babel-parser`](https://github.com/babel/babel/tree/master/packages/babel-parser)
 
-Babylon is Babel's parser. Started as a fork of Acorn, it's fast, simple to use,
-has plugin-based architecture for non-standard features (as well as future
-standards).
+Babel's parser is started as a fork of Acorn and named Babylon initially.
+It's fast, simple to use, has plugin-based architecture for non-standard features
+(as well as future standards).
 
 First, let's install it.
 
 ```sh
-$ npm install --save babylon
+$ npm install --save babel-parser
 ```
 
 Let's start by simply parsing a string of code:
 
 ```js
-import * as babylon from "babylon";
+import parser from "@babel/parser";
 
 const code = `function square(n) {
   return n * n;
 }`;
 
-babylon.parse(code);
+parser.parse(code);
 // Node {
 //   type: "File",
 //   start: 0,
@@ -863,25 +863,25 @@ babylon.parse(code);
 We can also pass options to `parse()` like so:
 
 ```js
-babylon.parse(code, {
+parser.parse(code, {
   sourceType: "module", // default: "script"
   plugins: ["jsx"] // default: []
 });
 ```
 
 `sourceType` can either be `"module"` or `"script"` which is the mode that
-Babylon should parse in. `"module"` will parse in strict mode and allow module
+Parser should parse in. `"module"` will parse in strict mode and allow module
 declarations, `"script"` will not.
 
 > **Note:** `sourceType` defaults to `"script"` and will error when it finds
 > `import` or `export`. Pass `sourceType: "module"` to get rid of these errors.
 
-Since Babylon is built with a plugin-based architecture, there is also a
-`plugins` option which will enable the internal plugins. Note that Babylon has
+Since Parser is built with a plugin-based architecture, there is also a
+`plugins` option which will enable the internal plugins. Note that Parser has
 not yet opened this API to external plugins, although may do so in the future.
 
 To see a full list of plugins, see the
-[Babylon README](https://github.com/babel/babylon/blob/master/README.md#plugins).
+[Parser's README](https://github.com/babel/babel/blob/master/packages/babel-parser/README.md#plugins).
 
 ## <a id="toc-babel-traverse"></a>[`babel-traverse`](https://github.com/babel/babel/tree/master/packages/babel-traverse)
 
@@ -894,17 +894,17 @@ Install it by running:
 $ npm install --save babel-traverse
 ```
 
-We can use it alongside Babylon to traverse and update nodes:
+We can use it alongside Parser to traverse and update nodes:
 
 ```js
-import * as babylon from "babylon";
+import parser from "@babel/parser";
 import traverse from "babel-traverse";
 
 const code = `function square(n) {
   return n * n;
 }`;
 
-const ast = babylon.parse(code);
+const ast = parser.parse(code);
 
 traverse(ast, {
   enter(path) {
@@ -1075,14 +1075,14 @@ $ npm install --save babel-generator
 Then use it
 
 ```js
-import * as babylon from "babylon";
+import parser from "@babel/parser";
 import generate from "babel-generator";
 
 const code = `function square(n) {
   return n * n;
 }`;
 
-const ast = babylon.parse(code);
+const ast = parser.parse(code);
 
 generate(ast, {}, code);
 // {
@@ -1782,7 +1782,7 @@ export default function({ types: t }) {
 
 ## <a id="toc-enabling-syntax-in-plugins"></a> Enabling Syntax in Plugins
 
-Plugins can enable [babylon plugins](https://github.com/babel/babylon#plugins) so that users don't need to
+Plugins can enable [babel-parser plugins](https://github.com/babel/babel/tree/master/packages/babel-parser#plugins) so that users don't need to
 install/enable them. This prevents a parsing error without inheriting the syntax plugin.
 
 ```js
