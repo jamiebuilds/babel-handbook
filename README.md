@@ -2,6 +2,16 @@
 
 A guided handbook on how to use Babel and how to create plugins for Babel.
 
+---
+
+It seems that the original [repo](https://github.com/jamiebuilds/babel-handbook) is not maintained anymore so I fork it and maintain my own Chinese version.
+
+似乎原 [repo](https://github.com/jamiebuilds/babel-handbook) 已不再维护，所以在此维护中文版本。
+
+[中文手册](https://github.com/thejameskyle/babel-handbook/tree/master/translations/zh-Hans/user-handbook.md)
+
+---
+
 **Translations**
 
 - [English](https://github.com/thejameskyle/babel-handbook/tree/master/translations/en/README.md)
