@@ -8,7 +8,7 @@ It seems that the original [repo](https://github.com/jamiebuilds/babel-handbook)
 
 似乎原 [repo](https://github.com/jamiebuilds/babel-handbook) 已不再维护，所以在此维护中文版本。
 
-[中文手册](https://github.com/thejameskyle/babel-handbook/tree/master/translations/zh-Hans/user-handbook.md)
+📚👉[中文手册](https://github.com/thejameskyle/babel-handbook/tree/master/translations/zh-Hans/user-handbook.md)
 
 ---
 
