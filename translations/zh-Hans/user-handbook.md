@@ -131,11 +131,10 @@ $ babel src -d lib
 $ npm install --save-dev babel-cli
 ```
 
-> **注意：**因为全局运行 Babel 通常不是什么好习惯所以如果你想要卸载全局安装的 Babel 的话，可以运行：
-> 
+> **注意：** 因为全局运行 Babel 通常不是什么好习惯所以如果你想要卸载全局安装的 Babel 的话，可以运行：
 > ```sh
-$ npm uninstall --global babel-cli
-```
+> $ npm uninstall --global babel-cli
+> ```
 
 安装完成后，你的 `package.json` 应该如下所示：
 
@@ -209,13 +208,13 @@ require("./index.js");
 $ node register.js
 ```
 
-> **注意：**你不能在你要编译的文件内同时注册 Babel，因为 node 会在 Babel 编译它之前就将它执行了。
+> **注意：** 你不能在你要编译的文件内同时注册 Babel，因为 node 会在 Babel 编译它之前就将它执行了。
 > 
 > ```js
-require("babel-register");
-// 未编译的：
-console.log("Hello world!");
-```
+> require("babel-register");
+> // 未编译的：
+> console.log("Hello world!");
+> ```
 
 ## <a id="toc-babel-node"></a>`babel-node`
 
@@ -229,9 +228,9 @@ console.log("Hello world!");
 $ npm install --save-dev babel-cli
 ```
 
-> **注意:** 如果您想知道我们为什么要在本地安装，请阅读 上面[在项目内运行Babel CLI](#toc-running-babel-cli-from-within-a-project)的部分。
+> **注意:** 如果您想知道我们为什么要在本地安装，请阅读上面[在项目内运行 Babel CLI](#toc-running-babel-cli-from-within-a-project) 的部分。
 
-然后用 `babel-node` 来替代 `node` 运行所有的代码 。
+然后用 `babel-node` 来替代 `node` 运行所有的代码。
 
 如果用 npm `scripts` 的话只需要这样做：
 
@@ -308,7 +307,7 @@ babel.transformFromAst(ast, code, options);
 
 > 由于 Babel 是一个可以用各种花样去使用的通用编译器，因此默认情况下它反而什么都不做。你必须明确地告诉 Babel 应该要做什么。
 
-你可以通过安装**插件（plugins）**或**预设（presets，也就是一组插件）**来指示 Babel 去做什么事情。
+你可以通过安装 **插件（plugins）** 或 **预设（presets，也就是一组插件）** 来指示 Babel 去做什么事情。
 
 ## <a id="toc-babelrc"></a>`.babelrc`
 
@@ -323,7 +322,7 @@ babel.transformFromAst(ast, code, options);
 
 这个文件就是用来让 Babel 做你要它做的事情的配置文件。
 
-> **注意：**尽管你也可以用其他方式给 Babel 传递选项，但 `.babelrc` 文件是约定也是最好的方式。
+> **注意：** 尽管你也可以用其他方式给 Babel 传递选项，但 `.babelrc` 文件是约定也是最好的方式。
 
 ## <a id="toc-babel-preset-es2015"></a>`babel-preset-es2015`
 
@@ -430,10 +429,11 @@ function addAll() {
 }
 ```
 
-然而，它依然无法随处可用因为不是所有的 JavaScript 环境都支持 `Array.from`。
+然而，它依然无法随处可用，因为不是所有的 JavaScript 环境都支持 `Array.from`。
 
-    Uncaught TypeError: Array.from is not a function
-    
+```js
+Uncaught TypeError: Array.from is not a function
+```
 
 为了解决这个问题，我们使用一种叫做 [Polyfill（代码填充，也可译作兼容性补丁）](https://remysharp.com/2010/10/08/what-is-a-polyfill) 的技术。简单地说，polyfill 即是在当前运行环境中用来复制（意指模拟性的复制，而不是拷贝）尚不存在的原生 api 的代码。能让你提前使用还不可用的 APIs，`Array.from` 就是一个例子。
 
@@ -593,9 +593,9 @@ $ SET BABEL_ENV=production
 $ [COMMAND]
 ```
 
-> **注意：**`[COMMAND]` 指的是任意一个用来运行 Babel 的命令（如：`babel`，`babel-node`，或是 `node`，如果你使用了 register 钩子的话）。
+> **注意：** `[COMMAND]` 指的是任意一个用来运行 Babel 的命令（如：`babel`，`babel-node`，或是 `node`，如果你使用了 register 钩子的话）。
 > 
-> **提示：**如果你想要让命令能够跨 unix 和 windows 平台运行的话，可以使用 [`cross-env`](https://www.npmjs.com/package/cross-env)。
+> **提示：** 如果你想要让命令能够跨 unix 和 windows 平台运行的话，可以使用 [`cross-env`](https://www.npmjs.com/package/cross-env)。
 
 ## <a id="toc-making-your-own-preset"></a>制作你自己的预设（preset）
 
@@ -706,7 +706,7 @@ $ npm run lint
 
 ### <a id="toc-code-style"></a>代码风格
 
-> JSCS已经和ESLint合并，所以请查看ESLint的代码风格。
+> JSCS 已经和 ESLint 合并，所以请查看 ESLint 的代码风格。
 
 JSCS 是一个极受欢迎的工具，在语法检查的基础上更进一步检查代码自身的风格。Babel 和 JSCS 项目的核心维护者之一（[@hzoo](https://github.com/hzoo)）维护着 JSCS 的官方集成。
 
@@ -760,7 +760,7 @@ React 社区采用 Babel 并围绕它来运行，现在社区已经创建了[大
 
 ## <a id="toc-text-editors-and-ides"></a>文本编辑器和 IDEs（集成开发环境）
 
-通过 Babel 引入 ES2015，JSX，和流式语法固然是大有裨益，可如果你的文本编辑不支持那可就糟糕透了。因此，别忘了为你的文本编辑器或是 IDE 安装 Babel 插件。
+通过 Babel 引入 ES2015，JSX 和流式语法固然是大有裨益，可如果你的文本编辑不支持那可就糟糕透了。因此，别忘了为你的文本编辑器或是 IDE 安装 Babel 插件。
 
   * [Sublime Text](https://github.com/babel/babel-sublime)
   * [Atom](https://atom.io/packages/language-babel)
@@ -806,16 +806,16 @@ Babel使用[Github](http://github.com)提供的问题跟踪器。
 如果你想要打开一个新的问题：
 
   * [先搜搜看有没有现存的类似问题](https://github.com/babel/babel/issues)
-  * 创建一个新的错误报告</> 或请求新功能</></li> </ul> 
+  * [创建一个新的错误报告](https://github.com/babel/babel/issues/new)或[请求新功能](https://github.com/babel/babel/issues/new)
     
-    ### <a id="toc-creating-an-awesome-babel-bug-report"></a>创建漂亮的 Babel 错误报告
-    
-    Babel 的问题有时候很难远程调试，所以我们希望能获取尽可能详细的信息来帮助我们解决问题。花点时间去撰写一份好的错误报告会让你的问题更快得到解决。
-    
-    首先，尝试隔离问题。并非设置过程的每一步都是导致问题的原因。如果你的问题是一段输入代码，试着尽可能把与问题不相关的代码都删除掉。
-    
-    > [WIP]
-    
-    * * *
-    
-    > ***在 Twitter 上关注 [@thejameskyle](https://twitter.com/thejameskyle)，第一时间获取更新。***
+### <a id="toc-creating-an-awesome-babel-bug-report"></a>创建漂亮的 Babel 错误报告
+
+Babel 的问题有时候很难远程调试，所以我们希望能获取尽可能详细的信息来帮助我们解决问题。花点时间去撰写一份好的错误报告会让你的问题更快得到解决。
+
+首先，尝试隔离问题。并非设置过程的每一步都是导致问题的原因。如果你的问题是一段输入代码，试着尽可能把与问题不相关的代码都删除掉。
+
+> [WIP]
+
+* * *
+
+> ***在 Twitter 上关注 [@thejameskyle](https://twitter.com/thejameskyle)，第一时间获取更新。***
