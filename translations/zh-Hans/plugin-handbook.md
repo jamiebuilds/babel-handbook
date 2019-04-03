@@ -190,7 +190,7 @@ function square(n) {
 
 这样的每一层结构也被叫做 **节点（Node）**。一个 AST 可以由单一的节点或是成百上千个节点构成。它们组合在一起可以描述用于静态分析的程序语法。
 
-每一个节点都有如下所示的接口（Interface）：
+每一个节点都有如下所示的接口（ Interface ）：
 
 ```typescript
 interface Node {
@@ -331,7 +331,7 @@ n * n;
 
 之后是 `params`，由于它是一个数组节点所以我们访问其中的每一个，它们都是 `Identifier` 类型的单一节点，然后我们继续。
 
-此时我们来到了 `body`，这是一个 `BlockStatement` 并且也有一个 `body`节点，而且也是一个数组节点，我们继续访问其中的每一个。
+此时我们来到了 `body`，这是一个 `BlockStatement` 并且也有一个 `body` 节点，而且也是一个数组节点，我们继续访问其中的每一个。
 
 这里唯一的一个属性是 `ReturnStatement` 节点，它有一个 `argument`，我们访问 `argument` 就找到了 `BinaryExpression`。
 
@@ -397,26 +397,26 @@ Called!
 
 让我们以上面那棵树为例子走一遍这个过程。
 
-  * 进入 `FunctionDeclaration` 
-      * 进入 `Identifier (id)`
-      * 走到尽头
-      * 退出 `Identifier (id)`
-      * 进入 `Identifier (params[0])`
-      * 走到尽头
-      * 退出 `Identifier (params[0])`
-      * 进入 `BlockStatement (body)`
-      * 进入 `ReturnStatement (body)` 
-          * 进入 `BinaryExpression (argument)`
-          * 进入 `Identifier (left)` 
-              * 走到尽头
-          * 退出 `Identifier (left)`
-          * 进入 `Identifier (right)` 
-              * 走到尽头
-          * 退出 `Identifier (right)`
-          * 退出 `BinaryExpression (argument)`
-      * 退出 `ReturnStatement (body)`
-      * 退出 `BlockStatement (body)`
-  * 退出 `FunctionDeclaration`
+* 进入 `FunctionDeclaration` 
+    * 进入 `Identifier (id)`
+    * 走到尽头
+    * 退出 `Identifier (id)`
+    * 进入 `Identifier (params[0])`
+    * 走到尽头
+    * 退出 `Identifier (params[0])`
+    * 进入 `BlockStatement (body)`
+    * 进入 `ReturnStatement (body)` 
+        * 进入 `BinaryExpression (argument)`
+        * 进入 `Identifier (left)` 
+            * 走到尽头
+        * 退出 `Identifier (left)`
+        * 进入 `Identifier (right)` 
+            * 走到尽头
+        * 退出 `Identifier (right)`
+        * 退出 `BinaryExpression (argument)`
+    * 退出 `ReturnStatement (body)`
+    * 退出 `BlockStatement (body)`
+* 退出 `FunctionDeclaration`
 
 所以当创建访问者时你实际上有两次机会来访问一个节点。
 
@@ -433,9 +433,9 @@ const MyVisitor = {
 };
 ```
 
-如有必要，你还可以把方法名用`|`分割成`Idenfifier |MemberExpression`形式的字符串，把同一个函数应用到多种访问节点。
+如有必要，你还可以把方法名用 `|` 分割成 `Idenfifier|MemberExpression` 形式的字符串，把同一个函数应用到多种访问节点。
 
-在[flow-comments](https://github.com/babel/babel/blob/2b6ff53459d97218b0cf16f8a51c14a165db1fd2/packages/babel-plugin-transform-flow-comments/src/index.js#L47) 插件中的例子如下：
+在 [flow-comments](https://github.com/babel/babel/blob/2b6ff53459d97218b0cf16f8a51c14a165db1fd2/packages/babel-plugin-transform-flow-comments/src/index.js#L47) 插件中的例子如下：
 
 ```js
 const MyVisitor = {
@@ -445,9 +445,7 @@ const MyVisitor = {
 
 你也可以在访问者中使用别名（如[babel-types](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions)定义）。
 
-例如，
-
-`Function` is an alias for `FunctionDeclaration`, `FunctionExpression`, `ArrowFunctionExpression`, `ObjectMethod` and `ClassMethod`.
+例如，`Function` 是 `FunctionDeclaration`、`FunctionExpression`、`ArrowFunctionExpression`、`ObjectMethod` 和 `ClassMethod` 的别名。
 
 ```js
 const MyVisitor = {
@@ -547,7 +545,7 @@ Visiting: c
 
 ### <a id="toc-state"></a>State（状态）
 
-状态是抽象语法树AST转换的敌人，状态管理会不断牵扯你的精力，而且几乎所有你对状态的假设，总是会有一些未考虑到的语法最终证明你的假设是错误的。
+状态是抽象语法树 AST 转换的敌人，状态管理会不断牵扯你的精力，而且几乎所有你对状态的假设，总是会有一些未考虑到的语法最终证明你的假设是错误的。
 
 考虑下列代码：
 
@@ -705,7 +703,6 @@ function scopeOnce() {
 单个绑定看起来像这样︰
 
 ```js
-Text for Translation
 {
   identifier: node,
   scope: scope,
@@ -777,7 +774,7 @@ babylon.parse(code);
 // }
 ```
 
-我们还能像下面这样传递选项给 `parse()`方法：
+我们还能像下面这样传递选项给 `parse()` 方法：
 
 ```js
 babylon.parse(code, {
@@ -790,7 +787,7 @@ babylon.parse(code, {
 
 > **注意：** `sourceType` 的默认值是 `"script"` 并且在发现 `import` 或 `export` 时产生错误。使用 `scourceType: "module"` 来避免这些错误。
 
-由于 Babylon 使用了基于插件的架构，因此有一个 `plugins` 选项可以开关内置的插件。注意 Babylon 尚未对外部插件开放此 API 接口，不排除未来会开放此API。
+由于 Babylon 使用了基于插件的架构，因此有一个 `plugins` 选项可以开关内置的插件。注意 Babylon 尚未对外部插件开放此 API 接口，不排除未来会开放此 API。
 
 要查看完整的插件列表，请参见 [Babylon README](https://github.com/babel/babylon/blob/master/README.md#plugins) 文件。
 
@@ -1111,7 +1108,7 @@ export default function({ types: t }) {
 }
 ```
 
-然后我们更确切一些，只关注哪些使用了 `===` 的 `BinaryExpression`。
+然后我们更确切一些，只关注那些使用了 `===` 的 `BinaryExpression`。
 
 ```js
 visitor: {
@@ -1313,7 +1310,7 @@ path.getStatementParent();
 
 > 这些API用于 [babel-minify](https://github.com/babel/minify) 中使用的 [transform-merge-sibling-variables](https://github.com/babel/minify/blob/master/packages/babel-plugin-transform-merge-sibling-variables/src/index.js) 插件。
 > 
-> ```js
+```js
 var a = 1; // pathA, path.key = 0
 var b = 2; // pathB, path.key = 1
 var c = 3; // pathC, path.key = 2
@@ -1339,7 +1336,7 @@ export default function({ types: t }) {
 
 ### <a id="toc-stopping-traversal"></a>停止遍历
 
-如果你的插件需要在某种情况下不运行，最简单的做法是尽早写回。
+如果你的插件需要在某种情况下不运行，最简单的做法是尽早写 `return`。
 
 ```js
 BinaryExpression(path) {
@@ -1349,7 +1346,7 @@ BinaryExpression(path) {
 
 如果您在顶级路径中进行子遍历，则可以使用 2 个提供的 API 方法：
 
-`path.skip()` skips traversing the children of the current path. `path.stop()` stops traversal entirely.
+`path.skip()` 跳过对当前路径下子节点的遍历。`path.stop()` 使遍历完全停止.
 
 ```js
 outerPath.traverse({
@@ -1403,11 +1400,11 @@ ReturnStatement(path) {
   }
 ```
 
-> **注意**：当用多个节点替换一个表达式时，它们必须是声明。这是因为 Babel 在更换节点时广泛使用启发式算法，这意味着您可以做一些非常疯狂的转换，否则将会非常冗长。
-> 
-> ### <a id="toc-replacing-a-node-with-a-source-string"></a>用字符串源码替换节点
-> 
-> ```js
+> **注意**：当用多个节点替换一个表达式时，它们必须是声明。这是因为 Babel 在更换节点时广泛使用启发式算法，这意味着您可以做一些非常疯狂而冗长的转换。
+
+### <a id="toc-replacing-a-node-with-a-source-string"></a>用字符串源码替换节点
+ 
+```js
 FunctionDeclaration(path) {
   path.replaceWithSourceString(`function add(a, b) {
     return a + b;
@@ -1424,10 +1421,10 @@ FunctionDeclaration(path) {
 ```
 
 > **注意**：不建议使用这个 API，除非您正在处理动态的源码字符串，否则在访问者外部解析代码更有效率。
-> 
-> ### <a id="toc-inserting-a-sibling-node"></a>插入兄弟节点
-> 
-> ```js
+
+### <a id="toc-inserting-a-sibling-node"></a>插入兄弟节点
+
+```js
 FunctionDeclaration(path) {
   path.insertBefore(t.expressionStatement(t.stringLiteral("Because I'm easy come, easy go.")));
   path.insertAfter(t.expressionStatement(t.stringLiteral("A little high, little low.")));
@@ -1443,13 +1440,12 @@ FunctionDeclaration(path) {
 ```
 
 > **注意**：这里同样应该使用声明或者一个声明数组。这个使用了在[用多个节点替换一个节点](https://github.com/jamiebuilds/babel-handbook/blob/master/translations/en/plugin-handbook.md#replacing-a-node-with-multiple-nodes)中提到的相同的启发式算法。
-> 
-> ### <a id="toc-inserting-into-a-container"></a>插入到容器（container）中
-> 
-> 如果您想要在AST节点属性中插入一个像 `body` 那样的数组。
-它与 `insertBefore` / `insertAfter` 类似，但您必须指定 `listKey`（通常是 `body`）。
-> 
-> ```js
+
+### <a id="toc-inserting-into-a-container"></a>插入到容器（container）中
+
+如果您想要在AST节点属性中插入一个像 `body` 那样的数组。它与 `insertBefore` / `insertAfter` 类似，但您必须指定 `listKey`（通常是 `body`）。
+
+```js
 ClassMethod(path) {
   path.get('body').unshiftContainer('body', t.expressionStatement(t.stringLiteral('before')));
   path.get('body').pushContainer('body', t.expressionStatement(t.stringLiteral('after')));
@@ -1619,7 +1615,7 @@ FunctionDeclaration(path) {
 }
 ```
 
-这些选项会通过 `状态` 对象传递给插件访问者：
+这些选项会通过 `state` 对象传递给插件访问者：
 
 ```js
 export default function({ types: t }) {
@@ -1688,15 +1684,16 @@ export default function({ types: t }) {
 
 该错误看起来像：
 
-    file.js: Error message here
-       7 |
-       8 | let tips = [
-    >  9 |   "Click on any AST node with a '+' to expand it",
-         |   ^
-      10 |
-      11 |   "Hovering over a node highlights the \
-      12 |    corresponding part in the source code",
-    
+```
+file.js: Error message here
+    7 |
+    8 | let tips = [
+>  9 |   "Click on any AST node with a '+' to expand it",
+      |   ^
+  10 |
+  11 |   "Hovering over a node highlights the \
+  12 |    corresponding part in the source code",
+```
 
 * * *
 
@@ -1848,7 +1845,7 @@ Babel optimizes this as much as possible, merging visitors together if it can in
 
 ### <a id="toc-merge-visitors-whenever-possible"></a>及时合并访问者对象
 
-When writing visitors, it may be tempting to call `path.traverse` in multiple places where they are logically necessary.
+编写访问者时，多次在有逻辑上的必要性的地方调用 `path.traverse` 可能是吸引人的。
 
 ```js
 path.traverse({
@@ -1864,7 +1861,7 @@ path.traverse({
 });
 ```
 
-However, it is far better to write these as a single visitor that only gets run once. Otherwise you are traversing the same tree multiple times for no reason.
+然而，将这些调用写成一个简单的访问者且只运行一次要好得多。否则你就是在无谓地多次遍历同一个树。
 
 ```js
 path.traverse({
@@ -1879,7 +1876,7 @@ path.traverse({
 
 ### <a id="toc-do-not-traverse-when-manual-lookup-will-do"></a>可以手动查找就不要遍历
 
-It may also be tempting to call `path.traverse` when looking for a particular node type.
+在寻找一个特定的节点的时候，调用 `path.traverse` 可能也很诱人。
 
 ```js
 const nestedVisitor = {
@@ -1895,7 +1892,7 @@ const MyVisitor = {
 };
 ```
 
-However, if you are looking for something specific and shallow, there is a good chance you can manually lookup the nodes you need without performing a costly traversal.
+然而，如果你寻找的节点明确且在浅层，大概率你可以手动寻找节点而不是运行一个成本很高的遍历。
 
 ```js
 const MyVisitor = {
@@ -1923,12 +1920,7 @@ const MyVisitor = {
 };
 ```
 
-但是，每当调用`FunctionDeclaration()</>时都会创建一个新的访问者对象。That can be costly, because Babel does some processing each time a new
-visitor object is passed in (such as exploding keys containing multiple types,
-performing validation, and adjusting the object structure). Because Babel stores
-flags on visitor objects indicating that it's already performed that processing,
-it's better to store the visitor in a variable and pass the same object each
-time.</p>
+但是，每当调用 `FunctionDeclaration()` 时都会创建一个新的访问者对象。这成本很高，因为 Babel 在每一次传进一个访问者对象的时候都会执行一些进程，例如暴露含有多种类型的 key，进行验证，或者调整对象的结构。因为 Babel 在访问者对象上存储表明它已经完成这些进程的标志（flag），所以把访问者保存在变量中并且每次都传递同一个对象是更好的选择。
 
 ```js
 const nestedVisitor = {
@@ -2051,7 +2043,8 @@ module.exports = function testPlugin(babel) {
 
 接下来，用 `npm install --save-dev babel-core jest` 安装我们的依赖关系，那么我们可以开始写我们的第一个测试：快照。快照测试允许我们直观地检查我们的babel插件的输出。我们给它一个输入，告诉它一个快照，并将其保存到一个文件。我们把快照检入到 git 中。这允许我们来看看我们什么时候影响了我们任何测试用例的输出。它也给出了 pull requests 时候的使用差异。当然，您可以用任何测试框架来做到这一点，只要更新一下快照能像 `jest -u` 一样简单。
 
-<pre><code class="js">// src/__tests__/index-test.js
+```js
+// src/__tests__/index-test.js
 const babel = require('babel-core');
 const plugin = require('../');
 
@@ -2064,7 +2057,7 @@ it('works', () => {
   const {code} = babel.transform(example, {plugins: [plugin]});
   expect(code).toMatchSnapshot();
 });
-``</pre> 
+```
 
 这在 `src/__tests__/__snapshots__/index-test.js.snap` 生成了一个快照文件。
 
@@ -2076,10 +2069,10 @@ if (bar) console.log(bar);"
 `;
 ```
 
-如果我们在插件中将“bar”更改为“baz”并再次运行，则可以得到以下结果：
+如果我们在插件中将 “bar” 更改为 “baz” 并再次运行，则可以得到以下结果：
 
 ```diff
-接收到的值与存储的快照1不匹配。
+接收到的值与存储的快照 1 不匹配。
 
     - Snapshot
     + Received
@@ -2096,7 +2089,7 @@ if (bar) console.log(bar);"
 
 ### AST 测试
 
-除了快照测试外，我们还可以手动检查AST。这是一个简单但是脆弱的例子。对于更多涉及的情况，您可能希望利用Babel-遍历。它允许您用 `visitor` 键指定一个对象，就像您使用插件本身。
+除了快照测试外，我们还可以手动检查 AST。这是一个简单但是脆弱的例子。对于更多涉及的情况，您可能希望利用Babel-遍历。它允许您用 `visitor` 键指定一个对象，就像您使用插件本身。
 
 ```js
 it('contains baz', () => {
@@ -2110,7 +2103,7 @@ it('contains baz', () => {
 
 ### Exec Tests
 
-在这里，我们将转换代码，然后评估它的行为是否正确。请注意，我们在测试中没有使用 `assert`。这确保如果我们的插件做了奇怪的操作，如意外删除断言线，但测试仍然失败。
+在这里，我们将转换代码，然后评估它的行为是否正确。请注意，我们在测试中没有使用 `assert`。这确保如果我们的插件做了奇怪的操作，如意外删除断言h行，但测试仍然失败。
 
 ```js
 it('foo is an alias to baz', () => {
