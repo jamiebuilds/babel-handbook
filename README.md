@@ -9,6 +9,7 @@ It seems that the original [repo](https://github.com/jamiebuilds/babel-handbook)
 似乎原 [repo](https://github.com/jamiebuilds/babel-handbook) 已不再维护，所以在此维护中文版本。
 
 📚👉 [用户手册](https://github.com/thejameskyle/babel-handbook/tree/master/translations/zh-Hans/user-handbook.md) － 如何安装／配置 Babel 及相关内容。
+
 📚👉 [插件手册](https://github.com/thejameskyle/babel-handbook/tree/master/translations/zh-Hans/plugin-handbook.md) － 如何为 Babel 创建插件。
 
 ---
