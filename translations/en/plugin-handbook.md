@@ -1449,7 +1449,7 @@ export default function({ types: t }) {
 
 ### <a id="toc-stopping-traversal"></a>Stopping Traversal
 
-If your plugin needs to not run in a certain situation, the simpliest thing to do is to write an early return.
+If your plugin needs to not run in a certain situation, the simplest thing to do is to write an early return.
 
 ```js
 BinaryExpression(path) {
