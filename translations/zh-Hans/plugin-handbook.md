@@ -2157,5 +2157,5 @@ pluginTester({
 
 * * *
 
-> <blockquote><p><strong><em> ***对于将来的更新，请跟随 <code>@thejameskyle </code>和 <code>@babeljs </code> 的Twitter。</em></strong></p> </blockquote>
+> <p><strong><em> ***对于将来的更新，请跟随 <code>@thejameskyle </code>和 <code>@babeljs </code> 的Twitter。</em></strong></p>
 
