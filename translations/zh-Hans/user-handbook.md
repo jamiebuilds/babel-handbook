@@ -134,8 +134,8 @@ $ npm install --save-dev babel-cli
 > **注意：**因为全局运行 Babel 通常不是什么好习惯所以如果你想要卸载全局安装的 Babel 的话，可以运行：
 > 
 > ```sh
-$ npm uninstall --global babel-cli
-```
+> $ npm uninstall --global babel-cli
+> ```
 
 安装完成后，你的 `package.json` 应该如下所示：
 
