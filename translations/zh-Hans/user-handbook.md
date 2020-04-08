@@ -100,7 +100,7 @@ $ npm install --global babel-cli
 $ babel my-file.js
 ```
 
-这将把编译后的结果直接输出至终端。使用 `--out-file` 或着 `-o` 可以将结果写入到指定的文件。.
+这将把编译后的结果直接输出至终端。使用 `--out-file` 或者 `-o` 可以将结果写入到指定的文件。.
 
 ```sh
 $ babel example.js --out-file compiled.js
