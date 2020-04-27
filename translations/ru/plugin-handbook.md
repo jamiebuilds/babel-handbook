@@ -100,7 +100,7 @@ function square(n) {
 
 > Взгляните на [AST Explorer](http://astexplorer.net/) чтобы получить более полное представление об AST-нодах. [Здесь](http://astexplorer.net/#/Z1exs6BWMq) находится ссылка на него с уже скопированным примером выше.
 
-This same program can be represented as a tree like this:
+Эта же программа может быть представлена в виде дерева, как это:
 
 ```md
 - FunctionDeclaration:
@@ -283,7 +283,7 @@ n * n;
 
 ### <a id="toc-generate"></a>Генерация
 
-The [code generation](https://en.wikipedia.org/wiki/Code_generation_(compiler)) stage takes the final AST and turns it back into a string of code, also creating [source maps](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/).
+Этап [генерации кода](https://en.wikipedia.org/wiki/Code_generation_(compiler)) принимает окончательный AST и превращает его обратно в строку кода, также создавая [исходные карты](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/).
 
 Генерация кода довольно проста: вы проходите через AST в глубину, строя строку, которая представляет преобразованный код.
 
@@ -343,7 +343,7 @@ The [code generation](https://en.wikipedia.org/wiki/Code_generation_(compiler)) 
 
 Когда мы говорим о том чтобы «пройти» к узлу, мы на самом деле имеем ввиду что мы **посещаем** его. Причина, по которой мы используем этот термин, потому что есть эта концепция [**посетителя**](https://en.wikipedia.org/wiki/Visitor_pattern).
 
-Посетители – шаблон, используемый в AST для обхода различных языков. Simply put they are an object with methods defined for accepting particular node types in a tree. Это немного абстрактно, поэтому давайте рассмотрим пример.
+Посетители – шаблон, используемый в AST для обхода различных языков. Проще говоря, это объект с методами, определенными для принятия определенных типов узлов в дереве. Это немного абстрактно, поэтому давайте рассмотрим пример.
 
 ```js
 const MyVisitor = {
@@ -352,7 +352,7 @@ const MyVisitor = {
   }
 };
 
-// You can also create a visitor and add methods on it later
+// Вы также можете создать посетителя и добавить методы позже
 let visitor = {};
 visitor.MemberExpression = function() {};
 visitor.FunctionDeclaration = function() {}
@@ -360,7 +360,7 @@ visitor.FunctionDeclaration = function() {}
 
 > **Примечание:** `Identifier() { ... }` является краткой формой для `идентификатор: {enter() { ... }}`.
 
-This is a basic visitor that when used during a traversal will call the `Identifier()` method for every `Identifier` in the tree.
+Это основной посетитель, который при использовании во время обхода будет вызывать метод `Identifier()` для каждого `Identifier` в дереве.
 
 Так с этим кодом `Identifier()` метод будет вызываться в четыре раза с каждым `Identifier` (включая `square`).
 
@@ -433,9 +433,9 @@ const MyVisitor = {
 };
 ```
 
-If necessary, you can also apply the same function for multiple visitor nodes by separating them with a `|` in the method name as a string like `Identifier|MemberExpression`.
+При необходимости вы также можете применить одну и ту же функцию для нескольких узлов посетителей, разделив их знаком `|` в имени метода в виде строки, такой как `Identifier|MemberExpression`.
 
-Example usage in the [flow-comments](https://github.com/babel/babel/blob/2b6ff53459d97218b0cf16f8a51c14a165db1fd2/packages/babel-plugin-transform-flow-comments/src/index.js#L47) plugin
+Пример использования в плагине [flow-comments](https://github.com/babel/babel/blob/2b6ff53459d97218b0cf16f8a51c14a165db1fd2/packages/babel-plugin-transform-flow-comments/src/index.js#L47)
 
 ```js
 const MyVisitor = {
@@ -443,11 +443,11 @@ const MyVisitor = {
 };
 ```
 
-You can also use aliases as visitor nodes (as defined in [babel-types](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions)).
+Вы также можете использовать псевдонимы в качестве узлов посетителей (как определено в [babel-types](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions)).
 
-For example,
+На пример,
 
-`Function` is an alias for `FunctionDeclaration`, `FunctionExpression`, `ArrowFunctionExpression`, `ObjectMethod` and `ClassMethod`.
+`Function` это псевдоним для `FunctionDeclaration`, `FunctionExpression`, `ArrowFunctionExpression`, `ObjectMethod` и `ClassMethod`.
 
 ```js
 const MyVisitor = {
