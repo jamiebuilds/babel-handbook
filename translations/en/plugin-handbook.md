@@ -1571,8 +1571,8 @@ FunctionDeclaration(path) {
 
 ### <a id="toc-inserting-into-a-container"></a>Inserting into a container
 
-If you want to insert into a AST node property like that is an array like `body`.
-It is similar to `insertBefore`/`insertAfter` other than you having to specify the `listKey` which is usually `body`.
+If you want to insert into an AST node that is an array like `body`.
+Similar to `insertBefore`/`insertAfter`, except that you have to specify the `listKey`, which is usually `body`.
 
 ```js
 ClassMethod(path) {
