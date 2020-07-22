@@ -214,7 +214,7 @@ interface Node {
 }
 ```
 
-The `type` field is a string representing the type of Node the object is (ie.
+The `type` field is a string representing the type of Node the object is (e.g.
 `"FunctionDeclaration"`, `"Identifier"`, or `"BinaryExpression"`). Each type of
 Node defines an additional set of properties that describe that particular node
 type.
