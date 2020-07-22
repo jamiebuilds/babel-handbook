@@ -1441,11 +1441,17 @@ export default function({ types: t }) {
         path.getSibling(0) // pathA
         path.getSibling(path.key + 1) // pathB
         path.container // [pathA, pathB, pathC]
+        path.getPrevSibling() // path(undefined) *
+        path.getNextSibling() // pathB
+        path.getAllPrevSiblings() // []
+        path.getAllNextSiblings() // [pathB, pathC]
       }
     }
   };
 }
 ```
+
+* `path(undefined)` is a `NodePath` where the `path.node === undefined`
 
 ### <a id="toc-stopping-traversal"></a>Stopping Traversal
 
