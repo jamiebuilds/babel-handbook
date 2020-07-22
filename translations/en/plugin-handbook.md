@@ -1295,6 +1295,8 @@ BinaryExpression(path) {
 
 If you need to access the `path` of that property instead, use the `get` method of a path, passing in the string to the property.
 
+Note that you can't `get` on a Container (the arrays of a `BlockStatement` for instance). 
+
 ```js
 BinaryExpression(path) {
   path.get('left');
