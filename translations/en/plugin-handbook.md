@@ -880,6 +880,8 @@ Since the Babel Parser is built with a plugin-based architecture, there is also 
 `plugins` option which will enable the internal plugins. Note that the Babel Parser has
 not yet opened this API to external plugins, although may do so in the future.
 
+To see a full list of plugins, see the [Babel parser docs](https://babeljs.io/docs/en/babel-parser#plugins).
+
 ## <a id="toc-babel-traverse"></a>[`babel-traverse`](https://github.com/babel/babel/tree/master/packages/babel-traverse)
 
 The Babel Traverse module maintains the overall tree state, and is responsible
@@ -1779,7 +1781,7 @@ export default function({ types: t }) {
 
 ## <a id="toc-enabling-syntax-in-plugins"></a> Enabling Syntax in Plugins
 
-Plugins can enable [babel plugins](https://babeljs.io/docs/en/plugins) so that users don't need to
+Babel plugins themselves can enable [parser plugins](https://babeljs.io/docs/en/babel-parser#plugins) so that users don't need to
 install/enable them. This prevents a parsing error without inheriting the syntax plugin.
 
 ```js
