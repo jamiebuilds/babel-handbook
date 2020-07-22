@@ -1294,16 +1294,31 @@ BinaryExpression(path) {
 
 If you need to access the `path` of that property instead, use the `get` method of a path, passing in the string to the property.
 
-Note that you can't `get` on a Container (the arrays of a `BlockStatement` for instance). 
-
 ```js
 BinaryExpression(path) {
-  path.get('left');
+  path.get('left'); 
 }
 Program(path) {
   path.get('body.0');
 }
 ```
+
+You can't current use `get` on a Container (the `body` array of a `BlockStatement`), but you chain the dot syntax instead.
+
+```js
+export default function f() {
+  return bar;
+}
+```
+
+For the example above, if you wanted to get the path corresponding to the `return`, you could chain the various properties, using a number as the index when traversing the array.
+
+```js
+ExportDefaultDeclaration(path) {
+  path.get("declaration.body.body.0");
+}
+```
+
 ### <a id="toc-check-if-a-node-is-a-certain-type"></a>Check if a node is a certain type
 
 If you want to check what the type of a node is, the preferred way to do so is:
