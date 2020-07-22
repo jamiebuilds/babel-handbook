@@ -747,7 +747,7 @@ Then create an `index.js` file that exports the contents of your `.babelrc`
 file, replacing plugin/preset strings with `require` calls.
 
 ```js
-module.exports = {
+module.exports = function () {
   presets: [
     require("babel-preset-es2015"),
     require("babel-preset-react")
