@@ -87,7 +87,7 @@ analysis.
 You can use Babel to build many different types of tools that can help you be
 more productive and write better programs.
 
-> ***For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle)
+> ***For future updates, follow [@babeljs](https://twitter.com/babeljs)
 > on Twitter.***
 
 ----
@@ -2372,5 +2372,5 @@ pluginTester({
 
 ---
 
-> ***For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) and [@babeljs](https://twitter.com/babeljs)
+> ***For future updates, follow [@babeljs](https://twitter.com/babeljs)
 > on Twitter.***
