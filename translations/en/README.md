@@ -2,7 +2,7 @@
 
 This handbook is divided into two parts:
 
-- [User Handbook](user-handbook.md) - How to setup/configure Babel and more.
+- [User Handbook](user-handbook.md) - How to set up/configure Babel and more.
 - [Plugin Handbook](plugin-handbook.md) - How to create plugins for Babel.
 
 > For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle)
