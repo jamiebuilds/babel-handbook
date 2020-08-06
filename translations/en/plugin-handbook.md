@@ -2371,8 +2371,3 @@ pluginTester({
   },
 });
 ```
-
----
-
-> ***For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) and [@babeljs](https://twitter.com/babeljs)
-> on Twitter.***
