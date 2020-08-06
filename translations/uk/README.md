@@ -1,10 +1,10 @@
-# Babel Handbook
+# Довідник Babel
 
-This handbook is divided into two parts:
+Цей довідник складається з двох частин:
 
-  * [User Handbook](user-handbook.md) - How to setup/configure Babel and more.
-  * [Plugin Handbook](plugin-handbook.md) - How to create plugins for Babel.
+  * [Довідник користувача](user-handbook.md) - Як встановити/налаштувати Babel та інше.
+  * [Довідник розробника плагінів](plugin-handbook.md) - Як створювати плагіни для Babel.
 
-> For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.
+> Ви можете слідкувати за оновленнями в Twitter, підписавшись на [@thejameskyle](https://twitter.com/thejameskyle).
 
-If you are reading a non-english translation of this handbook you may still find english sections that have not yet been translated. If you would like to contribute to one of the translations you must do so through Crowdin. Please read the [contributing guidelines](/CONTRIBUTING.md) for more information. You will find a number of english words that are programming concepts. If these were translated to other languages there would be a lack of consistency and fluency when reading about them. In many cases you will find the literal translation followed by the english term in parenthesis `()`. For example: Abstract Syntax Trees (ASTs).
+Якщо ви читаєте не англійську версію цього довідника ви все одно можете зустріти секції англійською мовою які ще не перекладені. Ви можете приєднатись до роботи над перекладами за допомогою платформи Crowdin. Будь ласка, ознайомтесь із [довідкою перекладача](/CONTRIBUTING.md) для детальнішої інформації. Ви зустрінете цілий ряд англійських слів які описують концепції в програмуванні. Якщо вони будуть перекладені на інші мови це може спричинити непорозуміння, та зашкодити розумінню всього тексту. В багатьох випадках ви знайдете дослівний перклад поряд з оригінальною назвою в дужках `()`. Наприклад: Абстрактні Синтаксичні Дерева (ASTs).

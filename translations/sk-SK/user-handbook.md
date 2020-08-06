@@ -1,10 +1,10 @@
-# Babel User Handbook
+# Babel užívateľská príručka
 
 This document covers everything you ever wanted to know about using [Babel](https://babeljs.io) and related tooling.
 
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
-Tato příručka je k dispozici i v dalších jazycích, úplný seznam naleznete v [souboru README](/README.md).
+Táto príručka je k dispozícii v iných jazykoch, pozri [README](/README.md) pre úplný zoznam.
 
 # Obsah
 
@@ -72,7 +72,7 @@ Further than that, everything in Babel is simply a plugin and anyone can go out 
 
 Many people do too, the ecosystem that has sprung up around Babel is massive and very diverse. Throughout this handbook I'll be covering both how built-in Babel tools work as well as some useful things from around the community.
 
-> ***Aktualizace sledujte na Twitteru: [@thejameskyle](https://twitter.com/thejameskyle).***
+> ***Aktualizácie sledujte na Twitteri [@thejameskyle](https://twitter.com/thejameskyle).***
 
 * * *
 
@@ -818,4 +818,4 @@ First, try isolating your problem. It's extremely unlikely that every part of yo
 
 * * *
 
-> ***Aktualizace sledujte na Twitteru: [@thejameskyle](https://twitter.com/thejameskyle).***
+> ***Aktualizácie sledujte na Twitteri [@thejameskyle](https://twitter.com/thejameskyle).***

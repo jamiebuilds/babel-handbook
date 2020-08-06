@@ -1,112 +1,96 @@
-# Babel Plugin Handbook
+# Príručka Babel pluginov
 
-Written by [Jamie Kyle](https://jamie.build/)
-
-This document covers how to create [Babel](https://babeljs.io)
-[plugins](https://babeljs.io/docs/advanced/plugins/).
+Tento dokument popisuje, ako vytvoriť [Babel](https://babeljs.io) [pluginy](https://babeljs.io/docs/advanced/plugins/).
 
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
-This handbook is available in other languages, see the [README](/README.md) for
-a complete list.
+Táto príručka je k dispozícii v iných jazykoch, pozri [README](/README.md) pre úplný zoznam.
 
-# Table of Contents
+# Obsah
 
-- [Introduction](#toc-introduction)
-- [Basics](#toc-basics)
-  - [ASTs](#toc-asts)
-  - [Stages of Babel](#toc-stages-of-babel)
-    - [Parse](#toc-parse)
-      - [Lexical Analysis](#toc-lexical-analysis)
-      - [Syntactic Analysis](#toc-syntactic-analysis)
-    - [Transform](#toc-transform)
-    - [Generate](#toc-generate)
-  - [Traversal](#toc-traversal)
-    - [Visitors](#toc-visitors)
-    - [Paths](#toc-paths)
-      - [Paths in Visitors](#toc-paths-in-visitors)
-    - [State](#toc-state)
-    - [Scopes](#toc-scopes)
-      - [Bindings](#toc-bindings)
-- [API](#toc-api)
-  - [babel-parser](#toc-babel-parser)
-  - [babel-traverse](#toc-babel-traverse)
-  - [babel-types](#toc-babel-types)
-    - [Definitions](#toc-definitions)
-    - [Builders](#toc-builders)
-    - [Validators](#toc-validators)
-    - [Converters](#toc-converters)
-  - [babel-generator](#toc-babel-generator)
-  - [babel-template](#toc-babel-template)
-- [Writing your first Babel Plugin](#toc-writing-your-first-babel-plugin)
-- [Transformation Operations](#toc-transformation-operations)
-  - [Visiting](#toc-visiting)
-    - [Get the Path of Sub-Node](#toc-get-the-path-of-a-sub-node)
-    - [Check if a node is a certain type](#toc-check-if-a-node-is-a-certain-type)
-    - [Check if a path is a certain type](#toc-check-if-a-path-is-a-certain-type)
-    - [Check if an identifier is referenced](#toc-check-if-an-identifier-is-referenced)
-    - [Find a specific parent path](#toc-find-a-specific-parent-path)
-    - [Get Sibling Paths](#toc-get-sibling-paths)
-    - [Stopping Traversal](#toc-stopping-traversal)
-  - [Manipulation](#toc-manipulation)
-    - [Replacing a node](#toc-replacing-a-node)
-    - [Replacing a node with multiple nodes](#toc-replacing-a-node-with-multiple-nodes)
-    - [Replacing a node with a source string](#toc-replacing-a-node-with-a-source-string)
-    - [Inserting a sibling node](#toc-inserting-a-sibling-node)
-    - [Inserting into a container](#toc-inserting-into-a-container)
-    - [Removing a node](#toc-removing-a-node)
-    - [Replacing a parent](#toc-replacing-a-parent)
-    - [Removing a parent](#toc-removing-a-parent)
-  - [Scope](#toc-scope)
-    - [Checking if a local variable is bound](#toc-checking-if-a-local-variable-is-bound)
-    - [Generating a UID](#toc-generating-a-uid)
-    - [Pushing a variable declaration to a parent scope](#toc-pushing-a-variable-declaration-to-a-parent-scope)
-    - [Rename a binding and its references](#toc-rename-a-binding-and-its-references)
-- [Plugin Options](#toc-plugin-options)
-  - [Pre and Post in Plugins](#toc-pre-and-post-in-plugins)
-  - [Enabling Syntax in Plugins](#toc-enabling-syntax-in-plugins)
-- [Building Nodes](#toc-building-nodes)
-- [Best Practices](#toc-best-practices)
-  - [Avoid traversing the AST as much as possible](#toc-avoid-traversing-the-ast-as-much-as-possible)
-    - [Merge visitors whenever possible](#toc-merge-visitors-whenever-possible)
-    - [Do not traverse when manual lookup will do](#toc-do-not-traverse-when-manual-lookup-will-do)
-  - [Optimizing nested visitors](#toc-optimizing-nested-visitors)
-  - [Being aware of nested structures](#toc-being-aware-of-nested-structures)
-  - [Unit Testing](#toc-unit-testing)
+  * [Úvod](#toc-introduction)
+  * [Základy](#toc-basics) 
+      * [Abstraktné syntaktické stromy (AST)](#toc-asts)
+      * [Etapy Babelu](#toc-stages-of-babel)
+      * [Analýza](#toc-parse) 
+          * [Lexikálna analýza](#toc-lexical-analysis)
+          * [Syntaktická analýza](#toc-syntactic-analysis)
+      * [Transformácia](#toc-transform)
+      * [Generovanie](#toc-generate)
+      * [Prechod (Traversal)](#toc-traversal)
+      * [Inšpektori (Visitors)](#toc-visitors)
+      * [Cesty](#toc-paths) 
+          * [Cesty v inšpektoroch](#toc-paths-in-visitors)
+      * [Stav](#toc-state)
+      * [Rozsahy (Scopes)](#toc-scopes) 
+          * [Väzby](#toc-bindings)
+  * [API](#toc-api) 
+      * [babylon](#toc-babylon)
+      * [babel-traverse](#toc-babel-traverse)
+      * [babel-types](#toc-babel-types)
+      * [Definície](#toc-definitions)
+      * [Stavitelia (Builders)](#toc-builders)
+      * [Validátory](#toc-validators)
+      * [Konvertory](#toc-converters)
+      * [babel-generator](#toc-babel-generator)
+      * [babel-template](#toc-babel-template)
+  * [Písanie tvojho prvého Babel pluginu](#toc-writing-your-first-babel-plugin)
+  * [Transformačné operácie](#toc-transformation-operations) 
+      * [Inšpekcie (Visiting)](#toc-visiting)
+      * [Get the Path of Sub-Node](#toc-get-the-path-of-a-sub-node)
+      * [Check if a node is a certain type](#toc-check-if-a-node-is-a-certain-type)
+      * [Check if a path is a certain type](#toc-check-if-a-path-is-a-certain-type)
+      * [Check if an identifier is referenced](#toc-check-if-an-identifier-is-referenced)
+      * [Find a specific parent path](#toc-find-a-specific-parent-path)
+      * [Get Sibling Paths](#toc-get-sibling-paths)
+      * [Stopping Traversal](#toc-stopping-traversal)
+      * [Manipulácia](#toc-manipulation)
+      * [Replacing a node](#toc-replacing-a-node)
+      * [Replacing a node with multiple nodes](#toc-replacing-a-node-with-multiple-nodes)
+      * [Replacing a node with a source string](#toc-replacing-a-node-with-a-source-string)
+      * [Inserting a sibling node](#toc-inserting-a-sibling-node)
+      * [Inserting into a container](#toc-inserting-into-a-container)
+      * [Removing a node](#toc-removing-a-node)
+      * [Replacing a parent](#toc-replacing-a-parent)
+      * [Removing a parent](#toc-removing-a-parent)
+      * [Rozsah (Scope)](#toc-scope)
+      * [Checking if a local variable is bound](#toc-checking-if-a-local-variable-is-bound)
+      * [Generating a UID](#toc-generating-a-uid)
+      * [Pushing a variable declaration to a parent scope](#toc-pushing-a-variable-declaration-to-a-parent-scope)
+      * [Rename a binding and its references](#toc-rename-a-binding-and-its-references)
+  * [Možnosti pluginov](#toc-plugin-options) 
+      * [Pre and Post in Plugins](#toc-pre-and-post-in-plugins)
+      * [Enabling Syntax in Plugins](#toc-enabling-syntax-in-plugins)
+  * [Stavba uzlov](#toc-building-nodes)
+  * [Osvedčené postupy](#toc-best-practices) 
+      * [Vyhni sa čo najviac prechádzaniu AST](#toc-avoid-traversing-the-ast-as-much-as-possible)
+      * [Zlučuj inšpektory kedykoľvek je to možné](#toc-merge-visitors-whenever-possible)
+      * [Neprechádzaj stromom, ak to zvládne manuálne prehľadávanie](#toc-do-not-traverse-when-manual-lookup-will-do)
+      * [Optimalizácia vnorených návštevníkov](#toc-optimizing-nested-visitors)
+      * [Uvedom si vnorené štruktúry](#toc-being-aware-of-nested-structures)
+      * [Unit Testing](#toc-unit-testing)
 
-# <a id="toc-introduction"></a>Introduction
+# <a id="toc-introduction"></a>Úvod
 
-Babel is a generic multi-purpose compiler for JavaScript. More than that it is a
-collection of modules that can be used for many different forms of static
-analysis.
+Babel je všeobecný viacúčelový kompilátor pre JavaScript. Naviac je to kolekcia modulov, ktoré môžu byť použité pre mnoho rôznych foriem statickej analýzy.
 
-> Static analysis is the process of analyzing code without executing it.
-> (Analysis of code while executing it is known as dynamic analysis). The
-> purpose of static analysis varies greatly. It can be used for linting,
-> compiling, code highlighting, code transformation, optimization, minification,
-> and much more.
+> Static analysis is the process of analyzing code without executing it. (Analysis of code while executing it is known as dynamic analysis). The purpose of static analysis varies greatly. It can be used for linting, compiling, code highlighting, code transformation, optimization, minification, and much more.
 
-You can use Babel to build many different types of tools that can help you be
-more productive and write better programs.
+You can use Babel to build many different types of tools that can help you be more productive and write better programs.
 
-> ***For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle)
-> on Twitter.***
+> ***Aktualizácie sledujte na Twitteri [@thejameskyle](https://twitter.com/thejameskyle).***
 
-----
+* * *
 
-# <a id="toc-basics"></a>Basics
+# <a id="toc-basics"></a>Základy
 
-Babel is a JavaScript compiler, specifically a source-to-source compiler,
-often called a "transpiler". This means that you give Babel some JavaScript
-code, Babel modifies the code, and generates the new code back out.
+Babel is a JavaScript compiler, specifically a source-to-source compiler, often called a "transpiler". This means that you give Babel some JavaScript code, Babel modifies the code, and generates the new code back out.
 
-## <a id="toc-asts"></a>ASTs
+## <a id="toc-asts"></a>Abstraktné syntaktické stromy (AST)
 
-Each of these steps involve creating or working with an
-[Abstract Syntax Tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree) or
-AST.
+Each of these steps involve creating or working with an [Abstract Syntax Tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree) or AST.
 
-> Babel uses an AST modified from [ESTree](https://github.com/estree/estree), with the core spec located [here](https://github.com/babel/babel/blob/master/packages/babel-parser/ast/spec.md).
+> Babel uses an AST modified from [ESTree](https://github.com/estree/estree), with the core spec located [here](https://github.com/babel/babylon/blob/master/ast/spec.md).
 
 ```js
 function square(n) {
@@ -204,9 +188,7 @@ You'll notice that each level of the AST has a similar structure:
 
 > Note: Some properties have been removed for simplicity.
 
-Each of these are known as a **Node**. An AST can be made up of a single Node,
-or hundreds if not thousands of Nodes. Together they are able to describe the
-syntax of a program that can be used for static analysis.
+Each of these are known as a **Node**. An AST can be made up of a single Node, or hundreds if not thousands of Nodes. Together they are able to describe the syntax of a program that can be used for static analysis.
 
 Every Node has this interface:
 
@@ -216,13 +198,9 @@ interface Node {
 }
 ```
 
-The `type` field is a string representing the type of Node the object is (e.g.
-`"FunctionDeclaration"`, `"Identifier"`, or `"BinaryExpression"`). Each type of
-Node defines an additional set of properties that describe that particular node
-type.
+The `type` field is a string representing the type of Node the object is (ie. `"FunctionDeclaration"`, `"Identifier"`, or `"BinaryExpression"`). Each type of Node defines an additional set of properties that describe that particular node type.
 
-There are additional properties on every Node that Babel generates which
-describe the position of the Node in the original source code.
+There are additional properties on every Node that Babel generates which describe the position of the Node in the original source code.
 
 ```js
 {
@@ -245,21 +223,17 @@ describe the position of the Node in the original source code.
 
 These properties `start`, `end`, `loc`, appear in every single Node.
 
-## <a id="toc-stages-of-babel"></a>Stages of Babel
+## <a id="toc-stages-of-babel"></a>Etapy Babelu
 
 The three primary stages of Babel are **parse**, **transform**, **generate**.
 
-### <a id="toc-parse"></a>Parse
+### <a id="toc-parse"></a>Analýza
 
-The **parse** stage, takes code and outputs an AST. There are two phases of
-parsing in Babel:
-[**Lexical Analysis**](https://en.wikipedia.org/wiki/Lexical_analysis) and
-[**Syntactic Analysis**](https://en.wikipedia.org/wiki/Parsing).
+The **parse** stage, takes code and outputs an AST. There are two phases of parsing in Babel: [**Lexical Analysis**](https://en.wikipedia.org/wiki/Lexical_analysis) and [**Syntactic Analysis**](https://en.wikipedia.org/wiki/Parsing).
 
-#### <a id="toc-lexical-analysis"></a>Lexical Analysis
+#### <a id="toc-lexical-analysis"></a>Lexikálna analýza
 
-Lexical Analysis will take a string of code and turn it into a stream of
-**tokens**.
+Lexical Analysis will take a string of code and turn it into a stream of **tokens**.
 
 You can think of tokens as a flat array of language syntax pieces.
 
@@ -299,37 +273,25 @@ Each of the `type`s here have a set of properties describing the token:
 
 Like AST nodes they also have a `start`, `end`, and `loc`.
 
-#### <a id="toc-syntactic-analysis"></a>Syntactic Analysis
+#### <a id="toc-syntactic-analysis"></a>Syntaktická analýza
 
-Syntactic Analysis will take a stream of tokens and turn it into an AST
-representation. Using the information in the tokens, this phase will reformat
-them as an AST which represents the structure of the code in a way that makes it
-easier to work with.
+Syntactic Analysis will take a stream of tokens and turn it into an AST representation. Using the information in the tokens, this phase will reformat them as an AST which represents the structure of the code in a way that makes it easier to work with.
 
-### <a id="toc-transform"></a>Transform
+### <a id="toc-transform"></a>Transformácia
 
-The [transform](https://en.wikipedia.org/wiki/Program_transformation) stage
-takes an AST and traverses through it, adding, updating, and removing nodes as it
-goes along. This is by far the most complex part of Babel or any compiler. This
-is where plugins operate and so it will be the subject of most of this handbook.
-So we won't dive too deep right now.
+The [transform](https://en.wikipedia.org/wiki/Program_transformation) stage takes an AST and traverses through it, adding, updating, and removing nodes as it goes along. This is by far the most complex part of Babel or any compiler. This is where plugins operate and so it will be the subject of most of this handbook. So we won't dive too deep right now.
 
-### <a id="toc-generate"></a>Generate
+### <a id="toc-generate"></a>Generovanie
 
-The [code generation](https://en.wikipedia.org/wiki/Code_generation_(compiler))
-stage takes the final AST and turns it back into a string of code, also creating
-[source maps](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/).
+The [code generation](https://en.wikipedia.org/wiki/Code_generation_(compiler)) stage takes the final AST and turns it back into a string of code, also creating [source maps](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/).
 
-Code generation is pretty simple: you traverse through the AST depth-first,
-building a string that represents the transformed code.
+Code generation is pretty simple: you traverse through the AST depth-first, building a string that represents the transformed code.
 
-## <a id="toc-traversal"></a>Traversal
+## <a id="toc-traversal"></a>Prechod (Traversal)
 
-When you want to transform an AST you have to
-[traverse the tree](https://en.wikipedia.org/wiki/Tree_traversal) recursively.
+When you want to transform an AST you have to [traverse the tree](https://en.wikipedia.org/wiki/Tree_traversal) recursively.
 
-Say we have the type `FunctionDeclaration`. It has a few properties: `id`,
-`params`, and `body`. Each of them have nested nodes.
+Say we have the type `FunctionDeclaration`. It has a few properties: `id`, `params`, and `body`. Each of them have nested nodes.
 
 ```js
 {
@@ -363,36 +325,25 @@ Say we have the type `FunctionDeclaration`. It has a few properties: `id`,
 }
 ```
 
-So we start at the `FunctionDeclaration` and we know its internal properties so
-we visit each of them and their children in order.
+So we start at the `FunctionDeclaration` and we know its internal properties so we visit each of them and their children in order.
 
-Next we go to `id` which is an `Identifier`. `Identifier`s don't have any child
-node properties so we move on.
+Next we go to `id` which is an `Identifier`. `Identifier`s don't have any child node properties so we move on.
 
-After that is `params` which is an array of nodes so we visit each of them. In
-this case it's a single node which is also an `Identifier` so we move on.
+After that is `params` which is an array of nodes so we visit each of them. In this case it's a single node which is also an `Identifier` so we move on.
 
-Then we hit `body` which is a `BlockStatement` with a property `body` that is an
-array of Nodes so we go to each of them.
+Then we hit `body` which is a `BlockStatement` with a property `body` that is an array of Nodes so we go to each of them.
 
-The only item here is a `ReturnStatement` node which has an `argument`, we go to
-the `argument` and find a `BinaryExpression`.
+The only item here is a `ReturnStatement` node which has an `argument`, we go to the `argument` and find a `BinaryExpression`.
 
-The `BinaryExpression` has an `operator`, a `left`, and a `right`. The operator
-isn't a node, just a value, so we don't go to it, and instead just visit `left`
-and `right`.
+The `BinaryExpression` has an `operator`, a `left`, and a `right`. The operator isn't a node, just a value, so we don't go to it, and instead just visit `left` and `right`.
 
 This traversal process happens throughout the Babel transform stage.
 
-### <a id="toc-visitors"></a>Visitors
+### <a id="toc-visitors"></a>Inšpektori (Visitors)
 
-When we talk about "going" to a node, we actually mean we are **visiting** them.
-The reason we use that term is because there is this concept of a
-[**visitor**](https://en.wikipedia.org/wiki/Visitor_pattern).
+When we talk about "going" to a node, we actually mean we are **visiting** them. The reason we use that term is because there is this concept of a [**visitor**](https://en.wikipedia.org/wiki/Visitor_pattern).
 
-Visitors are a pattern used in AST traversal across languages. Simply put they
-are an object with methods defined for accepting particular node types in a
-tree. That's a bit abstract so let's look at an example.
+Visitors are a pattern used in AST traversal across languages. Simply put they are an object with methods defined for accepting particular node types in a tree. That's a bit abstract so let's look at an example.
 
 ```js
 const MyVisitor = {
@@ -407,20 +358,18 @@ visitor.MemberExpression = function() {};
 visitor.FunctionDeclaration = function() {}
 ```
 
-> **Note:** `Identifier() { ... }` is shorthand for
-> `Identifier: { enter() { ... } }`.
+> **Note:** `Identifier() { ... }` is shorthand for `Identifier: { enter() { ... } }`.
 
-This is a basic visitor that when used during a traversal will call the
-`Identifier()` method for every `Identifier` in the tree.
+This is a basic visitor that when used during a traversal will call the `Identifier()` method for every `Identifier` in the tree.
 
-So with this code the `Identifier()` method will be called four times with each
-`Identifier` (including `square`).
+So with this code the `Identifier()` method will be called four times with each `Identifier` (including `square`).
 
 ```js
 function square(n) {
   return n * n;
 }
 ```
+
 ```js
 path.traverse(MyVisitor);
 Called!
@@ -429,8 +378,7 @@ Called!
 Called!
 ```
 
-These calls are all on node **enter**. However there is also the possibility of
-calling a visitor method when on **exit**.
+These calls are all on node **enter**. However there is also the possibility of calling a visitor method when on **exit**.
 
 Imagine we have this tree structure:
 
@@ -445,32 +393,30 @@ Imagine we have this tree structure:
         - Identifier (right)
 ```
 
-As we traverse down each branch of the tree we eventually hit dead ends where we
-need to traverse back up the tree to get to the next node. Going down the tree
-we **enter** each node, then going back up we **exit** each node.
+As we traverse down each branch of the tree we eventually hit dead ends where we need to traverse back up the tree to get to the next node. Going down the tree we **enter** each node, then going back up we **exit** each node.
 
-Let's _walk_ through what this process looks like for the above tree.
+Let's *walk* through what this process looks like for the above tree.
 
-- Enter `FunctionDeclaration`
-  - Enter `Identifier (id)`
-    - Hit dead end
-  - Exit `Identifier (id)`
-  - Enter `Identifier (params[0])`
-    - Hit dead end
-  - Exit `Identifier (params[0])`
-  - Enter `BlockStatement (body)`
-    - Enter `ReturnStatement (body)`
-      - Enter `BinaryExpression (argument)`
-        - Enter `Identifier (left)`
-          - Hit dead end
-        - Exit `Identifier (left)`
-        - Enter `Identifier (right)`
-          - Hit dead end
-        - Exit `Identifier (right)`
-      - Exit `BinaryExpression (argument)`
-    - Exit `ReturnStatement (body)`
-  - Exit `BlockStatement (body)`
-- Exit `FunctionDeclaration`
+  * Enter `FunctionDeclaration` 
+      * Enter `Identifier (id)`
+      * Hit dead end
+      * Exit `Identifier (id)`
+      * Enter `Identifier (params[0])`
+      * Hit dead end
+      * Exit `Identifier (params[0])`
+      * Enter `BlockStatement (body)`
+      * Enter `ReturnStatement (body)` 
+          * Enter `BinaryExpression (argument)`
+          * Enter `Identifier (left)` 
+              * Hit dead end
+          * Exit `Identifier (left)`
+          * Enter `Identifier (right)` 
+              * Hit dead end
+          * Exit `Identifier (right)`
+          * Exit `BinaryExpression (argument)`
+      * Exit `ReturnStatement (body)`
+      * Exit `BlockStatement (body)`
+  * Exit `FunctionDeclaration`
 
 So when creating a visitor you have two opportunities to visit a node.
 
@@ -509,11 +455,9 @@ const MyVisitor = {
 };
 ```
 
-### <a id="toc-paths"></a>Paths
+### <a id="toc-paths"></a>Cesty
 
-An AST generally has many Nodes, but how do Nodes relate to one another? We
-could have one giant mutable object that you manipulate and have full access to,
-or we can simplify this with **Paths**.
+An AST generally has many Nodes, but how do Nodes relate to one another? We could have one giant mutable object that you manipulate and have full access to, or we can simplify this with **Paths**.
 
 A **Path** is an object representation of the link between two nodes.
 
@@ -574,19 +518,13 @@ It also has additional metadata about the path:
 }
 ```
 
-As well as tons and tons of methods related to adding, updating, moving, and
-removing nodes, but we'll get into those later.
+As well as tons and tons of methods related to adding, updating, moving, and removing nodes, but we'll get into those later.
 
-In a sense, paths are a **reactive** representation of a node's position in the
-tree and all sorts of information about the node. Whenever you call a method
-that modifies the tree, this information is updated. Babel manages all of this
-for you to make working with nodes easy and as stateless as possible.
+In a sense, paths are a **reactive** representation of a node's position in the tree and all sorts of information about the node. Whenever you call a method that modifies the tree, this information is updated. Babel manages all of this for you to make working with nodes easy and as stateless as possible.
 
-#### <a id="toc-paths-in-visitors"></a>Paths in Visitors
+#### <a id="toc-paths-in-visitors"></a>Cesty v inšpektoroch
 
-When you have a visitor that has a `Identifier()` method, you're actually
-visiting the path instead of the node. This way you are mostly working with the
-reactive representation of a node instead of the node itself.
+When you have a visitor that has a `Identifier()` method, you're actually visiting the path instead of the node. This way you are mostly working with the reactive representation of a node instead of the node itself.
 
 ```js
 const MyVisitor = {
@@ -607,11 +545,9 @@ Visiting: b
 Visiting: c
 ```
 
-### <a id="toc-state"></a>State
+### <a id="toc-state"></a>Stav
 
-State is the enemy of AST transformation. State will bite you over and over
-again and your assumptions about state will almost always be proven wrong by
-some syntax that you didn't consider.
+State is the enemy of AST transformation. State will bite you over and over again and your assumptions about state will almost always be proven wrong by some syntax that you didn't consider.
 
 Take the following code:
 
@@ -650,8 +586,7 @@ function square(n) {
 n;
 ```
 
-The better way to deal with this is recursion. So let's make like a Christopher
-Nolan film and put a visitor inside of a visitor.
+The better way to deal with this is recursion. So let's make like a Christopher Nolan film and put a visitor inside of a visitor.
 
 ```js
 const updateParamNameVisitor = {
@@ -675,15 +610,11 @@ const MyVisitor = {
 path.traverse(MyVisitor);
 ```
 
-Of course, this is a contrived example but it demonstrates how to eliminate
-global state from your visitors.
+Of course, this is a contrived example but it demonstrates how to eliminate global state from your visitors.
 
-### <a id="toc-scopes"></a>Scopes
+### <a id="toc-scopes"></a>Rozsahy (Scopes)
 
-Next let's introduce the concept of a
-[**scope**](https://en.wikipedia.org/wiki/Scope_(computer_science)). JavaScript
-has [lexical scoping](https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scoping_vs._dynamic_scoping),
-which is a tree structure where blocks create new scope.
+Next let's introduce the concept of a [**scope**](https://en.wikipedia.org/wiki/Scope_(computer_science)). JavaScript has [lexical scoping](https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scoping_vs._dynamic_scoping), which is a tree structure where blocks create new scope.
 
 ```js
 // global scope
@@ -697,8 +628,7 @@ function scopeOne() {
 }
 ```
 
-Whenever you create a reference in JavaScript, whether that be by a variable,
-function, class, param, import, label, etc., it belongs to the current scope.
+Whenever you create a reference in JavaScript, whether that be by a variable, function, class, param, import, label, etc., it belongs to the current scope.
 
 ```js
 var global = "I am in the global scope";
@@ -724,8 +654,7 @@ function scopeOne() {
 }
 ```
 
-A lower scope might also create a reference of the same name without modifying
-it.
+A lower scope might also create a reference of the same name without modifying it.
 
 ```js
 function scopeOne() {
@@ -737,12 +666,9 @@ function scopeOne() {
 }
 ```
 
-When writing a transform, we want to be wary of scope. We need to make sure we
-don't break existing code while modifying different parts of it.
+When writing a transform, we want to be wary of scope. We need to make sure we don't break existing code while modifying different parts of it.
 
-We may want to add new references and make sure they don't collide with existing
-ones. Or maybe we just want to find where a variable is referenced. We want to
-be able to track these references within a given scope.
+We may want to add new references and make sure they don't collide with existing ones. Or maybe we just want to find where a variable is referenced. We want to be able to track these references within a given scope.
 
 A scope can be represented as:
 
@@ -756,17 +682,13 @@ A scope can be represented as:
 }
 ```
 
-When you create a new scope you do so by giving it a path and a parent scope.
-Then during the traversal process it collects all the references ("bindings")
-within that scope.
+When you create a new scope you do so by giving it a path and a parent scope. Then during the traversal process it collects all the references ("bindings") within that scope.
 
-Once that's done, there's all sorts of methods you can use on scopes. We'll get
-into those later though.
+Once that's done, there's all sorts of methods you can use on scopes. We'll get into those later though.
 
-#### <a id="toc-bindings"></a>Bindings
+#### <a id="toc-bindings"></a>Väzby
 
-References all belong to a particular scope; this relationship is known as a
-**binding**.
+References all belong to a particular scope; this relationship is known as a **binding**.
 
 ```js
 function scopeOnce() {
@@ -798,13 +720,9 @@ A single binding looks like this:
 }
 ```
 
-With this information you can find all the references to a binding, see what
-type of binding it is (parameter, declaration, etc.), lookup what scope it
-belongs to, or get a copy of its identifier. You can even tell if it's
-constant and if not, see what paths are causing it to be non-constant.
+With this information you can find all the references to a binding, see what type of binding it is (parameter, declaration, etc.), lookup what scope it belongs to, or get a copy of its identifier. You can even tell if it's constant and if not, see what paths are causing it to be non-constant.
 
-Being able to tell if a binding is constant is useful for many purposes, the
-largest of which is minification.
+Being able to tell if a binding is constant is useful for many purposes, the largest of which is minification.
 
 ```js
 function scopeOne() {
@@ -819,37 +737,34 @@ function scopeOne() {
 }
 ```
 
-----
+* * *
 
 # <a id="toc-api"></a>API
 
-Babel is actually a collection of modules. In this section we'll walk through
-the major ones, explaining what they do and how to use them.
+Babel is actually a collection of modules. In this section we'll walk through the major ones, explaining what they do and how to use them.
 
-> Note: This is not a replacement for detailed API documentation, which is available [here](https://babeljs.io/docs/usage/api/).
+> Note: This is not a replacement for detailed API documentation which will be available elsewhere shortly.
 
-## <a id="toc-babel-parser"></a>[`babel-parser`](https://github.com/babel/babel/tree/master/packages/babel-parser)
+## <a id="toc-babylon"></a>[`babylon`](https://github.com/babel/babylon)
 
-Started as a fork of Acorn, the Babel Parser is fast, simple to use,
-has plugin-based architecture for non-standard features (as well as future
-standards).
+Babylon is Babel's parser. Started as a fork of Acorn, it's fast, simple to use, has plugin-based architecture for non-standard features (as well as future standards).
 
 First, let's install it.
 
 ```sh
-$ npm install --save @babel/parser
+$ npm install --save babylon
 ```
 
 Let's start by simply parsing a string of code:
 
 ```js
-import parser from "@babel/parser";
+import * as babylon from "babylon";
 
 const code = `function square(n) {
   return n * n;
 }`;
 
-parser.parse(code);
+babylon.parse(code);
 // Node {
 //   type: "File",
 //   start: 0,
@@ -864,47 +779,41 @@ parser.parse(code);
 We can also pass options to `parse()` like so:
 
 ```js
-parser.parse(code, {
+babylon.parse(code, {
   sourceType: "module", // default: "script"
   plugins: ["jsx"] // default: []
 });
 ```
 
-`sourceType` can either be `"module"` or `"script"` which is the mode that
-the Babel Parser should parse in. `"module"` will parse in strict mode and allow module
-declarations, `"script"` will not.
+`sourceType` can either be `"module"` or `"script"` which is the mode that Babylon should parse in. `"module"` will parse in strict mode and allow module declarations, `"script"` will not.
 
-> **Note:** `sourceType` defaults to `"script"` and will error when it finds
-> `import` or `export`. Pass `sourceType: "module"` to get rid of these errors.
+> **Note:** `sourceType` defaults to `"script"` and will error when it finds `import` or `export`. Pass `sourceType: "module"` to get rid of these errors.
 
-Since the Babel Parser is built with a plugin-based architecture, there is also a
-`plugins` option which will enable the internal plugins. Note that the Babel Parser has
-not yet opened this API to external plugins, although may do so in the future.
+Since Babylon is built with a plugin-based architecture, there is also a `plugins` option which will enable the internal plugins. Note that Babylon has not yet opened this API to external plugins, although may do so in the future.
 
-To see a full list of plugins, see the [Babel parser docs](https://babeljs.io/docs/en/babel-parser#plugins).
+To see a full list of plugins, see the [Babylon README](https://github.com/babel/babylon/blob/master/README.md#plugins).
 
 ## <a id="toc-babel-traverse"></a>[`babel-traverse`](https://github.com/babel/babel/tree/master/packages/babel-traverse)
 
-The Babel Traverse module maintains the overall tree state, and is responsible
-for replacing, removing, and adding nodes.
+The Babel Traverse module maintains the overall tree state, and is responsible for replacing, removing, and adding nodes.
 
 Install it by running:
 
 ```sh
-$ npm install --save @babel/traverse
+$ npm install --save babel-traverse
 ```
 
-We can use it alongside to traverse and update nodes:
+We can use it alongside Babylon to traverse and update nodes:
 
 ```js
-import parser from "@babel/parser";
-import traverse from "@babel/traverse";
+import * as babylon from "babylon";
+import traverse from "babel-traverse";
 
 const code = `function square(n) {
   return n * n;
 }`;
 
-const ast = parser.parse(code);
+const ast = babylon.parse(code);
 
 traverse(ast, {
   enter(path) {
@@ -920,21 +829,19 @@ traverse(ast, {
 
 ## <a id="toc-babel-types"></a>[`babel-types`](https://github.com/babel/babel/tree/master/packages/babel-types)
 
-Babel Types is a Lodash-esque utility library for AST nodes. It contains
-methods for building, validating, and converting AST nodes. It's useful for
-cleaning up AST logic with well thought out utility methods.
+Babel Types is a Lodash-esque utility library for AST nodes. It contains methods for building, validating, and converting AST nodes. It's useful for cleaning up AST logic with well thought out utility methods.
 
 You can install it by running:
 
 ```sh
-$ npm install --save @babel/types
+$ npm install --save babel-types
 ```
 
 Then start using it:
 
 ```js
-import traverse from "@babel/traverse";
-import * as t from "@babel/types";
+import traverse from "babel-traverse";
+import * as t from "babel-types";
 
 traverse(ast, {
   enter(path) {
@@ -945,11 +852,9 @@ traverse(ast, {
 });
 ```
 
-### <a id="toc-definitions"></a>Definitions
+### <a id="toc-definitions"></a>Definície
 
-Babel Types has definitions for every single type of node, with information on
-what properties belong where, what values are valid, how to build that node, how
-the node should be traversed, and aliases of the Node.
+Babel Types has definitions for every single type of node, with information on what properties belong where, what values are valid, how to build that node, how the node should be traversed, and aliases of the Node.
 
 A single node type definition looks like this:
 
@@ -972,17 +877,15 @@ defineType("BinaryExpression", {
 });
 ```
 
-### <a id="toc-builders"></a>Builders
+### <a id="toc-builders"></a>Stavitelia (Builders)
 
-You'll notice the above definition for `BinaryExpression` has a field for a
-`builder`.
+You'll notice the above definition for `BinaryExpression` has a field for a `builder`.
 
 ```js
 builder: ["operator", "left", "right"]
 ```
 
-This is because each node type gets a builder method, which when used looks like
-this:
+This is because each node type gets a builder method, which when used looks like this:
 
 ```js
 t.binaryExpression("*", t.identifier("a"), t.identifier("b"));
@@ -1011,13 +914,11 @@ Which when printed looks like this:
 a * b
 ```
 
-Builders will also validate the nodes they are creating and throw descriptive
-errors if used improperly. Which leads into the next type of method.
+Builders will also validate the nodes they are creating and throw descriptive errors if used improperly. Which leads into the next type of method.
 
-### <a id="toc-validators"></a>Validators
+### <a id="toc-validators"></a>Validátory
 
-The definition for `BinaryExpression` also includes information on the `fields`
-of a node and how to validate them.
+The definition for `BinaryExpression` also includes information on the `fields` of a node and how to validate them.
 
 ```js
 fields: {
@@ -1033,23 +934,19 @@ fields: {
 }
 ```
 
-This is used to create two types of validating methods. The first of which is
-`isX`.
+This is used to create two types of validating methods. The first of which is `isX`.
 
 ```js
 t.isBinaryExpression(maybeBinaryExpressionNode);
 ```
 
-This tests to make sure that the node is a binary expression, but you can also
-pass a second parameter to ensure that the node contains certain properties and
-values.
+This tests to make sure that the node is a binary expression, but you can also pass a second parameter to ensure that the node contains certain properties and values.
 
 ```js
 t.isBinaryExpression(maybeBinaryExpressionNode, { operator: "*" });
 ```
 
-There is also the more, _ehem_, assertive version of these methods, which will
-throw errors instead of returning `true` or `false`.
+There is also the more, *ehem*, assertive version of these methods, which will throw errors instead of returning `true` or `false`.
 
 ```js
 t.assertBinaryExpression(maybeBinaryExpressionNode);
@@ -1057,32 +954,31 @@ t.assertBinaryExpression(maybeBinaryExpressionNode, { operator: "*" });
 // Error: Expected type "BinaryExpression" with option { "operator": "*" }
 ```
 
-### <a id="toc-converters"></a>Converters
+### <a id="toc-converters"></a>Konvertory
 
 > [WIP]
 
 ## <a id="toc-babel-generator"></a>[`babel-generator`](https://github.com/babel/babel/tree/master/packages/babel-generator)
 
-Babel Generator is the code generator for Babel. It takes an AST and turns it
-into code with sourcemaps.
+Babel Generator is the code generator for Babel. It takes an AST and turns it into code with sourcemaps.
 
 Run the following to install it:
 
 ```sh
-$ npm install --save @babel/generator
+$ npm install --save babel-generator
 ```
 
 Then use it
 
 ```js
-import parser from "@babel/parser";
-import generate from "@babel/generator";
+import * as babylon from "babylon";
+import generate from "babel-generator";
 
 const code = `function square(n) {
   return n * n;
 }`;
 
-const ast = parser.parse(code);
+const ast = babylon.parse(code);
 
 generate(ast, {}, code);
 // {
@@ -1105,19 +1001,16 @@ generate(ast, {
 
 ## <a id="toc-babel-template"></a>[`babel-template`](https://github.com/babel/babel/tree/master/packages/babel-template)
 
-Babel Template is another tiny but incredibly useful module. It allows you to
-write strings of code with placeholders that you can use instead of manually
-building up a massive AST. In computer science, this capability is called
-quasiquotes.
+Babel Template is another tiny but incredibly useful module. It allows you to write strings of code with placeholders that you can use instead of manually building up a massive AST. In computer science, this capability is called quasiquotes.
 
 ```sh
-$ npm install --save @babel/template
+$ npm install --save babel-template
 ```
 
 ```js
-import template from "@babel/template";
-import generate from "@babel/generator";
-import * as t from "@babel/types";
+import template from "babel-template";
+import generate from "babel-generator";
+import * as t from "babel-types";
 
 const buildRequire = template(`
   var IMPORT_NAME = require(SOURCE);
@@ -1135,10 +1028,9 @@ console.log(generate(ast).code);
 var myModule = require("my-module");
 ```
 
-# <a id="toc-writing-your-first-babel-plugin"></a>Writing your first Babel Plugin
+# <a id="toc-writing-your-first-babel-plugin"></a>Písanie tvojho prvého Babel pluginu
 
-Now that you're familiar with all the basics of Babel, let's tie it together
-with the plugin API.
+Now that you're familiar with all the basics of Babel, let's tie it together with the plugin API.
 
 Start off with a `function` that gets passed the current [`babel`](https://github.com/babel/babel/tree/master/packages/babel-core) object.
 
@@ -1148,8 +1040,7 @@ export default function(babel) {
 }
 ```
 
-Since you'll be using it so often, you'll likely want to grab just `babel.types`
-like so:
+Since you'll be using it so often, you'll likely want to grab just `babel.types` like so:
 
 ```js
 export default function({ types: t }) {
@@ -1157,8 +1048,7 @@ export default function({ types: t }) {
 }
 ```
 
-Then you return an object with a property `visitor` which is the primary visitor
-for the plugin.
+Then you return an object with a property `visitor` which is the primary visitor for the plugin.
 
 ```js
 export default function({ types: t }) {
@@ -1220,8 +1110,7 @@ export default function({ types: t }) {
 }
 ```
 
-Then let's narrow it down to just `BinaryExpression`s that are using the `===`
-operator.
+Then let's narrow it down to just `BinaryExpression`s that are using the `===` operator.
 
 ```js
 visitor: {
@@ -1275,11 +1164,11 @@ sebmck === dork;
 
 Awesome! Our very first Babel plugin.
 
-----
+* * *
 
-# <a id="toc-transformation-operations"></a>Transformation Operations
+# <a id="toc-transformation-operations"></a>Transformačné operácie
 
-## <a id="toc-visiting"></a>Visiting
+## <a id="toc-visiting"></a>Inšpekcie (Visiting)
 
 ### <a id="toc-get-the-path-of-a-sub-node"></a>Get the Path of Sub-Node
 
@@ -1298,26 +1187,10 @@ If you need to access the `path` of that property instead, use the `get` method 
 
 ```js
 BinaryExpression(path) {
-  path.get('left'); 
+  path.get('left');
 }
 Program(path) {
   path.get('body.0');
-}
-```
-
-You can't current use `get` on a Container (the `body` array of a `BlockStatement`), but you chain the dot syntax instead.
-
-```js
-export default function f() {
-  return bar;
-}
-```
-
-For the example above, if you wanted to get the path corresponding to the `return`, you could chain the various properties, using a number as the index when traversing the array.
-
-```js
-ExportDefaultDeclaration(path) {
-  path.get("declaration.body.body.0");
 }
 ```
 
@@ -1403,8 +1276,7 @@ Identifier(path) {
 
 Sometimes you will need to traverse the tree upwards from a path until a condition is satisfied.
 
-Call the provided `callback` with the `NodePath`s of all the parents.
-When the `callback` returns a truthy value, we return that `NodePath`.
+Call the provided `callback` with the `NodePath`s of all the parents. When the `callback` returns a truthy value, we return that `NodePath`.
 
 ```js
 path.findParent((path) => path.isObjectExpression());
@@ -1432,11 +1304,11 @@ path.getStatementParent();
 
 If a path is in a list like in the body of a `Function`/`Program`, it will have "siblings".
 
-- Check if a path is part of a list with `path.inList`
-- You can get the surrounding siblings with `path.getSibling(index)`,
-- The current path's index in the container with `path.key`,
-- The path's container (an array of all sibling nodes) with `path.container`
-- Get the name of the key of the list container with `path.listKey`
+  * Check if a path is part of a list with `path.inList`
+  * You can get the surrounding siblings with `path.getSibling(index)`,
+  * The current path's index in the container with `path.key`,
+  * The path's container (an array of all sibling nodes) with `path.container`
+  * Get the name of the key of the list container with `path.listKey`
 
 > These APIs are used in the [transform-merge-sibling-variables](https://github.com/babel/babili/blob/master/packages/babel-plugin-transform-merge-sibling-variables/src/index.js) plugin used in [babel-minify](https://github.com/babel/babili).
 
@@ -1458,17 +1330,11 @@ export default function({ types: t }) {
         path.getSibling(0) // pathA
         path.getSibling(path.key + 1) // pathB
         path.container // [pathA, pathB, pathC]
-        path.getPrevSibling() // path(undefined) *
-        path.getNextSibling() // pathB
-        path.getAllPrevSiblings() // []
-        path.getAllNextSiblings() // [pathB, pathC]
       }
     }
   };
 }
 ```
-
-* `path(undefined)` is a `NodePath` where the `path.node === undefined`
 
 ### <a id="toc-stopping-traversal"></a>Stopping Traversal
 
@@ -1482,8 +1348,7 @@ BinaryExpression(path) {
 
 If you are doing a sub-traversal in a top level path, you can use 2 provided API methods:
 
-`path.skip()` skips traversing the children of the current path.
-`path.stop()` stops traversal entirely.
+`path.skip()` skips traversing the children of the current path. `path.stop()` stops traversal entirely.
 
 ```js
 outerPath.traverse({
@@ -1497,7 +1362,7 @@ outerPath.traverse({
 });
 ```
 
-## <a id="toc-manipulation"></a>Manipulation
+## <a id="toc-manipulation"></a>Manipulácia
 
 ### <a id="toc-replacing-a-node"></a>Replacing a node
 
@@ -1537,10 +1402,7 @@ ReturnStatement(path) {
   }
 ```
 
-> **Note:** When replacing an expression with multiple nodes, they must be
-> statements. This is because Babel uses heuristics extensively when replacing
-> nodes which means that you can do some pretty crazy transformations that would
-> be extremely verbose otherwise.
+> **Note:** When replacing an expression with multiple nodes, they must be statements. This is because Babel uses heuristics extensively when replacing nodes which means that you can do some pretty crazy transformations that would be extremely verbose otherwise.
 
 ### <a id="toc-replacing-a-node-with-a-source-string"></a>Replacing a node with a source string
 
@@ -1560,9 +1422,7 @@ FunctionDeclaration(path) {
   }
 ```
 
-> **Note:** It's not recommended to use this API unless you're dealing with
-> dynamic source strings, otherwise it's more efficient to parse the code
-> outside of the visitor.
+> **Note:** It's not recommended to use this API unless you're dealing with dynamic source strings, otherwise it's more efficient to parse the code outside of the visitor.
 
 ### <a id="toc-inserting-a-sibling-node"></a>Inserting a sibling node
 
@@ -1581,14 +1441,11 @@ FunctionDeclaration(path) {
 + "A little high, little low.";
 ```
 
-> **Note:** This should always be a statement or an array of statements. This
-> uses the same heuristics mentioned in
-> [Replacing a node with multiple nodes](#replacing-a-node-with-multiple-nodes).
+> **Note:** This should always be a statement or an array of statements. This uses the same heuristics mentioned in [Replacing a node with multiple nodes](#replacing-a-node-with-multiple-nodes).
 
 ### <a id="toc-inserting-into-a-container"></a>Inserting into a container
 
-If you want to insert into an AST node that is an array like `body`.
-Similar to `insertBefore`/`insertAfter`, except that you have to specify the `listKey`, which is usually `body`.
+If you want to insert into a AST node property like that is an array like `body`. It is similar to `insertBefore`/`insertAfter` other than you having to specify the `listKey` which is usually `body`.
 
 ```js
 ClassMethod(path) {
@@ -1654,7 +1511,7 @@ BinaryExpression(path) {
   }
 ```
 
-## <a id="toc-scope"></a>Scope
+## <a id="toc-scope"></a>Rozsah (Scope)
 
 ### <a id="toc-checking-if-a-local-variable-is-bound"></a>Checking if a local variable is bound
 
@@ -1680,8 +1537,7 @@ FunctionDeclaration(path) {
 
 ### <a id="toc-generating-a-uid"></a>Generating a UID
 
-This will generate an identifier that doesn't collide with any locally defined
-variables.
+This will generate an identifier that doesn't collide with any locally defined variables.
 
 ```js
 FunctionDeclaration(path) {
@@ -1744,12 +1600,11 @@ FunctionDeclaration(path) {
   }
 ```
 
-----
+* * *
 
-# <a id="toc-plugin-options"></a>Plugin Options
+# <a id="toc-plugin-options"></a>Možnosti pluginov
 
-If you would like to let your users customize the behavior of your Babel plugin
-you can accept plugin specific options which users can specify like this:
+If you would like to let your users customize the behavior of your Babel plugin you can accept plugin specific options which users can specify like this:
 
 ```js
 {
@@ -1777,13 +1632,11 @@ export default function({ types: t }) {
 }
 ```
 
-These options are plugin-specific and you cannot access options from other
-plugins.
+These options are plugin-specific and you cannot access options from other plugins.
 
 ## <a id="toc-pre-and-post-in-plugins"></a> Pre and Post in Plugins
 
-Plugins can have functions that are run before or after plugins.
-They can be used for setup or cleanup/analysis purposes.
+Plugins can have functions that are run before or after plugins. They can be used for setup or cleanup/analysis purposes.
 
 ```js
 export default function({ types: t }) {
@@ -1805,8 +1658,7 @@ export default function({ types: t }) {
 
 ## <a id="toc-enabling-syntax-in-plugins"></a> Enabling Syntax in Plugins
 
-Babel plugins themselves can enable [parser plugins](https://babeljs.io/docs/en/babel-parser#plugins) so that users don't need to
-install/enable them. This prevents a parsing error without inheriting the syntax plugin.
+Plugins can enable [babylon plugins](https://github.com/babel/babylon#plugins) so that users don't need to install/enable them. This prevents a parsing error without inheriting the syntax plugin.
 
 ```js
 export default function({ types: t }) {
@@ -1834,33 +1686,25 @@ export default function({ types: t }) {
 
 The error looks like:
 
-```
-file.js: Error message here
-   7 |
-   8 | let tips = [
->  9 |   "Click on any AST node with a '+' to expand it",
-     |   ^
-  10 |
-  11 |   "Hovering over a node highlights the \
-  12 |    corresponding part in the source code",
-```
+    file.js: Error message here
+       7 |
+       8 | let tips = [
+    >  9 |   "Click on any AST node with a '+' to expand it",
+         |   ^
+      10 |
+      11 |   "Hovering over a node highlights the \
+      12 |    corresponding part in the source code",
+    
 
-----
+* * *
 
-# <a id="toc-building-nodes"></a>Building Nodes
+# <a id="toc-building-nodes"></a>Stavba uzlov
 
-When writing transformations you'll often want to build up some nodes to insert
-into the AST. As mentioned previously, you can do this using the
-[builder](#builders) methods in the [`babel-types`](#babel-types) package.
+When writing transformations you'll often want to build up some nodes to insert into the AST. As mentioned previously, you can do this using the [builder](#builders) methods in the [`babel-types`](#babel-types) package.
 
-The method name for a builder is simply the name of the node type you want to
-build except with the first letter lowercased. For example if you wanted to
-build a `MemberExpression` you would use `t.memberExpression(...)`.
+The method name for a builder is simply the name of the node type you want to build except with the first letter lowercased. For example if you wanted to build a `MemberExpression` you would use `t.memberExpression(...)`.
 
-The arguments of these builders are decided by the node definition. There's some
-work that's being done to generate easy-to-read documentation on the
-definitions, but for now they can all be found
-[here](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions).
+The arguments of these builders are decided by the node definition. There's some work that's being done to generate easy-to-read documentation on the definitions, but for now they can all be found [here](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions).
 
 A node definition looks like the following:
 
@@ -1886,21 +1730,15 @@ defineType("MemberExpression", {
 });
 ```
 
-Here you can see all the information about this particular node type, including
-how to build it, traverse it, and validate it.
+Here you can see all the information about this particular node type, including how to build it, traverse it, and validate it.
 
-By looking at the `builder` property, you can see the 3 arguments that will be
-needed to call the builder method (`t.memberExpression`).
+By looking at the `builder` property, you can see the 3 arguments that will be needed to call the builder method (`t.memberExpression`).
 
 ```js
 builder: ["object", "property", "computed"],
 ```
 
-> Note that sometimes there are more properties that you can customize on the
-> node than the `builder` array contains. This is to keep the builder from
-> having too many arguments. In these cases you need to set the properties
-> manually. An example of this is
-> [`ClassMethod`](https://github.com/babel/babel/blob/bbd14f88c4eea88fa584dd877759dd6b900bf35e/packages/babel-types/src/definitions/es2015.js#L238-L276).
+> Note that sometimes there are more properties that you can customize on the node than the `builder` array contains. This is to keep the builder from having too many arguments. In these cases you need to set the properties manually. An example of this is [`ClassMethod`](https://github.com/babel/babel/blob/bbd14f88c4eea88fa584dd877759dd6b900bf35e/packages/babel-types/src/definitions/es2015.js#L238-L276).
 
 ```js
 // Example
@@ -1934,10 +1772,7 @@ fields: {
 }
 ```
 
-You can see that `object` needs to be an `Expression`, `property` either needs
-to be an `Expression` or an `Identifier` depending on if the member expression
-is `computed` or not and `computed` is simply a boolean that defaults to
-`false`.
+You can see that `object` needs to be an `Expression`, `property` either needs to be an `Expression` or an `Identifier` depending on if the member expression is `computed` or not and `computed` is simply a boolean that defaults to `false`.
 
 So we can construct a `MemberExpression` by doing the following:
 
@@ -1955,18 +1790,15 @@ Which will result in:
 object.property
 ```
 
-However, we said that `object` needed to be an `Expression` so why is
-`Identifier` valid?
+However, we said that `object` needed to be an `Expression` so why is `Identifier` valid?
 
-Well if we look at the definition of `Identifier` we can see that it has an
-`aliases` property which states that it is also an expression.
+Well if we look at the definition of `Identifier` we can see that it has an `aliases` property which states that it is also an expression.
 
 ```js
 aliases: ["Expression", "LVal"],
 ```
 
-So since `MemberExpression` is a type of `Expression`, we could set it as the
-`object` of another `MemberExpression`:
+So since `MemberExpression` is a type of `Expression`, we could set it as the `object` of another `MemberExpression`:
 
 ```js
 t.memberExpression(
@@ -1984,23 +1816,17 @@ Which will result in:
 member.expression.property
 ```
 
-It's very unlikely that you will ever memorize the builder method signatures for
-every node type. So you should take some time and understand how they are
-generated from the node definitions.
+It's very unlikely that you will ever memorize the builder method signatures for every node type. So you should take some time and understand how they are generated from the node definitions.
 
-You can find all of the actual
-[definitions here](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions)
-and you can see them
-[documented here](https://github.com/babel/babel/blob/master/doc/ast/spec.md)
+You can find all of the actual [definitions here](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions) and you can see them [documented here](https://github.com/babel/babel/blob/master/doc/ast/spec.md)
 
-----
+* * *
 
-# <a id="toc-best-practices"></a>Best Practices
+# <a id="toc-best-practices"></a>Osvedčené postupy
 
 ## <a id="toc-create-helper-builders-and-checkers"></a> Create Helper Builders and Checkers
 
-It's pretty simple to extract certain checks (if a node is a certain type) into their own helper functions
-as well as extracting out helpers for specific node types.
+It's pretty simple to extract certain checks (if a node is a certain type) into their own helper functions as well as extracting out helpers for specific node types.
 
 ```js
 function isAssignment(node) {
@@ -2012,19 +1838,15 @@ function buildAssignment(left, right) {
 }
 ```
 
-## <a id="toc-avoid-traversing-the-ast-as-much-as-possible"></a>Avoid traversing the AST as much as possible
+## <a id="toc-avoid-traversing-the-ast-as-much-as-possible"></a>Vyhni sa čo najviac prechádzaniu AST
 
-Traversing the AST is expensive, and it's easy to accidentally traverse the AST
-more than necessary. This could be thousands if not tens of thousands of
-extra operations.
+Traversing the AST is expensive, and it's easy to accidentally traverse the AST more than necessary. This could be thousands if not tens of thousands of extra operations.
 
-Babel optimizes this as much as possible, merging visitors together if it can in
-order to do everything in a single traversal.
+Babel optimizes this as much as possible, merging visitors together if it can in order to do everything in a single traversal.
 
-### <a id="toc-merge-visitors-whenever-possible"></a>Merge visitors whenever possible
+### <a id="toc-merge-visitors-whenever-possible"></a>Zlučuj inšpektory kedykoľvek je to možné
 
-When writing visitors, it may be tempting to call `path.traverse` in multiple
-places where they are logically necessary.
+When writing visitors, it may be tempting to call `path.traverse` in multiple places where they are logically necessary.
 
 ```js
 path.traverse({
@@ -2040,8 +1862,7 @@ path.traverse({
 });
 ```
 
-However, it is far better to write these as a single visitor that only gets run
-once. Otherwise you are traversing the same tree multiple times for no reason.
+However, it is far better to write these as a single visitor that only gets run once. Otherwise you are traversing the same tree multiple times for no reason.
 
 ```js
 path.traverse({
@@ -2054,10 +1875,9 @@ path.traverse({
 });
 ```
 
-### <a id="toc-do-not-traverse-when-manual-lookup-will-do"></a>Do not traverse when manual lookup will do
+### <a id="toc-do-not-traverse-when-manual-lookup-will-do"></a>Neprechádzaj stromom, ak to zvládne manuálne prehľadávanie
 
-It may also be tempting to call `path.traverse` when looking for a particular
-node type.
+It may also be tempting to call `path.traverse` when looking for a particular node type.
 
 ```js
 const nestedVisitor = {
@@ -2073,9 +1893,7 @@ const MyVisitor = {
 };
 ```
 
-However, if you are looking for something specific and shallow, there is a good
-chance you can manually lookup the nodes you need without performing a costly
-traversal.
+However, if you are looking for something specific and shallow, there is a good chance you can manually lookup the nodes you need without performing a costly traversal.
 
 ```js
 const MyVisitor = {
@@ -2087,10 +1905,9 @@ const MyVisitor = {
 };
 ```
 
-## <a id="toc-optimizing-nested-visitors"></a>Optimizing nested visitors
+## <a id="toc-optimizing-nested-visitors"></a>Optimalizácia vnorených návštevníkov
 
-When you are nesting visitors, it might make sense to write them nested in your
-code.
+When you are nesting visitors, it might make sense to write them nested in your code.
 
 ```js
 const MyVisitor = {
@@ -2104,13 +1921,7 @@ const MyVisitor = {
 };
 ```
 
-However, this creates a new visitor object every time `FunctionDeclaration()` is
-called. That can be costly, because Babel does some processing each time a new
-visitor object is passed in (such as exploding keys containing multiple types,
-performing validation, and adjusting the object structure). Because Babel stores
-flags on visitor objects indicating that it's already performed that processing,
-it's better to store the visitor in a variable and pass the same object each
-time.
+However, this creates a new visitor object every time `FunctionDeclaration()` is called. That can be costly, because Babel does some processing each time a new visitor object is passed in (such as exploding keys containing multiple types, performing validation, and adjusting the object structure). Because Babel stores flags on visitor objects indicating that it's already performed that processing, it's better to store the visitor in a variable and pass the same object each time.
 
 ```js
 const nestedVisitor = {
@@ -2144,8 +1955,7 @@ const MyVisitor = {
 };
 ```
 
-You can pass it in as state to the `traverse()` method and have access to it on
-`this` in the visitor.
+You can pass it in as state to the `traverse()` method and have access to it on `this` in the visitor.
 
 ```js
 const nestedVisitor = {
@@ -2164,13 +1974,11 @@ const MyVisitor = {
 };
 ```
 
-## <a id="toc-being-aware-of-nested-structures"></a>Being aware of nested structures
+## <a id="toc-being-aware-of-nested-structures"></a>Uvedom si vnorené štruktúry
 
-Sometimes when thinking about a given transform, you might forget that the given
-structure can be nested.
+Sometimes when thinking about a given transform, you might forget that the given structure can be nested.
 
-For example, imagine we want to lookup the `constructor` `ClassMethod` from the
-`Foo` `ClassDeclaration`.
+For example, imagine we want to lookup the `constructor` `ClassMethod` from the `Foo` `ClassDeclaration`.
 
 ```js
 class Foo {
@@ -2198,8 +2006,7 @@ const MyVisitor = {
 }
 ```
 
-We are ignoring the fact that classes can be nested and using the traversal
-above we will hit a nested `constructor` as well:
+We are ignoring the fact that classes can be nested and using the traversal above we will hit a nested `constructor` as well:
 
 ```js
 class Foo {
@@ -2215,16 +2022,12 @@ class Foo {
 
 ## <a id="toc-unit-testing"></a>Unit Testing
 
-There are a few primary ways to test babel plugins: snapshot tests, AST tests, and exec tests.
-We'll use [jest](http://facebook.github.io/jest/) for this example because it supports
-snapshot testing out of the box. The example we're creating here is hosted in
-[this repo](https://github.com/brigand/babel-plugin-testing-example).
+There are a few primary ways to test babel plugins: snapshot tests, AST tests, and exec tests. We'll use [jest](http://facebook.github.io/jest/) for this example because it supports snapshot testing out of the box. The example we're creating here is hosted in [this repo](https://github.com/brigand/babel-plugin-testing-example).
 
 First we need a babel plugin, we'll put this in src/index.js.
 
 ```js
-
-module.exports = function testPlugin(babel) {
+<br />module.exports = function testPlugin(babel) {
   return {
     visitor: {
       Identifier(path) {
@@ -2239,13 +2042,7 @@ module.exports = function testPlugin(babel) {
 
 ### Snapshot Tests
 
-Next, install our dependencies with `npm install --save-dev babel-core jest`, and
-then we can begin writing our first test: the snapshot. Snapshot tests allow us
-to visually inspect the output of our babel plugin. We give it an input, tell it to make
-a snapshot, and it saves it to a file. We check in the snapshots into git. This allows
-us to see when we've affected the output of any of our test cases. It also gives use a diff
-in pull requests. Of course you could do this with any test framework, but with jest updating
-the snapshots is as easy as `jest -u`.
+Next, install our dependencies with `npm install --save-dev babel-core jest`, and then we can begin writing our first test: the snapshot. Snapshot tests allow us to visually inspect the output of our babel plugin. We give it an input, tell it to make a snapshot, and it saves it to a file. We check in the snapshots into git. This allows us to see when we've affected the output of any of our test cases. It also gives use a diff in pull requests. Of course you could do this with any test framework, but with jest updating the snapshots is as easy as `jest -u`.
 
 ```js
 // src/__tests__/index-test.js
@@ -2289,15 +2086,11 @@ Received value does not match stored snapshot 1.
     +if (baz) console.log(baz);"
 ```
 
-We see how our change to the plugin code affected the output of our plugin, and
-if the output looks good to us, we can run `jest -u` to update the snapshot.
+We see how our change to the plugin code affected the output of our plugin, and if the output looks good to us, we can run `jest -u` to update the snapshot.
 
 ### AST Tests
 
-In addition to snapshot testing, we can manually inspect the AST. This is a simple but
-brittle example. For more involved situations you may wish to leverage
-babel-traverse. It allows you to specify an object with a `visitor` key, exactly like
-you use for the plugin itself.
+In addition to snapshot testing, we can manually inspect the AST. This is a simple but brittle example. For more involved situations you may wish to leverage babel-traverse. It allows you to specify an object with a `visitor` key, exactly like you use for the plugin itself.
 
 ```js
 it('contains baz', () => {
@@ -2311,10 +2104,7 @@ it('contains baz', () => {
 
 ### Exec Tests
 
-Here we'll be transforming the code, and then evaluating that it behaves correctly.
-Note that we're not using `assert` in the test. This ensures that if our plugin does
-weird stuff like removing the assert line by accident, the test will still fail.
-
+Here we'll be transforming the code, and then evaluating that it behaves correctly. Note that we're not using `assert` in the test. This ensures that if our plugin does weird stuff like removing the assert line by accident, the test will still fail.
 
 ```js
 it('foo is an alias to baz', () => {
@@ -2337,11 +2127,7 @@ Babel core uses a [similar approach](https://github.com/babel/babel/blob/7.0/CON
 
 ### [`babel-plugin-tester`](https://github.com/kentcdodds/babel-plugin-tester)
 
-This package makes testing plugins easier. If you're familiar with ESLint's
-[RuleTester](http://eslint.org/docs/developer-guide/working-with-rules#rule-unit-tests)
-this should be familiar. You can look at
-[the docs](https://github.com/kentcdodds/babel-plugin-tester/blob/master/README.md)
-to get a full sense of what's possible, but here's a simple example:
+This package makes testing plugins easier. If you're familiar with ESLint's [RuleTester](http://eslint.org/docs/developer-guide/working-with-rules#rule-unit-tests) this should be familiar. You can look at [the docs](https://github.com/kentcdodds/babel-plugin-tester/blob/master/README.md) to get a full sense of what's possible, but here's a simple example:
 
 ```js
 import pluginTester from 'babel-plugin-tester';
@@ -2371,3 +2157,7 @@ pluginTester({
   },
 });
 ```
+
+* * *
+
+> ***For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) and [@babeljs](https://twitter.com/babeljs) on Twitter.***

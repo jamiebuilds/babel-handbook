@@ -1,9 +1,9 @@
-# Babel Handbook
+# Babel Handbuch
 
-This handbook is divided into two parts:
+Das Handbuch besteht aus zwei Teilen:
 
-  * [User Handbook](user-handbook.md) - How to setup/configure Babel and more.
-  * [Plugin Handbook](plugin-handbook.md) - How to create plugins for Babel.
+  * [Nutzerhandbuch](user-handbook.md) - Babel aufsetzen, konfigurieren und mehr.
+  * [Plugin-Handbuch](plugin-handbook.md) - Plugins für Babel erstellen.
 
 > For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.
 

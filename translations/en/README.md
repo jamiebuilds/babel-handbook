@@ -5,9 +5,6 @@ This handbook is divided into two parts:
 - [User Handbook](user-handbook.md) - How to setup/configure Babel and more.
 - [Plugin Handbook](plugin-handbook.md) - How to create plugins for Babel.
 
-> For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle)
-> on Twitter.
-
 If you are reading a non-english translation of this handbook you may still find
 english sections that have not yet been translated. If you would like to
 contribute to one of the translations you must do so through Crowdin. Please

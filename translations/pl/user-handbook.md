@@ -1,140 +1,143 @@
-# Babel User Handbook
+# Podręcznik Użytkownika Babel
 
-This document covers everything you ever wanted to know about using [Babel](https://babeljs.io) and related tooling.
+Ten dokument obejmuje wszystko, co chciałbyś wiedzieć o [Babelu](https://babeljs.io) i powiązanych narzędziach.
 
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
-This handbook is available in other languages, see the [README](/README.md) for a complete list.
+Niniejszy podręcznik jest dostępny w innych językach. Zobacz [plik README](/README.md), aby zobaczyć pełną listę.
 
-# Table of Contents
+# Spis treści
 
-  * [Introduction](#introduction)
-  * [Setting up Babel](#setting-up-babel) 
-      * [`babel-cli`](#babel-cli)
-      * [Running Babel CLI from within a project](#running-babel-cli-from-within-a-project)
-      * [`babel-register`](#babel-register)
-      * [`babel-node`](#babel-node)
-      * [`babel-core`](#babel-core)
-  * [Configuring Babel](#configuring-babel) 
-      * [`.babelrc`](#babelrc)
-      * [`babel-preset-es2015`](#babel-preset-es2015)
-      * [`babel-preset-react`](#babel-preset-react)
-      * [`babel-preset-stage-x`](#babel-preset-stage-x)
-  * [Executing Babel-generated code](#executing-babel-generated-code) 
-      * [`babel-polyfill`](#babel-polyfill)
-      * [`babel-runtime`](#babel-runtime)
-  * [Configuring Babel (Advanced)](#configuring-babel-advanced) 
-      * [Manually specifying plugins](#manually-specifying-plugins)
-      * [Plugin options](#plugin-options)
-      * [Customizing Babel based on environment](#customizing-babel-based-on-environment)
-      * [Making your own preset](#making-your-own-preset)
-  * [Babel and other tools](#babel-and-other-tools) 
-      * [Static analysis tools](#static-analysis-tools)
-      * [Linting](#linting)
-      * [Code Style](#code-style)
-      * [Documentation](#documentation)
-      * [Frameworks](#frameworks)
-      * [React](#react)
-      * [Text Editors and IDEs](#text-editors-and-ides)
-  * [Debugging Babel](#debugging-babel)
-  * [Babel Support](#babel-support) 
-      * [Babel Forum](#babel-forum)
-      * [Babel Chat](#babel-chat)
-      * [Babel Issues](#babel-issues)
-      * [Creating an awesome Babel bug report](#creating-an-awesome-babel-bug-report)
+  * [Wprowadzenie](#toc-introduction)
+  * [Instalacja Babel](#toc-setting-up-babel) 
+      * [`babel-cli`](#toc-babel-cli)
+      * [Uruchamianie Babel CLI z poziomu projektu](#toc-running-babel-cli-from-within-a-project)
+      * [`babel-register`](#toc-babel-register)
+      * [`babel-node`](#toc-babel-node)
+      * [`babel-core`](#toc-babel-core)
+  * [Konfigurowanie Babel](#toc-configuring-babel) 
+      * [`.babelrc`](#toc-babelrc)
+      * [`babel-preset-es2015`](#toc-babel-preset-es2015)
+      * [`babel-preset-react`](#toc-babel-preset-react)
+      * [`babel-preset-stage-x`](#toc-babel-preset-stage-x)
+  * [Wykonywanie kodu wygenerowanego przez Babel](#toc-executing-babel-generated-code) 
+      * [`babel-polyfill`](#toc-babel-polyfill)
+      * [`babel-runtime`](#toc-babel-runtime)
+  * [Konfigurowanie Babel (Zaawansowane)](#toc-configuring-babel-advanced) 
+      * [Ręczny wybór wtyczek](#toc-manually-specifying-plugins)
+      * [Opcje wtyczek](#toc-plugin-options)
+      * [Dostosowywanie Babel w oparciu o środowisko](#toc-customizing-babel-based-on-environment)
+      * [Tworzenie własnych ustawień](#toc-making-your-own-preset)
+  * [Babel i inne narzędzia](#toc-babel-and-other-tools) 
+      * [Narzędzia analizy statycznej](#toc-static-analysis-tools)
+      * [Linting](#toc-linting)
+      * [Styl kodu](#toc-code-style)
+      * [Dokumentacja](#toc-documentation)
+      * [Frameworki](#toc-frameworks)
+      * [React](#toc-react)
+      * [Edytory tekstu i IDE](#toc-text-editors-and-ides)
+  * [Wsparcie Babel](#toc-babel-support) 
+      * [Forum Babel](#toc-babel-forum)
+      * [Czat Babel](#toc-babel-chat)
+      * [Błędy Babel](#toc-babel-issues)
+      * [Tworzenie dobrego raportu o błędzie](#toc-creating-an-awesome-babel-bug-report)
 
-# Introduction
+# <a id="toc-introduction"></a>Wprowadzenie
 
-Babel is a generic multi-purpose compiler for JavaScript. Using Babel you can use (and create) the next generation of JavaScript, as well as the next generation of JavaScript tooling.
+Babel jest ogólnym, wielozadaniowym kompilatorem JavaScriptu. Korzystając z Babela, otwierasz sobie drogę do możliwości korzystania (i tworzenia) nowoczesnego kodu w oparciu o przyszłe wydania JavaScriptu, a także otrzymujesz dostęp do najnowocześniejszych rozwiązań języka.
 
-JavaScript as a language is constantly evolving, with new specs and proposals coming out with new features all the time. Using Babel will allow you to use many of these features years before they are available everywhere.
+JavaScript stale się rozwija. Nowe specyfikacje, propozycje oraz możliwości pojawiają się w zastraszającym tempie. Używając Babela, możesz korzystać z tych wszystkich udogodnień już teraz - lata przed tym, nim staną się powszechną praktyką.
 
-Babel does this by compiling down JavaScript code written with the latest standards into a version that will work everywhere today. This process is known as source-to-source compiling, also known as transpiling.
+Babel daje taką możliwość dzięki kompilowaniu kodu JavaScriptu, napisanego zgodnie z najnowszymi standardami, do postaci, która jest kompatybilna z dzisiejszymi interpreterami. Proces ten jest nazywany jako kompilowanie źródła-do-źródła (ang. source-to-source) czy powszechniej "transpiling".
 
-For example, you could give it can transform the new ES2015 arrow function syntax from this:
+Na przykład Babel może przekształcić nową składnię funkcji ES2015 z takiej:
 
 ```js
 const square = n => n * n;
 ```
 
-Into the following:
+Do następującej:
 
 ```js
-var square = function square(n) {
+const square = function square(n) {
   return n * n;
 };
 ```
 
-However, Babel can do much more than this as Babel has support for syntax extensions such as the JSX syntax for React and Flow syntax support for static type checking.
+Babel daje oczywiście wiele innych możliwości. Wspiera między innymi składnię JSX dostępną w React oraz składnię Flow dla statycznego sprawdzania zgodności typów.
 
-Further than that, everything in Babel is simply a plugin and anyone can go out and create their own plugins using the full power of Babel to do whatever they want.
+Ponadto, każdy komponent Babela jest wtyczką (ang. plugin). Każdy, w dowolnej chwili, może stworzyć własną wtyczkę, korzystając z całej mocy oferowanej przez Babel.
 
-*Even further* than that, Babel is broken down into a number of core modules that anyone can use to build the next generation of JavaScript tooling.
+*Idąc dalej podjętą retoryką*, struktura Babela została rozbita do postaci kilku głównych modułów. Dzięki nim, możliwe jest tworzenie nowoczesnego kodu JavaScript.
 
-Many people do too, the ecosystem that has sprung up around Babel is massive and very diverse. Throughout this handbook I'll be covering both how built-in Babel tools work as well as some useful things from around the community.
+Wielu ludzi już zaczęło to robić. Społeczność, która urosła wokół Babela, jest naprawdę piorunująca i różnorodna. W tym podręczniku omówię narzędzia wbudowane w Babela, ale skupię się także na wtyczkach stworzonych przez naszą społeczność.
 
-> For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.
+> ***Aby uzyskać więcej informacji na ten temat, sprawdź wpisy <https://twitter.com/thejameskyle> na Twitterze.***
 
 * * *
 
-# Setting up Babel
+# <a id="toc-setting-up-babel"></a>Instalacja Babel
 
-Since the JavaScript community has no single build tool, framework, platform, etc., Babel has official integrations for all of the major tooling. Everything from Gulp to Browserify, from Ember to Meteor, no matter what your setup looks like there is probably an official integration.
+Biorąc pod uwagę, że społeczność JavaScriptu nie skupia się wyłącznie wokół jednego taskera, frameworka, platformy itp., Babel udostępnia oficjalne wsparcie do integracji z różnymi, wiodącymi narzędziami. Wszystko, począwszy od Gulpa i kończąc na Browserify; od Embera po Meteora; nie ma znaczenia jak wygląda twoje środowisko pracy - prawdopodobnie i tak posiada ono oficjalne wsparcie.
 
-For the purposes of this handbook, we're just going to cover the built-in ways of setting up Babel, but you can also visit the interactive [setup page](http://babeljs.io/docs/setup) for all of the integrations.
+Na potrzeby tego podręcnzika, omówimy standardowe metody na instalację Babela. Możesz takze odwiedzić bardziej interaktywny [generator instalatora](http://babeljs.io/docs/setup), gdzie dostępne są wszelkie możliwe metody integracji do twoich potrzeb.
 
-> **Note:** This guide is going to refer to command line tools like `node` and `npm`. Before continuing any further you should be comfortable with these tools.
+> **Uwaga:** Ten poradnik nie będzie tłumaczył jak działają polecenia linii komend takie jak `node` lub `npm`. Autor poradnika zakłada, że jesteś już zaznajomiony z tymi technologiami.
 
-## `babel-cli`
+## <a id="toc-babel-cli"></a>`babel-cli`
 
-Babel's CLI is a simple way to compile files with Babel from the command line.
+CLI Babela jest najprostszą metodą na skompilowanie plików do postaci Babela bezpośrednio z linii poleceń.
 
-Let's first install it globally to learn the basics.
+Zainstalujmy go globalnie, aby poznać podstawowe zasady jego działania.
 
 ```sh
 $ npm install --global babel-cli
 ```
 
-We can compile our first file like so:
+Możemy podjąć naszą pierwszą próbę kompilacji w następujący sposób:
 
 ```sh
 $ babel my-file.js
 ```
 
-This will dump the compiled output directly into your terminal. To write it to a file we'll specify an `--out-file` or `-o`.
+Zwróci to skompilowaną zawartość pliku bezpośrednio do okienka terminala. Aby zapisać zawartość do pliku, musimy dopisać `--out-file` lub `-o`.
 
 ```sh
 $ babel example.js --out-file compiled.js
-# or
+# lub
 $ babel example.js -o compiled.js
 ```
 
-If we want to compile a whole directory into a new directory we can do so using `--out-dir` or `-d`.
+Jeśli chcielibyśmy skompilować cały katalog, aby pliki wynikowe przenieść do innego katalogu, możemy to zrobić korzystając z paremetru `--out-dir` lub `-d`.
 
 ```sh
 $ babel src --out-dir lib
-# or
+# lub
 $ babel src -d lib
 ```
 
-### Running Babel CLI from within a project
+### <a id="toc-running-babel-cli-from-within-a-project"></a>Uruchamianie Babel CLI z poziomu projektu
 
-While you *can* install Babel CLI globally on your machine, it's much better to install it **locally** project by project.
+O ile *możliwe jest* zainstalowanie CLI Babela globalnie, bardziej preferowaną formą jest zainstalowanie go **lokalnie** dla każdego projektu.
 
-There are two primary reasons for this.
+Powody tego są dwa:
 
-  1. Different projects on the same machine can depend on different versions of Babel allowing you to update one at a time.
-  2. It means you do not have an implicit dependency on the environment you are working in. Making your project far more portable and easier to setup.
+  1. Różne projekty na tym samym komputerze mogą bazowac na innych wersjach Babela. Dzięki temu istnieje możliwość aktualizowania ich z osobna.
+  2. Oznacza to, że nie będziesz musiał zgadywać, jakie składowe zostały już zainstalowane bezpośrednio na twoim środowisku. Dzięki temu twój projekt staje się bardziej "przenośny".
 
-We can install Babel CLI locally by running:
+Można zainstalować Babela lokalnie wywołując polecenie:
 
 ```sh
 $ npm install --save-dev babel-cli
 ```
 
-> **Note:** Since it's generally a bad idea to run Babel globally you may want to uninstall the global copy by running `npm uninstall --global babel-cli`.
+> **Uwaga:** Biorąc pod uwagę, że uruchamianie Babela globalnie nie jest dobrym pomysłem, możesz chcieć odinstalować globalną kopię wywołując polecenie:
+> 
+> ```sh
+$ npm uninstall --global babel-cli
+```
 
-After that finishes installing, your `package.json` file should look like this:
+Kiedy instalacja zakończy się, plik `package.json` powinien wyglądać następująco:
 
 ```json
 {
@@ -171,7 +174,7 @@ npm run build
 
 This will run Babel the same way as before, only now we are using a local copy.
 
-## `babel-register`
+## <a id="toc-babel-register"></a>`babel-register`
 
 The next most common method of running Babel is through `babel-register`. This option will allow you to run Babel just by requiring files, which may integrate with your setup better.
 
@@ -214,7 +217,7 @@ require("babel-register");
 console.log("Hello world!");
 ```
 
-## `babel-node`
+## <a id="toc-babel-node"></a>`babel-node`
 
 If you are just running some code via the `node` CLI the easiest way to integrate Babel might be to use the `babel-node` CLI which largely is just a drop in replacement for the `node` CLI.
 
@@ -226,9 +229,9 @@ First make sure that you have `babel-cli` installed.
 $ npm install --save-dev babel-cli
 ```
 
-> **Note:** If you are wondering why we are installing this locally, please read the [Running Babel CLI from within a project](#running-babel-cli--from-within-a-project) section above.
+> **Note:** If you are wondering why we are installing this locally, please read the [Running Babel CLI from within a project](#toc-running-babel-cli-from-within-a-project) section above.
 
-Then replace whereever you are running `node` with `babel-node`.
+Then replace wherever you are running `node` with `babel-node`.
 
 If you are using npm `scripts` you can simply do:
 
@@ -250,7 +253,7 @@ Otherwise you'll need to write out the path to `babel-node` itself.
 
 > Tip: You can also use [`npm-run`](https://www.npmjs.com/package/npm-run).
 
-## `babel-core`
+## <a id="toc-babel-core"></a>`babel-core`
 
 If you need to use Babel programmatically for some reason, you can use the `babel-core` package itself.
 
@@ -293,11 +296,11 @@ babel.transformFromAst(ast, code, options);
 // => { code, map, ast }
 ```
 
-For all of the above methods, `options` refers to http://babeljs.io/docs/usage/options/.
+For all of the above methods, `options` refers to https://babeljs.io/docs/usage/api/#options.
 
 * * *
 
-# Configuring Babel
+# <a id="toc-configuring-babel"></a>Konfigurowanie Babel
 
 You may have noticed by now that running Babel on its own doesn't seem to do anything other than copy JavaScript files from one location to another.
 
@@ -307,7 +310,7 @@ This is because we haven't told Babel to do anything yet.
 
 You can give Babel instructions on what to do by installing **plugins** or **presets** (groups of plugins).
 
-## `.babelrc`
+## <a id="toc-babelrc"></a>`.babelrc`
 
 Before we start telling Babel what to do. We need to create a configuration file. All you need to do is create a `.babelrc` file at the root of your project. Start off with it like this:
 
@@ -322,7 +325,7 @@ This file is how you configure Babel to do what you want.
 
 > **Note:** While you can also pass options to Babel in other ways the `.babelrc` file is convention and is the best way.
 
-## `babel-preset-es2015`
+## <a id="toc-babel-preset-es2015"></a>`babel-preset-es2015`
 
 Let's start by telling Babel to compile ES2015 (the newest version of the JavaScript standard, also known as ES6) to ES5 (the version available in most JavaScript environments today).
 
@@ -343,7 +346,7 @@ Next we'll modify our `.babelrc` to include that preset.
   }
 ```
 
-## `babel-preset-react`
+## <a id="toc-babel-preset-react"></a>`babel-preset-react`
 
 Setting up React is just as easy. Just install the preset:
 
@@ -363,7 +366,7 @@ Then add the preset to your `.babelrc` file:
   }
 ```
 
-## `babel-preset-stage-x`
+## <a id="toc-babel-preset-stage-x"></a>`babel-preset-stage-x`
 
 JavaScript also has some proposals that are making their way into the standard through the TC39's (the technical committee behind the ECMAScript standard) process.
 
@@ -401,11 +404,11 @@ Then you can add it to your `.babelrc` config.
 
 * * *
 
-# Executing Babel-generated code
+# <a id="toc-executing-babel-generated-code"></a>Wykonywanie kodu wygenerowanego przez Babel
 
 So you've compiled your code with Babel, but this is not the end of the story.
 
-## `babel-polyfill`
+## <a id="toc-babel-polyfill"></a>`babel-polyfill`
 
 Almost all futuristic JavaScript syntax can be compiled with Babel, but the same is not true for APIs.
 
@@ -448,7 +451,7 @@ Then simply include the polyfill at the top of any file that requires it:
 import "babel-polyfill";
 ```
 
-## `babel-runtime`
+## <a id="toc-babel-runtime"></a>`babel-runtime`
 
 In order to implement details of ECMAScript specs, Babel will use "helper" methods in order to keep the generated code clean.
 
@@ -504,11 +507,11 @@ Rather than putting the `_classCallCheck` and `_createClass` helpers in every si
 
 * * *
 
-# Configuring Babel (Advanced)
+# <a id="toc-configuring-babel-advanced"></a>Konfigurowanie Babel (Zaawansowane)
 
 Most people can get by using Babel with just the built-in presets, but Babel exposes much finer-grained power than that.
 
-## Manually specifying plugins
+## <a id="toc-manually-specifying-plugins"></a>Ręczny wybór wtyczek
 
 Babel presets are simply collections of pre-configured plugins, if you want to do something differently you manually specify plugins. This works almost exactly the same way as presets.
 
@@ -534,7 +537,7 @@ For a full list of official plugins see the [Babel Plugins page](http://babeljs.
 
 Also take a look at all the plugins that have been [built by the community](https://www.npmjs.com/search?q=babel-plugin). If you would like to learn how to write your own plugin read the [Babel Plugin Handbook](plugin-handbook.md).
 
-## Plugin options
+## <a id="toc-plugin-options"></a>Opcje wtyczek
 
 Many plugins also have options to configure them to behave differently. For example, many transforms have a "loose" mode which drops some spec behavior in favor of simpler and more performant generated code.
 
@@ -551,11 +554,11 @@ To add options to a plugin, simply make the following change:
 
 > I'll be working on updates to the plugin documentation to detail every option in the coming weeks. [Follow me for updates](https://twitter.com/thejameskyle).
 
-## Customizing Babel based on environment
+## <a id="toc-customizing-babel-based-on-environment"></a>Dostosowywanie Babel w oparciu o środowisko
 
 Babel plugins solve many different tasks. Many of them are development tools that can help you debugging your code or integrate with tools. There are also a lot of plugins that are meant for optimizing your code in production.
 
-For this reason it is common to want Babel configuration based on the environment. You can do this easily with your `.babelrc` file.
+For this reason, it is common to want Babel configuration based on the environment. You can do this easily with your `.babelrc` file.
 
 ```diff
   {
@@ -594,11 +597,11 @@ $ [COMMAND]
 > 
 > **Tip:** If you want your command to work across unix and windows platforms then use [`cross-env`](https://www.npmjs.com/package/cross-env).
 
-## Making your own preset
+## <a id="toc-making-your-own-preset"></a>Tworzenie własnych ustawień
 
 Manually specifying plugins? Plugin options? Environment-based settings? All this configuration might seem like a ton of repetition for all of your projects.
 
-For this reason we encourage the community to create their own presets. This could be a preset for the specific [node version](https://github.com/leebenson/babel-preset-node5) you are running, or maybe a preset for your [entire](https://github.com/cloudflare/babel-preset-cf) [company](https://github.com/airbnb/babel-preset-airbnb).
+For this reason, we encourage the community to create their own presets. This could be a preset for the specific [node version](https://github.com/leebenson/babel-preset-node5) you are running, or maybe a preset for your [entire](https://github.com/cloudflare/babel-preset-cf) [company](https://github.com/airbnb/babel-preset-airbnb).
 
 It's easy to create a preset. Say you have this `.babelrc` file:
 
@@ -649,25 +652,23 @@ Then simply publish this to npm and you can use it like you would any preset.
 
 * * *
 
-# Babel and other tools
+# <a id="toc-babel-and-other-tools"></a>Babel i inne narzędzia
 
 Babel is pretty straight forward to setup once you get the hang of it, but it can be rather difficult navigating how to set it up with other tools. However, we try to work closely with other projects in order to make the experience as easy as possible.
 
-## Static analysis tools
+## <a id="toc-static-analysis-tools"></a>Narzędzia analizy statycznej
 
 Newer standards bring a lot of new syntax to the language and static analysis tools are just starting to take advantage of it.
 
-### Linting
+### <a id="toc-linting"></a>Linting
 
-One of the most popular tools for linting is [ESLint](http://eslint.org), because of this we maintain an offical [`babel-eslint`](https://github.com/babel/babel-eslint) integration.
+One of the most popular tools for linting is [ESLint](http://eslint.org), because of this we maintain an official [`babel-eslint`](https://github.com/babel/babel-eslint) integration.
 
 First install `eslint` and `babel-eslint`.
 
 ```sh
 $ npm install --save-dev eslint babel-eslint
 ```
-
-> **Note:** `babel-eslint` compatibility with Babel 6 is currently in a pre-release version. Install the [latest](https://github.com/babel/babel-eslint/releases) 5.0 beta in order to use it with Babel 6.
 
 Next create or use the existing `.eslintrc` file in your project and set the `parser` as `babel-eslint`.
 
@@ -703,11 +704,13 @@ $ npm run lint
 
 For more information consult the [`babel-eslint`](https://github.com/babel/babel-eslint) or [`eslint`](http://eslint.org) documentation.
 
-### Code Style
+### <a id="toc-code-style"></a>Styl kodu
+
+> JSCS has merged with ESLint, so checkout Code Styling with ESLint.
 
 JSCS is an extremely popular tool for taking linting a step further into checking the style of the code itself. A core maintainer of both the Babel and JSCS projects ([@hzoo](https://github.com/hzoo)) maintains an official integration with JSCS.
 
-Even better, this integration now lives within JSCS itself under the `--exnext` option. So integrating Babel is as easy as:
+Even better, this integration now lives within JSCS itself under the `--esnext` option. So integrating Babel is as easy as:
 
     $ jscs . --esnext
     
@@ -729,21 +732,21 @@ For more information consult the [`babel-jscs`](https://github.com/jscs-dev/babe
 > [WIP]
 -->
 
-### Documentation
+### <a id="toc-documentation"></a>Dokumentacja
 
 Using Babel, ES2015, and Flow you can infer a lot about your code. Using [documentation.js](http://documentation.js.org) you can generate detailed API documentation very easily.
 
 Documentation.js uses Babel behind the scenes to support all of the latest syntax including Flow annotations in order to declare the types in your code.
 
-## Frameworks
+## <a id="toc-frameworks"></a>Frameworki
 
 All of the major JavaScript frameworks are now focused on aligning their APIs around the future of the language. Because of this, there has been a lot of work going into the tooling.
 
 Frameworks have the opportunity not just to use Babel but to extend it in ways that improve their users' experience.
 
-### React
+### <a id="toc-react"></a>React
 
-React has dramatically changed their API to align with ES2015 classes ([Read about the updated API here](http://babeljs.io/blog/2015/06/07/react-on-es6-plus/)). Even further, React relies on Babel to compile it's JSX syntax, deprecating it's own custom tooling in favor of Babel. You can start by setting up the `babel-preset-react` package following the [instructions above](#babel-preset-react).
+React has dramatically changed their API to align with ES2015 classes ([Read about the updated API here](https://babeljs.io/blog/2015/06/07/react-on-es6-plus)). Even further, React relies on Babel to compile it's JSX syntax, deprecating it's own custom tooling in favor of Babel. You can start by setting up the `babel-preset-react` package following the [instructions above](#babel-preset-react).
 
 The React community took Babel and ran with it. There are now a number of transforms [built by the community](https://www.npmjs.com/search?q=babel-plugin+react).
 
@@ -755,7 +758,7 @@ Most notably the [`babel-plugin-react-transform`](https://github.com/gaearon/bab
 > [WIP]
 -->
 
-## Text Editors and IDEs
+## <a id="toc-text-editors-and-ides"></a>Edytory tekstu i IDE
 
 Introducing ES2015, JSX, and Flow syntax with Babel can be helpful, but if your text editor doesn't support it then it can be a really bad experience. For this reason you will want to setup your text editor or IDE with a Babel plugin.
 
@@ -772,7 +775,7 @@ Introducing ES2015, JSX, and Flow syntax with Babel can be helpful, but if your 
 
 * * *
 
-# Babel Support
+# <a id="toc-babel-support"></a>Wsparcie Babel
 
 Babel has a very large and quickly growing community, as we grow we want to ensure that people have all the resources they need to be successful. So we provide a number of different channels for getting support.
 
@@ -780,11 +783,11 @@ Remember that across all of these communities we enforce a [Code of Conduct](htt
 
 We are also looking to grow a self-supporting community, for people who stick around and support others. If you find someone asking a question you know the answer to, take a few minutes and help them out. Try your best to be kind and understanding when doing so.
 
-## Babel Forum
+## <a id="toc-babel-forum"></a>Forum Babel
 
 [Discourse](http://www.discourse.org) has provided us with a hosted version of their forum software for free (and we love them for it!). If forums are your thing please stop by [discuss.babeljs.io](https://discuss.babeljs.io).
 
-## Babel Chat
+## <a id="toc-babel-chat"></a>Czat Babel
 
 Everyone loves [Slack](https://slack.com). If you're looking for immediate support from the community then come chat with us at [slack.babeljs.io](https://slack.babeljs.io).
 
@@ -794,19 +797,18 @@ Everyone loves [Slack](https://slack.com). If you're looking for immediate suppo
 > [WIP]
 -->
 
-## Babel Issues
+## <a id="toc-babel-issues"></a>Błędy Babel
 
-Babel uses the awesome issue tracker provided by [Phabricator](http://phabricator.org) an open source software development platform that makes GitHub issues a nightmare of the past.
+Babel uses the issue tracker provided by [Github](http://github.com).
 
-Babel's Phabricator is available at [phabricator.babeljs.io](https://phabricator.babeljs.io). You can see all the open and closed issues on [maniphest](https://phabricator.babeljs.io/maniphest/).
+You can see all the open and closed issues on [Github](https://github.com/babel/babel/issues).
 
 If you want to open a new issue:
 
-  * [Search for an existing issue](https://phabricator.babeljs.io/maniphest/query/advanced/)
-  * [Login](https://phabricator.babeljs.io/auth/start/) or [Create an account](https://phabricator.babeljs.io/auth/register/) (You can also login using GitHub, Facebook, Twitter, Google, etc.)
-  * [Create a new bug report](https://phabricator.babeljs.io/maniphest/task/create/?projects=PHID-PROJ-2ufzspoyuk4udiwfnzls#R) or [request a new feature](https://phabricator.babeljs.io/maniphest/task/create/?projects=PHID-PROJ-dfaevtocl5zgjtstjijd#R)
+  * [Search for an existing issue](https://github.com/babel/babel/issues)
+  * [Create a new bug report](https://github.com/babel/babel/issues/new) or [request a new feature](https://github.com/babel/babel/issues/new)
 
-### Creating an awesome Babel bug report
+### <a id="toc-creating-an-awesome-babel-bug-report"></a>Tworzenie dobrego raportu o błędzie
 
 Babel issues can sometimes be very difficult to debug remotely, so we need all the help we can get. Spending a few more minutes crafting a really nice bug report can help get your problem solved significantly faster.
 
@@ -816,4 +818,4 @@ First, try isolating your problem. It's extremely unlikely that every part of yo
 
 * * *
 
-> For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.
+> ***Po więcej informacji, śledź [@thejameskyle](https://twitter.com/thejameskyle) na Twitterze.***

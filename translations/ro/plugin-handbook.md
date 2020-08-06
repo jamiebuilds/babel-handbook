@@ -1,67 +1,76 @@
-# Babel Plugin Handbook
+# Manualul pentru Plugin-uri Babel
 
 Acest document descrie cum se pot crea [plugin-uri](https://babeljs.io/docs/advanced/plugins/) pentru [Babel](https://babeljs.io).
 
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
-This handbook is available in other languages, see the [README](/README.md) for a complete list.
+Acest manual este disponibil și în alte limbi, a se vedea [README](/README.md) pentru o listă completă.
 
 # Cuprins
 
-  * [Introducere](#introduction)
-  * [Concepte de bază](#basics) 
-      * [ASTs](#asts)
-      * [Etapele Babel](#stages-of-babel)
-      * [Analiză](#parse) 
-          * [Analiză Lexicală](#lexical-analysis)
-          * [Analiză Sintactică](#syntactic-analysis)
-      * [Transformare](#transform)
-      * [Generare](#generate)
-      * [Traversare](#traversal)
-      * [Vizitatori (Visitors)](#visitors)
-      * [Trasee (Paths)](#paths) 
-          * [Trasee în Vizitatori (Paths in Visitors)](#paths-in-visitors)
-      * [Stare](#state)
-      * [Domenii (Scopes)](#scopes) 
-          * [Legături (Bindings)](#bindings)
-  * [API](#api) 
-      * [babylon](#babylon)
-      * [babel-traverse](#babel-traverse)
-      * [babel-types](#babel-types)
-      * [Definiții](#definitions)
-      * [Constructori](#builders)
-      * [Validatori](#validators)
-      * [Convertori](#converters)
-      * [babel-generator](#babel-generator)
-      * [babel-template](#babel-template)
-  * [Scrierea primului Plugin Babel](#writing-your-first-babel-plugin)
-  * [Operații de Transformare](#transformation-operations) 
-      * [Vizitare (Visiting)](#visiting)
-      * [Verificare dacă un nod este de un anumit tip](#check-if-a-node-is-a-certain-type)
-      * [Verificare dacă un identificator are referință](#check-if-an-identifier-is-referenced)
-      * [Manipulare](#manipulation)
-      * [Înlocuirea unui nod](#replacing-a-node)
-      * [Înlocuirea unui nod cu mai multe noduri](#replacing-a-node-with-multiple-nodes)
-      * [Înlocuirea unui nod cu un șir de caractere sursă](#replacing-a-node-with-a-source-string)
-      * [Inserarea unui nod pe același nivel](#inserting-a-sibling-node)
-      * [Ștergerea unui nod](#removing-a-node)
-      * [Înlocuirea unui părinte](#replacing-a-parent)
-      * [Ștergerea unui părinte](#removing-a-parent)
-      * [Domeniu (Scope)](#scope)
-      * [Verificare dacă o variabilă locală este legată](#checking-if-a-local-variable-is-bound)
-      * [Generarea unui UID](#generating-a-uid)
-      * [Mutarea unei declarații de variabilă într-un domeniu părinte](#pushing-a-variable-declaration-to-a-parent-scope)
-      * [Redenumirea unei legături și a referințelor sale](#rename-a-binding-and-its-references)
-  * [Opțiuni de plugin](#plugin-options)
-  * [Construirea nodurilor](#building-nodes)
-  * [Practici preferate](#best-practices) 
-      * [Evitați traversarea AST pe cât posibil](#avoid-traversing-the-ast-as-much-as-possible)
-      * [Îmbinarea vizitatorilor ori de câte ori este posibil](#merge-visitors-whenever-possible)
-      * [Evitați traversarea când o căutare manuală este suficientă](#do-not-traverse-when-manual-lookup-will-do)
-      * [Optimizarea vizitatorilor imbricați](#optimizing-nested-visitors)
-      * [Atenție la structuri imbricate](#being-aware-of-nested-structures)
+  * [Introducere](#toc-introduction)
+  * [Concepte de bază](#toc-basics) 
+      * [ASTs](#toc-asts)
+      * [Etapele Babel](#toc-stages-of-babel)
+      * [Analiză](#toc-parse) 
+          * [Analiză Lexicală](#toc-lexical-analysis)
+          * [Analiză Sintactică](#toc-syntactic-analysis)
+      * [Transformare](#toc-transform)
+      * [Generare](#toc-generate)
+      * [Traversare](#toc-traversal)
+      * [Vizitatori (Visitors)](#toc-visitors)
+      * [Trasee (Paths)](#toc-paths) 
+          * [Trasee în Vizitatori (Paths in Visitors)](#toc-paths-in-visitors)
+      * [Stare](#toc-state)
+      * [Domenii (Scopes)](#toc-scopes) 
+          * [Legături (Bindings)](#toc-bindings)
+  * [API](#toc-api) 
+      * [babylon](#toc-babylon)
+      * [babel-traverse](#toc-babel-traverse)
+      * [babel-types](#toc-babel-types)
+      * [Definiții](#toc-definitions)
+      * [Constructori](#toc-builders)
+      * [Validatori](#toc-validators)
+      * [Convertori](#toc-converters)
+      * [babel-generator](#toc-babel-generator)
+      * [babel-template](#toc-babel-template)
+  * [Scrierea primului Plugin Babel](#toc-writing-your-first-babel-plugin)
+  * [Operații de Transformare](#toc-transformation-operations) 
+      * [Vizitare (Visiting)](#toc-visiting)
+      * [Aflarea căii unui sub-nod](#toc-get-the-path-of-a-sub-node)
+      * [Verificare dacă un nod este de un anumit tip](#toc-check-if-a-node-is-a-certain-type)
+      * [Verificare dacă un nod este de un anumit tip](#toc-check-if-a-path-is-a-certain-type)
+      * [Verificare dacă un identificator are referință](#toc-check-if-an-identifier-is-referenced)
+      * [Aflarea căii unui anumit părinte](#toc-find-a-specific-parent-path)
+      * [Aflarea căilor nodurilor de același nivel](#toc-get-sibling-paths)
+      * [Oprirea traversării](#toc-stopping-traversal)
+      * [Manipulare](#toc-manipulation)
+      * [Înlocuirea unui nod](#toc-replacing-a-node)
+      * [Înlocuirea unui nod cu mai multe noduri](#toc-replacing-a-node-with-multiple-nodes)
+      * [Înlocuirea unui nod cu un șir de caractere sursă](#toc-replacing-a-node-with-a-source-string)
+      * [Inserarea unui nod pe același nivel](#toc-inserting-a-sibling-node)
+      * [Inserarea într-un containăr](#toc-inserting-into-a-container)
+      * [Ștergerea unui nod](#toc-removing-a-node)
+      * [Înlocuirea unui părinte](#toc-replacing-a-parent)
+      * [Ștergerea unui părinte](#toc-removing-a-parent)
+      * [Domeniu (Scope)](#toc-scope)
+      * [Verificare dacă o variabilă locală este legată](#toc-checking-if-a-local-variable-is-bound)
+      * [Generarea unui UID](#toc-generating-a-uid)
+      * [Mutarea unei declarații de variabilă într-un domeniu părinte](#toc-pushing-a-variable-declaration-to-a-parent-scope)
+      * [Redenumirea unei legături și a referințelor sale](#toc-rename-a-binding-and-its-references)
+  * [Opțiuni de plugin](#toc-plugin-options) 
+      * [Pre şi Post în plugin-uri](#toc-pre-and-post-in-plugins)
+      * [Activarea Syntax în plugin-uri](#toc-enabling-syntax-in-plugins)
+  * [Construirea nodurilor](#toc-building-nodes)
+  * [Practici preferate](#toc-best-practices) 
+      * [Evitați traversarea AST pe cât posibil](#toc-avoid-traversing-the-ast-as-much-as-possible)
+      * [Îmbinarea vizitatorilor ori de câte ori este posibil](#toc-merge-visitors-whenever-possible)
+      * [Evitați traversarea când o căutare manuală este suficientă](#toc-do-not-traverse-when-manual-lookup-will-do)
+      * [Optimizarea vizitatorilor imbricați](#toc-optimizing-nested-visitors)
+      * [Atenție la structuri imbricate](#toc-being-aware-of-nested-structures)
+      * [Testarea Unitara](#toc-unit-testing)
 
-# Introducere
+# <a id="toc-introduction"></a>Introducere
 
 Babel este un compilator generic multi-scop pentru JavaScript. Mai mult decât atât, este o colecție de module care pot fi utilizate pentru diverse tipuri de analiză statică.
 
@@ -69,19 +78,19 @@ Babel este un compilator generic multi-scop pentru JavaScript. Mai mult decât a
 
 Puteți utiliza Babel pentru a construi diverse tipuri de instrumente care vă pot ajuta să fiți mai productivi și pentru a scrie programe mai bune.
 
-> For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.
+> ***Pentru actualizări, urmăriţi-l pe [@thejameskyle](https://twitter.com/thejameskyle) pe Twitter.***
 
 * * *
 
-# Concepte de bază
+# <a id="toc-basics"></a>Concepte de bază
 
 Babel este un compilator de JavaScript, mai exact un compilator sursă-la-sursă, deseori numit un "transpiler". Asta înseamnă că dacă îi pasezi cod JavaScript, Babel modifică codul, și generează cod nou.
 
-## ASTs
+## <a id="toc-asts"></a>ASTs
 
 Fiecare dintre acești pași implică crearea sau lucrul cu un [Arbore Abstract de Sintaxă](https://en.wikipedia.org/wiki/Abstract_syntax_tree) sau AST.
 
-> Babel folosește un AST modificat din [ESTree](https://github.com/estree/estree), cu specificațiile interne aflate [aici](https://github.com/babel/babel/blob/master/doc/ast/spec.md).
+> Babel folosește un AST modificat din [ESTree](https://github.com/estree/estree), cu specificațiile interne aflate [aici](https://github.com/babel/babylon/blob/master/ast/spec.md).
 
 ```js
 function square(n) {
@@ -214,15 +223,15 @@ Există proprietăţi suplimentare pe fiecare Nod, generate de Babel, care descr
 
 Aceste proprietăţi `start`, `end`, `loc`, apar în fiecare Nod.
 
-## Etapele Babel
+## <a id="toc-stages-of-babel"></a>Etapele Babel
 
 Cele trei etape principale ale Babel sunt **analiză**, **transformare**, **generare**.
 
-### Analiză
+### <a id="toc-parse"></a>Analiză
 
 Etapa de **analiză**, primeste codul şi produce AST-ul. Există două faze ale analizei în Babel: [**Analiza lexicală**](https://en.wikipedia.org/wiki/Lexical_analysis) şi [**Analiza sintactică**](https://en.wikipedia.org/wiki/Parsing).
 
-#### Analiză Lexicală
+#### <a id="toc-lexical-analysis"></a>Analiză Lexicală
 
 Analiza lexicală primeste un şir de cod şi-l transformă într-un flux de simboluri (**tokens**).
 
@@ -264,21 +273,21 @@ Fiecare `type` are un set de proprietăţi care descrie token-ul:
 
 La fel ca nodurile AST, acestea conțin `start`, `end`, și `loc`.
 
-#### Analiză Sintactică
+#### <a id="toc-syntactic-analysis"></a>Analiză Sintactică
 
 Analiza sintactică primește un flux de token-uri şi-l transformă într-o reprezentare AST. Folosind informaţiile din token-uri, această fază le va reformata ca un AST care reprezintă structura codului într-un mod care este mai uşor de utilizat.
 
-### Transformare
+### <a id="toc-transform"></a>Transformare
 
 Etapa de [Transformare](https://en.wikipedia.org/wiki/Program_transformation) primește un AST pe care-l traversează, adăugă, actualizează şi sterge noduri. Această etapă este de departe cea mai complexă din Babel sau din orice alt compilator. Acesta este locul în care plugin-urile acționează de fapt, aşadar va fi subiectul majorității capitolelor din acest manual. Nu vom intra prea adânc în detalii pentru moment.
 
-### Generare
+### <a id="toc-generate"></a>Generare
 
 Etapa de [generare de cod](https://en.wikipedia.org/wiki/Code_generation_(compiler)) primește AST-ul final şi-l transformă înapoi într-un şir de cod, creând şi [source maps](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/).
 
 Generarea de cod este destul de simplă: se traversează AST-ul și se construiește un şir de caractere care reprezintă codul transformat.
 
-## Traversare
+## <a id="toc-traversal"></a>Traversare
 
 Atunci când doriţi să transformați un AST trebuie să-l [traversați](https://en.wikipedia.org/wiki/Tree_traversal) recursiv.
 
@@ -330,7 +339,7 @@ Singurul element de aici este un nod `ReturnStatement`, care are un `argument`, 
 
 Acest proces de traversare se întâmplă de-a lungul etapei de transformare Babel.
 
-### Vizitatori (Visitors)
+### <a id="toc-visitors"></a>Vizitatori (Visitors)
 
 Atunci când vorbim despre "a merge" la un nod, ne referim de fapt la a-l **vizita**. Motivul pentru care vom folosi acest termen este pentru că există acest concept de [**vizitator**](https://en.wikipedia.org/wiki/Visitor_pattern).
 
@@ -342,6 +351,11 @@ const MyVisitor = {
     console.log("Called!");
   }
 };
+
+// You can also create a visitor and add methods on it later
+let visitor = {};
+visitor.MemberExpression = function() {};
+visitor.FunctionDeclaration = function() {}
 ```
 
 > **Notă:** `Identifier() { ... }` este o prescurtare pentru `Identifier: {enter() { ... }}`.
@@ -357,6 +371,7 @@ function square(n) {
 ```
 
 ```js
+path.traverse(MyVisitor);
 Called!
 Called!
 Called!
@@ -418,11 +433,33 @@ const MyVisitor = {
 };
 ```
 
-### Trasee (Paths)
+Dacă este necesar, puteţi aplica aceeaşi funcţie mai multor noduri de vizitator prin separare acestora cu o `|` în numele metodei, de exemplu `Identifier|MemberExpression`.
 
-AST o are în general multe Noduri, dar cum se relaționează ele unul la altul? Am putea avea un singur obiect mutabil gigant, care să-l manipulăm şi să avem acces deplin la el, sau putem simplifica acest lucru cu Trasee (**Paths**).
+Exemplu de utilizare în plugin-ul [flow-comments](https://github.com/babel/babel/blob/2b6ff53459d97218b0cf16f8a51c14a165db1fd2/packages/babel-plugin-transform-flow-comments/src/index.js#L47)
 
-Un Traseu (**Path**) este o reprezentare de obiect a legăturii între două noduri.
+```js
+const MyVisitor = {
+  "ExportNamedDeclaration|Flow"(path) {}
+};
+```
+
+Puteţi deasemenea utiliza un alias ca noduri de vizitator (conform definiției din [babel-types](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions)).
+
+De exemplu,
+
+`Function` este un alias pentru `FunctionDeclaration`, `FunctionExpression`, `ArrowFunctionExpression`, `ObjectMethod` and `ClassMethod`.
+
+```js
+const MyVisitor = {
+  Function(path) {}
+};
+```
+
+### <a id="toc-paths"></a>Trasee (Paths)
+
+AST o are în general multe Noduri, dar cum se relaționează ele unul la altul? Am putea avea un singur obiect mutabil gigant, pe care să-l manipulăm şi să avem acces deplin la el, sau putem simplifica acest lucru cu Trasee (**Paths**).
+
+Un Traseu (**Path**) este o reprezentare de obiect a legăturii dintre două noduri.
 
 De exemplu, dacă luăm următorul nod şi copilul său:
 
@@ -485,7 +522,7 @@ Precum şi foarte multe metode legate de adăugarea, actualizarea, mutarea, şi 
 
 Într-un anumit sens, traseele sunt o reprezentare **reactivă** a poziţiei unui nod în arbore şi multe alte informatii despre nod. Ori de câte ori apelați o metodă care modifică arborele, această informaţie este actualizată. Babel gestionează toate acestea pentru a face lucrul cu noduri cât mai ușor posibil.
 
-#### Trasee în Vizitatori (Paths in Visitors)
+#### <a id="toc-paths-in-visitors"></a>Trasee în Vizitatori (Paths in Visitors)
 
 Când aveţi un vizitator care are o metodă `Identifier()`, de fapt se vizitează traseul, nu nodul. În acest fel se lucrează cu reprezentarea reactivă a nodului, nu cu nodul în sine.
 
@@ -502,12 +539,13 @@ a + b + c;
 ```
 
 ```js
+path.traverse(MyVisitor);
 Visiting: a
 Visiting: b
 Visiting: c
 ```
 
-### Stare
+### <a id="toc-state"></a>Stare
 
 Starea este duşmanul transformării AST-ului. Starea îți va crea mari probleme şi ipotezele tale despre stare vor fi aproape întotdeauna greşite, din cauza unei sintaxe care nu ai luat-o în considerare.
 
@@ -568,11 +606,13 @@ const MyVisitor = {
     path.traverse(updateParamNameVisitor, { paramName });
   }
 };
+
+path.traverse(MyVisitor);
 ```
 
 Desigur, acesta este un exemplu teoretic, însă demonstrează cum să eliminăm starea globală din vizitatori.
 
-### Domenii (Scopes)
+### <a id="toc-scopes"></a>Domenii (Scopes)
 
 În continuare vom introduce conceptul de [**domeniu**](https://en.wikipedia.org/wiki/Scope_(computer_science)). JavaScript utilizează [domeniu lexical](https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scoping_vs._dynamic_scoping), care este o structură de arbore, în care fiecare bloc crează un nou domeniu.
 
@@ -642,11 +682,11 @@ Un domeniu poate fi reprezentat în felul următor:
 }
 ```
 
-Crearea unui domeniu nou implică pasarea unui traseu şi a unui domeniu părinte. Apoi, în timpul procesului de traversare se colectează toate referințele ("legături") din acel domeniu.
+Crearea unui domeniu nou implică pasarea unui traseu şi a unui domeniu părinte. Apoi, în timpul procesului de traversare se colectează toate referințele ("legăturile") din acel domeniu.
 
 Odată ce am făcut acest lucru, există tot felul de metode ce le putem utiliza pe domenii. Însă le vom examina mai târziu.
 
-#### Legături (Bindings)
+#### <a id="toc-bindings"></a>Legături (Bindings)
 
 Toate referinţele aparţin unui anumit domeniu; această relaţie este cunoscută sub denumirea de **legătură**.
 
@@ -699,13 +739,13 @@ function scopeOne() {
 
 * * *
 
-# API
+# <a id="toc-api"></a>API
 
 Babel este de fapt o colecţie de module. În această secţiune vom trece prin cele mai importante, explicând la ce ajută şi cum se utilizează.
 
 > Notă: Acest document nu este un înlocuitor pentru documentaţia detaliată a API-ului, care va fi disponibilă în altă parte în scurt timp.
 
-## [`babylon`](https://github.com/babel/babel/tree/master/packages/babylon)
+## <a id="toc-babylon"></a>[`babylon`](https://github.com/babel/babylon)
 
 Babylon este analizorul din Babel. A început ca o bifurcație din Acorn, este rapid, simplu de utilizat, are o arhitectură bazată pe plugin-uri pentru caracteristici neconvenţionale (precum şi viitoarele standarde).
 
@@ -751,9 +791,9 @@ babylon.parse(code, {
 
 Din moment ce Babylon este construit cu o arhitectură bazată pe plugin-uri, există, de asemenea, o opţiune ` plugins` care permite activarea plugin-urilor interne. Reţineţi că Babylon nu a deschis încă API-ul pentru plugin-uri externe, deşi este posibil sa facă acest lucru în viitor.
 
-Pentru a vedea o listă completă de plugin-uri, examinați [Babylon README](https://github.com/babel/babel/blob/master/packages/babylon/README.md#plugins).
+Pentru a vedea o listă completă de plugin-uri, a se vedea [Babylon README](https://github.com/babel/babylon/blob/master/README.md#plugins).
 
-## [`babel-traverse`](https://github.com/babel/babel/tree/master/packages/babel-traverse)
+## <a id="toc-babel-traverse"></a>[`babel-traverse`](https://github.com/babel/babel/tree/master/packages/babel-traverse)
 
 Modulul de Traversare Babel conține starea generală a arborelui, şi este responsabil pentru înlocuirea, ștergerea şi adăugarea de noduri.
 
@@ -787,7 +827,7 @@ traverse(ast, {
 });
 ```
 
-## [`babel-types`](https://github.com/babel/babel/tree/master/packages/babel-types)
+## <a id="toc-babel-types"></a>[`babel-types`](https://github.com/babel/babel/tree/master/packages/babel-types)
 
 Babel Types este o librărie de utilitare, similară cu Lodash, pentru nodurile AST. Conține metode pentru construirea, validarea şi conversia nodurilor AST. Este util pentru curățarea logicii AST cu metode utilitare bine gândite.
 
@@ -812,9 +852,9 @@ traverse(ast, {
 });
 ```
 
-### Definiții
+### <a id="toc-definitions"></a>Definiții
 
-Babel Types conține definiţii pentru fiecare tip de nod, și informaţii cu privire la ce proprietăţile aparţin cui, ce valori sunt valide, cum se construiește un nod, cum ar trebui traversat nodul şi pseudonime ale nodului.
+Babel Types conține definiţii pentru fiecare tip de nod, și informaţii cu privire la ce proprietăţile aparţin cui, ce valori sunt valide, cum se construiește un nod, cum ar trebui traversat nodul şi alias-uri ale nodului.
 
 O definiţie a unui tip de nod arată astfel:
 
@@ -837,7 +877,7 @@ defineType("BinaryExpression", {
 });
 ```
 
-### Constructori
+### <a id="toc-builders"></a>Constructori
 
 Veţi observa mai sus că definiţia pentru `BinaryExpression` are un câmp `builder`.
 
@@ -876,7 +916,7 @@ a * b
 
 Constructorii, de asemenea, vor valida nodurile pe care le crează şi aruncă erori descriptive dacă sunt folosiți necorespunzător. Ceea ce ne conduce la următorul tip de metodă.
 
-### Validatori
+### <a id="toc-validators"></a>Validatori
 
 Definiția pentru `BinaryExpression` include informații privind cămpurile (`fields`) nodului şi cum să le validăm.
 
@@ -914,11 +954,11 @@ t.assertBinaryExpression(maybeBinaryExpressionNode, { operator: "*" });
 // Error: Expected type "BinaryExpression" with option { "operator": "*" }
 ```
 
-### Convertori
+### <a id="toc-converters"></a>Convertori
 
 > [WIP] în lucru
 
-## [`babel-generator`](https://github.com/babel/babel/tree/master/packages/babel-generator)
+## <a id="toc-babel-generator"></a>[`babel-generator`](https://github.com/babel/babel/tree/master/packages/babel-generator)
 
 Babel Generator este generatorul de cod pentru Babel. Primește un AST şi îl transformă în cod cu sourcemaps.
 
@@ -940,7 +980,7 @@ const code = `function square(n) {
 
 const ast = babylon.parse(code);
 
-generate(ast, null, code);
+generate(ast, {}, code);
 // {
 //   code: "...",
 //   map: "..."
@@ -959,9 +999,9 @@ generate(ast, {
 }, code);
 ```
 
-## [`babel-template`](https://github.com/babel/babel/tree/master/packages/babel-template)
+## <a id="toc-babel-template"></a>[`babel-template`](https://github.com/babel/babel/tree/master/packages/babel-template)
 
-Babel Template este un alt modul micuț dar incredibil de util. Vă permite să scrieți şiruri de cod cu substituenţi care îi puteţi folosi în loc să construiți manual un AST uriaș.
+Babel Template este un alt modul mic dar incredibil de util. Vă permite să scrie şiruri de cod cu substituenţi care le puteţi folosi în loc de construirea manuală unui AST masiv. În informatică, această capabilitate se numeşte quasiquotes.
 
 ```sh
 $ npm install --save babel-template
@@ -988,11 +1028,11 @@ console.log(generate(ast).code);
 var myModule = require("my-module");
 ```
 
-# Scrierea primului Plugin Babel
+# <a id="toc-writing-your-first-babel-plugin"></a>Scrierea primului Plugin Babel
 
 Acum că sunteţi familiarizați cu toate elementele de bază din Babel, haideţi să le utilizăm împreună cu API-ul pentru plugin-uri.
 
-Start off with a `function` that gets passed the current [`babel`](https://github.com/babel/babel/tree/master/packages/babel-core) object.
+Începe cu o `funcţie` care primește obiectul [`babel`](https://github.com/babel/babel/tree/master/packages/babel-core) curent.
 
 ```js
 export default function(babel) {
@@ -1015,6 +1055,19 @@ export default function({ types: t }) {
   return {
     visitor: {
       // visitor contents
+    }
+  };
+};
+```
+
+Fiecare funcţie în vizitator primește 2 argumente: ` path ` şi ` state `
+
+```js
+export default function({ types: t }) {
+  return {
+    visitor: {
+      Identifier(path, state) {},
+      ASTNodeTypeHere(path, state) {}
     }
   };
 };
@@ -1113,11 +1166,35 @@ Super mișto! Primul nostru plugin pentru Babel.
 
 * * *
 
-# Operații de Transformare
+# <a id="toc-transformation-operations"></a>Operații de Transformare
 
-## Vizitare (Visiting)
+## <a id="toc-visiting"></a>Vizitare (Visiting)
 
-### Verificare dacă un nod este de un anumit tip
+### <a id="toc-get-the-path-of-a-sub-node"></a>Aflarea căii unui sub-nod
+
+Pentru a accesa proprietatea unui nod AST în mod normal se accesează nodul şi apoi proprietatea. `path.node.property`
+
+```js
+// the BinaryExpression AST node has properties: `left`, `right`, `operator`
+BinaryExpression(path) {
+  path.node.left;
+  path.node.right;
+  path.node.operator;
+}
+```
+
+În cazul în care aveţi nevoie să accesați calea proprietății, utilizaţi metoda `get` a traseului, pasându-i numele proprietății.
+
+```js
+BinaryExpression(path) {
+  path.get('left');
+}
+Program(path) {
+  path.get('body.0');
+}
+```
+
+### <a id="toc-check-if-a-node-is-a-certain-type"></a>Verificare dacă un nod este de un anumit tip
 
 Dacă doriţi să verificaţi de ce tip este un anumit nod, modul preferat de a face acest lucru este:
 
@@ -1153,7 +1230,29 @@ BinaryExpression(path) {
 }
 ```
 
-### Verificare dacă un identificator are referință
+### <a id="toc-check-if-a-path-is-a-certain-type"></a>Verificare dacă un nod este de un anumit tip
+
+Un traseu are aceleași metode de verificare a tipului unui nod:
+
+```js
+BinaryExpression(path) {
+  if (path.get('left').isIdentifier({ name: "n" })) {
+    // ...
+  }
+}
+```
+
+este echivalent cu a face:
+
+```js
+BinaryExpression(path) {
+  if (t.isIdentifier(path.node.left, { name: "n" })) {
+    // ...
+  }
+}
+```
+
+### <a id="toc-check-if-an-identifier-is-referenced"></a>Verificare dacă un identificator are referință
 
 ```js
 Identifier(path) {
@@ -1173,9 +1272,99 @@ Identifier(path) {
 }
 ```
 
-## Manipulare
+### <a id="toc-find-a-specific-parent-path"></a>Aflarea căii unui anumit părinte
 
-### Înlocuirea unui nod
+Uneori va trebui să traversați arborele în sus, până când este îndeplinită o condiţie.
+
+Apelați `callback`-ul cu `NodePath`-ul tuturor părinţii. Când `calback`-ul returnează o valoare adevărată, vom returna acel `NodePath`.
+
+```js
+path.findParent((path) => path.isObjectExpression());
+```
+
+În cazul în care traseul curent trebuie și el inclus:
+
+```js
+path.find((path) => path.isObjectExpression());
+```
+
+Găseşte cea mai apropiată funcție sau program părinte:
+
+```js
+path.getFunctionParent();
+```
+
+Traversați arborele în sus, până când găsim un nod părinte în listă
+
+```js
+path.getStatementParent();
+```
+
+### <a id="toc-get-sibling-paths"></a>Aflarea traseelor nodurilor de același nivel
+
+În cazul în care o cale dintr-o listă, ca în corpul unui ` Function ` / ` Program `, acesta va avea "fraţi".
+
+  * Verificaţi dacă un traseu este parte dintr-o listă cu `path.inList`
+  * Puteţi obţine fraţii din jur cu `path.getSibling(index)`,
+  * Indicele traseului curent în containerul cu `path.key`,
+  * Containerului traseului (o serie cu toate traseele nodurilor frați) cu `path.container`
+  * Obţine numele cheii containerului listei cu `path.listKey`
+
+> Aceste API-uri sunt utilizate în plugin-ul [transform-merge-sibling-variables](https://github.com/babel/babili/blob/master/packages/babel-plugin-transform-merge-sibling-variables/src/index.js) utilizat în [babel-minify](https://github.com/babel/babili).
+
+```js
+var a = 1; // pathA, path.key = 0
+var b = 2; // pathB, path.key = 1
+var c = 3; // pathC, path.key = 2
+```
+
+```js
+export default function({ types: t }) {
+  return {
+    visitor: {
+      VariableDeclaration(path) {
+        // if the current path is pathA
+        path.inList // true
+        path.listKey // "body"
+        path.key // 0
+        path.getSibling(0) // pathA
+        path.getSibling(path.key + 1) // pathB
+        path.container // [pathA, pathB, pathC]
+      }
+    }
+  };
+}
+```
+
+### <a id="toc-stopping-traversal"></a>Oprirea traversării
+
+Dacă plugin-ul dumneavoastră trebuie să-și oprească execuția la un anumit moment, cea mai simplă abordare este să returnați devreme.
+
+```js
+BinaryExpression(path) {
+  if (path.node.operator !== '**') return;
+}
+```
+
+Dacă faceți o sub-traversare într-un traseu de nivel superior, puteţi folosi 2 metode oferite de API:
+
+`path.skip()` skips traversing the children of the current path. `path.stop()` stops traversal entirely.
+
+```js
+outerPath.traverse({
+  Function(innerPath) {
+    innerPath.skip(); // if checking the children is irrelevant
+  },
+  ReferencedIdentifier(innerPath, state) {
+    state.iife = true;
+    innerPath.stop(); // if you want to save some state and then stop traversal, or deopt
+  }
+});
+```
+
+## <a id="toc-manipulation"></a>Manipulare
+
+### <a id="toc-replacing-a-node"></a>Înlocuirea unui nod
 
 ```js
 BinaryExpression(path) {
@@ -1192,7 +1381,7 @@ BinaryExpression(path) {
   }
 ```
 
-### Înlocuirea unui nod cu mai multe noduri
+### <a id="toc-replacing-a-node-with-multiple-nodes"></a>Înlocuirea unui nod cu mai multe noduri
 
 ```js
 ReturnStatement(path) {
@@ -1215,7 +1404,7 @@ ReturnStatement(path) {
 
 > **Notă:** Când se înlocuieşte o expresie cu mai multe noduri, acestea trebuie să fie declaraţii. Acest lucru este necesar deoarece Babel utilizează euristică pe scară largă la înlocuirea nodurilor, ceea ce înseamnă că puteţi face unele transformări destul de complexe, care altfel ar fi extrem de detaliate.
 
-### Înlocuirea unui nod cu un șir de caractere sursă
+### <a id="toc-replacing-a-node-with-a-source-string"></a>Înlocuirea unui nod cu un șir de caractere sursă
 
 ```js
 FunctionDeclaration(path) {
@@ -1235,7 +1424,7 @@ FunctionDeclaration(path) {
 
 > **Notă:** Nu este recomandat să utilizaţi acest API dacă nu aveți de a face cu șiruri de caractere sursă dinamice, altfel este mult mai eficient pentru a analiza codul în afara vizitatorului.
 
-### Inserarea unui nod pe același nivel
+### <a id="toc-inserting-a-sibling-node"></a>Inserarea unui nod pe același nivel
 
 ```js
 FunctionDeclaration(path) {
@@ -1254,7 +1443,28 @@ FunctionDeclaration(path) {
 
 > **Notă:** Acesta ar trebui să fie întotdeauna o declaraţie sau o serie de declaraţii. Aceasta utilizează aceleaşi euristici menţionate în [Înlocuirea unui nod cu mai multe noduri](#replacing-a-node-with-multiple-nodes).
 
-### Ștergerea unui nod
+### <a id="toc-inserting-into-a-container"></a>Inserarea într-un container
+
+Dacă doriţi să inseraţi într-o proprietate de nod AST ca asta este un array la fel ca `body`. Este similar cu `insertBefore` / `insertAfter` fiind nevoie doar de a specifica `listKey`, care este de obicei `body`.
+
+```js
+ClassMethod(path) {
+  path.get('body').unshiftContainer('body', t.expressionStatement(t.stringLiteral('before')));
+  path.get('body').pushContainer('body', t.expressionStatement(t.stringLiteral('after')));
+}
+```
+
+```diff
+ class A {
+  constructor() {
++   "before"
+    var a = 'middle';
++   "after"
+  }
+ }
+```
+
+### <a id="toc-removing-a-node"></a>Ștergerea unui nod
 
 ```js
 FunctionDeclaration(path) {
@@ -1268,7 +1478,9 @@ FunctionDeclaration(path) {
 - }
 ```
 
-### Înlocuirea unui părinte
+### <a id="toc-replacing-a-parent"></a>Înlocuirea unui părinte
+
+Doar apelați `replaceWith` cu parentPath: `path.parentPath`
 
 ```js
 BinaryExpression(path) {
@@ -1285,7 +1497,7 @@ BinaryExpression(path) {
   }
 ```
 
-### Ștergerea unui părinte
+### <a id="toc-removing-a-parent"></a>Ștergerea unui părinte
 
 ```js
 BinaryExpression(path) {
@@ -1299,9 +1511,9 @@ BinaryExpression(path) {
   }
 ```
 
-## Domeniu (Scope)
+## <a id="toc-scope"></a>Domeniu (Scope)
 
-### Verificare dacă o variabilă locală este legată
+### <a id="toc-checking-if-a-local-variable-is-bound"></a>Verificare dacă o variabilă locală este legată
 
 ```js
 FunctionDeclaration(path) {
@@ -1311,9 +1523,9 @@ FunctionDeclaration(path) {
 }
 ```
 
-Aceasta va parcurge arborele şi va căuta acea legatură anume.
+Aceasta va parcurge arborele şi va căuta acea legătură anume.
 
-Puteţi verifica și dacă un domeniu are o anumită legătură proprie (**own**):
+Puteţi verifica și dacă un domeniu are o legătură proprie (**own**):
 
 ```js
 FunctionDeclaration(path) {
@@ -1323,9 +1535,9 @@ FunctionDeclaration(path) {
 }
 ```
 
-### Generarea unui UID
+### <a id="toc-generating-a-uid"></a>Generarea unui UID
 
-Următorul cod va genera un identificator care nu se ciocnește cu nicio variabilă definită local.
+Următorul cod va genera un identificator fără coliziuni cu nicio variabilă definită local.
 
 ```js
 FunctionDeclaration(path) {
@@ -1336,7 +1548,7 @@ FunctionDeclaration(path) {
 }
 ```
 
-### Mutarea unei declarații de variabilă într-un domeniu părinte
+### <a id="toc-pushing-a-variable-declaration-to-a-parent-scope"></a>Mutarea unei declarații de variabilă într-un domeniu părinte
 
 Uneori, poate doriţi să mutați un `VariableDeclaration`, pentru a-i putea asocia o valoare.
 
@@ -1356,7 +1568,7 @@ FunctionDeclaration(path) {
 + };
 ```
 
-### Redenumirea unei legături și a referințelor sale
+### <a id="toc-rename-a-binding-and-its-references"></a>Redenumirea unei legături și a referințelor sale
 
 ```js
 FunctionDeclaration(path) {
@@ -1390,7 +1602,7 @@ FunctionDeclaration(path) {
 
 * * *
 
-# Opțiuni de plugin
+# <a id="toc-plugin-options"></a>Opțiuni de plugin
 
 Dacă doriţi să lăsați utilizatorii să particularizeze comportamentul plugin-ul vostru Babel, puteţi accepta opţiuni de plugin specifice, pe care utilizatorii le pot specifica în felul următor:
 
@@ -1422,11 +1634,73 @@ export default function({ types: t }) {
 
 Aceste opţiuni sunt specifice plugin-ului şi nu puteţi accesa opţiuni din alte plugin-uri.
 
+## <a id="toc-pre-and-post-in-plugins"></a> Pre şi Post în plugin-uri
+
+Plugin-urile pot avea funcţii care sunt rulate înainte sau după. Ele pot fi folosite în scopuri de instalare sau curăţare/analiză.
+
+```js
+export default function({ types: t }) {
+  return {
+    pre(state) {
+      this.cache = new Map();
+    },
+    visitor: {
+      StringLiteral(path) {
+        this.cache.set(path.node.value, 1);
+      }
+    },
+    post(state) {
+      console.log(this.cache);
+    }
+  };
+}
+```
+
+## <a id="toc-enabling-syntax-in-plugins"></a> Activarea Syntax în plugin-uri
+
+Plugin-urile pot activa [plugin-uri Babilon](https://github.com/babel/babylon#plugins), astfel încât utilizatorii nu trebuie să le instaleze/activeze. Acest lucru previne erori de interpretare în lipsa moştenirii plugin-ului de sintaxă.
+
+```js
+export default function({ types: t }) {
+  return {
+    inherits: require("babel-plugin-syntax-jsx")
+  };
+}
+```
+
+## <a id="toc-throwing-a-syntax-error"></a> Aruncarea unei Erori de Sintaxă
+
+Dacă doriţi să aruncați o eroare cu babel-code-frame și un mesaj:
+
+```js
+export default function({ types: t }) {
+  return {
+    visitor: {
+      StringLiteral(path) {
+        throw path.buildCodeFrameError("Error message here");
+      }
+    }
+  };
+}
+```
+
+Eroarea arată așa:
+
+    file.js: Error message here
+       7 |
+       8 | let tips = [
+    >  9 |   "Click on any AST node with a '+' to expand it",
+         |   ^
+      10 |
+      11 |   "Hovering over a node highlights the \
+      12 |    corresponding part in the source code",
+    
+
 * * *
 
-# Construirea nodurilor
+# <a id="toc-building-nodes"></a>Construirea nodurilor
 
-Când scrieţi transformări veţi dori adesea să construiți unele noduri pentru a le insera în AST. Aşa cum am menţionat anterior, puteţi face acest lucru folosind metodele constructor ([builder](#builder)) din pachetul [`babel-types`](#babel-types).
+Când scrieţi transformări veţi dori adesea să construiți unele noduri pentru a le insera în AST. Aşa cum am menţionat anterior, puteţi face acest lucru folosind metodele [builder](#builder) din pachetul [`babel-types`](#babel-types).
 
 Numele metodei pentru un constructor este pur şi simplu numele tipului de nod pe care doriţi să-l construiți cu excepţia că prima literă trebuie sa fie mică. De exemplu dacă doriți să construiți `MemberExpression` ar trebui să utilizaţi `t.memberExpression(...)`.
 
@@ -1466,6 +1740,19 @@ builder: ["object", "property", "computed"],
 
 > Reţineţi că, uneori, există mai multe proprietăţi care le puteți particulariza, decât cele conținute în seria constructorului (`builder`). Acest lucru se întâmplă pentru a evita prea multe argumente pe constructor. În aceste cazuri, trebuie să setaţi proprietăţile manual. Un exemplu este [`ClassMethod`](https://github.com/babel/babel/blob/bbd14f88c4eea88fa584dd877759dd6b900bf35e/packages/babel-types/src/definitions/es2015.js#L238-L276).
 
+```js
+// Example
+// because the builder doesn't contain `async` as a property
+var node = t.classMethod(
+  "constructor",
+  t.identifier("constructor"),
+  params,
+  body
+)
+// set it manually after creation
+node.async = true;
+```
+
 Puteţi vedea validarea pentru argumentele constructorului cu obiectul `fields`.
 
 ```js
@@ -1485,7 +1772,7 @@ fields: {
 }
 ```
 
-Puteţi vedea că `object` trebuie să fie `Expression`, `property` trebuie să fie `Expression` sau `Identifier` în funcţie dacă expresia de membru este calculată (`computed`) sau nu şi `computed` este pur şi simplu un boolean care implicit este `false`.
+Puteţi vedea că `object` trebuie să fie `Expression`, `property` trebuie să fie `Expression` sau `Identifier` depinzând dacă expresia membru este calculată (`computed`) sau nu, iar `computed` este pur şi simplu un boolean care implicit este `false`.
 
 Aşadar putem construi un `MemberExpression` în felul următor:
 
@@ -1535,17 +1822,29 @@ Puteţi găsi toate [definiţiile aici](https://github.com/babel/babel/tree/mast
 
 * * *
 
-# Practici preferate
+# <a id="toc-best-practices"></a>Practici preferate
 
-> Voi lucra la această secţiune în următoarele săptămâni.
+## <a id="toc-create-helper-builders-and-checkers"></a> Crearea de funcții ajutătoare Constructor şi Verificator
 
-## Evitați traversarea AST pe cât posibil
+Este destul de simplu pentru a extrage anumite verificări (dacă un nod are un anumit tip) în funcții separate de ajutor, precum şi extragerea de funcții ajutoare pentru tipuri specifice de nod.
+
+```js
+function isAssignment(node) {
+  return node && node.operator === opts.operator + "=";
+}
+
+function buildAssignment(left, right) {
+  return t.assignmentExpression("=", left, right);
+}
+```
+
+## <a id="toc-avoid-traversing-the-ast-as-much-as-possible"></a>Evitați traversarea AST pe cât posibil
 
 Traversarea AST este scumpă, şi este uşor să traversați accidental AST mai mult decât este necesar. Acest lucru ar putea însemna mii daca nu zeci de mii de operaţiuni suplimentare.
 
 Babel optimizează acest lucru cât mai mult posibil, prin îmbinarea vizitatorilor împreună, dacă este posibil, pentru a face totul într-o singură traversare.
 
-### Îmbinarea vizitatorilor ori de câte ori este posibil
+### <a id="toc-merge-visitors-whenever-possible"></a>Îmbinarea vizitatorilor ori de câte ori este posibil
 
 Când scrieţi vizitatori, poate fi tentant să apelați `path.traverse` în mai multe locuri unde sunt necesare în mod logic.
 
@@ -1576,12 +1875,12 @@ path.traverse({
 });
 ```
 
-### Evitați traversarea când o căutare manuală este suficientă
+### <a id="toc-do-not-traverse-when-manual-lookup-will-do"></a>Evitați traversarea când o căutare manuală este suficientă
 
 De asemenea, poate fi tentant să apelați `path.traverse` atunci când căutați un anumit tip de nod.
 
 ```js
-const visitorOne = {
+const nestedVisitor = {
   Identifier(path) {
     // ...
   }
@@ -1589,7 +1888,7 @@ const visitorOne = {
 
 const MyVisitor = {
   FunctionDeclaration(path) {
-    path.get('params').traverse(visitorOne);
+    path.get('params').traverse(nestedVisitor);
   }
 };
 ```
@@ -1606,9 +1905,9 @@ const MyVisitor = {
 };
 ```
 
-## Optimizarea vizitatorilor imbricați
+## <a id="toc-optimizing-nested-visitors"></a>Optimizarea vizitatorilor imbricați
 
-Atunci când aveți vizitatori imbricați, ar putea face mai mult sens să-i scrieți imbricat și în codul dumneavoastră.
+Atunci când aveți vizitatori imbricați, ar putea avea mai mult sens să-i scrieți imbricat și în codul dumneavoastră.
 
 ```js
 const MyVisitor = {
@@ -1622,10 +1921,10 @@ const MyVisitor = {
 };
 ```
 
-Însă acest lucru creează un nou obiect vizitator de fiecare dată când `FunctionDeclaration()` este apelată, iar Babel trebuie să o spargă şi să o valideze de fiecare dată. Acest lucru poate fi costisitor, așadar este mai bine să declarați vizitatorul în afară.
+Cu toate acestea, acest lucru creează un nou obiect de vizitator de fiecare dată când este chemat `FunctionDeclaration()`. Acest lucru poate fi costisitor, deoarece Babel face unele procesări de fiecare dată când un obiect vizitator nou este pasat (cum ar fi desfacerea cheilor care conţin mai multe tipuri, validarea şi ajustarea structurii obiectului). Deoarece Babel stochează fanioane pe obiectele vizitator care indică faptul că acesta a efectuat deja această transformare, este mai bine pentru a stoca vizitatorul într-o variabilă şi pasarea aceluiași obiect de fiecare dată.
 
 ```js
-const visitorOne = {
+const nestedVisitor = {
   Identifier(path) {
     // ...
   }
@@ -1633,7 +1932,7 @@ const visitorOne = {
 
 const MyVisitor = {
   FunctionDeclaration(path) {
-    path.traverse(visitorOne);
+    path.traverse(nestedVisitor);
   }
 };
 ```
@@ -1659,7 +1958,7 @@ const MyVisitor = {
 Puteţi să-l pasați ca stare metodei `traverse()` şi să aveți acces la ea pe obiectul `this` al vizitatorului.
 
 ```js
-const visitorOne = {
+const nestedVisitor = {
   Identifier(path) {
     if (path.node.name === this.exampleState) {
       // ...
@@ -1670,12 +1969,12 @@ const visitorOne = {
 const MyVisitor = {
   FunctionDeclaration(path) {
     var exampleState = path.node.params[0].name;
-    path.traverse(visitorOne, { exampleState });
+    path.traverse(nestedVisitor, { exampleState });
   }
 };
 ```
 
-## Atenție la structuri imbricate
+## <a id="toc-being-aware-of-nested-structures"></a>Atenție la structuri imbricate
 
 Uneori când ne gândim la o transformare, am putea uita că structura poate fi imbricată.
 
@@ -1721,4 +2020,144 @@ class Foo {
 }
 ```
 
-> For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) on Twitter.
+## <a id="toc-unit-testing"></a>Testarea Unitara
+
+Există câteva moduri de bază pentru a testa plugin-uri babel: teste de imagine, teste de AST şi teste de execuție. Vom folosi [jest](http://facebook.github.io/jest/) pentru acest exemplu deoarece suportă implicit teste de imagine. Exemplul creat aici este găzduit în [acest repo](https://github.com/brigand/babel-plugin-testing-example).
+
+În primul rând avem nevoie de un plugin de babel, pe care-l vom pune în src/index.js.
+
+```js
+<br />module.exports = function testPlugin(babel) {
+  return {
+    visitor: {
+      Identifier(path) {
+        if (path.node.name === 'foo') {
+          path.node.name = 'bar';
+        }
+      }
+    }
+  };
+};
+```
+
+### Teste de imagine
+
+Apoi, instalăm dependenţele noastre cu `npm install --save-dev babel-core jest`, şi apoi putem începe scrierea primului nostru test: imaginea. Testele de imagine ne permit să inspectăm vizual rezultatul plug-in-ului babel. Îi pasăm date de intrare, îi spunem să creeze imaginea rezultatului şi să o salveaze într-un fişier. Adăugăm imaginile în git. Acest lucru ne permite să vedem atunci când este afectat rezultatul oricăruia dintre cazurile noastre de testare. Deasemenea, ne arată și diferența dintre cele 2 variante în Pull Requests. Desigur, ai putea face acest lucru cu orice framework de testare, dar cu jest actualizarea imaginilor este foarte ușoară: `jest -u`.
+
+```js
+// src/__tests__/index-test.js
+const babel = require('babel-core');
+const plugin = require('../');
+
+var example = `
+var foo = 1;
+if (foo) console.log(foo);
+`;
+
+it('works', () => {
+  const {code} = babel.transform(example, {plugins: [plugin]});
+  expect(code).toMatchSnapshot();
+});
+```
+
+Codul de mai sus ne creează un fişier de imagine în `src/__tests__/__snapshots__/index-test.js.snap`.
+
+```js
+exports[`test works 1`] = `
+"
+var bar = 1;
+if (bar) console.log(bar);"
+`;
+```
+
+Dacă vom schimba din 'bar' în 'baz' plugin-ul şi rulăm jest din nou, vom obține acest lucru:
+
+```diff
+Valoarea primită nu este identică cu cea salvată 1.
+
+    - Snapshot
+    + Received
+
+    @@ -1,3 +1,3 @@
+     "
+    -var bar = 1;
+    -if (bar) console.log(bar);"
+    +var baz = 1;
+    +if (baz) console.log(baz);"
+```
+
+Putem vedea cum modificarea noastră în codul de plug-in a afectat rezultatul plugin-ului nostru, iar în cazul în care noul rezultat este ceea ce ne dorim, putem rula `jest -u` pentru a actualiza imaginea salvată.
+
+### Teste AST
+
+În plus faţă de testarea de imagine, putem inspecta manual și AST-ul. Acesta este un exemplu simplu, dar fragil. Pentru situaţii reale, aţi putea folosi babel-traverse. Acest lucru vă permite să specificaţi un obiect cu o cheie de `vizitator`, exact cum utilizaţi pentru plugin-ul în sine.
+
+```js
+it('contains baz', () => {
+  const {ast} = babel.transform(example, {plugins: [plugin]});
+  const program = ast.program;
+  const declaration = program.body[0].declarations[0];
+  assert.equal(declaration.id.name, 'baz');
+  // or babelTraverse(program, {visitor: ...})
+});
+```
+
+### Teste de Execuție
+
+Aici vom transforma codul şi apoi vom evalua dacă se comportă corect. Reţineţi că nu vom utiliza `assert` în test. Acest lucru asigură faptul că dacă plugin-ul nostru efectuează chestii ciudate, ca de exemplu eliminarea linie assert din greșeală, testul va eșua.
+
+```js
+it('foo is an alias to baz', () => {
+  var input = `
+    var foo = 1;
+    // test that foo was renamed to baz
+    var res = baz;
+  `;
+  var {code} = babel.transform(input, {plugins: [plugin]});
+  var f = new Function(`
+    ${code};
+    return res;
+  `);
+  var res = f();
+  assert(res === 1, 'res is 1');
+});
+```
+
+Babel core foloseşte o [abordare similară](https://github.com/babel/babel/blob/7.0/CONTRIBUTING.md#writing-tests) a testelor de imagine şi de execuție.
+
+### [`babel-plugin-tester`](https://github.com/kentcdodds/babel-plugin-tester)
+
+Acest pachet ușurează testarea plugin-urilor. Dacă sunteţi familiarizat cu [RuleTester](http://eslint.org/docs/developer-guide/working-with-rules#rule-unit-tests) din ESLint, acest lucru ar trebui să vă fie cunoscut. Puteți urmări [documentația](https://github.com/kentcdodds/babel-plugin-tester/blob/master/README.md) pentru lista completă de posibilități, dar iată un exemplu simplu:
+
+```js
+import pluginTester from 'babel-plugin-tester';
+import identifierReversePlugin from '../identifier-reverse-plugin';
+
+pluginTester({
+  plugin: identifierReversePlugin,
+  fixtures: path.join(__dirname, '__fixtures__'),
+  tests: {
+    'does not change code with no identifiers': '"hello";',
+    'changes this code': {
+      code: 'var hello = "hi";',
+      output: 'var olleh = "hi";',
+    },
+    'using fixtures files': {
+      fixture: 'changed.js',
+      outputFixture: 'changed-output.js',
+    },
+    'using jest snapshots': {
+      code: `
+        function sayHi(person) {
+          return 'Hello ' + person + '!'
+        }
+      `,
+      snapshot: true,
+    },
+  },
+});
+```
+
+* * *
+
+> ***Pentru actualizări, urmăriţi [@thejameskyle](https://twitter.com/thejameskyle) şi [@babeljs](https://twitter.com/babeljs) pe Twitter.***
