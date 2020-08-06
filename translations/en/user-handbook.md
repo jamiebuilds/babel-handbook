@@ -978,8 +978,3 @@ your setup is contributing to the problem. If your problem is a piece of input
 code, try deleting as much code as possible that still causes an issue.
 
 > [WIP]
-
-----
-
-> ***For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle)
-> on Twitter.***
