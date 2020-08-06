@@ -1,5 +1,7 @@
 # Babel User Handbook
 
+Written by [Jamie Kyle](https://jamie.build/)
+
 This document covers everything you ever wanted to know about using
 [Babel](https://babeljs.io) and related tooling.
 
@@ -87,9 +89,6 @@ that anyone can use to build the next generation of JavaScript tooling.
 Many people do too, the ecosystem that has sprung up around Babel is massive and
 very diverse. Throughout this handbook I'll be covering both how built-in Babel
 tools work as well as some useful things from around the community.
-
-> ***For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle)
-> on Twitter.***
 
 ----
 
