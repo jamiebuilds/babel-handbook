@@ -229,7 +229,7 @@ Babel 的三个主要处理步骤分别是： **解析（parse）**，**转换�
 
 ### <a id="toc-parse"></a>解析
 
-**解析**步骤接收代码并输出 AST。 这个步骤分为两个阶段：[**词法分析（Lexical Analysis） **](https://en.wikipedia.org/wiki/Lexical_analysis)和 [**语法分析（Syntactic Analysis）**](https://en.wikipedia.org/wiki/Parsing)。.
+**解析**步骤接收代码并输出 AST。 这个步骤分为两个阶段：[**词法分析（Lexical Analysis）**](https://en.wikipedia.org/wiki/Lexical_analysis)和 [**语法分析（Syntactic Analysis）**](https://en.wikipedia.org/wiki/Parsing)。.
 
 #### <a id="toc-lexical-analysis"></a>词法分析
 
@@ -457,7 +457,7 @@ const MyVisitor = {
 
 ### <a id="toc-paths"></a>Paths（路径）
 
-AST 通常会有许多节点，那么节点直接如何相互关联呢？ 我们可以使用一个可操作和访问的巨大可变对象表示节点之间的关联关系，或者也可以用**Paths**（路径）来简化这件事情。.
+AST 通常会有许多节点，那么节点之间如何相互关联呢？ 我们可以使用一个可操作和访问的巨大可变对象表示节点之间的关联关系，或者也可以用**Paths**（路径）来简化这件事情。.
 
 **Path** 是表示两个节点之间连接的对象。
 
@@ -586,7 +586,7 @@ function square(n) {
 n;
 ```
 
-更好的处理方式是使用递归，下面让我们来像克里斯托佛·诺兰的电影盗梦空间那样来把一个访问者放进另外一个访问者里面。
+更好的处理方式是使用递归，下面让我们来像克里斯托佛·诺兰的电影《盗梦空间》那样来把一个访问者放进另外一个访问者里面。
 
 ```js
 const updateParamNameVisitor = {
@@ -1303,7 +1303,7 @@ path.getStatementParent();
 
 ### <a id="toc-get-sibling-paths"></a>获取同级路径
 
-如果一个路径是在一个 `Function`／`Program`中的列表里面，它就有同级节点。
+如果一个路径是在一个 `Function`/`Program` 中的列表里面，它就有同级节点。
 
   * 使用`path.inList`来判断路径是否有同级节点，
   * 使用`path.getSibling(index)`来获得同级路径,
@@ -1311,9 +1311,9 @@ path.getStatementParent();
   * 使用 `path.container`获取路径的容器（包含所有同级节点的数组）
   * 使用 `path.listKey`获取容器的key
 
-> 这些API用于 babel-minify </>中使用的 transform-merge-sibling-variables </>插件.</p> </blockquote> 
-> 
-> ```js
+> 这些 API 用于 [babel-minify](https://github.com/babel/babili) 中使用的 [transform-merge-sibling-variables](https://github.com/babel/babili/blob/master/packages/babel-plugin-transform-merge-sibling-variables/src/index.js) 插件。
+
+```js
 var a = 1; // pathA, path.key = 0
 var b = 2; // pathB, path.key = 1
 var c = 3; // pathC, path.key = 2
@@ -1339,7 +1339,7 @@ export default function({ types: t }) {
 
 ### <a id="toc-stopping-traversal"></a>停止遍历
 
-如果你的插件需要在某种情况下不运行，最简单的做法是尽早写回。
+如果你的插件需要在某种情况下不运行，最简单的做法是写一个提前返回。
 
 ```js
 BinaryExpression(path) {
@@ -1349,7 +1349,8 @@ BinaryExpression(path) {
 
 如果您在顶级路径中进行子遍历，则可以使用2个提供的API方法：
 
-`path.skip()` skips traversing the children of the current path. `path.stop()` stops traversal entirely.
+`path.skip()` 跳过遍历当前路径的子级。  
+`path.stop()` 完全停止遍历。
 
 ```js
 outerPath.traverse({
@@ -1403,11 +1404,11 @@ ReturnStatement(path) {
   }
 ```
 
-> **注意：</>当用多个节点替换一个表达式时，它们必须是   声明。 这是因为Babel在更换节点时广泛使用启发式算法，这意味着您可以做一些非常疯狂的转换，否则将会非常冗长。</p> </blockquote> 
-> 
-> ### <a id="toc-replacing-a-node-with-a-source-string"></a>用字符串源码替换节点
-> 
-> ```js
+> **注意：**当用多个节点替换表达式时，它们必须是语句。这是因为 Babel 在更换节点时广泛使用启发式算法，这意味着您可以做一些非常疯狂的转换，否则将会非常冗长。
+
+### <a id="toc-replacing-a-node-with-a-source-string"></a>用字符串源码替换节点
+
+```js
 FunctionDeclaration(path) {
   path.replaceWithSourceString(`function add(a, b) {
     return a + b;
@@ -1423,11 +1424,11 @@ FunctionDeclaration(path) {
   }
 ```
 
-> **注意：</>不建议使用这个API，除非您正在处理动态的源码字符串，否则在访问者外部解析代码更有效率。</p> </blockquote> 
-> 
-> ### <a id="toc-inserting-a-sibling-node"></a>插入兄弟节点
-> 
-> ```js
+> **注意：**不建议使用这个API，除非您正在处理动态的源码字符串，否则在访问者外部解析代码更有效率。
+
+ ### <a id="toc-inserting-a-sibling-node"></a>插入兄弟节点
+
+```js
 FunctionDeclaration(path) {
   path.insertBefore(t.expressionStatement(t.stringLiteral("Because I'm easy come, easy go.")));
   path.insertAfter(t.expressionStatement(t.stringLiteral("A little high, little low.")));
@@ -1442,14 +1443,14 @@ FunctionDeclaration(path) {
 + "A little high, little low.";
 ```
 
-> 注意：</>这里同样应该使用声明或者一个声明数组。 这个使用了在用多个节点替换一个节点</>中提到的相同的启发式算法。.</p> </blockquote> 
-> 
-> ### <a id="toc-inserting-into-a-container"></a>插入到容器（container）中
-> 
-> 如果您想要在AST节点属性中插入一个像` body </ 0>那样的数组。
-它与 <code> insertBefore `/` insertAfter ` 类似, 但您必须指定 ` listKey ` (通常是 ` 正文 `).
-> 
-> ```js
+> **注意：**这应该始终是一个语句或语句数组。 这里使用了在[用多个节点替换一个节点](#replacing-a-node-with-multiple-nodes)中提到的相同的启发式算法。
+
+ ### <a id="toc-inserting-into-a-container"></a>插入到容器（container）中
+
+如果您想要在AST节点属性中插入一个像`body` 那样的数组,
+它与 `insertBefore`/`insertAfter` 类似， 不同之处在于您必须指定`listKey ` (通常是 ` body `)。
+
+ ```js
 ClassMethod(path) {
   path.get('body').unshiftContainer('body', t.expressionStatement(t.stringLiteral('before')));
   path.get('body').pushContainer('body', t.expressionStatement(t.stringLiteral('after')));
@@ -1482,14 +1483,15 @@ FunctionDeclaration(path) {
 
 ### <a id="toc-replacing-a-parent"></a>替换父节点
 
-只需使用parentPath：` path.parentPath </>调用<code> replaceWith </>即可</p>
+只需使用 parentPath: `path.parentPath` 调用 `eplaceWith` 即可
 
-<pre><code class="js">BinaryExpression(path) {
+```js
+BinaryExpression(path) {
   path.parentPath.replaceWith(
     t.expressionStatement(t.stringLiteral("Anyway the wind blows, doesn't really matter to me, to me."))
   );
 }
-`</pre> 
+```
 
 ```diff
   function square(n) {
@@ -1551,14 +1553,15 @@ FunctionDeclaration(path) {
 
 ### <a id="toc-pushing-a-variable-declaration-to-a-parent-scope"></a>提升变量声明至父级作用域
 
-有时你可能想要推送一个` VariableDeclaration </>，这样你就可以分配给它。</p>
+有时你可能想要推送一个`VariableDeclaration`，这样你就可以赋值给它。
 
-<pre><code class="js">FunctionDeclaration(path) {
+```js
+FunctionDeclaration(path) {
   const id = path.scope.generateUidIdentifierBasedOnNode(path.node.id);
   path.remove();
   path.scope.parent.push({ id, init: path.node });
 }
-`</pre> 
+```
 
 ```diff
 - function square(n) {
@@ -1617,9 +1620,10 @@ FunctionDeclaration(path) {
 }
 ```
 
-这些选项会通过`状态</>对象传递给插件访问者：</p>
+这些选项会通过 `state` 对象传递给插件访问者：
 
-<pre><code class="js">export default function({ types: t }) {
+```js
+export default function({ types: t }) {
   return {
     visitor: {
       FunctionDeclaration(path, state) {
@@ -1629,7 +1633,7 @@ FunctionDeclaration(path) {
     }
   }
 }
-`</pre> 
+```
 
 这些选项是特定于插件的，您不能访问其他插件中的选项。
 
@@ -1657,7 +1661,7 @@ export default function({ types: t }) {
 
 ## <a id="toc-enabling-syntax-in-plugins"></a> 在插件中启用其他语法
 
-插件可以启用babylon plugins</>，以便用户不需要安装/启用它们。 这可以防止解析错误，而不会继承语法插件。</p> 
+插件可以启用 [babylon plugins](https://github.com/babel/babylon#plugins)，以便用户不需要安装/启用它们。 这可以防止解析错误，而不会继承语法插件。
 
 ```js
 export default function({ types: t }) {
@@ -1699,15 +1703,16 @@ export default function({ types: t }) {
 
 # <a id="toc-building-nodes"></a>构建节点
 
-编写转换时，通常需要构建一些要插入的节点进入AST。 如前所述，您可以使用` babel-types </>包中的<a href="#builders">builder </>方法。</p>
+编写转换时，通常需要构建一些要插入的节点进入AST。 如前所述，您可以使用[`babel-types`](#babel-types) 包中的 [builder](#builders) 方法。
 
-<p>构建器的方法名称就是您想要的节点类型的名称，除了第一个字母小写。 例如，如果您想建立一个<code> MemberExpression </>您可以使用<code> t.memberExpression（...）</>.</p>
+构建器的方法名称就是您想要的节点类型的名称，除了第一个字母小写。 例如，如果您想建立一个 `MemberExpression` 您可以使用`t.memberExpression(...)`。
 
-<p>这些构建器的参数由节点定义决定。 有一些正在做的工作，以生成易于阅读的文件定义，但现在他们都可以在<a href="https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions">此处</a>找到。.</p>
+这些构建器的参数由节点定义决定。 有一些正在做的工作，以生成易于阅读的文件定义，但现在他们都可以在[这里](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions)到。
 
-<p>节点定义如下所示：</p>
+节点定义如下所示：
 
-<pre><code class="js">defineType("MemberExpression", {
+```js
+defineType("MemberExpression", {
   builder: ["object", "property", "computed"],
   visitor: ["object", "property"],
   aliases: ["Expression", "LVal"],
@@ -1726,20 +1731,20 @@ export default function({ types: t }) {
     }
   }
 });
-`</pre> 
+```
 
 在这里你可以看到关于这个特定节点类型的所有信息，包括如何构建它，遍历它，并验证它。
 
 通过查看 ` 生成器 ` 属性, 可以看到调用生成器方法所需的3个参数 (` t. 情况 `).
 
 ```js
-生成器: ["object", "property", "computed"],
+builder: ["object", "property", "computed"],
 ```
 
-> 请注意，有时在节点上可以定制的属性比``构建器</>数组包含的属性更多。 这是为了防止生成器有太多的参数。 在这些情况下，您需要手动设置属性。 一个例子是<class> ClassMethod </>.</p>
-</blockquote>
+> 请注意，有时在节点上可以定制的属性比``构建器</>数组包含的属性更多。 这是为了防止生成器有太多的参数。 在这些情况下，您需要手动设置属性。一个例子是[`ClassMethod`](https://github.com/babel/babel/blob/bbd14f88c4eea88fa584dd877759dd6b900bf35e/packages/babel-types/src/definitions/es2015.js#L238-L276)。
 
-<pre><code class="js">// Example
+```js
+// Example
 // because the builder doesn't contain `async` as a property
 var node = t.classMethod(
   "constructor",
@@ -1749,11 +1754,11 @@ var node = t.classMethod(
 )
 // set it manually after creation
 node.async = true;
-``</pre> 
-> 
-> You can see the validation for the builder arguments with the `fields` object.
-> 
-> ```js
+```
+
+You can see the validation for the builder arguments with the `fields` object.
+
+```js
 fields: {
   object: {
     validate: assertNodeType("Expression")
