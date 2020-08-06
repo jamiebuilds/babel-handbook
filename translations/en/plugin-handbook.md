@@ -1,5 +1,7 @@
 # Babel Plugin Handbook
 
+Written by [Jamie Kyle](https://jamie.build/)
+
 This document covers how to create [Babel](https://babeljs.io)
 [plugins](https://babeljs.io/docs/advanced/plugins/).
 
