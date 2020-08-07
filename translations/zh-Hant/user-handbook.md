@@ -1,62 +1,62 @@
-# Babel 使用手冊
+# Babel 用戶手冊
 
-本文件包含了[Babel](https://babeljs.io)及其相關工具的所有資訊。
+這本手冊涵蓋了關於 [Babel](https://babeljs.io) 的使用及其相關工具的內容。
 
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
-本使用手冊也提供了其它語系的版本，請參閱[讀我檔案](/README.md)以獲得完整清單。
+這本手冊提供了多種語言的版本，查看 [自述文件](/README.md) 里的完整列表。
 
 # 目錄
 
-  * [簡介](#toc-introduction)
+  * [介紹](#toc-introduction)
   * [安裝 Babel](#toc-setting-up-babel) 
       * [`babel-cli`](#toc-babel-cli)
-      * [在專案底下使用 Babel CLI](#toc-running-babel-cli-from-within-a-project)
+      * [在項目內運行 Babel CLI](#toc-running-babel-cli-from-within-a-project)
       * [`babel-register`](#toc-babel-register)
       * [`babel-node`](#toc-babel-node)
       * [`babel-core`](#toc-babel-core)
-  * [設定 Babel](#toc-configuring-babel) 
+  * [配置 Babel](#toc-configuring-babel) 
       * [`.babelrc`](#toc-babelrc)
       * [`babel-preset-es2015`](#toc-babel-preset-es2015)
       * [`babel-preset-react`](#toc-babel-preset-react)
       * [`babel-preset-stage-x`](#toc-babel-preset-stage-x)
-  * [執行已轉換的程式碼](#toc-executing-babel-generated-code) 
+  * [執行 Babel 生成的代碼](#toc-executing-babel-generated-code) 
       * [`babel-polyfill`](#toc-babel-polyfill)
       * [`babel-runtime`](#toc-babel-runtime)
-  * [Babel 進階設定](#toc-configuring-babel-advanced) 
-      * [手動指定外掛](#toc-manually-specifying-plugins)
-      * [外掛選項](#toc-plugin-options)
-      * [基於環境的 Babel 客製化](#toc-customizing-babel-based-on-environment)
-      * [撰寫自己的 preset](#toc-making-your-own-preset)
-  * [其他工具](#toc-babel-and-other-tools) 
+  * [配置 Babel（進階）](#toc-configuring-babel-advanced) 
+      * [手動指定插件](#toc-manually-specifying-plugins)
+      * [插件選項](#toc-plugin-options)
+      * [基於環境自定義 Babel](#toc-customizing-babel-based-on-environment)
+      * [製作你自己的預設（preset）](#toc-making-your-own-preset)
+  * [Babel 和其他工具](#toc-babel-and-other-tools) 
       * [靜態分析工具](#toc-static-analysis-tools)
-      * [Linting](#toc-linting)
-      * [Code Style](#toc-code-style)
-      * [撰寫說明文件](#toc-documentation)
-      * [Frameworks](#toc-frameworks)
+      * [語法檢查（Linting）](#toc-linting)
+      * [代碼風格](#toc-code-style)
+      * [文檔](#toc-documentation)
+      * [框架](#toc-frameworks)
       * [React](#toc-react)
-      * [IDE 及編輯器](#toc-text-editors-and-ides)
-  * [技術支援](#toc-babel-support) 
-      * [Babel Forum](#toc-babel-forum)
-      * [Babel Chat](#toc-babel-chat)
-      * [Babel Issues](#toc-babel-issues)
-      * [Creating an awesome Babel bug report](#toc-creating-an-awesome-babel-bug-report)
+      * [文本編輯器和 IDEs（集成開發環境）](#toc-text-editors-and-ides)
+  * [Babel 支持](#toc-babel-support) 
+      * [Babel 論壇](#toc-babel-forum)
+      * [Babel 聊天](#toc-babel-chat)
+      * [Babel 問題](#toc-babel-issues)
+      * [創建漂亮的 Babel 錯誤報告](#toc-creating-an-awesome-babel-bug-report)
 
-# <a id="toc-introduction"></a>簡介
+# <a id="toc-introduction"></a>介紹
 
-Babel 是個 JavaScript 通用型多功能編譯器。藉由 Babel ，你可享受到（或創建出）新世代的 JavaScript 及功能。
+Babel 是一個通用的多用途 JavaScript 編譯器。通過 Babel 你可以使用（並創建）下一代的 JavaScript，以及下一代的 JavaScript 工具。
 
-JavaScript 作為一種不斷演進的程式語言，新功能的規格制定和提議不斷推陳出新。 使用 Babel 可讓你在這些新功能廣為普及之前就先行上手。
+作為一種語言，JavaScript 在不斷發展，新的標準／提案和新的特性層出不窮。 在得到廣泛普及之前，Babel 能夠讓你提前（甚至數年）使用它們。
 
-Babel 靠的就是把你依據最新標準所寫下的程式碼編譯成時下最普及版本。 這種程序叫程式碼對程式碼編譯（source-to-source compiling），亦稱之為「轉譯」（transpiling）。
+Babel 把用最新標準編寫的 JavaScript 代碼向下編譯成可以在今天隨處可用的版本。 這一過程叫做“源碼到源碼”編譯， 也被稱為轉換編譯（transpiling，是一個自造合成詞，即轉換＋編譯。以下也簡稱為轉譯）。
 
-舉例來說，Babel 能將 ES2015 的新語法，arrow function：
+例如，Babel 能夠將新的 ES2015 箭頭函數語法：
 
 ```js
 const square = n => n * n;
 ```
 
-轉譯成：
+轉譯為：
 
 ```js
 const square = function square(n) {
@@ -64,80 +64,80 @@ const square = function square(n) {
 };
 ```
 
-不過 Babel 能做的不僅如此，它能支援擴充語法，例如能支援 React 的 JSX 語法，以及能進行靜態型別檢查的 Flow 語法。
+不過 Babel 的用途並不止於此，它支持語法擴展，能支持像 React 所用的 JSX 語法，同時還支持用於靜態類型檢查的流式語法（Flow Syntax）。
 
-而且在 Babel 裡，一切都是以外掛的形式存在。任何人都可創作自己的外掛，並藉由 Babel 的威力來做任何事。
+更重要的是，Babel 的一切都是簡單的插件，誰都可以創建自己的插件，利用 Babel 的全部威力去做任何事情。
 
-*甚至更進一步地*，Babel 自身被解構成數個核心模組，任何人都可用它們來打造新一代的 JavaScript 工具。
+*再進一步*，Babel 自身被分解成了數個核心模塊，任何人都可以利用它們來創建下一代的 JavaScript 工具。
 
-目前已有許多人這麼做了，整個環繞著 Babel 的生態圈蓬勃發展，充滿著多樣性。 在這份手冊裡，我會談到如何被用 Babel 的內建工具，以及這社群裡的一些實用的東西。
+已經有很多人都這樣做了，圍繞着 Babel 湧現出了非常大規模和多樣化的生態系統。 在這本手冊中，我將介紹如何使用 Babel 的內建工具以及一些來自於社區的非常有用的東西。
 
-> ***進一步的最新資訊，請追蹤[@thejameskyle](https://twitter.com/thejameskyle)的 Twitter 帳號。***
+> ***在 Twitter 上關注 [@thejameskyle](https://twitter.com/thejameskyle)，第一時間獲取更新。***
 
 * * *
 
 # <a id="toc-setting-up-babel"></a>安裝 Babel
 
-由於 JavaScript 社群裡並沒有統一的建置工具、程式架構、或平臺之類的，Babel 對於所有主流工具整合都有正式的支援。 從 Gulp 到 Browserify、從 Ember 到 Meteor，無論你的建置環境如何設置，Babel 可能都正式整合進來了。
+由於 JavaScript 社區沒有統一的構建工具、框架、平台等等，因此 Babel 正式集成了對所有主流工具的支持。 從 Gulp 到 Browserify，從 Ember 到 Meteor，不管你的環境設置如何，Babel 都有正式的集成支持。
 
-基於本手冊的宗旨，我們只會提到 Babel 內建的安裝方式。不過您可參閱互動式的[安裝頁面](http://babeljs.io/docs/setup)來得知其他整合方式的詳情。
+本手冊的目的主要是介紹 Babel 內建方式的安裝，不過你可以訪問交互式的[安裝頁面](http://babeljs.io/docs/setup)來查看其它的整合方式。
 
-> **注意：**本指南會提到一些命令列工具，例如：`node` 和 `npm`。在閱讀下去之前，請確保您對這些工具有夠的了解。
+> **注意：** 本手冊將涉及到一些命令行工具如 `node` 和 `npm`。在繼續閱讀之前請確保你已經熟悉這些工具了。
 
 ## <a id="toc-babel-cli"></a>`babel-cli`
 
-Babel 的命令列介面（CLI）是編譯檔案最簡單的方法。
+Babel 的 CLI 是一種在命令行下使用 Babel 編譯文件的簡單方法。
 
-我們先以全域安裝的方式來學些基本的
+讓我們先全局安裝它來學習基礎知識。
 
 ```sh
 $ npm install --global babel-cli
 ```
 
-我們可以像這樣來編譯我們的第一個檔案了：
+我們可以這樣來編譯我們的第一個文件：
 
 ```sh
 $ babel my-file.js
 ```
 
-這樣會把編譯結果直接輸出到你的終端機上。要讓它輸出到檔案，我們得指定：`--out-file` 或 `-o`.
+這將把編譯後的結果直接輸出至終端。使用 `--out-file` 或着 `-o` 可以將結果寫入到指定的文件。
 
 ```sh
 $ babel example.js --out-file compiled.js
-# or
+# 或
 $ babel example.js -o compiled.js
 ```
 
-如果我們想編譯整個目錄內的檔案，並把結果輸出到另一個目錄下，我們可以使用：`--out-dir` 或 `-d`.
+如果我們想要把一個目錄整個編譯成一個新的目錄，可以使用 `--out-dir` 或者 `-d`。
 
 ```sh
 $ babel src --out-dir lib
-# or
+# 或
 $ babel src -d lib
 ```
 
-### <a id="toc-running-babel-cli-from-within-a-project"></a>在專案下執行 Babel CLI
+### <a id="toc-running-babel-cli-from-within-a-project"></a>在項目內運行 Babel CLI
 
-雖然您*能*在把 Babel 安裝在機器的全域之下，但在各個專案之下，進行**本地**安裝會更適合。
+儘管你 *可以* 把 Babel CLI 全局安裝在你的機器上，但是按項目逐個安裝在 **本地** 會更好。
 
-這麼做有兩個主要原因：
+有兩個主要的原因。
 
-  1. 同一臺機器上的兩個專案，各自使用自己的 Babel，能讓您進行個別的更動。
-  2. 如此意謂著你的工作環境不會與非必要的東西產生隱性相依，讓你的專案更具可攜性，更容易設置。
+  1. 在同一台機器上的不同項目或許會依賴不同版本的 Babel 並允許你有選擇的更新。
+  2. 這意味着你對工作環境沒有隱式依賴，這讓你的項目有很好的可移植性並且易於安裝。
 
-要進行本地安裝 Babel 命令列，可執行：
+要在（項目）本地安裝 Babel CLI 可以運行：
 
 ```sh
 $ npm install --save-dev babel-cli
 ```
 
-> **注意：**既然一般而言，在全域下執行 Babel 不是個好做法。您或許會想解除安裝全域下的 Babel，請執行：
+> **注意：** 因為全局運行 Babel 通常不是什麼好習慣所以如果你想要卸載全局安裝的 Babel 的話，可以運行：
 > 
 > ```sh
-$ npm uninstall --global babel-cli
-```
+> $ npm uninstall --global babel-cli
+> ```
 
-安裝完成後，你的 `package.json` 檔看起來應該像這樣：
+安裝完成後，你的 `package.json` 應該如下所示：
 
 ```json
 {
@@ -149,9 +149,9 @@ $ npm uninstall --global babel-cli
 }
 ```
 
-現在，我們不是直接在命令列下執行 Babel，而是把我們的命令放進 **npm scripts** 裡，使用本地版本的 Babel。
+現在，我們不直接從命令行運行 Babel 了，取而代之我們將把運行命令寫在 **npm scripts** 里，這樣可以使用 Babel 的本地版本。
 
-只要在你的 `package.json` 檔裡加入 `"scripts"` 欄位，並把對 Babel 的命令放在 `build` 之後。.
+只需將 `"scripts"` 字段添加到你的 `package.json` 文件內並且把 babel 命令寫成 `build` 字段。
 
 ```diff
   {
@@ -166,74 +166,74 @@ $ npm uninstall --global babel-cli
   }
 ```
 
-現在，我們可以從終端機執行：
+現在可以在終端里運行：
 
 ```js
 npm run build
 ```
 
-這樣就能跟之前一樣地執行 Babel 了，只不過使用的是本地的版本。
+這將以與之前同樣的方式運行 Babel，但這一次我們使用的是本地副本。
 
 ## <a id="toc-babel-register"></a>`babel-register`
 
-下個經常使用 Babel 的方式是透過 `babel-register`。這種方式，只要有所需的檔案就能執行 Babel 了，這樣或許能跟你的設置做出更好的整合。
+下一個常用的運行 Babel 的方法是通過 `babel-register`。這種方法只需要引入文件就可以運行 Babel，或許能更好地融入你的項目設置。
 
-但是請注意這並不適合在正式環境中使用。 部署以此法編譯出的程式並不是好做法。 在部署之前，先把程式編譯好才比較好。 However this works quite well for build scripts or other things that you run locally.
+但請注意這種方法並不適合正式產品環境使用。 直接部署用此方式編譯的代碼不是好的做法。 在部署之前預先編譯會更好。 不過用在構建腳本或是其他本地運行的腳本中是非常合適的。
 
-首先，我們在專案中建立一個 `index.js` 檔。
+讓我們先在項目中創建 `index.js` 文件。
 
 ```js
 console.log("Hello world!");
 ```
 
-如果我們執行 `node index.js`，Babel 不會編譯它。我們得安裝 `babel-register`.
+如果我們用 `node index.js` 來運行它是不會使用 Babel 來編譯的。所以我們需要設置 `babel-register`。
 
-首先，安裝 `babel-register`.
+首先安裝 `babel-register`。.
 
 ```sh
 $ npm install --save-dev babel-register
 ```
 
-接著在專案中建立一個 `register.js` 檔，並在其中加入下列程式碼：
+接着，在項目中創建 `register.js` 文件並添加如下代碼：
 
 ```js
 require("babel-register");
 require("./index.js");
 ```
 
-這麼做是在 Node 的模組系統中*注冊*Babel，並且開始編譯所有被 `require` 的檔案。
+這樣做可以把 Babel *註冊* 到 Node 的模塊系統中並開始編譯其中 `require` 的所有文件。
 
-現在，我們可以用 `register.js` 取代 `node index.js` 了。
+現在我們可以使用 `register.js` 來代替 `node index.js` 來運行了。
 
 ```sh
 $ node register.js
 ```
 
-> **注意：**您不能在想編譯的檔案中注冊 Babel。因為 node 會在 Babel 編譯它前就先執行它。
+> **注意：** 你不能在你要編譯的文件內同時註冊 Babel，因為 node 會在 Babel 編譯它之前就將它執行了。
 > 
 > ```js
-require("babel-register");
-// not compiled:
-console.log("Hello world!");
-```
+> require("babel-register");
+> // 未編譯的：
+> console.log("Hello world!");
+> ```
 
 ## <a id="toc-babel-node"></a>`babel-node`
 
-如果您只是透過 `node` 命令列介面來執行某些程式，整合 Babel 的最簡單方式可能就是使用 `babel-node` 命令列介面了。大體上而言，它可算是 `node` 命令列介面的替代品。
+如果你要用 `node` CLI 來運行代碼，那麼整合 Babel 最簡單的方式就是使用 `babel-node` CLI，它是 `node` CLI 的替代品。
 
-但是請注意這並不適合在正式環境中使用。 部署以此法編譯出的程式並不是好做法。 在部署之前，先把程式編譯好才比較好。 However this works quite well for build scripts or other things that you run locally.
+但請注意這種方法並不適合正式產品環境使用。 直接部署用此方式編譯的代碼不是好的做法。 在部署之前預先編譯會更好。 不過用在構建腳本或是其他本地運行的腳本中是非常合適的。
 
-首先，請確定您己安裝了 `babel-cli`
+首先確保 `babel-cli` 已經安裝了。
 
 ```sh
 $ npm install --save-dev babel-cli
 ```
 
-> **Note:** If you are wondering why we are installing this locally, please read the [Running Babel CLI from within a project](#toc-running-babel-cli-from-within-a-project) section above.
+> **注意:** 如果您想知道我們為什麼要在本地安裝，請閱讀 上面[在項目內運行Babel CLI](#toc-running-babel-cli-from-within-a-project)的部分。
 
-然後在任何您執行 `node` 的地方，以 `babel-node` 取代之。.
+然後用 `babel-node` 來替代 `node` 運行所有的代碼 。.
 
-如果您使用 npm `scripts`，您只需：
+如果用 npm `scripts` 的話只需要這樣做：
 
 ```diff
   {
@@ -244,20 +244,20 @@ $ npm install --save-dev babel-cli
   }
 ```
 
-不然的話，你得指明 `babel-node` 的完整路徑。
+要不然的話你需要寫全 `babel-node` 的路徑。
 
 ```diff
 - node script.js
 + ./node_modules/.bin/babel-node script.js
 ```
 
-> 提示：你也可使用 [`npm-run`](https://www.npmjs.com/package/npm-run).
+> 提示：你可以使用 [`npm-run`](https://www.npmjs.com/package/npm-run)。.
 
 ## <a id="toc-babel-core"></a>`babel-core`
 
-如果您由於某種原因，需要使用程式控制 Babel，您可直接使用 `babel-core` 套件。
+如果你需要以編程的方式來使用 Babel，可以使用 `babel-core` 這個包。
 
-首先安裝 `babel-core`.
+首先安裝 `babel-core`。.
 
 ```sh
 $ npm install babel-core
@@ -267,14 +267,14 @@ $ npm install babel-core
 var babel = require("babel-core");
 ```
 
-如果您的 JavaScript 是字串形式的，您可直接使用 `babel.transform` 編譯它。.
+字符串形式的 JavaScript 代碼可以直接使用 `babel.transform` 來編譯。
 
 ```js
 babel.transform("code();", options);
 // => { code, map, ast }
 ```
 
-如果是檔案形式的，您可選擇使用非同步 API：
+如果是文件的話，可以使用異步 api：
 
 ```js
 babel.transformFile("filename.js", options, function(err, result) {
@@ -282,37 +282,37 @@ babel.transformFile("filename.js", options, function(err, result) {
 });
 ```
 
-或是同步 API：
+或者是同步 api：
 
 ```js
 babel.transformFileSync("filename.js", options);
 // => { code, map, ast }
 ```
 
-無論如何，如果您已經有了 Babel 的抽象語法樹（AST），您也可直接將之編譯。
+要是已經有一個 Babel AST（抽象語法樹）了就可以直接從 AST 進行轉換。
 
 ```js
 babel.transformFromAst(ast, code, options);
 // => { code, map, ast }
 ```
 
-For all of the above methods, `options` refers to https://babeljs.io/docs/usage/api/#options.
+對於上述所有方法，`options` 指的都是 http://babeljs.io/docs/usage/options/
 
 * * *
 
-# <a id="toc-configuring-babel"></a>設定 Babel
+# <a id="toc-configuring-babel"></a>配置 Babel
 
-現在你可能注意到了，單獨執行 Babel 看來除了把 JavaScript 檔案從一處複製到另一處之外，並沒什麼其他的作用。
+你或許已經注意到了，目前為止通過運行 Babel 自己我們並沒能“翻譯”代碼，而僅僅是把代碼從一處拷貝到了另一處。
 
 這是因為我們還沒告訴 Babel 要做什麼。
 
-> 因為 Babel 是個通用型的編譯器，有各式各樣的使用方式。在預設的情況下，它不會做任何事。你得明確告訴 Babel 該做些什麼。
+> 由於 Babel 是一個可以用各種花樣去使用的通用編譯器，因此默認情況下它反而什麼都不做。你必須明確地告訴 Babel 應該要做什麼。
 
-您可藉由安裝 **外掛程式** 或 **presets**（一組外掛程式）來指示 Babel 該做些什麼。
+你可以通過安裝 **插件（plugins）** 或 **預設（presets，也就是一組插件）** 來指示 Babel 去做什麼事情。
 
 ## <a id="toc-babelrc"></a>`.babelrc`
 
-在我們告訴 Babel 做什麼之前，我們需要建立一個組態檔。我們需要做的只是建立一個 `.babelrc` 檔，把它放在您的專案的根目錄。剛開始它的內容就像這樣：
+在我們告訴 Babel 該做什麼之前，我們需要創建一個配置文件。你需要做的就是在項目的根路徑下創建 `.babelrc` 文件。然後輸入以下內容作為開始：
 
 ```js
 {
@@ -321,21 +321,21 @@ For all of the above methods, `options` refers to https://babeljs.io/docs/usage/
 }
 ```
 
-這個檔案就是您用來設定 Babel，讓它執行您想做的事。
+這個文件就是用來讓 Babel 做你要它做的事情的配置文件。
 
-> **注意：**儘管您還是有其他方式可把各種選項傳給 Babel，但 `.babelrc` 檔仍是最常規、最好的方式。
+> **注意：** 儘管你也可以用其他方式給 Babel 傳遞選項，但 `.babelrc` 文件是約定也是最好的方式。
 
 ## <a id="toc-babel-preset-es2015"></a>`babel-preset-es2015`
 
-我們就先從叫 Babel 把 ES2015（最新版的 JavaScrpt 標準，亦稱 ES6）程式碼編譯成 ES5（大多數 JavaScript 環境都支援的版本）程式碼。
+我們先從讓 Babel 把 ES2015（最新版本的 JavaScript 標準，也叫做 ES6）編譯成 ES5（現今在大多數 JavaScript 環境下可用的版本）開始吧。
 
-我們得安裝「ES2015」Babel preset：
+我們需要安裝 "es2015" Babel 預設：
 
 ```sh
 $ npm install --save-dev babel-preset-es2015
 ```
 
-接著，我們得修改 `.babelrc` 檔來把那 preset 包含進來。
+我們修改 `.babelrc` 來包含這個預設。
 
 ```diff
   {
@@ -348,13 +348,13 @@ $ npm install --save-dev babel-preset-es2015
 
 ## <a id="toc-babel-preset-react"></a>`babel-preset-react`
 
-要安裝 React 很容易，只需安裝 preset:
+設置 React 一樣容易。只需要安裝這個預設：
 
 ```sh
 $ npm install --save-dev babel-preset-react
 ```
 
-然後把那 preset 加入您的 `.babelrc` 檔即可：
+然後在 `.babelrc` 文件里補充：
 
 ```diff
   {
@@ -368,28 +368,28 @@ $ npm install --save-dev babel-preset-react
 
 ## <a id="toc-babel-preset-stage-x"></a>`babel-preset-stage-x`
 
-JavaScript 還有些提議案正經過 TC39（ECMAScript 標準背後的技術委員會）的審議程序，準備加入標準。
+JavaScript 還有一些提案，正在積極通過 TC39（ECMAScript 標準背後的技術委員會）的流程成為標準的一部分。
 
-這個程序被分為五個階段（0-4）。 提案獲得越多關注就越有可能被採納。它們通過各個階段審議，最後在階段4被接受並納入標準。
+這個流程分為 5（0－4）個階段。 隨着提案得到越多的關注就越有可能被標準採納，於是他們就繼續通過各個階段，最終在階段 4 被標準正式採納。
 
-這些提案被包裹成四個不同的 preset：
+以下是4 個不同階段的（打包的）預設：
 
   * `babel-preset-stage-0`
   * `babel-preset-stage-1`
   * `babel-preset-stage-2`
   * `babel-preset-stage-3`
 
-> 注意階段4的 preset 並不存在，因為它就是上面提到的 `es2015` preset
+> 注意 stage-4 預設是不存在的因為它就是上面的 `es2015` 預設。
 
-上述各階段 preset 都相依於它下個階段的 preset，例如：`babel-preset-stage-1` 相依於 `babel-preset-stage-2`，而後者又相依於 `babel-preset-stage-3`.
+以上每種預設都依賴於緊隨的後期階段預設。例如，`babel-preset-stage-1` 依賴 `babel-preset-stage-2`，後者又依賴 `babel-preset-stage-3`。.
 
-要安裝您感興趣的階段只需：
+使用的時候只需要安裝你想要的階段就可以了：
 
 ```sh
 $ npm install --save-dev babel-preset-stage-2
 ```
 
-然後您就可把它加入您的 `.babelrc` 組態檔.
+然後添加進你的 `.babelrc` 配置文件。
 
 ```diff
   {
@@ -404,15 +404,15 @@ $ npm install --save-dev babel-preset-stage-2
 
 * * *
 
-# <a id="toc-executing-babel-generated-code"></a>執行已轉換的程式碼
+# <a id="toc-executing-babel-generated-code"></a>執行 Babel 生成的代碼
 
-So you've compiled your code with Babel, but this is not the end of the story.
+即便你已經用 Babel 編譯了你的代碼，但這還不算完。
 
 ## <a id="toc-babel-polyfill"></a>`babel-polyfill`
 
-Almost all futuristic JavaScript syntax can be compiled with Babel, but the same is not true for APIs.
+Babel 幾乎可以編譯所有時新的 JavaScript 語法，但對於 APIs 來說卻並非如此。
 
-For example, the following code has an arrow function that needs to be compiled:
+比方說，下列含有箭頭函數的需要編譯的代碼：
 
 ```js
 function addAll() {
@@ -420,7 +420,7 @@ function addAll() {
 }
 ```
 
-Which turns into this:
+最終會變成這樣：
 
 ```js
 function addAll() {
@@ -430,22 +430,22 @@ function addAll() {
 }
 ```
 
-However, this still won't work everywhere because `Array.from` doesn't exist in every JavaScript environment.
+然而，它依然無法隨處可用因為不是所有的 JavaScript 環境都支持 `Array.from`。
 
     Uncaught TypeError: Array.from is not a function
     
 
-To solve this problem we use something called a [Polyfill](https://remysharp.com/2010/10/08/what-is-a-polyfill). Simply put, a polyfill is a piece of code that replicates a native api that does not exist in the current runtime. Allowing you to use APIs such as `Array.from` before they are available.
+為了解決這個問題，我們使用一種叫做 [Polyfill（代碼填充，也可譯作兼容性補丁）](https://remysharp.com/2010/10/08/what-is-a-polyfill) 的技術。 簡單地說，polyfill 即是在當前運行環境中用來複制（意指模擬性的複製，而不是拷貝）尚不存在的原生 api 的代碼。 能讓你提前使用還不可用的 APIs，`Array.from` 就是一個例子。
 
-Babel uses the excellent [core-js](https://github.com/zloirock/core-js) as its polyfill, along with a customized [regenerator](https://github.com/facebook/regenerator) runtime for getting generators and async functions working.
+Babel 用了優秀的 [core-js](https://github.com/zloirock/core-js) 用作 polyfill，並且還有定製化的 [regenerator](https://github.com/facebook/regenerator) 來讓 generators（生成器）和 async functions（異步函數）正常工作。
 
-To include the Babel polyfill, first install it with npm:
+要使用 Babel polyfill，首先用 npm 安裝它：
 
 ```sh
 $ npm install --save babel-polyfill
 ```
 
-Then simply include the polyfill at the top of any file that requires it:
+然後只需要在文件頂部導入 polyfill 就可以了：
 
 ```js
 import "babel-polyfill";
@@ -453,18 +453,18 @@ import "babel-polyfill";
 
 ## <a id="toc-babel-runtime"></a>`babel-runtime`
 
-In order to implement details of ECMAScript specs, Babel will use "helper" methods in order to keep the generated code clean.
+為了實現 ECMAScript 規範的細節，Babel 會使用“助手”方法來保持生成代碼的整潔。
 
-Since these helpers can get pretty long, and they get added to the top of every file you can move them into a single "runtime" which gets required.
+由於這些助手方法可能會特別長並且會被添加到每一個文件的頂部，因此你可以把它們統一移動到一個單一的“運行時（runtime）”中去。
 
-Start by installing `babel-plugin-transform-runtime` and `babel-runtime`:
+通過安裝 `babel-plugin-transform-runtime` 和 `babel-runtime` 來開始。
 
 ```sh
 $ npm install --save-dev babel-plugin-transform-runtime
 $ npm install --save babel-runtime
 ```
 
-Then update your `.babelrc`:
+然後更新 `.babelrc`：
 
 ```diff
   {
@@ -475,7 +475,7 @@ Then update your `.babelrc`:
   }
 ```
 
-Now Babel will compile code like the following:
+現在，Babel 會把這樣的代碼：
 
 ```js
 class Foo {
@@ -483,7 +483,7 @@ class Foo {
 }
 ```
 
-Into this:
+編譯成：
 
 ```js
 import _classCallCheck from "babel-runtime/helpers/classCallCheck";
@@ -503,25 +503,25 @@ let Foo = function () {
 }();
 ```
 
-Rather than putting the `_classCallCheck` and `_createClass` helpers in every single file where they are needed.
+這樣就不需要把 `_classCallCheck` 和 `_createClass` 這兩個助手方法放進每一個需要的文件里去了。
 
 * * *
 
-# <a id="toc-configuring-babel-advanced"></a>Babel 進階設定
+# <a id="toc-configuring-babel-advanced"></a>配置 Babel（進階）
 
-Most people can get by using Babel with just the built-in presets, but Babel exposes much finer-grained power than that.
+大多數人使用 Babel 的內建預設就足夠了，不過 Babel 提供了更多更細粒度的能力。
 
-## <a id="toc-manually-specifying-plugins"></a>手動指定外掛
+## <a id="toc-manually-specifying-plugins"></a>手動指定插件
 
-Babel presets are simply collections of pre-configured plugins, if you want to do something differently you manually specify plugins. This works almost exactly the same way as presets.
+Babel 預設就是一些預先配置好的插件的集合，如果你想要做一些不一樣的事情你會手動去設定插件，這和使用預設幾乎完全相同。
 
-First install a plugin:
+首先安裝插件：
 
 ```sh
 $ npm install --save-dev babel-plugin-transform-es2015-classes
 ```
 
-Then add the `plugins` field to your `.babelrc`.
+然後往 `.babelrc` 文件添加 `plugins` 字段。.
 
 ```diff
   {
@@ -531,17 +531,17 @@ Then add the `plugins` field to your `.babelrc`.
   }
 ```
 
-This gives you much finer grained control over the exact transforms you are running.
+這能讓你對正在使用的轉換器進行更細緻的控制。
 
-For a full list of official plugins see the [Babel Plugins page](http://babeljs.io/docs/plugins/).
+完整的官方插件列表請見 [Babel 插件頁面](http://babeljs.io/docs/plugins/)。.
 
-Also take a look at all the plugins that have been [built by the community](https://www.npmjs.com/search?q=babel-plugin). If you would like to learn how to write your own plugin read the [Babel Plugin Handbook](plugin-handbook.md).
+同時也別忘了看看[由社區構建的其他插件](https://www.npmjs.com/search?q=babel-plugin)。 如果你想學習如何編寫自己的插件可以閱讀 [Babel 插件手冊](plugin-handbook.md)。
 
-## <a id="toc-plugin-options"></a>外掛選項
+## <a id="toc-plugin-options"></a>插件選項
 
-Many plugins also have options to configure them to behave differently. For example, many transforms have a "loose" mode which drops some spec behavior in favor of simpler and more performant generated code.
+很多插件也有選項用於配置他們自身的行為。 例如，很多轉換器都有“寬鬆”模式，通過放棄一些標準中的行為來生成更簡化且性能更好的代碼。
 
-To add options to a plugin, simply make the following change:
+要為插件添加選項，只需要做出以下更改：
 
 ```diff
   {
@@ -552,13 +552,13 @@ To add options to a plugin, simply make the following change:
   }
 ```
 
-> I'll be working on updates to the plugin documentation to detail every option in the coming weeks. [Follow me for updates](https://twitter.com/thejameskyle).
+> 接下來幾周內我會更新插件文檔來詳細介紹每一個選項。[關注我以獲知更新](https://twitter.com/thejameskyle)。.
 
-## <a id="toc-customizing-babel-based-on-environment"></a>基於環境的 Babel 客製化
+## <a id="toc-customizing-babel-based-on-environment"></a>基於環境自定義 Babel
 
-Babel plugins solve many different tasks. Many of them are development tools that can help you debugging your code or integrate with tools. There are also a lot of plugins that are meant for optimizing your code in production.
+Babel 插件解決許多不同的問題。 其中大多數是開發工具，可以幫助你調試代碼或是與工具集成。 也有大量的插件用於在生產環境中優化你的代碼。
 
-For this reason, it is common to want Babel configuration based on the environment. You can do this easily with your `.babelrc` file.
+因此，想要基於環境來配置 Babel 是很常見的。你可以輕鬆的使用 `.babelrc` 文件來達成目的。
 
 ```diff
   {
@@ -575,9 +575,9 @@ For this reason, it is common to want Babel configuration based on the environme
   }
 ```
 
-Babel will enable configuration inside of `env` based on the current environment.
+Babel 將根據當前環境來開啟 `env` 下的配置。
 
-The current environment will use `process.env.BABEL_ENV`. When `BABEL_ENV` is not available, it will fallback to `NODE_ENV`, and if that is not available it will default to `"development"`.
+當前環境可以使用 `process.env.BABEL_ENV` 來獲得。 如果 `BABEL_ENV` 不可用，將會替換成 `NODE_ENV`，並且如果後者也沒有設置，那麼缺省值是`"development"`。.
 
 **Unix**
 
@@ -593,17 +593,17 @@ $ SET BABEL_ENV=production
 $ [COMMAND]
 ```
 
-> **Note:** `[COMMAND]` is whatever you use to run Babel (ie. `babel`, `babel-node`, or maybe just `node` if you are using the register hook).
+> **注意：** `[COMMAND]` 指的是任意一個用來運行 Babel 的命令（如：`babel`，`babel-node`，或是 `node`，如果你使用了 register 鉤子的話）。
 > 
-> **Tip:** If you want your command to work across unix and windows platforms then use [`cross-env`](https://www.npmjs.com/package/cross-env).
+> **提示：** 如果你想要讓命令能夠跨 unix 和 windows 平台運行的話，可以使用 [`cross-env`](https://www.npmjs.com/package/cross-env)。
 
-## <a id="toc-making-your-own-preset"></a>撰寫自己的 preset
+## <a id="toc-making-your-own-preset"></a>製作你自己的預設（preset）
 
-Manually specifying plugins? Plugin options? Environment-based settings? All this configuration might seem like a ton of repetition for all of your projects.
+手動指定插件？插件選項？環境特定設置？所有這些配置都會在你的項目里產生大量的重複工作。
 
-For this reason, we encourage the community to create their own presets. This could be a preset for the specific [node version](https://github.com/leebenson/babel-preset-node5) you are running, or maybe a preset for your [entire](https://github.com/cloudflare/babel-preset-cf) [company](https://github.com/airbnb/babel-preset-airbnb).
+為此，我們鼓勵社區創建自己的預設。 這可能是一個針對特定 [node 版本](https://github.com/leebenson/babel-preset-node5)的預設，或是適用於你[整個](https://github.com/cloudflare/babel-preset-cf)[公司](https://github.com/airbnb/babel-preset-airbnb)的預設。
 
-It's easy to create a preset. Say you have this `.babelrc` file:
+創建預設非常容易。比方說你這樣一個 `.babelrc` 文件：
 
 ```js
 {
@@ -617,9 +617,9 @@ It's easy to create a preset. Say you have this `.babelrc` file:
 }
 ```
 
-All you need to do is create a new project following the naming convention `babel-preset-*` (please be responsible with this namespace), and create two files.
+你要做的就是依循命名約定 `babel-preset-*` 來創建一個新項目（請務必對這個命名約定保持責任心，也就是說不要濫用這個命名空間），然後創建兩個文件。
 
-First, create a new `package.json` file with the necessary `dependencies` for your preset.
+首先，創建一個 `package.json`，包括針對預設所必要的 `dependencies`。
 
 ```js
 {
@@ -634,7 +634,7 @@ First, create a new `package.json` file with the necessary `dependencies` for yo
 }
 ```
 
-Then create an `index.js` file that exports the contents of your `.babelrc` file, replacing plugin/preset strings with `require` calls.
+然後創建 `index.js` 文件用於導出 `.babelrc` 的內容，使用對應的 `require` 調用來替換 plugins／presets 字符串。
 
 ```js
 module.exports = {
@@ -648,29 +648,29 @@ module.exports = {
 };
 ```
 
-Then simply publish this to npm and you can use it like you would any preset.
+然後只需要發布到 npm 於是你就可以像其它預設一樣來使用你的預設了。
 
 * * *
 
-# <a id="toc-babel-and-other-tools"></a>其他工具
+# <a id="toc-babel-and-other-tools"></a>Babel 和其他工具
 
-Babel is pretty straight forward to setup once you get the hang of it, but it can be rather difficult navigating how to set it up with other tools. However, we try to work closely with other projects in order to make the experience as easy as possible.
+一旦你掌握的竅門，安裝 Babel 還是十分簡明的，不過和其他工具搭配在一起就會變得困難多了。 不過我們一直在與其他項目密切合作以確保這種體驗儘可能簡單。
 
 ## <a id="toc-static-analysis-tools"></a>靜態分析工具
 
-Newer standards bring a lot of new syntax to the language and static analysis tools are just starting to take advantage of it.
+新標準為語言帶來了許多新的語法，靜態分析工具正在將此利用起來。
 
-### <a id="toc-linting"></a>Linting
+### <a id="toc-linting"></a>語法檢查（Linting）
 
-One of the most popular tools for linting is [ESLint](http://eslint.org), because of this we maintain an official [`babel-eslint`](https://github.com/babel/babel-eslint) integration.
+[ESLint](http://eslint.org) 是最流行的語法檢查工具之一，因此我們維護了一個官方的 [`babel-eslint`](https://github.com/babel/babel-eslint) 整合軟件包。
 
-First install `eslint` and `babel-eslint`.
+首先安裝 `eslint` 和 `babel-eslint`。
 
 ```sh
 $ npm install --save-dev eslint babel-eslint
 ```
 
-Next create or use the existing `.eslintrc` file in your project and set the `parser` as `babel-eslint`.
+然後創建或使用項目現有的 `.eslintrc` 文件並設置 `parser` 為 `babel-eslint`。
 
 ```diff
   {
@@ -681,7 +681,7 @@ Next create or use the existing `.eslintrc` file in your project and set the `pa
   }
 ```
 
-Now add a `lint` task to your npm `package.json` scripts:
+現在添加一個 `lint` 任務到 npm 的 `package.json` 腳本中：
 
 ```diff
   {
@@ -696,26 +696,26 @@ Now add a `lint` task to your npm `package.json` scripts:
   }
 ```
 
-Then just run the task and you will be all setup.
+接着只需要運行這個任務就一切就緒了。
 
 ```sh
 $ npm run lint
 ```
 
-For more information consult the [`babel-eslint`](https://github.com/babel/babel-eslint) or [`eslint`](http://eslint.org) documentation.
+詳細信息請諮詢 [`babel-eslint`](https://github.com/babel/babel-eslint) 或者 [`eslint`](http://eslint.org) 的文檔。
 
-### <a id="toc-code-style"></a>Code Style
+### <a id="toc-code-style"></a>代碼風格
 
-> JSCS has merged with ESLint, so checkout Code Styling with ESLint.
+> JSCS已經和ESLint合并，所以請查看ESLint的代碼風格。
 
-JSCS is an extremely popular tool for taking linting a step further into checking the style of the code itself. A core maintainer of both the Babel and JSCS projects ([@hzoo](https://github.com/hzoo)) maintains an official integration with JSCS.
+JSCS 是一個極受歡迎的工具，在語法檢查的基礎上更進一步檢查代碼自身的風格。 Babel 和 JSCS 項目的核心維護者之一（[@hzoo](https://github.com/hzoo)）維護着 JSCS 的官方集成。
 
-Even better, this integration now lives within JSCS itself under the `--esnext` option. So integrating Babel is as easy as:
+更妙的是，JSCS 自己通過 `--esnext` 選項實現了這種集成，於是和 Babel 的集成就簡化成了直接在命令行運行：
+```sh
+$ jscs . --esnext
+```   
 
-    $ jscs . --esnext
-    
-
-From the cli, or adding the `esnext` option to your `.jscsrc` file.
+或者在 `.jscsrc` 文件里添加 `esnext` 選項。
 
 ```diff
   {
@@ -724,7 +724,7 @@ From the cli, or adding the `esnext` option to your `.jscsrc` file.
   }
 ```
 
-For more information consult the [`babel-jscs`](https://github.com/jscs-dev/babel-jscs) or [`jscs`](http://jscs.info) documentation.
+詳細信息請諮詢 [`babel-jscs`](https://github.com/jscs-dev/babel-jscs) 或是 [`jscs`](http://jscs.info) 的文檔。
 
 <!--
 ### Code Coverage
@@ -732,25 +732,25 @@ For more information consult the [`babel-jscs`](https://github.com/jscs-dev/babe
 > [WIP]
 -->
 
-### <a id="toc-documentation"></a>撰寫說明文件
+### <a id="toc-documentation"></a>文檔
 
-Using Babel, ES2015, and Flow you can infer a lot about your code. Using [documentation.js](http://documentation.js.org) you can generate detailed API documentation very easily.
+使用 Babel，ES2015，還有 Flow 你可以對你的代碼進行大量的推斷。使用 [documentation.js](http://documentation.js.org) 可以非常簡便地生成詳細的 API 文檔。
 
-Documentation.js uses Babel behind the scenes to support all of the latest syntax including Flow annotations in order to declare the types in your code.
+Documentation.js 使用 Babel 來支持所有最新的語法，包括用於在你的代碼中聲明類型所用的 Flow 註解在內，
 
-## <a id="toc-frameworks"></a>Frameworks
+## <a id="toc-frameworks"></a>框架
 
-All of the major JavaScript frameworks are now focused on aligning their APIs around the future of the language. Because of this, there has been a lot of work going into the tooling.
+所有主流的 JavaScript 框架都正在努力調整他們的 APIs 向這門語言的未來看齊。有鑒於此，配套工具方面已經做出了大量的工作。
 
-Frameworks have the opportunity not just to use Babel but to extend it in ways that improve their users' experience.
+除了使用 Babel 以外，框架更有條件去擴展 Babel 來幫助他們提升用戶體驗。
 
 ### <a id="toc-react"></a>React
 
-React has dramatically changed their API to align with ES2015 classes ([Read about the updated API here](https://babeljs.io/blog/2015/06/07/react-on-es6-plus)). Even further, React relies on Babel to compile it's JSX syntax, deprecating it's own custom tooling in favor of Babel. You can start by setting up the `babel-preset-react` package following the [instructions above](#babel-preset-react).
+React 已經大幅改變了他們的 API 以適應 ES2015 的類語法（[此處了解更新的 API](https://babeljs.io/blog/2015/06/07/react-on-es6-plus)）。 特別是 React 現在依賴 Babel 編譯它的 JSX 語法且棄用了它原有的自定義工具。 你可以按照[上述說明](#babel-preset-react)安裝 `babel-preset-react` 包來開始。
 
-The React community took Babel and ran with it. There are now a number of transforms [built by the community](https://www.npmjs.com/search?q=babel-plugin+react).
+React 社區採用 Babel 並圍繞它來運行，現在社區已經創建了[大量的轉換器（transforms）](https://www.npmjs.com/search?q=babel-plugin+react)。
 
-Most notably the [`babel-plugin-react-transform`](https://github.com/gaearon/babel-plugin-react-transform) plugin which combined with a number of [React-specific transforms](https://github.com/gaearon/babel-plugin-react-transform#transforms) can enable things like *hot module reloading* and other debugging utilities.
+最令人矚目的是 [`babel-plugin-react-transform`](https://github.com/gaearon/babel-plugin-react-transform) 插件，它集成了大量 [React 專用轉換器](https://github.com/gaearon/babel-plugin-react-transform#transforms)可以啟用諸如 *熱模塊重載* 等其他調試工具。
 
 <!--
 ### Ember
@@ -758,9 +758,9 @@ Most notably the [`babel-plugin-react-transform`](https://github.com/gaearon/bab
 > [WIP]
 -->
 
-## <a id="toc-text-editors-and-ides"></a>IDE 及編輯器
+## <a id="toc-text-editors-and-ides"></a>文本編輯器和 IDEs（集成開發環境）
 
-Introducing ES2015, JSX, and Flow syntax with Babel can be helpful, but if your text editor doesn't support it then it can be a really bad experience. For this reason you will want to setup your text editor or IDE with a Babel plugin.
+通過 Babel 引入 ES2015，JSX，和流式語法固然是大有裨益，可如果你的文本編輯不支持那可就糟糕透了。 因此，別忘了為你的文本編輯器或是 IDE 安裝 Babel 插件。
 
   * [Sublime Text](https://github.com/babel/babel-sublime)
   * [Atom](https://atom.io/packages/language-babel)
@@ -775,21 +775,21 @@ Introducing ES2015, JSX, and Flow syntax with Babel can be helpful, but if your 
 
 * * *
 
-# <a id="toc-babel-support"></a>技術支援
+# <a id="toc-babel-support"></a>Babel 支持
 
-Babel has a very large and quickly growing community, as we grow we want to ensure that people have all the resources they need to be successful. So we provide a number of different channels for getting support.
+Babel 的社區非常龐大並且增長速度很快，伴隨着我們成長的同時我們希望保證人們總能獲取他們需要的所有資源。 所以我們提供了數種途徑來提供支持。
 
-Remember that across all of these communities we enforce a [Code of Conduct](https://github.com/babel/babel/blob/master/CODE_OF_CONDUCT.md). If you break the Code of Conduct, action will be taken. So please read it and be conscious of it when interacting with others.
+謹記在所有的這些溝通渠道里我們都共同遵守一套[行為準則](https://github.com/babel/babel/blob/master/CODE_OF_CONDUCT.md)。 破壞準則的行為會被處理。 所以請閱讀它並在與他人互動時注意自己的行為。
 
-We are also looking to grow a self-supporting community, for people who stick around and support others. If you find someone asking a question you know the answer to, take a few minutes and help them out. Try your best to be kind and understanding when doing so.
+同時我們也在尋求發展一個自我支持式的社區，為那些始終熱誠奉獻的人們。 如果別人問的問題你恰好知道答案，請不吝花費幾分鐘幫幫他們。 在此過程中也請儘力保持友善與相互理解。
 
-## <a id="toc-babel-forum"></a>Babel Forum
+## <a id="toc-babel-forum"></a>Babel 論壇
 
-[Discourse](http://www.discourse.org) has provided us with a hosted version of their forum software for free (and we love them for it!). If forums are your thing please stop by [discuss.babeljs.io](https://discuss.babeljs.io).
+[Discourse](http://www.discourse.org) 免費為我們提供了一個託管版本的論壇（我們愛死他們了！）。 如果你是個論壇控請不要錯過 [discuss.babeljs.io](https://discuss.babeljs.io)。
 
-## <a id="toc-babel-chat"></a>Babel Chat
+## <a id="toc-babel-chat"></a>Babel 聊天
 
-Everyone loves [Slack](https://slack.com). If you're looking for immediate support from the community then come chat with us at [slack.babeljs.io](https://slack.babeljs.io).
+無人不愛 [Slack](https://slack.com)。如果你正在尋求來自社區的即時支持，那就來 [slack.babeljs.io](https://slack.babeljs.io) 和我們聊天吧。
 
 <!--
 ## Babel Stack Overflow
@@ -797,25 +797,25 @@ Everyone loves [Slack](https://slack.com). If you're looking for immediate suppo
 > [WIP]
 -->
 
-## <a id="toc-babel-issues"></a>Babel Issues
+## <a id="toc-babel-issues"></a>Babel 問題
 
-Babel uses the issue tracker provided by [Github](http://github.com).
+Babel使用[Github](http://github.com)提供的問題跟蹤器。
 
-You can see all the open and closed issues on [Github](https://github.com/babel/babel/issues).
+您可以在[Github](https://github.com/babel/babel/issues)上看到所有的開放和封閉的問題。
 
-If you want to open a new issue:
+如果你想要打開一個新的問題：
 
-  * [Search for an existing issue](https://github.com/babel/babel/issues)
-  * [Create a new bug report](https://github.com/babel/babel/issues/new) or [request a new feature](https://github.com/babel/babel/issues/new)
-
-### <a id="toc-creating-an-awesome-babel-bug-report"></a>Creating an awesome Babel bug report
-
-Babel issues can sometimes be very difficult to debug remotely, so we need all the help we can get. Spending a few more minutes crafting a really nice bug report can help get your problem solved significantly faster.
-
-First, try isolating your problem. It's extremely unlikely that every part of your setup is contributing to the problem. If your problem is a piece of input code, try deleting as much code as possible that still causes an issue.
-
-> [WIP]
-
-* * *
-
-> ***進一步的最新資訊，請追蹤[@thejameskyle](https://twitter.com/thejameskyle)的 Twitter 帳號。***
+  * [先搜搜看有沒有現存的類似問題](https://github.com/babel/babel/issues)
+  * 創建一個新的錯誤報告</> 或請求新功能</></li> </ul> 
+    
+    ### <a id="toc-creating-an-awesome-babel-bug-report"></a>創建漂亮的 Babel 錯誤報告
+    
+    Babel 的問題有時候很難遠程調試，所以我們希望能獲取儘可能詳細的信息來幫助我們解決問題。 花點時間去撰寫一份好的錯誤報告會讓你的問題更快得到解決。
+    
+    首先，嘗試隔離問題。 並非設置過程的每一步都是導致問題的原因。 如果你的問題是一段輸入代碼，試着儘可能把與問題不相關的代碼都刪除掉。
+    
+    > [WIP]
+    
+    * * *
+    
+    > ***在 Twitter 上關注 [@thejameskyle](https://twitter.com/thejameskyle)，第一時間獲取更新。***
