@@ -289,7 +289,7 @@ The [code generation](https://en.wikipedia.org/wiki/Code_generation_(compiler)) 
 
 ## <a id="toc-traversal"></a>Обход
 
-Когда вы хотите трансорфмировать AST вам необходимо [пройти по всему дереву](https://en.wikipedia.org/wiki/Tree_traversal) рекурсивно.
+Когда вы хотите трансформировать AST вам необходимо [пройти по всему дереву](https://en.wikipedia.org/wiki/Tree_traversal) рекурсивно.
 
 Скажем, у нас есть тип `FunctionDeclaration`. Он имеет несколько свойств: `id`, `params` и `body`. Каждый из них имеет вложенные узлы.
 
