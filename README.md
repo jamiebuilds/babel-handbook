@@ -38,8 +38,6 @@ A guided handbook on how to use Babel and how to create plugins for Babel.
 - [中文](https://github.com/thejameskyle/babel-handbook/tree/master/translations/zh-Hans/README.md)
 - [繁體中文](https://github.com/thejameskyle/babel-handbook/tree/master/translations/zh-Hant/README.md)
 
-**[Request another translation](https://github.com/thejameskyle/babel-plugin-handbook/issues/new?title=Translation%20Request:%20[Please%20enter%20language%20here]&body=I%20am%20able%20to%20translate%20this%20language%20[yes/no])**
-
 If you are reading a non-English translation of this document you will find a
 number of English words that are programming concepts. If these were translated
 to other languages there would be a lack of consistency and fluency when reading
