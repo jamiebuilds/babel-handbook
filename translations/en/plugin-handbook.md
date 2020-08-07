@@ -1592,8 +1592,8 @@ Similar to `insertBefore`/`insertAfter`, except that you have to specify the `li
 
 ```js
 ClassMethod(path) {
-  path.get('body').unshiftContainer('body', t.expressionStatement(t.stringLiteral('before')));
-  path.get('body').pushContainer('body', t.expressionStatement(t.stringLiteral('after')));
+  path.unshiftContainer('body', t.expressionStatement(t.stringLiteral('before')));
+  path.pushContainer('body', t.expressionStatement(t.stringLiteral('after')));
 }
 ```
 
