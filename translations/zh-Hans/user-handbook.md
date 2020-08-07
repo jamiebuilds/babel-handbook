@@ -131,9 +131,10 @@ $ babel src -d lib
 $ npm install --save-dev babel-cli
 ```
 
-> **注意：**因为全局运行 Babel 通常不是什么好习惯所以如果你想要卸载全局安装的 Babel 的话，可以运行：
+> **注意:** 因为全局运行 Babel 通常不是什么好习惯所以如果你想要卸载全局安装的 Babel 的话，可以运行：
 > 
-> ```sh
+> 
+```sh
 $ npm uninstall --global babel-cli
 ```
 
@@ -209,9 +210,10 @@ require("./index.js");
 $ node register.js
 ```
 
-> **注意：**你不能在你要编译的文件内同时注册 Babel，因为 node 会在 Babel 编译它之前就将它执行了。
+> **注意：** 你不能在你要编译的文件内同时注册 Babel，因为 node 会在 Babel 编译它之前就将它执行了。
 > 
-> ```js
+> 
+```js
 require("babel-register");
 // 未编译的：
 console.log("Hello world!");
@@ -323,7 +325,7 @@ babel.transformFromAst(ast, code, options);
 
 这个文件就是用来让 Babel 做你要它做的事情的配置文件。
 
-> **注意：**尽管你也可以用其他方式给 Babel 传递选项，但 `.babelrc` 文件是约定也是最好的方式。
+> **注意：** 尽管你也可以用其他方式给 Babel 传递选项，但 `.babelrc` 文件是约定也是最好的方式。
 
 ## <a id="toc-babel-preset-es2015"></a>`babel-preset-es2015`
 
@@ -593,9 +595,9 @@ $ SET BABEL_ENV=production
 $ [COMMAND]
 ```
 
-> **注意：**`[COMMAND]` 指的是任意一个用来运行 Babel 的命令（如：`babel`，`babel-node`，或是 `node`，如果你使用了 register 钩子的话）。
+> **注意：** `[COMMAND]` 指的是任意一个用来运行 Babel 的命令（如：`babel`，`babel-node`，或是 `node`，如果你使用了 register 钩子的话）。
 > 
-> **提示：**如果你想要让命令能够跨 unix 和 windows 平台运行的话，可以使用 [`cross-env`](https://www.npmjs.com/package/cross-env)。.
+> **提示：** 如果你想要让命令能够跨 unix 和 windows 平台运行的话，可以使用 [`cross-env`](https://www.npmjs.com/package/cross-env)。.
 
 ## <a id="toc-making-your-own-preset"></a>制作你自己的预设（preset）
 
