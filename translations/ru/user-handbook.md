@@ -108,7 +108,7 @@ $ babel example.js --out-file compiled.js
 $ babel example.js -o compiled.js
 ```
 
-Если мы хотим скомпиллировать целую директорию в новую директорию, мы можем это сделать используя `--out-dir` или `-d`.
+Если мы хотим скомпиллировать целую директорию в новую директорию, мы можем сделать это используя `--out-dir` или `-d`.
 
 ```sh
 $ babel src --out-dir lib 
@@ -212,10 +212,10 @@ $ node register.js
 > **Примечание:** Вы не сможете зарегистрировать Babel в том же файле, который собираетесь компилировать, поскольку node исполняет этот файл перед тем, как Babel доходит до его компиляции.
 > 
 > ```js
-require("babel-register");
-// not compiled:
-console.log("Hello world!");
-```
+> require("babel-register");
+> // not compiled:
+> console.log("Hello world!");
+> ```
 
 ## <a id="toc-babel-node"></a>`babel-node`
 
@@ -229,7 +229,7 @@ console.log("Hello world!");
 $ npm install --save-dev babel-cli
 ```
 
-> **Note:** If you are wondering why we are installing this locally, please read the [Running Babel CLI from within a project](#toc-running-babel-cli-from-within-a-project) section above.
+> **Примечание:** Если вам интересно почему мы устанавливаем пакет `babel-cli` локально, пожалуйста, прочитайте раздел [Running Babel CLI from within a project](#toc-running-babel-cli-from-within-a-project) выше.
 
 Затем, переключитесь на работу с `babel-node` везде, где вы работаете с `node`.
 
