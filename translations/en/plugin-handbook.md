@@ -1785,6 +1785,9 @@ plugins.
 Plugins can have functions that are run before or after plugins.
 They can be used for setup or cleanup/analysis purposes.
 
+Within these functions, you can access plugin options (as per the previous
+section) via `this.opts` (and not through `state`, like in visitor functions).
+
 ```js
 export default function({ types: t }) {
   return {
@@ -1797,7 +1800,8 @@ export default function({ types: t }) {
       }
     },
     post(state) {
-      console.log(this.cache);
+      if (this.opts.showCache)
+        console.log(this.cache);
     }
   };
 }
