@@ -133,7 +133,7 @@ $ npm install --save-dev babel-cli
 
 > **注意：**因为全局运行 Babel 通常不是什么好习惯所以如果你想要卸载全局安装的 Babel 的话，可以运行：
 > 
-> ```sh
+```sh
 $ npm uninstall --global babel-cli
 ```
 
@@ -211,7 +211,8 @@ $ node register.js
 
 > **注意：**你不能在你要编译的文件内同时注册 Babel，因为 node 会在 Babel 编译它之前就将它执行了。
 > 
-> ```js
+> 
+```js
 require("babel-register");
 // 未编译的：
 console.log("Hello world!");
@@ -808,7 +809,7 @@ Babel使用[Github](http://github.com)提供的问题跟踪器。.
   * [先搜搜看有没有现存的类似问题](https://github.com/babel/babel/issues)
   * 创建一个新的错误报告</> 或请求新功能</></li> </ul> 
     
-    ### <a id="toc-creating-an-awesome-babel-bug-report"></a>创建漂亮的 Babel 错误报告
+### <a id="toc-creating-an-awesome-babel-bug-report"></a>创建漂亮的 Babel 错误报告
     
     Babel 的问题有时候很难远程调试，所以我们希望能获取尽可能详细的信息来帮助我们解决问题。 花点时间去撰写一份好的错误报告会让你的问题更快得到解决。
     
