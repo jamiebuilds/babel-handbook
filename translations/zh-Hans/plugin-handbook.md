@@ -941,7 +941,7 @@ fields: {
 t.isBinaryExpression(maybeBinaryExpressionNode);
 ```
 
-这个测试用来确保节点是一个二进制表达式，另外你也可以传入第二个参数来确保节点包含特定的属性和值。
+这个测试用来确保节点是一个二元表达式，另外你也可以传入第二个参数来确保节点包含特定的属性和值。
 
 ```js
 t.isBinaryExpression(maybeBinaryExpressionNode, { operator: "*" });
