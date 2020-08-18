@@ -1311,9 +1311,9 @@ path.getStatementParent();
   * 使用 `path.container`获取路径的容器（包含所有同级节点的数组）
   * 使用 `path.listKey`获取容器的key
 
-> 这些API用于 babel-minify </>中使用的 transform-merge-sibling-variables </>插件.</p> </blockquote> 
-> 
-> ```js
+> 这些API用于 [babel-minify](https://github.com/babel/babili) 中使用的 [transform-merge-sibling-variables](https://github.com/babel/babili/blob/master/packages/babel-plugin-transform-merge-sibling-variables/src/index.js) 插件. 
+ 
+```js
 var a = 1; // pathA, path.key = 0
 var b = 2; // pathB, path.key = 1
 var c = 3; // pathC, path.key = 2
@@ -1331,6 +1331,10 @@ export default function({ types: t }) {
         path.getSibling(0) // pathA
         path.getSibling(path.key + 1) // pathB
         path.container // [pathA, pathB, pathC]
+        path.getPrevSibling() // path(undefined) *
+        path.getNextSibling() // pathB
+        path.getAllPrevSiblings() // []
+        path.getAllNextSiblings() // [pathB, pathC]
       }
     }
   };
