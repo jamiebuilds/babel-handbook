@@ -1404,10 +1404,10 @@ ReturnStatement(path) {
 ```
 
 > **注意：</>当用多个节点替换一个表达式时，它们必须是   声明。 这是因为Babel在更换节点时广泛使用启发式算法，这意味着您可以做一些非常疯狂的转换，否则将会非常冗长。</p> </blockquote> 
-> 
-> ### <a id="toc-replacing-a-node-with-a-source-string"></a>用字符串源码替换节点
-> 
-> ```js
+
+### <a id="toc-replacing-a-node-with-a-source-string"></a>用字符串源码替换节点
+
+```js
 FunctionDeclaration(path) {
   path.replaceWithSourceString(`function add(a, b) {
     return a + b;
@@ -1424,10 +1424,10 @@ FunctionDeclaration(path) {
 ```
 
 > **注意：</>不建议使用这个API，除非您正在处理动态的源码字符串，否则在访问者外部解析代码更有效率。</p> </blockquote> 
-> 
-> ### <a id="toc-inserting-a-sibling-node"></a>插入兄弟节点
-> 
-> ```js
+ 
+### <a id="toc-inserting-a-sibling-node"></a>插入兄弟节点
+
+```js
 FunctionDeclaration(path) {
   path.insertBefore(t.expressionStatement(t.stringLiteral("Because I'm easy come, easy go.")));
   path.insertAfter(t.expressionStatement(t.stringLiteral("A little high, little low.")));
@@ -1443,13 +1443,14 @@ FunctionDeclaration(path) {
 ```
 
 > 注意：</>这里同样应该使用声明或者一个声明数组。 这个使用了在用多个节点替换一个节点</>中提到的相同的启发式算法。.</p> </blockquote> 
-> 
-> ### <a id="toc-inserting-into-a-container"></a>插入到容器（container）中
-> 
-> 如果您想要在AST节点属性中插入一个像` body </ 0>那样的数组。
+ 
+### <a id="toc-inserting-into-a-container"></a>插入到容器（container）中
+
+如果您想要在AST节点属性中插入一个像` body </ 0>那样的数组。
+
 它与 <code> insertBefore `/` insertAfter ` 类似, 但您必须指定 ` listKey ` (通常是 ` 正文 `).
-> 
-> ```js
+
+```js
 ClassMethod(path) {
   path.get('body').unshiftContainer('body', t.expressionStatement(t.stringLiteral('before')));
   path.get('body').pushContainer('body', t.expressionStatement(t.stringLiteral('after')));
