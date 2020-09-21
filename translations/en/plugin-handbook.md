@@ -1835,7 +1835,7 @@ export default function({ types: t }) {
 The error looks like:
 
 ```
-file.js: Error message here
+Error message here
    7 |
    8 | let tips = [
 >  9 |   "Click on any AST node with a '+' to expand it",
