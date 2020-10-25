@@ -57,6 +57,7 @@ a complete list.
     - [Removing a node](#toc-removing-a-node)
     - [Replacing a parent](#toc-replacing-a-parent)
     - [Removing a parent](#toc-removing-a-parent)
+    - [Inserting a comment](#toc-inserting-a-comment)
   - [Scope](#toc-scope)
     - [Checking if a local variable is bound](#toc-checking-if-a-local-variable-is-bound)
     - [Generating a UID](#toc-generating-a-uid)
@@ -1653,6 +1654,92 @@ BinaryExpression(path) {
 -   return n * n;
   }
 ```
+
+### <a id="toc-inserting-a-comment"></a>Inserting a comment
+
+```js
+const babel = require("@babel/core");
+const t = require("@babel/types")
+
+var code_str = `
+    function outter() {
+        function inner() {
+        }
+    }
+`
+
+var checker ;
+
+function plugin_demo({ types, template }) {
+    return{
+        visitor: {
+            Program(path,state) {
+                path.addComment('inner',`INNER-BLOCK`,false);
+                path.addComment('inner',`INNER-LINE`,true);
+            },
+            FunctionDeclaration(path,state) {
+                checker = path;
+                if(path.node.id.name === "inner") {
+                    path.addComment('leading', `LEADING-BLOCK`,false);      //
+                    path.addComment('leading', `LEADING-LINE`,true);        // unshift always first
+                    path.addComment('trailing', `TRAILING-BLOCK`,false);    // 
+                    path.addComment('trailing', `TRAILING-LINE`,true);      // append always last
+                } else {
+                }
+            }
+        },
+    }
+}
+
+var result = babel.transform(code_str, {
+   plugins: [plugin_demo]
+});
+console.log(result.code)
+```
+
+```diff
++ /*INNER-BLOCK*/
++ //INNER-LINE
+
+function outter() {
++   //LEADING-LINE
++
++    /*LEADING-BLOCK*/
+  function inner() {}
++  /*TRAILING-BLOCK*/
++  //TRAILING-LINE
+}
+undefined
+>
+```
+The path.addComment(type, content, line) method has three params,as below:
+
+```js
+careful :  
+    the first-param-type options should be   
+        'leading' | 'trailing' | 'inner'
+        NOT 'leadingComments' | 'trailingComments' | 'innerComments
+    the third-param-line  
+        if true,  means CommentLine
+        if false, means CommentBlock
+```
+
+```js
+/*
+> t.COMMENT_KEYS                        
+[ 'leadingComments', 'trailingComments', 'innerComments' ]  
+>
+
+console.log(checker.addComment.toString())
+
+function addComment(type, content, line) {      //   three params
+  t.addComment(this.node, type, content, line);
+}
+
+*/
+```
+
+
 
 ## <a id="toc-scope"></a>Scope
 
