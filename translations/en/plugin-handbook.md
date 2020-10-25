@@ -57,6 +57,7 @@ a complete list.
     - [Removing a node](#toc-removing-a-node)
     - [Replacing a parent](#toc-replacing-a-parent)
     - [Removing a parent](#toc-removing-a-parent)
+    - [Inserting a Comment](#toc-inserting-a-comment)
   - [Scope](#toc-scope)
     - [Checking if a local variable is bound](#toc-checking-if-a-local-variable-is-bound)
     - [Generating a UID](#toc-generating-a-uid)
