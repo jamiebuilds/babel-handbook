@@ -2239,7 +2239,7 @@ module.exports = function testPlugin(babel) {
 
 ### Snapshot Tests
 
-Next, install our dependencies with `npm install --save-dev babel-core jest`, and
+Next, install our dependencies with `npm install --save-dev @babel/core jest`, and
 then we can begin writing our first test: the snapshot. Snapshot tests allow us
 to visually inspect the output of our babel plugin. We give it an input, tell it to make
 a snapshot, and it saves it to a file. We check in the snapshots into git. This allows
@@ -2249,7 +2249,7 @@ the snapshots is as easy as `jest -u`.
 
 ```js
 // src/__tests__/index-test.js
-const babel = require('babel-core');
+const babel = require('@babel/core');
 const plugin = require('../');
 
 var example = `
