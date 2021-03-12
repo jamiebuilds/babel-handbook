@@ -1312,8 +1312,8 @@ path.getStatementParent();
   * 使用 `path.listKey`获取容器的key
 
 > 这些API用于 babel-minify </>中使用的 transform-merge-sibling-variables </>插件.</p> </blockquote> 
-> 
-> ```js
+
+```js
 var a = 1; // pathA, path.key = 0
 var b = 2; // pathB, path.key = 1
 var c = 3; // pathC, path.key = 2
