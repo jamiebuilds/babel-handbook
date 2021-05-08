@@ -225,15 +225,15 @@ Babel 还为每个节点额外生成了一些属性，用于描述该节点在�
 
 ## <a id="toc-stages-of-babel"></a>Babel 的处理步骤
 
-Babel 的三个主要处理步骤分别是： **解析（parse）**，**转换（transform）**，**生成（generate）**。.
+Babel 的三个主要处理步骤分别是： **解析（parse）**，**转换（transform）**，**生成（generate）**。
 
 ### <a id="toc-parse"></a>解析
 
-**解析**步骤接收代码并输出 AST。 这个步骤分为两个阶段：[**词法分析（Lexical Analysis） **](https://en.wikipedia.org/wiki/Lexical_analysis)和 [**语法分析（Syntactic Analysis）**](https://en.wikipedia.org/wiki/Parsing)。.
+**解析**步骤接收代码并输出 AST。这个步骤分为两个阶段：[**词法分析（Lexical Analysis） **](https://en.wikipedia.org/wiki/Lexical_analysis)和 [**语法分析（Syntactic Analysis）**](https://en.wikipedia.org/wiki/Parsing)。
 
 #### <a id="toc-lexical-analysis"></a>词法分析
 
-词法分析阶段把字符串形式的代码转换为 **令牌（tokens）** 流。.
+词法分析阶段把字符串形式的代码转换为 **令牌（tokens）** 流。
 
 你可以把令牌看作是一个扁平的语法片段数组：
 
@@ -271,7 +271,7 @@ n * n;
 }
 ```
 
-和 AST 节点一样它们也有 `start`，`end`，`loc` 属性。.
+和 AST 节点一样它们也有 `start`，`end`，`loc` 属性。
 
 #### <a id="toc-syntactic-analysis"></a>语法分析
 
@@ -283,7 +283,7 @@ n * n;
 
 ### <a id="toc-generate"></a>生成
 
-[代码生成](https://en.wikipedia.org/wiki/Code_generation_(compiler))步骤把最终（经过一系列转换之后）的 AST 转换成字符串形式的代码，同时还会创建[源码映射（source maps）](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/)。.
+[代码生成](https://en.wikipedia.org/wiki/Code_generation_(compiler))步骤把最终（经过一系列转换之后）的 AST 转换成字符串形式的代码，同时还会创建[源码映射（source maps）](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/)。
 
 代码生成其实很简单：深度优先遍历整个 AST，然后构建可以表示转换后代码的字符串。
 
@@ -333,9 +333,9 @@ n * n;
 
 此时我们来到了 `body`，这是一个 `BlockStatement` 并且也有一个 `body`节点，而且也是一个数组节点，我们继续访问其中的每一个。
 
-这里唯一的一个属性是 `ReturnStatement` 节点，它有一个 `argument`，我们访问 `argument` 就找到了 `BinaryExpression`。.
+这里唯一的一个属性是 `ReturnStatement` 节点，它有一个 `argument`，我们访问 `argument` 就找到了 `BinaryExpression`。
 
-`BinaryExpression` 有一个 `operator`，一个 `left`，和一个 `right`。 Operator 不是一个节点，它只是一个值因此我们不用继续向内遍历，我们只需要访问 `left` 和 `right`。.
+`BinaryExpression` 有一个 `operator`，一个 `left`，和一个 `right`。 Operator 不是一个节点，它只是一个值因此我们不用继续向内遍历，我们只需要访问 `left` 和 `right`。
 
 Babel 的转换步骤全都是这样的遍历过程。
 
@@ -358,11 +358,11 @@ visitor.MemberExpression = function() {};
 visitor.FunctionDeclaration = function() {}
 ```
 
-> **注意**： `Identifier() { ... }` 是 `Identifier: { enter() { ... } }` 的简写形式。.
+> **注意**： `Identifier() { ... }` 是 `Identifier: { enter() { ... } }` 的简写形式。
 
 这是一个简单的访问者，把它用于遍历中时，每当在树中遇见一个 `Identifier` 的时候会调用 `Identifier()` 方法。
 
-所以在下面的代码中 `Identifier()` 方法会被调用四次（包括 `square` 在内，总共有四个 `Identifier`）。).
+所以在下面的代码中 `Identifier()` 方法会被调用四次（包括 `square` 在内，总共有四个 `Identifier`）。
 
 ```js
 function square(n) {
@@ -378,7 +378,7 @@ Called!
 Called!
 ```
 
-这些调用都发生在**进入**节点时，不过有时候我们也可以在**退出**时调用访问者方法。.
+这些调用都发生在**进入**节点时，不过有时候我们也可以在**退出**时调用访问者方法。
 
 假设我们有一个树状结构：
 
@@ -433,7 +433,7 @@ const MyVisitor = {
 };
 ```
 
-如有必要，你还可以把方法名用`|`分割成`Idenfifier |MemberExpression`形式的字符串，把同一个函数应用到多种访问节点。.
+如有必要，你还可以把方法名用`|`分割成`Idenfifier |MemberExpression`形式的字符串，把同一个函数应用到多种访问节点。
 
 在[flow-comments](https://github.com/babel/babel/blob/2b6ff53459d97218b0cf16f8a51c14a165db1fd2/packages/babel-plugin-transform-flow-comments/src/index.js#L47) 插件中的例子如下：
 
@@ -443,11 +443,11 @@ const MyVisitor = {
 };
 ```
 
-你也可以在访问者中使用别名(如[babel-types](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions)定义).
+你也可以在访问者中使用别名（如[babel-types](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions)定义）。
 
 例如，
 
-`Function` is an alias for `FunctionDeclaration`, `FunctionExpression`, `ArrowFunctionExpression`, `ObjectMethod` and `ClassMethod`.
+`Function` is an alias for `FunctionDeclaration`, `FunctionExpression`, `ArrowFunctionExpression`, `ObjectMethod` and `ClassMethod`。
 
 ```js
 const MyVisitor = {
@@ -457,7 +457,7 @@ const MyVisitor = {
 
 ### <a id="toc-paths"></a>Paths（路径）
 
-AST 通常会有许多节点，那么节点直接如何相互关联呢？ 我们可以使用一个可操作和访问的巨大可变对象表示节点之间的关联关系，或者也可以用**Paths**（路径）来简化这件事情。.
+AST 通常会有许多节点，那么节点直接如何相互关联呢？ 我们可以使用一个可操作和访问的巨大可变对象表示节点之间的关联关系，或者也可以用**Paths**（路径）来简化这件事情。
 
 **Path** 是表示两个节点之间连接的对象。
 
@@ -557,7 +557,7 @@ function square(n) {
 }
 ```
 
-让我们写一个把 `n` 重命名为 `x` 的访问者的快速实现.
+让我们写一个把 `n` 重命名为 `x` 的访问者的快速实现。
 
 ```js
 let paramName;
@@ -688,7 +688,7 @@ function scopeOne() {
 
 #### <a id="toc-bindings"></a>Bindings（绑定）
 
-所有引用属于特定的作用域，引用和作用域的这种关系被称作：**绑定（binding）**。.
+所有引用属于特定的作用域，引用和作用域的这种关系被称作：**绑定（binding）**。
 
 ```js
 function scopeOnce() {
@@ -880,7 +880,7 @@ defineType("BinaryExpression", {
 
 ### <a id="toc-builders"></a>Builders（构建器）
 
-你会注意到上面的 `BinaryExpression` 定义有一个 `builder` 字段。.
+你会注意到上面的 `BinaryExpression` 定义有一个 `builder` 字段。
 
 ```js
 builder: ["operator", "left", "right"]
@@ -935,7 +935,7 @@ fields: {
 }
 ```
 
-可以创建两种验证方法。第一种是 `isX`。.
+可以创建两种验证方法。第一种是 `isX`。
 
 ```js
 t.isBinaryExpression(maybeBinaryExpressionNode);
@@ -947,7 +947,7 @@ t.isBinaryExpression(maybeBinaryExpressionNode);
 t.isBinaryExpression(maybeBinaryExpressionNode, { operator: "*" });
 ```
 
-这些方法还有一种断言式的版本，会抛出异常而不是返回 `true` 或 `false`。.
+这些方法还有一种断言式的版本，会抛出异常而不是返回 `true` 或 `false`。
 
 ```js
 t.assertBinaryExpression(maybeBinaryExpressionNode);
@@ -988,7 +988,7 @@ generate(ast, {}, code);
 // }
 ```
 
-你也可以给 `generate()` 方法传递选项。.
+你也可以给 `generate()` 方法传递选项。
 
 ```js
 generate(ast, {
@@ -1277,7 +1277,7 @@ Identifier(path) {
 
 有时你需要从一个路径向上遍历语法树，直到满足相应的条件。
 
-对于每一个父路径调用`callback`并将其`NodePath`当作参数，当`callback`返回真值时，则将其`NodePath`返回。.
+对于每一个父路径调用`callback`并将其`NodePath`当作参数，当`callback`返回真值时，则将其`NodePath`返回。
 
 ```js
 path.findParent((path) => path.isObjectExpression());
@@ -1447,7 +1447,7 @@ FunctionDeclaration(path) {
 > ### <a id="toc-inserting-into-a-container"></a>插入到容器（container）中
 > 
 > 如果您想要在AST节点属性中插入一个像` body </ 0>那样的数组。
-它与 <code> insertBefore `/` insertAfter ` 类似, 但您必须指定 ` listKey ` (通常是 ` 正文 `).
+它与 <code> insertBefore `/` insertAfter ` 类似, 但您必须指定 ` listKey ` (通常是 ` 正文 `)。
 > 
 > ```js
 ClassMethod(path) {
@@ -1730,7 +1730,7 @@ export default function({ types: t }) {
 
 在这里你可以看到关于这个特定节点类型的所有信息，包括如何构建它，遍历它，并验证它。
 
-通过查看 ` 生成器 ` 属性, 可以看到调用生成器方法所需的3个参数 (` t. 情况 `).
+通过查看 ` 生成器 ` 属性, 可以看到调用生成器方法所需的3个参数 (` t. 情况 `)：
 
 ```js
 生成器: ["object", "property", "computed"],
