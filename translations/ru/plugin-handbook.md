@@ -90,7 +90,7 @@ Babel - это JavaScript компилятор, точнее компилято�
 
 Каждый из этих шагов требует создания или работы с [Абстрактным синтаксическим деревом](https://en.wikipedia.org/wiki/Abstract_syntax_tree), или AST.
 
-> Babel uses an AST modified from [ESTree](https://github.com/estree/estree), with the core spec located [here](https://github.com/babel/babylon/blob/master/ast/spec.md).
+> Babel использует AST доработанный на основе [ESTree](https://github.com/estree/estree), а основная спецификация находится [здесь](https://github.com/babel/babylon/blob/master/ast/spec.md).
 
 ```js
 function square(n) {
@@ -100,7 +100,7 @@ function square(n) {
 
 > Взгляните на [AST Explorer](http://astexplorer.net/) чтобы получить более полное представление об AST-нодах. [Здесь](http://astexplorer.net/#/Z1exs6BWMq) находится ссылка на него с уже скопированным примером выше.
 
-This same program can be represented as a tree like this:
+Эта же программа может быть представлена в виде дерева следующим образом:
 
 ```md
 - FunctionDeclaration:
@@ -283,7 +283,7 @@ n * n;
 
 ### <a id="toc-generate"></a>Генерация
 
-The [code generation](https://en.wikipedia.org/wiki/Code_generation_(compiler)) stage takes the final AST and turns it back into a string of code, also creating [source maps](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/).
+На этапе [генерации кода](https://en.wikipedia.org/wiki/Code_generation_(compiler)) конечный AST превращается в строку кода, также создаются [source maps](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/).
 
 Генерация кода довольно проста: вы проходите через AST в глубину, строя строку, которая представляет преобразованный код.
 
