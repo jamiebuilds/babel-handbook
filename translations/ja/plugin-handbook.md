@@ -4,77 +4,83 @@
 
 [![cc-by-4.0](https://licensebuttons.net/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
 
-This handbook is available in other languages, see the [README](/README.md) for a complete list.
+このハンドブックは他の言語でも閲覧可能です。[README](/README.md)をご覧ください。
 
 # 目次
 
-  * [イントロダクション](#toc-introduction)
-  * [基本](#toc-basics) 
+  * [導入](#toc-introduction)
+  * [基本事項](#toc-basics) 
       * [抽象構文木(ASTs)](#toc-asts)
-      * [バベルの現状](#toc-stages-of-babel)
-      * [パーサー](#toc-parse) 
-          * [字句解析](#toc-lexical-analysis)
-          * [構文解析](#toc-syntactic-analysis)
-      * [変換](#toc-transform)
-      * [ジェネレーター](#toc-generate)
-      * [Traversal](#toc-traversal)
-      * [Visitors](#toc-visitors)
-      * [Paths](#toc-paths) 
-          * [Paths in Visitors](#toc-paths-in-visitors)
-      * [State](#toc-state)
-      * [Scopes](#toc-scopes) 
-          * [Bindings](#toc-bindings)
+      * [Babelのステージ](#toc-stages-of-babel)
+      * [パース(Parse)](#toc-parse) 
+          * [字句解析(Lexical Analysis)](#toc-lexical-analysis)
+          * [構文解析(Syntactic Analysis)](#toc-syntactic-analysis)
+      * [変換(Transform)](#toc-transform)
+      * [生成(generate)](#toc-generate)
+      * [走査(Traversal)](#toc-traversal)
+      * [ビジター(Visitors)](#toc-visitors)
+      * [パス(Paths)](#toc-paths) 
+          * [ビジターにおけるパス(Paths in Visitors)](#toc-paths-in-visitors)
+      * [状態(State)](#toc-state)
+      * [スコープ(Scopes)](#toc-scopes) 
+          * [バインディング(Bindings)](#toc-bindings)
   * [API](#toc-api) 
       * [babylon](#toc-babylon)
       * [babel-traverse](#toc-babel-traverse)
       * [babel-types](#toc-babel-types)
-      * [Definitions](#toc-definitions)
-      * [Builders](#toc-builders)
-      * [Validators](#toc-validators)
-      * [Converters](#toc-converters)
+        * [定義(Definitions)](#toc-definitions)
+        * [ビルダー(Builders)](#toc-builders)
+        * [バリデーター(Validators)](#toc-validators)
+        * [コンバーター(Converters)](#toc-converters)
       * [babel-generator](#toc-babel-generator)
       * [babel-template](#toc-babel-template)
-  * [Writing your first Babel Plugin](#toc-writing-your-first-babel-plugin)
-  * [Transformation Operations](#toc-transformation-operations) 
-      * [Visiting](#toc-visiting)
-      * [Get the Path of Sub-Node](#toc-get-the-path-of-a-sub-node)
-      * [Check if a node is a certain type](#toc-check-if-a-node-is-a-certain-type)
-      * [Check if a path is a certain type](#toc-check-if-a-path-is-a-certain-type)
-      * [Check if an identifier is referenced](#toc-check-if-an-identifier-is-referenced)
-      * [Find a specific parent path](#toc-find-a-specific-parent-path)
-      * [Get Sibling Paths](#toc-get-sibling-paths)
-      * [Stopping Traversal](#toc-stopping-traversal)
-      * [Manipulation](#toc-manipulation)
-      * [Replacing a node](#toc-replacing-a-node)
-      * [Replacing a node with multiple nodes](#toc-replacing-a-node-with-multiple-nodes)
-      * [Replacing a node with a source string](#toc-replacing-a-node-with-a-source-string)
-      * [Inserting a sibling node](#toc-inserting-a-sibling-node)
-      * [Inserting into a container](#toc-inserting-into-a-container)
-      * [Removing a node](#toc-removing-a-node)
-      * [Replacing a parent](#toc-replacing-a-parent)
-      * [Removing a parent](#toc-removing-a-parent)
-      * [スコープ](#toc-scope)
-      * [Checking if a local variable is bound](#toc-checking-if-a-local-variable-is-bound)
-      * [Generating a UID](#toc-generating-a-uid)
-      * [Pushing a variable declaration to a parent scope](#toc-pushing-a-variable-declaration-to-a-parent-scope)
-      * [Rename a binding and its references](#toc-rename-a-binding-and-its-references)
+  * [はじめてのBabelプラグイン作成](#toc-writing-your-first-babel-plugin)
+  * [変換作業](#toc-transformation-operations) 
+      * [ビジティング(Visiting)](#toc-visiting)
+        * [サブノード(Sub Node)のパス(Path)の取得](#toc-get-the-path-of-a-sub-node)
+        * [ノード(Node)が特定のタイプ(Type)か調べる](#toc-check-if-a-node-is-a-certain-type)
+        * [パス(Path)が特定のタイプ(Type)か調べる](#toc-check-if-a-path-is-a-certain-type)
+        * [識別子(Identifier)が参照されているか調べる](#toc-check-if-an-identifier-is-referenced)
+        * [特定の親パス(Parent Path)を探す](#toc-find-a-specific-parent-path)
+        * [兄弟パス(Sibling Paths)を取得する](#toc-get-sibling-paths)
+        * [走査(Traversal)を停止する](#toc-stopping-traversal)
+      * [操作方法](#toc-manipulation)
+        * [ノード(Node)を置き換える](#toc-replacing-a-node)
+        * [1つのノード(Node)を複数のノード(Node)で置き換える](#toc-replacing-a-node-with-multiple-nodes)
+        * [ノード(Node)をソースの文字列で置き換える](#toc-replacing-a-node-with-a-source-string)
+        * [兄弟ノード(Sibling Node)を挿入する](#toc-inserting-a-sibling-node)
+        * [コンテナ(Container)に挿入する](#toc-inserting-into-a-container)
+        * [ノード(Node)を削除する](#toc-removing-a-node)
+        * [親(Parent)を置き換える](#toc-replacing-a-parent)
+        * [親(Parent)を削除する](#toc-removing-a-parent)
+      * [スコープ(Scope)](#toc-scope)
+        * [ローカル変数がバインド(Bind)されているかどうかの確認](#toc-checking-if-a-local-variable-is-bound)
+        * [UIDの生成](#toc-generating-a-uid)
+        * [変数宣言(Variable Declaration)の親スコープ(Parent Scope)へのプッシュ](#toc-pushing-a-variable-declaration-to-a-parent-scope)
+        * [バインディング(Binding)とその参照(References)の名称変更](#toc-rename-a-binding-and-its-references)
   * [プラグインのオプション](#toc-plugin-options) 
-      * [Pre and Post in Plugins](#toc-pre-and-post-in-plugins)
-      * [Enabling Syntax in Plugins](#toc-enabling-syntax-in-plugins)
-  * [Building Nodes](#toc-building-nodes)
-  * [ベストプラクティス](#toc-best-practices) 
-      * [Avoid traversing the AST as much as possible](#toc-avoid-traversing-the-ast-as-much-as-possible)
-      * [Merge visitors whenever possible](#toc-merge-visitors-whenever-possible)
-      * [Do not traverse when manual lookup will do](#toc-do-not-traverse-when-manual-lookup-will-do)
-      * [Optimizing nested visitors](#toc-optimizing-nested-visitors)
-      * [Being aware of nested structures](#toc-being-aware-of-nested-structures)
-      * [Unit Testing](#toc-unit-testing)
+      * [プラグインのPreとPost](#toc-pre-and-post-in-plugins)
+      * [プラグインのシンタックス(Syntax)を有効にする](#toc-enabling-syntax-in-plugins)
+	  * [シンタックスエラー(Syntax Error)を投げる](#toc-throwing-a-syntax-error)
+  * [ノード(Node)の構築](#toc-building-nodes)
+  * [ベストプラクティス](#toc-best-practices)
+      * [ヘルパービルダー(Helper Builders)とチェッカー(Checkers)の作成](#toc-create-helper-builders-and-checkers)
+      * [極力、ASTの走査(Traversing)を避ける](#toc-avoid-traversing-the-ast-as-much-as-possible)
+        * [可能な限りビジター(Visitors)を統合する](#toc-merge-visitors-whenever-possible)
+        * [手動で済む場合は走査(Traverse)しない](#toc-do-not-traverse-when-manual-lookup-will-do)
+      * [入れ子になったビジター(Nesting Visitors)の最適化](#toc-optimizing-nested-visitors)
+      * [入れ子構造(Nested Structures)を意識する](#toc-being-aware-of-nested-structures)
+      * [ユニットテスト(Unit Testing)](#toc-unit-testing)
+	    * [スナップショットテスト(Snapshot Tests)](#toc-snapshot-test)
+		* [ASTテスト(AST Tests)](#toc-ast-test)
+		* [エクゼクティブテスト(Exec Tests)](#toc-exec-test)
+		* [babel-plugin-tester](#toc-babel-plugin-tester)
 
 # <a id="toc-introduction"></a>イントロダクション
 
 BabelはJavaScriptのための汎用的で多目的に使用できるコンパイラです。また、様々な静的コード解析に利用するためのモジュールのコレクションでもあります。
 
-> 静的コード解析とは、実行すること無くコードの分析を行うプロセスです。 (コードの実行中にそれを分析するのは動的コード解析と呼ばれます。) 静的コード解析の目的は様々です。 Lint、コンパイル、コードハイライト、トランスフォーム、最適化、縮小など、様々な目的で利用することができます。
+> 静的コード解析(Static Analysis)とは、実行すること無くコードの分析を行うプロセスです。 (コードの実行中にそれを分析するのは動的コード解析(Dynamic Analysis)と呼ばれます。) 静的コード解析の目的は様々です。 Lint、コンパイル、コードハイライト、トランスフォーム、最適化、縮小など、様々な目的で利用することができます。
 
 Babelを利用することで、より生産的で、より良いコードを書くためのツールを作ることができます。
 
@@ -82,15 +88,15 @@ Babelを利用することで、より生産的で、より良いコードを書
 
 * * *
 
-# <a id="toc-basics"></a>基本
+# <a id="toc-basics"></a>基本事項
 
 BabelはJavaScriptのコンパイラ、特にソースからソースへ変換する「トランスパイラ(Transpiler)」と呼ばれる種類のコンパイラです。 つまり、BabelにJavaScriptのコードを与えることで、Babelはコードを変更し新しいコードを生成します。
 
 ## <a id="toc-asts"></a>抽象構文木(ASTs)
 
-コードの変換の各ステップでは[抽象構文木(ASTs)](https://en.wikipedia.org/wiki/Abstract_syntax_tree)またはASTを利用します。
+コードの変換の各ステップでは[Abstract Syntax Tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree)、すなわちAST(抽象構文木)を利用します。
 
-> Babel uses an AST modified from [ESTree](https://github.com/estree/estree), with the core spec located [here](https://github.com/babel/babylon/blob/master/ast/spec.md).
+> Babelは、[ESTree](https://github.com/estree/estree)をベースにしたASTを使用しています。 コアスペックは[こちら](https://github.com/babel/babylon/blob/master/ast/spec.md)です。
 
 ```js
 function square(n) {
@@ -98,9 +104,9 @@ function square(n) {
 }
 ```
 
-> ASTノードについて理解を深めたい場合は[AST Explorer](http://astexplorer.net/)を使ってみてください。 上記のサンプルコードの例は[ここ](http://astexplorer.net/#/Z1exs6BWMq)で確認することができます。
+> ASTノードについて理解を深めたい場合は[AST Explorer](http://astexplorer.net/)を使ってみてください。 上記のサンプルコードの例は[こちら](http://astexplorer.net/#/Z1exs6BWMq)で確認することができます。
 
-上記のサンプルコードをASTノードとして表すと以下の様になります。
+上記のサンプルコードは、次のようなツリーで表現できます。
 
 ```md
 - FunctionDeclaration:
@@ -125,7 +131,7 @@ function square(n) {
                   - name: n
 ```
 
-またはJavaScriptのオブジェクトして表現すると、以下の様になります。
+またはJavaScriptのオブジェクトして表現すると、以下のように表現できます。
 
 ```js
 {
@@ -159,7 +165,7 @@ function square(n) {
 }
 ```
 
-ASTの各階層は同じような構造をしていることに気付くでしょう。
+このASTの各階層は同じような構造をしていることに気付くでしょう。
 
 ```js
 {
@@ -188,7 +194,7 @@ ASTの各階層は同じような構造をしていることに気付くでし�
 
 > 注) いくつかのプロパティは、単純化のため省略しています。
 
-これらは**ノード(Node)**と呼ばれます。 ASTは単一のノード、または何百、何千のノードから構成することができます。 これらを利用し、静的コード解析に利用するプログラムの文法を説明することができるのです。
+これらは **ノード(Node)** と呼ばれます。 ASTは単一のノード、または何百、何千のノードから構成することができます。 これらを利用し、静的コード解析に利用するプログラムの文法を説明することができるのです。
 
 全てのノードはインターフェイスを持ちます。
 
@@ -198,7 +204,7 @@ interface Node {
 }
 ```
 
-`type`フィールドは、オブジェクトのノードの型を表す文字列です(例えば、 `"FunctionDeclaration"`、`"Identifier"`、`"BinaryExpression"`などがあります。) ノードの種類は特定のノードの型を記述するためのプロパティのセットを追加して定義します。
+`type`フィールドは、オブジェクトのノードのタイプを表す文字列です(例えば、 `"FunctionDeclaration"`、`"Identifier"`、`"BinaryExpression"`などがあります。) ノードの種類は特定のノードのタイプを記述するためのプロパティのセットを追加して定義します。
 
 Babelが生成したノードには、元のソースコード上のノードの位置を記述した追加のプロパティがセットされます。
 
@@ -221,21 +227,21 @@ Babelが生成したノードには、元のソースコード上のノードの
 }
 ```
 
-これらのプロパティには`start`、`end`、`loc`が一つのノードに出現します。
+これらのプロパティには`start`、`end`、`loc`が1つのノードに出現します。
 
 ## <a id="toc-stages-of-babel"></a>Babelのステージ
 
-Babelには大きく分けて３つのステージが存在します。すなわち、**parse**、**transform**、そして**generate**です。.
+Babelには大きく分けて３つのステージが存在します。すなわち、**パース(Parse)**、**変換(Transform)**、そして**生成(generate)**です。
 
-### <a id="toc-parse"></a>パーサー
+### <a id="toc-parse"></a>パース(Parse)
 
-**parse**は、コードを入力として受け取り、ASTを出力するステージです。 さらに、parseは２つのフェーズに分けることができます。すなわち、 [**Lexical Analysis**](https://en.wikipedia.org/wiki/Lexical_analysis) と [**Syntactic Analysis**](https://en.wikipedia.org/wiki/Parsing)です。.
+**パース(Parse)**は、コードを入力として受け取り、ASTを出力するステージです。 さらに、Parseは２つのフェーズに分けることができます。すなわち、 [**字句解析(Lexical Analysis)**](https://en.wikipedia.org/wiki/Lexical_analysis) と [**構文解析(Syntactic Analysis)**](https://en.wikipedia.org/wiki/Parsing)です。.
 
-#### <a id="toc-lexical-analysis"></a>字句解析
+#### <a id="toc-lexical-analysis"></a>字句解析(Lexical Analysis)
 
-Lexical Analysisは、コードの文字列を**token**のストリームへ変換するフェーズを指します。.
+字句解析(Lexical Analysis)は、コードの文字列を**トークン(Token)**のストリームへ変換するフェーズを指します。
 
-tokenは言語の構文の個々の部品であり、tokenのストリームはそれらがフラットに並んだものと考えてください。
+トークンは言語の構文の個々の部品であり、トークンのストリームはそれらがフラットに並んだ配列と考えてください。
 
 ```js
 n * n;
@@ -250,7 +256,7 @@ n * n;
 ]
 ```
 
-上記はtokenのストリームですが、それぞれのtokenは`type`を持ち、それは以下の様なプロパティから構成されています。
+上記はトークンのストリームですが、それぞれのトークンは`type`を持ち、それは以下の様なプロパティから構成されています。
 
 ```js
 {
@@ -271,27 +277,27 @@ n * n;
 }
 ```
 
-ASTのノードと同様、typeもまた`start`、`end`、`loc`といったプロパティを持ちます。.
+ASTのノードと同様、`type`もまた`start`、`end`、`loc`といったプロパティを持ちます。
 
-#### <a id="toc-syntactic-analysis"></a>構文解析
+#### <a id="toc-syntactic-analysis"></a>構文解析(Syntactic Analysis)
 
-一方、Syntactic Analysisは、tokenのストリームをASTに変換するフェーズを指します。 ここでは、tokenの情報をベースにそれらを再構成して、コードの構造をより加工しやすい形（AST）で表現します。
+一方、構文解析(Syntactic Analysis)は、トークンのストリームをASTに変換するフェーズを指します。 このフェーズでは、トークンの情報を利用して、コードの構造を表すASTとして再構成し、作業をしやすくします。
 
-### <a id="toc-transform"></a>変換
+### <a id="toc-transform"></a>変換(Transform)
 
-[transform](https://en.wikipedia.org/wiki/Program_transformation) ステージでは、ASTのツリーを走査して、ノードの追加、変更、削除といった処理を施します。 このステージこそが最も複雑なステージであり、それはBabelのみならず、他のコンパイラにおいても同様です。 また、このステージこそがプラグインに関わる部分であるため、言わばこのハンドブックの大半はtransformに関して書かれています。 したがって、ここでは簡単に説明するだけに留めたいと思います。
+[変換(Transform)](https://en.wikipedia.org/wiki/Program_transformation)のステージでは、ASTのツリーを走査して、ノードの追加、変更、削除といった処理を施します。 このステージこそが最も複雑なステージであり、それはBabelのみならず、他のコンパイラにおいても同様です。 また、このステージこそがプラグインに関わる部分であるため、言わばこのハンドブックの大半は変換に関して書かれています。 したがって、ここでは簡単に説明するだけに留めたいと思います。
 
 ### <a id="toc-generate"></a>ジェネレーター
 
-[generate](https://en.wikipedia.org/wiki/Code_generation_(compiler))（code generation）ステージは、ASTをふたたびコードの文字列に変換するステージです。さらに、このステージは[source map](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/)も生成します。.
+[コード生成(Code Generate)](https://en.wikipedia.org/wiki/Code_generation_(compiler))のステージは、ASTをふたたびコードの文字列に変換するステージです。さらに、このステージは[ソースマップ(Source Map)](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/)も生成します。
 
-code generationの処理は単純明快です。それは、ASTのツリーをdepth-firstの順番で走査することで、変換結果としてのコードの文字列を構築します。
+コード生成の処理は単純明快です。それは、ASTを深さ順に走査して、変換後のコードを表す文字列を構築します。
 
-## <a id="toc-traversal"></a>Traversal
+## <a id="toc-traversal"></a>走査(Traversal)
 
-transformのステージでは、ASTのツリーを再帰的に走査（traverse）する必要があります。
+ASTを変換するには、ツリーを再帰的に走査(Traversal)する必要があります。
 
-たとえば、typeが`FunctionDeclaration`のASTがあるとしましょう。このASTは `id`、`params`、そして`body`という３つのネストしたノードを含みます。
+たとえば、`type`が`FunctionDeclaration`のASTがあるとしましょう。このASTは `id`、`params`、そして`body`という3つのネストしたノードを含みます。
 
 ```js
 {
@@ -325,25 +331,25 @@ transformのステージでは、ASTのツリーを再帰的に走査（traverse
 }
 ```
 
-ご覧のとおり、`FunctionDeclaration`以下のノードはさらに子ノードを持つため、それらひとつひとつを走査しなければいけません。
+そこで、`FunctionDeclaration`から始めて、その内部のプロパティがわかるので、それぞれとその子(Children)を順番に見ていきます。
 
-まずは、`id`を見てみましょう。これは`Identifier`ノードであり、自身の直接の子ノードのみを持ちます。
+次に、`Identifier`である`id`に進みます。`Identifier`は子ノード(Child Node)のプロパティを持っていないので、次に進みます。
 
-次に、`params`を見てみましょう。これはノードの配列で、それぞれのノードはまたしても、`Identifier`です。
+続いて、ノードの配列である`params`があるので、それぞれのノードを訪問します。この場合は、またしても`Identifier`という単一のノードなので、次に進みます。
 
-最後に`body` を見てみましょう。これは`BlockStatement` であり、`body`というプロパティを持ちます。<0>body</0>はノードの配列なので、ひとつづつ辿ってみましょう。
+続いて、`BlockStatement`である`body`に、ノードの配列であるpropertyがあるので、それぞれにアクセスします。
 
-配列は単一のノード（`ReturnStatement`）から構成されており、`argument`というプロパティを持ちます。`argument`は`BinaryExpression`であり、さらに子ノードを持ちます。.
+ここには、引数(Argument)を持つ`ReturnStatement`ノードしかないので、`argument`に訪問して`BinaryExpression`を見つけます。
 
-`BinaryExpression` は`operator`、`left`、そして`right`の３つのプロパティを持ちます。 operatorはノードではなく、ただの値です。一方、`left`と`right`はノードです。.
+`BinaryExpression` は`operator`、`left`、そして`right`の３つのプロパティを持ちます。 `operator`はノードではなく単なる値なので、そこにはアクセスせず、`left`と`right`にアクセスします。
 
-この操作（traversal）のプロセスは、Babelのtransformステージ全体を通じて行われます。
+この走査(Traversal)プロセスは、Babelの変換(Transform)ステージを通して行われます。
 
-### <a id="toc-visitors"></a>Visitors
+### <a id="toc-visitors"></a>ビジター(Visitors)
 
-When we talk about "going" to a node, we actually mean we are **visiting** them. The reason we use that term is because there is this concept of a [**visitor**](https://en.wikipedia.org/wiki/Visitor_pattern).
+私たちがノードに「行く」というとき、実際には **訪問(Visiting)** していることを意味します。この言葉を使うのは、[**ビジター(Visitor)**](https://en.wikipedia.org/wiki/Visitor_pattern)という概念があるからです。
 
-Visitors are a pattern used in AST traversal across languages. Simply put they are an object with methods defined for accepting particular node types in a tree. That's a bit abstract so let's look at an example.
+ビジターは、言語を問わずAST走査で使われるパターンです。簡単に言えば，木(Tree)の中の特定のノードタイプ(Node Types)を受け入れるためのメソッドが定義されたオブジェクトです。少し抽象的なので、例を見てみましょう。
 
 ```js
 const MyVisitor = {
@@ -352,17 +358,17 @@ const MyVisitor = {
   }
 };
 
-// You can also create a visitor and add methods on it later
+// ビジターを作成して、後からメソッドを追加することも可能です。
 let visitor = {};
 visitor.MemberExpression = function() {};
 visitor.FunctionDeclaration = function() {}
 ```
 
-> **Note:** `Identifier() { ... }` is shorthand for `Identifier: { enter() { ... } }`.
+> **注)** `Identifier() { ... }`は`Identifier: { enter() { ... } }`の簡略。
 
-This is a basic visitor that when used during a traversal will call the `Identifier()` method for every `Identifier` in the tree.
+これは基本的なビジターで、走査中に使用されると、ツリー内のすべての`Identifier`に対して`Identifier()`メソッドを呼び出します。
 
-So with this code the `Identifier()` method will be called four times with each `Identifier` (including `square`).
+つまりこのコードでは、各`Identifier`（`square`を含む）に対して、`Identifier()`メソッドが4回呼ばれます。
 
 ```js
 function square(n) {
@@ -378,9 +384,9 @@ Called!
 Called!
 ```
 
-These calls are all on node **enter**. However there is also the possibility of calling a visitor method when on **exit**.
+これらの呼び出しはすべてノードの **enter** で行われます。しかし、 **exit** の時にvisitorメソッドを呼び出す可能性もあります。
 
-Imagine we have this tree structure:
+このようなツリー構造があるとします。
 
 ```js
 - FunctionDeclaration
@@ -393,32 +399,33 @@ Imagine we have this tree structure:
         - Identifier (right)
 ```
 
-As we traverse down each branch of the tree we eventually hit dead ends where we need to traverse back up the tree to get to the next node. Going down the tree we **enter** each node, then going back up we **exit** each node.
 
-Let's *walk* through what this process looks like for the above tree.
+木の各枝(each Branch of the Tree)をたどっていくと、最終的には行き止まりになり、次のノードに行くためには木をさかのぼらなければなりません。木を下っていくと各ノードに **enter** し、上に戻ると各ノードから **exit** します。
+
+上の木の場合、このプロセスがどのように見えるか *歩いて* みましょう。
 
   * Enter `FunctionDeclaration` 
-      * Enter `Identifier (id)`
+    * Enter `Identifier (id)`
       * Hit dead end
-      * Exit `Identifier (id)`
-      * Enter `Identifier (params[0])`
+    * Exit `Identifier (id)`
+    * Enter `Identifier (params[0])`
       * Hit dead end
-      * Exit `Identifier (params[0])`
-      * Enter `BlockStatement (body)`
+    * Exit `Identifier (params[0])`
+    * Enter `BlockStatement (body)`
       * Enter `ReturnStatement (body)` 
-          * Enter `BinaryExpression (argument)`
+        * Enter `BinaryExpression (argument)`
           * Enter `Identifier (left)` 
-              * Hit dead end
+            * Hit dead end
           * Exit `Identifier (left)`
           * Enter `Identifier (right)` 
-              * Hit dead end
+            * Hit dead end
           * Exit `Identifier (right)`
-          * Exit `BinaryExpression (argument)`
+        * Exit `BinaryExpression (argument)`
       * Exit `ReturnStatement (body)`
-      * Exit `BlockStatement (body)`
+    * Exit `BlockStatement (body)`
   * Exit `FunctionDeclaration`
 
-So when creating a visitor you have two opportunities to visit a node.
+そのため、ビジターを作成する際には、ノードを訪問する機会が2回あります。
 
 ```js
 const MyVisitor = {
@@ -433,9 +440,9 @@ const MyVisitor = {
 };
 ```
 
-If necessary, you can also apply the same function for multiple visitor nodes by separating them with a `|` in the method name as a string like `Identifier|MemberExpression`.
+必要に応じて、メソッド名を `|` で区切って、`Identifier|MemberExpression` のような文字列として、複数のビジターノードに同じ関数を適用することもできます。
 
-Example usage in the [flow-comments](https://github.com/babel/babel/blob/2b6ff53459d97218b0cf16f8a51c14a165db1fd2/packages/babel-plugin-transform-flow-comments/src/index.js#L47) plugin
+[flow-comments](https://github.com/babel/babel/blob/2b6ff53459d97218b0cf16f8a51c14a165db1fd2/packages/babel-plugin-transform-flow-comments/src/index.js#L47)プラグインで以下のように使われています。
 
 ```js
 const MyVisitor = {
@@ -443,11 +450,12 @@ const MyVisitor = {
 };
 ```
 
-You can also use aliases as visitor nodes (as defined in [babel-types](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions)).
 
-For example,
+また、エイリアス(Aliases)をビジターノードとして使用することもできます([babel-types](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions)で定義されています).
 
-`Function` is an alias for `FunctionDeclaration`, `FunctionExpression`, `ArrowFunctionExpression`, `ObjectMethod` and `ClassMethod`.
+例えば,
+
+`Function`は`FunctionDeclaration`, `FunctionExpression`, `ArrowFunctionExpression`, `ObjectMethod`, `ClassMethod`のエイリアスです.
 
 ```js
 const MyVisitor = {
@@ -455,13 +463,13 @@ const MyVisitor = {
 };
 ```
 
-### <a id="toc-paths"></a>Paths
+### <a id="toc-paths"></a>パス(Paths)
 
-An AST generally has many Nodes, but how do Nodes relate to one another? We could have one giant mutable object that you manipulate and have full access to, or we can simplify this with **Paths**.
+ASTは一般的に多くのノードを持ちますが、ノードはどうやってお互いに関係するのでしょうか？巨大な可変型オブジェクト(Giant Mutable Object)を用意して、それを操作したり、完全にアクセスできるようにすることもできますが、 **パス(Path)** を使ってこれを単純化することもできます。
 
-A **Path** is an object representation of the link between two nodes.
+**パス(Path)** とは、2つのノード間のリンクをオブジェクトで表現したものです。
 
-For example if we take the following node and its child:
+例えば、次のようなノードとその子を考えてみましょう。
 
 ```js
 {
@@ -474,7 +482,7 @@ For example if we take the following node and its child:
 }
 ```
 
-And represent the child `Identifier` as a path, it looks something like this:
+そして、子の`Identifier`をパスで表すと、以下のようになります。
 
 ```js
 {
@@ -490,7 +498,7 @@ And represent the child `Identifier` as a path, it looks something like this:
 }
 ```
 
-It also has additional metadata about the path:
+また、パスに関する追加のメタデータも持っています。
 
 ```js
 {
@@ -518,13 +526,13 @@ It also has additional metadata about the path:
 }
 ```
 
-As well as tons and tons of methods related to adding, updating, moving, and removing nodes, but we'll get into those later.
+また、ノードの追加、更新、移動、削除に関連する膨大な数のメソッドがありますが、それらについては後ほど説明します。
 
-In a sense, paths are a **reactive** representation of a node's position in the tree and all sorts of information about the node. Whenever you call a method that modifies the tree, this information is updated. Babel manages all of this for you to make working with nodes easy and as stateless as possible.
+ある意味で、パスはツリー内のノードの位置とノードに関するあらゆる情報を **リアクティブ(Reactive)** に表現しています。ツリーを変更するメソッドを呼び出すたびに、この情報は更新されます。Babelは、ノードの操作を簡単にし、可能な限りステートレスにするために、これらすべてを管理します。
 
-#### <a id="toc-paths-in-visitors"></a>Paths in Visitors
+#### <a id="toc-paths-in-visitors"></a>ビジターにおけるパス(Paths in Visitors)
 
-When you have a visitor that has a `Identifier()` method, you're actually visiting the path instead of the node. This way you are mostly working with the reactive representation of a node instead of the node itself.
+ビジターが `Identifier()`メソッドを持っている場合、実際にはノードではなくパスを訪れていることになります。この方法では、ほとんどの場合ノードそのものではなく、ノードのリアクティブな表現を扱うことになります。
 
 ```js
 const MyVisitor = {
@@ -545,11 +553,11 @@ Visiting: b
 Visiting: c
 ```
 
-### <a id="toc-state"></a>State
+### <a id="toc-state"></a>状態(State)
 
-State is the enemy of AST transformation. State will bite you over and over again and your assumptions about state will almost always be proven wrong by some syntax that you didn't consider.
+状態(State)はAST変換(AST Transformation)の敵です。状態は何度も何度も手を煩わしてきますし、状態に関する仮定はほとんどの場合、考慮していなかった何らかの構文によって間違っていることが証明されます。
 
-Take the following code:
+次のコードを見てみましょう。
 
 ```js
 function square(n) {
@@ -557,7 +565,7 @@ function square(n) {
 }
 ```
 
-Let's write a quick hacky visitor that will rename `n` to `x`.
+それでは、`n`を`x`にリネームする簡単なハッキーなビジター(Hacky Visitor)を書いてみましょう。
 
 ```js
 let paramName;
@@ -577,7 +585,7 @@ const MyVisitor = {
 };
 ```
 
-This might work for the above code, but we can easily break that by doing this:
+これは上記のコードではうまくいくかもしれませんが、次のようにすれば簡単に壊すことができます。
 
 ```js
 function square(n) {
@@ -586,7 +594,7 @@ function square(n) {
 n;
 ```
 
-The better way to deal with this is recursion. So let's make like a Christopher Nolan film and put a visitor inside of a visitor.
+これに対処するためのより良い方法は再帰(Recursion)です。では、クリストファー・ノーランの映画のように、ビジターの中にビジターを入れてみましょう。
 
 ```js
 const updateParamNameVisitor = {
@@ -610,25 +618,27 @@ const MyVisitor = {
 path.traverse(MyVisitor);
 ```
 
-Of course, this is a contrived example but it demonstrates how to eliminate global state from your visitors.
+もちろん、これは作為的な例ですが、ビジターからグローバルステートを排除する方法を示しています。
 
-### <a id="toc-scopes"></a>Scopes
+### <a id="toc-scopes"></a>スコープ(Scopes)
 
-Next let's introduce the concept of a [**scope**](https://en.wikipedia.org/wiki/Scope_(computer_science)). JavaScript has [lexical scoping](https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scoping_vs._dynamic_scoping), which is a tree structure where blocks create new scope.
+次に、[**スコープ(Scope)**](https://en.wikipedia.org/wiki/Scope_(computer_science))という概念を紹介します。
+JavaScriptには、[字句スコープ(Lexical Scoping)](https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scoping_vs._dynamic_scoping)
+JavaScript has [lexical scoping](https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scoping_vs._dynamic_scoping)という、ブロックが新しいスコープを作るツリー構造があります。
 
 ```js
-// global scope
+// グローバルスコープ
 
 function scopeOne() {
-  // scope 1
+  // スコープ 1
 
   function scopeTwo() {
-    // scope 2
+    // スコープ 2
   }
 }
 ```
 
-Whenever you create a reference in JavaScript, whether that be by a variable, function, class, param, import, label, etc., it belongs to the current scope.
+JavaScriptでは、変数、関数、クラス、param、import、labelなどで参照を作成すると、それは現在のスコープに属します。
 
 ```js
 var global = "I am in the global scope";
@@ -642,7 +652,7 @@ function scopeOne() {
 }
 ```
 
-Code within a deeper scope may use a reference from a higher scope.
+より深いスコープ内のコードは、より高いスコープからの参照を使用することができます。
 
 ```js
 function scopeOne() {
@@ -654,7 +664,7 @@ function scopeOne() {
 }
 ```
 
-A lower scope might also create a reference of the same name without modifying it.
+下位のスコープでは、同じ名前の参照を変更せずに作成することもあります。
 
 ```js
 function scopeOne() {
@@ -666,11 +676,11 @@ function scopeOne() {
 }
 ```
 
-When writing a transform, we want to be wary of scope. We need to make sure we don't break existing code while modifying different parts of it.
+変換(Transform)を書くときには、スコープに注意したいものです。既存のコードの様々な部分を修正する際に、既存のコードを壊してしまわないようにする必要があります。
 
-We may want to add new references and make sure they don't collide with existing ones. Or maybe we just want to find where a variable is referenced. We want to be able to track these references within a given scope.
+新しい参照を追加して、それが既存のものと衝突しないようにしたいこともあるでしょう。また、ある変数がどこで参照されているかを調べたいこともあるでしょう。そのためには、特定のスコープ内の参照を追跡できるようにする必要があります。
 
-A scope can be represented as:
+スコープは次のように表すことができます。
 
 ```js
 {
@@ -682,13 +692,13 @@ A scope can be represented as:
 }
 ```
 
-When you create a new scope you do so by giving it a path and a parent scope. Then during the traversal process it collects all the references ("bindings") within that scope.
+新しいスコープを作成するときは、パスと親スコープ(Parent Scope)を与えて行います。そして走査(Traversal)処理の間に、そのスコープ内のすべての参照（「バインディング(Bindings)」）を集めます。
 
-Once that's done, there's all sorts of methods you can use on scopes. We'll get into those later though.
+これが完了すると、スコープで使用できるあらゆる種類のメソッドがあります。それらについては後ほどご紹介します。
 
-#### <a id="toc-bindings"></a>Bindings
+#### <a id="toc-bindings"></a>バインディング(Bindings)
 
-References all belong to a particular scope; this relationship is known as a **binding**.
+参照(References)はすべて特定のスコープに属しており、この関係は **バインディング(Binding)** と呼ばれています。
 
 ```js
 function scopeOnce() {
@@ -702,7 +712,7 @@ function scopeOnce() {
 }
 ```
 
-A single binding looks like this:
+シングルバインディング(Single Binding)の場合は以下のようになります。
 
 ```js
 {
@@ -720,9 +730,9 @@ A single binding looks like this:
 }
 ```
 
-With this information you can find all the references to a binding, see what type of binding it is (parameter, declaration, etc.), lookup what scope it belongs to, or get a copy of its identifier. You can even tell if it's constant and if not, see what paths are causing it to be non-constant.
+この情報を使って、あなたはバインディングへのすべての参照を見つけ、それがどのようなタイプのバインディングであるか（パラメータ(Parameter)、宣言(Declaration)など）を確認し、それがどのスコープに属しているかを調べ、またはその識別子(Identifier)のコピーを得ることができます。定数(Constant)であるかどうかもわかりますし、定数でない場合には、どのようなパスが原因で定数でないのかもわかります。
 
-Being able to tell if a binding is constant is useful for many purposes, the largest of which is minification.
+バインディングが定数であるかどうかを知ることができるのは、多くの目的に役立ちますが、その中でも最大の目的はミニマイズ(Minification)です。
 
 ```js
 function scopeOne() {
@@ -741,21 +751,21 @@ function scopeOne() {
 
 # <a id="toc-api"></a>API
 
-Babel is actually a collection of modules. In this section we'll walk through the major ones, explaining what they do and how to use them.
+Babelは、実際にはモジュールのコレクション(a Collection of Modules)です。このセクションでは、主要なモジュールについて、それらが何をするのか、どのように使用するのかを説明します。
 
-> Note: This is not a replacement for detailed API documentation which will be available elsewhere shortly.
+> 注) これは、間もなく他の場所で利用可能になる詳細なAPIドキュメントの代わりではありません。
 
 ## <a id="toc-babylon"></a>[`babylon`](https://github.com/babel/babylon)
 
-Babylon is Babel's parser. Started as a fork of Acorn, it's fast, simple to use, has plugin-based architecture for non-standard features (as well as future standards).
+BabylonはBabelのパーサーです。Acornのフォークとして始まり、高速で使いやすく、非標準的な機能（将来の標準的な機能も含む）のためのプラグインベースのアーキテクチャ(Plugin-Based Architecture)を備えています。
 
-First, let's install it.
+まずは、インストールしてみましょう。
 
 ```sh
 $ npm install --save babylon
 ```
 
-Let's start by simply parsing a string of code:
+まずは、単純にコードの文字列をパース(Parsing)してみましょう。
 
 ```js
 import * as babylon from "babylon";
@@ -776,7 +786,7 @@ babylon.parse(code);
 // }
 ```
 
-We can also pass options to `parse()` like so:
+また、以下のように`parse()`にオプションを渡すこともできます。
 
 ```js
 babylon.parse(code, {
@@ -785,25 +795,25 @@ babylon.parse(code, {
 });
 ```
 
-`sourceType` can either be `"module"` or `"script"` which is the mode that Babylon should parse in. `"module"` will parse in strict mode and allow module declarations, `"script"` will not.
+`sourceType` は `"module"` か `"script"` のどちらかで、Babylonがパースする際のモードを表します。`"module"`はstrictモードでパースし、モジュールの宣言(Module Declarations)を許可する一方で、`"script"`は許可しません。
 
-> **Note:** `sourceType` defaults to `"script"` and will error when it finds `import` or `export`. Pass `sourceType: "module"` to get rid of these errors.
+> **注)** `sourceType`のデフォルトは`"script"`で、`import`や`export`を見つけるとエラーになります。`sourceType: "module"`を渡すことで、これらのエラーを取り除くことができます。
 
-Since Babylon is built with a plugin-based architecture, there is also a `plugins` option which will enable the internal plugins. Note that Babylon has not yet opened this API to external plugins, although may do so in the future.
+Babylonはプラグインベースのアーキテクチャで構築されているので、内部プラグインを有効にする`plugins`オプションもあります。BabylonはまだこのAPIを外部プラグインに開放していませんが、将来的には開放する可能性があることに注意してください。
 
-To see a full list of plugins, see the [Babylon README](https://github.com/babel/babylon/blob/master/README.md#plugins).
+プラグインの全リストは、[Babylon README](https://github.com/babel/babylon/blob/master/README.md#plugins)で見られます。
 
 ## <a id="toc-babel-traverse"></a>[`babel-traverse`](https://github.com/babel/babel/tree/master/packages/babel-traverse)
 
-The Babel Traverse module maintains the overall tree state, and is responsible for replacing, removing, and adding nodes.
+`babel-traverse`モジュールは、ツリー全体の状態を維持し、ノードの交換、削除、追加を行います。
 
-Install it by running:
+次を実行してインストールしてください。
 
 ```sh
 $ npm install --save babel-traverse
 ```
 
-We can use it alongside Babylon to traverse and update nodes:
+Babylonと一緒に使って、ノードを走査(Traverse)して更新することができます。
 
 ```js
 import * as babylon from "babylon";
@@ -829,15 +839,15 @@ traverse(ast, {
 
 ## <a id="toc-babel-types"></a>[`babel-types`](https://github.com/babel/babel/tree/master/packages/babel-types)
 
-Babel Types is a Lodash-esque utility library for AST nodes. It contains methods for building, validating, and converting AST nodes. It's useful for cleaning up AST logic with well thought out utility methods.
+`babel-types`は、Lodash風のASTノード用ユーティリティーライブラリ(Utility Library for AST Nodes)です。ASTノードを構築、検証、変換するためのメソッドが含まれています。よく考えられたユーティリティーメソッド(Utility Methods)を使って、ASTのロジックをきれいにするのに便利です。
 
-You can install it by running:
+次のコマンドでインストールできます。
 
 ```sh
 $ npm install --save babel-types
 ```
 
-Then start using it:
+では、使ってみましょう。
 
 ```js
 import traverse from "babel-traverse";
@@ -852,11 +862,11 @@ traverse(ast, {
 });
 ```
 
-### <a id="toc-definitions"></a>Definitions
+### <a id="toc-definitions"></a>定義(Definitions)
 
-Babel Types has definitions for every single type of node, with information on what properties belong where, what values are valid, how to build that node, how the node should be traversed, and aliases of the Node.
+`babel-types`には、どのプロパティがどこに属しているか、どの値が有効か、そのノードをどのように構築するか、そのノードをどのように走査(Traverse)するか、ノードのエイリアスはなにか、などの情報を含む、ノードのすべてのタイプ(Type)の定義があります。
 
-A single node type definition looks like this:
+1つのノードタイプの定義(Single Node Type Definition)は以下のようになります。
 
 ```js
 defineType("BinaryExpression", {
@@ -877,21 +887,21 @@ defineType("BinaryExpression", {
 });
 ```
 
-### <a id="toc-builders"></a>Builders
+### <a id="toc-builders"></a>ビルダー(Builders)
 
-You'll notice the above definition for `BinaryExpression` has a field for a `builder`.
+上記の`BinaryExpression`の定義には、`builder`フィールドがあることに気づくでしょう。
 
 ```js
 builder: ["operator", "left", "right"]
 ```
 
-This is because each node type gets a builder method, which when used looks like this:
+これは、各ノードタイプにビルダーメソッドが用意されているからで、これを使うと次のようになります。
 
 ```js
 t.binaryExpression("*", t.identifier("a"), t.identifier("b"));
 ```
 
-Which creates an AST like this:
+これは次のようなASTを生成します。
 
 ```js
 {
@@ -908,17 +918,17 @@ Which creates an AST like this:
 }
 ```
 
-Which when printed looks like this:
+これを出力すると次のようになります。
 
 ```js
 a * b
 ```
 
-Builders will also validate the nodes they are creating and throw descriptive errors if used improperly. Which leads into the next type of method.
+また、ビルダーは作成中のノードを検証し、不適切な使い方をした場合は記述エラーを出します。これが次のタイプのメソッド(Type of Method)につながります。
 
-### <a id="toc-validators"></a>Validators
+### <a id="toc-validators"></a>バリデーター(Validators)
 
-The definition for `BinaryExpression` also includes information on the `fields` of a node and how to validate them.
+`BinaryExpression`の定義には、ノードの`fields`とその検証方法についての情報も含まれています。
 
 ```js
 fields: {
@@ -934,19 +944,19 @@ fields: {
 }
 ```
 
-This is used to create two types of validating methods. The first of which is `isX`.
+これを使って、2種類のバリデーションメソッド(Validating Methods)を作成します。1つ目は、`isX`です。
 
 ```js
 t.isBinaryExpression(maybeBinaryExpressionNode);
 ```
 
-This tests to make sure that the node is a binary expression, but you can also pass a second parameter to ensure that the node contains certain properties and values.
+これは、ノードがバイナリ式(Binary Expression)であることを確認するためのテストですが、2番目のパラメータを渡して、ノードに特定のプロパティや値が含まれていることを確認することもできます。
 
 ```js
 t.isBinaryExpression(maybeBinaryExpressionNode, { operator: "*" });
 ```
 
-There is also the more, *ehem*, assertive version of these methods, which will throw errors instead of returning `true` or `false`.
+また、これらのメソッドには、`true`や`false`を返すのではなく、エラーを発生させる、より*賢い*ものもあります。
 
 ```js
 t.assertBinaryExpression(maybeBinaryExpressionNode);
@@ -954,21 +964,21 @@ t.assertBinaryExpression(maybeBinaryExpressionNode, { operator: "*" });
 // Error: Expected type "BinaryExpression" with option { "operator": "*" }
 ```
 
-### <a id="toc-converters"></a>Converters
+### <a id="toc-converters"></a>コンバーター(Converters)
 
 > [WIP]
 
 ## <a id="toc-babel-generator"></a>[`babel-generator`](https://github.com/babel/babel/tree/master/packages/babel-generator)
 
-Babel Generator is the code generator for Babel. It takes an AST and turns it into code with sourcemaps.
+`babel-generator`は、Babelのコードジェネレータ(Code Generator)です。ASTをソースマップ付きのコード(Code with Sourcemaps)に変換します。
 
-Run the following to install it:
+以下を実行してインストールしてください。
 
 ```sh
 $ npm install --save babel-generator
 ```
 
-Then use it
+では、使ってみましょう。
 
 ```js
 import * as babylon from "babylon";
@@ -987,7 +997,7 @@ generate(ast, {}, code);
 // }
 ```
 
-You can also pass options to `generate()`.
+`generate()`にオプションを渡すこともできます。
 
 ```js
 generate(ast, {
@@ -1001,7 +1011,7 @@ generate(ast, {
 
 ## <a id="toc-babel-template"></a>[`babel-template`](https://github.com/babel/babel/tree/master/packages/babel-template)
 
-Babel Template is another tiny but incredibly useful module. It allows you to write strings of code with placeholders that you can use instead of manually building up a massive AST. In computer science, this capability is called quasiquotes.
+`babel-template`は、小さいですが、非常に便利なモジュールです。これにより、膨大なASTを手動で構築する代わりに、プレースホルダー(Placeholders)を使用してコードの文字列を書くことができます。コンピュータサイエンスの世界では、この機能を「quasiquote」と呼びます。
 
 ```sh
 $ npm install --save babel-template
@@ -1028,11 +1038,11 @@ console.log(generate(ast).code);
 var myModule = require("my-module");
 ```
 
-# <a id="toc-writing-your-first-babel-plugin"></a>Writing your first Babel Plugin
+# <a id="toc-writing-your-first-babel-plugin"></a>はじめてのBabelプラグイン作成
 
-Now that you're familiar with all the basics of Babel, let's tie it together with the plugin API.
+Babelの基本をすべて理解したところで、それをプラグインAPIと結びつけてみましょう。
 
-Start off with a `function` that gets passed the current [`babel`](https://github.com/babel/babel/tree/master/packages/babel-core) object.
+まずは、現在の[`babel`](https://github.com/babel/babel/tree/master/packages/babel-core)オブジェクトを受け取る `function` から始めましょう。
 
 ```js
 export default function(babel) {
@@ -1040,7 +1050,7 @@ export default function(babel) {
 }
 ```
 
-Since you'll be using it so often, you'll likely want to grab just `babel.types` like so:
+頻繁に使用することになるので、次のように`babel.types`だけを取得したいと思うでしょう。
 
 ```js
 export default function({ types: t }) {
@@ -1048,7 +1058,7 @@ export default function({ types: t }) {
 }
 ```
 
-Then you return an object with a property `visitor` which is the primary visitor for the plugin.
+そして、プラグインの主要なビジター(Visitor)であるプロパティ`visitor`を持つオブジェクトを返します。
 
 ```js
 export default function({ types: t }) {
@@ -1060,7 +1070,7 @@ export default function({ types: t }) {
 };
 ```
 
-Each function in the visitor receives 2 arguments: `path` and `state`
+ビジターの各関数は2つの引数を受け取ります。`path`と`state`です。
 
 ```js
 export default function({ types: t }) {
@@ -1073,13 +1083,13 @@ export default function({ types: t }) {
 };
 ```
 
-Let's write a quick plugin to show off how it works. Here's our source code:
+それでは、簡単なプラグインを作成して、その仕組みを紹介しましょう。ここにソースコードがあります。
 
 ```js
 foo === bar;
 ```
 
-Or in AST form:
+またはASTの形で。
 
 ```js
 {
@@ -1096,7 +1106,7 @@ Or in AST form:
 }
 ```
 
-We'll start off by adding a `BinaryExpression` visitor method.
+まずは、`BinaryExpression`のビジターメソッド(Visitor Method)を追加することから始めましょう。
 
 ```js
 export default function({ types: t }) {
@@ -1110,7 +1120,7 @@ export default function({ types: t }) {
 }
 ```
 
-Then let's narrow it down to just `BinaryExpression`s that are using the `===` operator.
+そこで、`===`演算子を使っている`BinaryExpression`だけに絞ってみましょう。
 
 ```js
 visitor: {
@@ -1124,7 +1134,7 @@ visitor: {
 }
 ```
 
-Now let's replace the `left` property with a new identifier:
+では、`left`プロパティを新しい識別子(Identifier)に置き換えてみましょう。
 
 ```js
 BinaryExpression(path) {
@@ -1137,13 +1147,13 @@ BinaryExpression(path) {
 }
 ```
 
-Already if we run this plugin we would get:
+すでにこのプラグインを実行すると、次のようになります。
 
 ```js
 sebmck === bar;
 ```
 
-Now let's just replace the `right` property.
+では、`right`プロパティだけを置き換えてみましょう。
 
 ```js
 BinaryExpression(path) {
@@ -1156,23 +1166,23 @@ BinaryExpression(path) {
 }
 ```
 
-And now for our final result:
+最終結果は次のようになります。
 
 ```js
 sebmck === dork;
 ```
 
-Awesome! Our very first Babel plugin.
+すごい！私たちの最初のBabelプラグインです。
 
 * * *
 
-# <a id="toc-transformation-operations"></a>Transformation Operations
+# <a id="toc-transformation-operations"></a>変換作業(Transformation Operations)
 
-## <a id="toc-visiting"></a>Visiting
+## <a id="toc-visiting"></a>ビジティング(Visiting)
 
-### <a id="toc-get-the-path-of-a-sub-node"></a>Get the Path of Sub-Node
+### <a id="toc-get-the-path-of-a-sub-node"></a>サブノード(Sub Node)のパス(Path)の取得
 
-To access an AST node's property you normally access the node and then the property. `path.node.property`
+ASTノードのプロパティにアクセスするには、通常、ノードにアクセスしてからプロパティにアクセスします(`path.node.property`)。
 
 ```js
 // the BinaryExpression AST node has properties: `left`, `right`, `operator`
@@ -1183,7 +1193,7 @@ BinaryExpression(path) {
 }
 ```
 
-If you need to access the `path` of that property instead, use the `get` method of a path, passing in the string to the property.
+代わりにそのプロパティの`path`にアクセスする必要がある場合は、パスの`get`メソッドを使用して、プロパティに文字列を渡します。
 
 ```js
 BinaryExpression(path) {
@@ -1194,9 +1204,9 @@ Program(path) {
 }
 ```
 
-### <a id="toc-check-if-a-node-is-a-certain-type"></a>Check if a node is a certain type
+### <a id="toc-check-if-a-node-is-a-certain-type"></a>ノード(Node)が特定のタイプ(Type)か調べる
 
-If you want to check what the type of a node is, the preferred way to do so is:
+ノードのタイプが何であるかを確認したい場合は、次が好ましい方法です。
 
 ```js
 BinaryExpression(path) {
@@ -1206,7 +1216,7 @@ BinaryExpression(path) {
 }
 ```
 
-You can also do a shallow check for properties on that node:
+また、そのノードのプロパティを浅くチェック(Shallow Check)することもできます。
 
 ```js
 BinaryExpression(path) {
@@ -1216,7 +1226,7 @@ BinaryExpression(path) {
 }
 ```
 
-This is functionally equivalent to:
+これは機能的には次と同等です。
 
 ```js
 BinaryExpression(path) {
@@ -1230,9 +1240,9 @@ BinaryExpression(path) {
 }
 ```
 
-### <a id="toc-check-if-a-path-is-a-certain-type"></a>Check if a path is a certain type
+### <a id="toc-check-if-a-path-is-a-certain-type"></a>パス(Path)が特定のタイプ(Type)か調べる
 
-A path has the same methods for checking the type of a node:
+パスには、ノードのタイプを確認する方法があります。
 
 ```js
 BinaryExpression(path) {
@@ -1242,7 +1252,7 @@ BinaryExpression(path) {
 }
 ```
 
-is equivalent to doing:
+これは次と同等です。
 
 ```js
 BinaryExpression(path) {
@@ -1252,7 +1262,7 @@ BinaryExpression(path) {
 }
 ```
 
-### <a id="toc-check-if-an-identifier-is-referenced"></a>Check if an identifier is referenced
+### <a id="toc-check-if-an-identifier-is-referenced"></a>識別子(Identifier)が参照されているか調べる
 
 ```js
 Identifier(path) {
@@ -1262,7 +1272,7 @@ Identifier(path) {
 }
 ```
 
-Alternatively:
+他の方法として次があります。
 
 ```js
 Identifier(path) {
@@ -1272,45 +1282,45 @@ Identifier(path) {
 }
 ```
 
-### <a id="toc-find-a-specific-parent-path"></a>Find a specific parent path
+### <a id="toc-find-a-specific-parent-path"></a>特定の親パス(Parent Path)を探す
 
-Sometimes you will need to traverse the tree upwards from a path until a condition is satisfied.
+ある条件が満たされるまで、あるパスからツリーを上方向に走査(Traverse)する必要がある場合があります。
 
-Call the provided `callback` with the `NodePath`s of all the parents. When the `callback` returns a truthy value, we return that `NodePath`.
+すべての親の`NodePath`を指定して、指定された`callback`を呼び出します。`callback`が真の値(Truthy Value)を返したら、その`NodePath`を返します。
 
 ```js
 path.findParent((path) => path.isObjectExpression());
 ```
 
-If the current path should be included as well:
+現在のパスも含めたい場合は次のようにします。
 
 ```js
 path.find((path) => path.isObjectExpression());
 ```
 
-Find the closest parent function or program:
+最も近い親の関数やプログラム(Parent Function or Program)を探す場合は次のようにします。
 
 ```js
 path.getFunctionParent();
 ```
 
-Walk up the tree until we hit a parent node path in a list
+リストの親ノードのパスが見つかるまでASTを上方向に走査するには次のようにします。
 
 ```js
 path.getStatementParent();
 ```
 
-### <a id="toc-get-sibling-paths"></a>Get Sibling Paths
+### <a id="toc-get-sibling-paths"></a>兄弟パス(Sibling Paths)を取得する
 
-If a path is in a list like in the body of a `Function`/`Program`, it will have "siblings".
+パスが `Function`/`Program`のボディ(Body)といったリストの中にある場合、そのパスには「兄弟(Siblings)」が存在します。
 
-  * Check if a path is part of a list with `path.inList`
-  * You can get the surrounding siblings with `path.getSibling(index)`,
-  * The current path's index in the container with `path.key`,
-  * The path's container (an array of all sibling nodes) with `path.container`
-  * Get the name of the key of the list container with `path.listKey`
+  * パスがリストの一部であるかどうかを `path.inList`でチェックします。
+  * `path.getSibling(index)`で周囲の兄弟(Surrounding Siblings)を取得することができます。
+  * コンテナ(Container)内の現在のパスのインデックスを`path.key`で取得します。
+  * パスのコンテナ(すべての兄弟ノードの配列)を`path.container`で取得します。
+  * `path.listKey`で、リストコンテナ(List Container)のキーの名前を取得します。
 
-> These APIs are used in the [transform-merge-sibling-variables](https://github.com/babel/babili/blob/master/packages/babel-plugin-transform-merge-sibling-variables/src/index.js) plugin used in [babel-minify](https://github.com/babel/babili).
+> これらのAPIは[babel-minify](https://github.com/babel/babili)で使用されている[transform-merge-sibling-variables](https://github.com/babel/babili/blob/master/packages/babel-plugin-transform-merge-sibling-variables/src/index.js)プラグインで使用されています。
 
 ```js
 var a = 1; // pathA, path.key = 0
@@ -1336,9 +1346,9 @@ export default function({ types: t }) {
 }
 ```
 
-### <a id="toc-stopping-traversal"></a>Stopping Traversal
+### <a id="toc-stopping-traversal"></a>走査(Traversal)を停止する
 
-If your plugin needs to not run in a certain situation, the simpliest thing to do is to write an early return.
+ある状況下でプラグインを動作させない必要がある場合、最もシンプルなのはアーリーリターン(Early Return)を書くことです。
 
 ```js
 BinaryExpression(path) {
@@ -1346,9 +1356,9 @@ BinaryExpression(path) {
 }
 ```
 
-If you are doing a sub-traversal in a top level path, you can use 2 provided API methods:
+トップレベルのパスでサブトラバーサル(Sub Traversal)を行う場合、2つの提供されたAPIメソッドを使用できます。
 
-`path.skip()` skips traversing the children of the current path. `path.stop()` stops traversal entirely.
+`path.skip()`は、現在のパスの子の走査をスキップします。`path.stop()`は、走査を完全に停止します。
 
 ```js
 outerPath.traverse({
@@ -1362,9 +1372,9 @@ outerPath.traverse({
 });
 ```
 
-## <a id="toc-manipulation"></a>Manipulation
+## <a id="toc-manipulation"></a>操作方法
 
-### <a id="toc-replacing-a-node"></a>Replacing a node
+### <a id="toc-replacing-a-node"></a>ノード(Node)を置き換える
 
 ```js
 BinaryExpression(path) {
@@ -1381,7 +1391,7 @@ BinaryExpression(path) {
   }
 ```
 
-### <a id="toc-replacing-a-node-with-multiple-nodes"></a>Replacing a node with multiple nodes
+### <a id="toc-replacing-a-node-with-multiple-nodes"></a>1つのノード(Node)を複数のノード(Node)で置き換える
 
 ```js
 ReturnStatement(path) {
@@ -1402,9 +1412,9 @@ ReturnStatement(path) {
   }
 ```
 
-> **Note:** When replacing an expression with multiple nodes, they must be statements. This is because Babel uses heuristics extensively when replacing nodes which means that you can do some pretty crazy transformations that would be extremely verbose otherwise.
+> **注)** 複数のノードで式(Expression)を置き換える場合、それらはステートメント(Statement)でなければなりません。これは、Babelがノードを置き換える際にヒューリスティック(Heuristics)を広範囲に使用するためで、そうでなければ非常に冗長になってしまうような、かなりクレイジーな変換をすることになります。
 
-### <a id="toc-replacing-a-node-with-a-source-string"></a>Replacing a node with a source string
+### <a id="toc-replacing-a-node-with-a-source-string"></a>ノード(Node)をソースの文字列で置き換える
 
 ```js
 FunctionDeclaration(path) {
@@ -1422,9 +1432,9 @@ FunctionDeclaration(path) {
   }
 ```
 
-> **Note:** It's not recommended to use this API unless you're dealing with dynamic source strings, otherwise it's more efficient to parse the code outside of the visitor.
+> **注)** 動的なソースの文字列(Dynamic Source Strings)を扱う場合を除き、このAPIの使用は推奨されません。そうでない場合は、ビジター(Visitor)の外部でコードを解析する方が効率的です。
 
-### <a id="toc-inserting-a-sibling-node"></a>Inserting a sibling node
+### <a id="toc-inserting-a-sibling-node"></a>兄弟ノード(Sibling Node)を挿入する
 
 ```js
 FunctionDeclaration(path) {
@@ -1441,7 +1451,7 @@ FunctionDeclaration(path) {
 + "A little high, little low.";
 ```
 
-> **Note:** This should always be a statement or an array of statements. This uses the same heuristics mentioned in [Replacing a node with multiple nodes](#replacing-a-node-with-multiple-nodes).
+> **注)** これは常にステートメント(Statement)またはステートメント(Statement)の配列でなければなりません。これは[Replacing a node with multiple nodes](#replacing a node-with-multiple-nodes)で述べられているのと同じヒューリスティック(Heuristics)を使用しています。
 
 ### <a id="toc-inserting-into-a-container"></a>Inserting into a container
 
@@ -1464,7 +1474,7 @@ ClassMethod(path) {
  }
 ```
 
-### <a id="toc-removing-a-node"></a>Removing a node
+### <a id="toc-removing-a-node"></a>ノード(Node)を削除する
 
 ```js
 FunctionDeclaration(path) {
@@ -1478,9 +1488,9 @@ FunctionDeclaration(path) {
 - }
 ```
 
-### <a id="toc-replacing-a-parent"></a>Replacing a parent
+### <a id="toc-replacing-a-parent"></a>親(Parent)を置き換える
 
-Just call `replaceWith` with the parentPath: `path.parentPath`
+親パスを指定して`replaceWith`を呼び出すだけです： `path.parentPath`
 
 ```js
 BinaryExpression(path) {
@@ -1497,7 +1507,7 @@ BinaryExpression(path) {
   }
 ```
 
-### <a id="toc-removing-a-parent"></a>Removing a parent
+### <a id="toc-removing-a-parent"></a>親(Parent)を削除する
 
 ```js
 BinaryExpression(path) {
@@ -1511,9 +1521,9 @@ BinaryExpression(path) {
   }
 ```
 
-## <a id="toc-scope"></a>スコープ
+## <a id="toc-scope"></a>スコープ(Scope)
 
-### <a id="toc-checking-if-a-local-variable-is-bound"></a>Checking if a local variable is bound
+### <a id="toc-checking-if-a-local-variable-is-bound"></a>ローカル変数がバインド(Bind)されているかどうかの確認
 
 ```js
 FunctionDeclaration(path) {
@@ -1523,9 +1533,9 @@ FunctionDeclaration(path) {
 }
 ```
 
-This will walk up the scope tree and check for that particular binding.
+これにより、スコープツリー(Scope Tree)をさかのぼり、その特定のバインディング(Binding)をチェックします。
 
-You can also check if a scope has its **own** binding:
+また、あるスコープが **独自の** バインディングを持っているかどうかをチェックすることもできます。
 
 ```js
 FunctionDeclaration(path) {
@@ -1535,9 +1545,9 @@ FunctionDeclaration(path) {
 }
 ```
 
-### <a id="toc-generating-a-uid"></a>Generating a UID
+### <a id="toc-generating-a-uid"></a>UIDの生成
 
-This will generate an identifier that doesn't collide with any locally defined variables.
+これにより、ローカルに定義された変数(Locally Defined Variables)と衝突しない識別子(Identifier)が生成されます。
 
 ```js
 FunctionDeclaration(path) {
@@ -1548,9 +1558,9 @@ FunctionDeclaration(path) {
 }
 ```
 
-### <a id="toc-pushing-a-variable-declaration-to-a-parent-scope"></a>Pushing a variable declaration to a parent scope
+### <a id="toc-pushing-a-variable-declaration-to-a-parent-scope"></a>変数宣言(Variable Declaration)の親スコープ(Parent Scope)へのプッシュ
 
-Sometimes you may want to push a `VariableDeclaration` so you can assign to it.
+時には、`VariableDeclaration`をプッシュして、代入できるようにしたいこともあります。
 
 ```js
 FunctionDeclaration(path) {
@@ -1568,7 +1578,7 @@ FunctionDeclaration(path) {
 + };
 ```
 
-### <a id="toc-rename-a-binding-and-its-references"></a>Rename a binding and its references
+### <a id="toc-rename-a-binding-and-its-references"></a>バインディング(Binding)とその参照(References)の名称変更
 
 ```js
 FunctionDeclaration(path) {
@@ -1584,7 +1594,7 @@ FunctionDeclaration(path) {
   }
 ```
 
-Alternatively, you can rename a binding to a generated unique identifier:
+また、バインディングの名前を、生成された一意の識別子に変更することもできます。
 
 ```js
 FunctionDeclaration(path) {
@@ -1604,7 +1614,7 @@ FunctionDeclaration(path) {
 
 # <a id="toc-plugin-options"></a>プラグインのオプション
 
-If you would like to let your users customize the behavior of your Babel plugin you can accept plugin specific options which users can specify like this:
+ユーザーにBabelプラグインの動作をカスタマイズさせたい場合には、ユーザーが以下のように指定できるプラグイン固有のオプションを受け入れることができます。
 
 ```js
 {
@@ -1617,7 +1627,7 @@ If you would like to let your users customize the behavior of your Babel plugin 
 }
 ```
 
-These options then get passed into plugin visitors through the `state` object:
+これらのオプションは、`state`オブジェクトを通じて、プラグインのビジター(Visitors)に渡されます。
 
 ```js
 export default function({ types: t }) {
@@ -1632,11 +1642,11 @@ export default function({ types: t }) {
 }
 ```
 
-These options are plugin-specific and you cannot access options from other plugins.
+これらのオプションはプラグイン固有のもので、他のプラグインのオプションにはアクセスできません。
 
-## <a id="toc-pre-and-post-in-plugins"></a> Pre and Post in Plugins
+## <a id="toc-pre-and-post-in-plugins"></a>プラグインのPreとPost
 
-Plugins can have functions that are run before or after plugins. They can be used for setup or cleanup/analysis purposes.
+プラグインは、プラグインの前または後に実行される関数を持つことができます。これらは、セットアップやクリーンアップ、分析のために使用することができます。
 
 ```js
 export default function({ types: t }) {
@@ -1656,9 +1666,9 @@ export default function({ types: t }) {
 }
 ```
 
-## <a id="toc-enabling-syntax-in-plugins"></a> Enabling Syntax in Plugins
+## <a id="toc-enabling-syntax-in-plugins"></a>プラグインのシンタックス(Syntax)を有効にする
 
-Plugins can enable [babylon plugins](https://github.com/babel/babylon#plugins) so that users don't need to install/enable them. This prevents a parsing error without inheriting the syntax plugin.
+プラグインは[babylonプラグイン](https://github.com/babel/babylon#plugins)を有効にすることで、ユーザーがインストール/有効化する必要がありません。これにより、シンタックスプラグイン(Syntax Plugin)を継承しなくても、パースエラー(Parsing Error)を防ぐことができます。
 
 ```js
 export default function({ types: t }) {
@@ -1668,9 +1678,9 @@ export default function({ types: t }) {
 }
 ```
 
-## <a id="toc-throwing-a-syntax-error"></a> Throwing a Syntax Error
+## <a id="toc-throwing-a-syntax-error"></a>シンタックスエラー(Syntax Error)を投げる
 
-If you want to throw an error with babel-code-frame and a message:
+babel-code-frameとメッセージでエラーを投げたい場合は次のようにします。
 
 ```js
 export default function({ types: t }) {
@@ -1684,7 +1694,7 @@ export default function({ types: t }) {
 }
 ```
 
-The error looks like:
+エラーは次のように表示されます。
 
     file.js: Error message here
        7 |
@@ -1698,15 +1708,15 @@ The error looks like:
 
 * * *
 
-# <a id="toc-building-nodes"></a>Building Nodes
+# <a id="toc-building-nodes"></a>ノード(Node)の構築
 
-When writing transformations you'll often want to build up some nodes to insert into the AST. As mentioned previously, you can do this using the [builder](#builders) methods in the [`babel-types`](#babel-types) package.
+変換(Transformations)のコードを書いていると、ASTに挿入するノードを構築したくなることがよくあります。前述のように、[babel-types`](#babel-types)パッケージの[builder](#builders)メソッドを使ってこれを行うことができます。
 
-The method name for a builder is simply the name of the node type you want to build except with the first letter lowercased. For example if you wanted to build a `MemberExpression` you would use `t.memberExpression(...)`.
+ビルダー(Builder)のメソッド名は、構築したいノードタイプの名前を、最初の文字を除いて小文字にしたものになります。例えば、`MemberExpression`を構築したい場合は、`t.memberExpression(...)`となります。
 
-The arguments of these builders are decided by the node definition. There's some work that's being done to generate easy-to-read documentation on the definitions, but for now they can all be found [here](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions).
+これらのビルダーの引数は、ノード定義(Node Definition)によって決定されます。ノード定義についての読みやすいドキュメントを作成する作業が行われていますが、現時点ではすべて[ここ](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions)で見ることができます。
 
-A node definition looks like the following:
+ノード定義は次のようなものです。
 
 ```js
 defineType("MemberExpression", {
@@ -1730,15 +1740,15 @@ defineType("MemberExpression", {
 });
 ```
 
-Here you can see all the information about this particular node type, including how to build it, traverse it, and validate it.
+ここには、この特定のノードタイプに関するすべての情報（構築方法、走査(Traverse)方法、検証(Validate)方法など）が表示されます。
 
-By looking at the `builder` property, you can see the 3 arguments that will be needed to call the builder method (`t.memberExpression`).
+`builder`プロパティを見ると、ビルダーメソッド(`t.memberExpression`)を呼び出すのに必要な3つの引数を見ることができます。
 
 ```js
 builder: ["object", "property", "computed"],
 ```
 
-> Note that sometimes there are more properties that you can customize on the node than the `builder` array contains. This is to keep the builder from having too many arguments. In these cases you need to set the properties manually. An example of this is [`ClassMethod`](https://github.com/babel/babel/blob/bbd14f88c4eea88fa584dd877759dd6b900bf35e/packages/babel-types/src/definitions/es2015.js#L238-L276).
+> なお、ノード上でカスタマイズできるプロパティは、`builder`の配列に含まれる数よりも多い場合があります。これはビルダーの引数が多くなりすぎないようにするためです。このような場合には、手動でプロパティを設定する必要があります。この例としては、[`ClassMethod`](https://github.com/babel/babel/blob/bbd14f88c4eea88fa584dd877759dd6b900bf35e/packages/babel-types/src/definitions/es2015.js#L238-L276)があります。
 
 ```js
 // Example
@@ -1753,7 +1763,7 @@ var node = t.classMethod(
 node.async = true;
 ```
 
-You can see the validation for the builder arguments with the `fields` object.
+ビルダーの引数に対するバリデーションは、`fields`オブジェクトで確認できます。
 
 ```js
 fields: {
@@ -1772,9 +1782,9 @@ fields: {
 }
 ```
 
-You can see that `object` needs to be an `Expression`, `property` either needs to be an `Expression` or an `Identifier` depending on if the member expression is `computed` or not and `computed` is simply a boolean that defaults to `false`.
+`object`は`Expression`である必要があり、`property`は`MemberExpression`が `computed` であるかどうかに応じて `Expression`または`Identifier`である必要があり、`computed`は単なるブール値で、デフォルトでは`false`であることがわかります。
 
-So we can construct a `MemberExpression` by doing the following:
+つまり、以下のようにして`MemberExpression`を構築することができます。
 
 ```js
 t.memberExpression(
@@ -1784,21 +1794,21 @@ t.memberExpression(
 );
 ```
 
-Which will result in:
+これは次のようになります。
 
 ```js
 object.property
 ```
 
-However, we said that `object` needed to be an `Expression` so why is `Identifier` valid?
+しかし、`object`は`Expression`である必要があると言いましたが、なぜ`Identifier`は有効なのでしょうか？
 
-Well if we look at the definition of `Identifier` we can see that it has an `aliases` property which states that it is also an expression.
+さて、`Identifier`の定義を見てみると、`aliases`というプロパティがあり、これは`Expression`でもあることを示しています。
 
 ```js
 aliases: ["Expression", "LVal"],
 ```
 
-So since `MemberExpression` is a type of `Expression`, we could set it as the `object` of another `MemberExpression`:
+つまり、`MemberExpression`は`Expression`の一種なので、別の`MemberExpression`の`object`として設定することができます。
 
 ```js
 t.memberExpression(
@@ -1810,23 +1820,23 @@ t.memberExpression(
 )
 ```
 
-Which will result in:
+これは次のようになります。
 
 ```js
 member.expression.property
 ```
 
-It's very unlikely that you will ever memorize the builder method signatures for every node type. So you should take some time and understand how they are generated from the node definitions.
+すべてのノードタイプのビルダーメソッドシグネチャ(Builder Method Signatures)を記憶することはまずないでしょう。そのため、時間をかけて、ノード定義からどのように生成されるかを理解する必要があります。
 
-You can find all of the actual [definitions here](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions) and you can see them [documented here](https://github.com/babel/babel/blob/master/doc/ast/spec.md)
+実際の全ての定義は[こちら](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions)、ドキュメントは[こちら](https://github.com/babel/babel/blob/master/doc/ast/spec.md)にあります。
 
 * * *
 
 # <a id="toc-best-practices"></a>ベストプラクティス
 
-## <a id="toc-create-helper-builders-and-checkers"></a> Create Helper Builders and Checkers
+## <a id="toc-create-helper-builders-and-checkers"></a>ヘルパービルダー(Helper Builders)とチェッカー(Checkers)の作成
 
-It's pretty simple to extract certain checks (if a node is a certain type) into their own helper functions as well as extracting out helpers for specific node types.
+特定のチェック(ノードが特定のタイプであるかどうか)を独自のヘルパー関数(Helper Functions)に抽出したり、特定のノードタイプ用のヘルパーを抽出したりするのはとても簡単です。
 
 ```js
 function isAssignment(node) {
@@ -1838,15 +1848,15 @@ function buildAssignment(left, right) {
 }
 ```
 
-## <a id="toc-avoid-traversing-the-ast-as-much-as-possible"></a>Avoid traversing the AST as much as possible
+## <a id="toc-avoid-traversing-the-ast-as-much-as-possible"></a>極力、ASTの走査(Traversing)を避ける
 
-Traversing the AST is expensive, and it's easy to accidentally traverse the AST more than necessary. This could be thousands if not tens of thousands of extra operations.
+ASTの走査(Traverse)にはコストがかかりますし、誤って必要以上にASTを走査してしまうこともあります。これは、何万回とは言わないまでも、何千回もの余分な操作になる可能性があります。
 
-Babel optimizes this as much as possible, merging visitors together if it can in order to do everything in a single traversal.
+Babelはこれを可能な限り最適化し、1回の走査ですべてを行うために、可能であればビジター(Visitors)を結合します。
 
-### <a id="toc-merge-visitors-whenever-possible"></a>Merge visitors whenever possible
+### <a id="toc-merge-visitors-whenever-possible"></a>可能な限りビジター(Visitors)を統合する
 
-When writing visitors, it may be tempting to call `path.traverse` in multiple places where they are logically necessary.
+ビジター(Visitors)を書いていると、論理的に必要な複数の場所で `path.traverse`を呼び出したくなることがあります。
 
 ```js
 path.traverse({
@@ -1862,7 +1872,7 @@ path.traverse({
 });
 ```
 
-However, it is far better to write these as a single visitor that only gets run once. Otherwise you are traversing the same tree multiple times for no reason.
+しかし、これらは一度だけ実行される単一のビジターとして記述する方がはるかに良いです。そうしないと、同じASTを意味もなく何度も横断することになります。
 
 ```js
 path.traverse({
@@ -1875,9 +1885,9 @@ path.traverse({
 });
 ```
 
-### <a id="toc-do-not-traverse-when-manual-lookup-will-do"></a>Do not traverse when manual lookup will do
+### <a id="toc-do-not-traverse-when-manual-lookup-will-do"></a>手動で済む場合は走査(Traverse)しない
 
-It may also be tempting to call `path.traverse` when looking for a particular node type.
+特定のノードタイプを探すときに、`path.traverse`を呼びたくなることもあるでしょう。
 
 ```js
 const nestedVisitor = {
@@ -1893,7 +1903,7 @@ const MyVisitor = {
 };
 ```
 
-However, if you are looking for something specific and shallow, there is a good chance you can manually lookup the nodes you need without performing a costly traversal.
+しかし、対象が具体的で浅ければ、コストのかかる走査を行わなくても、必要なノードを手動で探せる可能性があります。
 
 ```js
 const MyVisitor = {
@@ -1905,9 +1915,9 @@ const MyVisitor = {
 };
 ```
 
-## <a id="toc-optimizing-nested-visitors"></a>Optimizing nested visitors
+## <a id="toc-optimizing-nested-visitors"></a>入れ子になったビジター(Nesting Visitors)の最適化
 
-When you are nesting visitors, it might make sense to write them nested in your code.
+ビジターを入れ子(Nesting Visitors)にしているときは、コードの中に入れ子にして書くとよいかもしれません。
 
 ```js
 const MyVisitor = {
@@ -1921,7 +1931,7 @@ const MyVisitor = {
 };
 ```
 
-However, this creates a new visitor object every time `FunctionDeclaration()` is called. That can be costly, because Babel does some processing each time a new visitor object is passed in (such as exploding keys containing multiple types, performing validation, and adjusting the object structure). Because Babel stores flags on visitor objects indicating that it's already performed that processing, it's better to store the visitor in a variable and pass the same object each time.
+しかしこれは、`FunctionDeclaration()`が呼ばれるたびに、新しいビジターオブジェクト(Visitor Object)を作成します。なぜなら、Babelは新しいビジターオブジェクトが渡されるたびに、いくつかの処理を行うからです(複数のタイプを含むキーのエクスプロード(Explod)、検証の実行、オブジェクト構造(Object Structure)の調整など)。Babelは、その処理を既に行ったことを示すフラグをビジターオブジェクトに保存するので、ビジターを変数に保存して、毎回同じオブジェクトを渡す方が良いでしょう。
 
 ```js
 const nestedVisitor = {
@@ -1937,7 +1947,7 @@ const MyVisitor = {
 };
 ```
 
-If you need some state within the nested visitor, like so:
+入れ子になったビジターの中で何らかの状態が必要な場合は、次のようにします。
 
 ```js
 const MyVisitor = {
@@ -1955,7 +1965,7 @@ const MyVisitor = {
 };
 ```
 
-You can pass it in as state to the `traverse()` method and have access to it on `this` in the visitor.
+これを状態(State)として `traverse()`メソッドに渡すことで、ビジターの`this`からアクセスできるようになります。
 
 ```js
 const nestedVisitor = {
@@ -1974,11 +1984,11 @@ const MyVisitor = {
 };
 ```
 
-## <a id="toc-being-aware-of-nested-structures"></a>Being aware of nested structures
+## <a id="toc-being-aware-of-nested-structures"></a>入れ子構造(Nested Structures)を意識する
 
-Sometimes when thinking about a given transform, you might forget that the given structure can be nested.
+与えられた変換(Transform)について考えるとき、与えられた構造がネストできることを忘れてしまうことがあります。
 
-For example, imagine we want to lookup the `constructor` `ClassMethod` from the `Foo` `ClassDeclaration`.
+例えば、`Foo`の`ClassDeclaration`から`constructor`の`ClassMethod`を検索したいとします。
 
 ```js
 class Foo {
@@ -2006,7 +2016,7 @@ const MyVisitor = {
 }
 ```
 
-We are ignoring the fact that classes can be nested and using the traversal above we will hit a nested `constructor` as well:
+ここではクラスが入れ子になっているという事実を無視しており、上記の走査を使用すると、入れ子になった`constructor`も発見してしまいます。
 
 ```js
 class Foo {
@@ -2020,14 +2030,14 @@ class Foo {
 }
 ```
 
-## <a id="toc-unit-testing"></a>Unit Testing
+## <a id="toc-unit-testing"></a>ユニットテスト(Unit Testing)
 
-There are a few primary ways to test babel plugins: snapshot tests, AST tests, and exec tests. We'll use [jest](http://facebook.github.io/jest/) for this example because it supports snapshot testing out of the box. The example we're creating here is hosted in [this repo](https://github.com/brigand/babel-plugin-testing-example).
+Babelプラグインのテストには、いくつかの主要な方法があります。スナップショットテスト(Snapshot Tests)、ASTテスト、エクゼクティブテスト(Exec Tests)です。この例では、スナップショットテストをサポートしている[jest](http://facebook.github.io/jest/)を使用しています。ここで作成しているサンプルは、[このレポジトリ](https://github.com/brigand/babel-plugin-testing-example)でホストされています。
 
-First we need a babel plugin, we'll put this in src/index.js.
+まず、Babelプラグインが必要です。これを`src/index.js`に入れます。
 
 ```js
-<br />module.exports = function testPlugin(babel) {
+module.exports = function testPlugin(babel) {
   return {
     visitor: {
       Identifier(path) {
@@ -2040,9 +2050,9 @@ First we need a babel plugin, we'll put this in src/index.js.
 };
 ```
 
-### Snapshot Tests
+### <a id="toc-snapshot-test"></a>スナップショットテスト(Snapshot Tests)
 
-Next, install our dependencies with `npm install --save-dev babel-core jest`, and then we can begin writing our first test: the snapshot. Snapshot tests allow us to visually inspect the output of our babel plugin. We give it an input, tell it to make a snapshot, and it saves it to a file. We check in the snapshots into git. This allows us to see when we've affected the output of any of our test cases. It also gives use a diff in pull requests. Of course you could do this with any test framework, but with jest updating the snapshots is as easy as `jest -u`.
+次に、`npm install -save-dev babel-core jest`で依存関係をインストールして、最初のテストであるスナップショット(Snapshot Tests)を書き始めます。スナップショットテストでは、Babelプラグインの出力を視覚的に検査することができます。入力を与えてスナップショットを作成するように指示すると、それをファイルに保存します。そのスナップショットをGitにチェックインします。これにより、テストケースの出力に影響を与えたときにそれを確認することができます。また、プルリクエストの際にも差分を使うことができます。もちろん、これはどんなテストフレームワークでもできますが、Jestではスナップショットの更新は`jest -u`で簡単にできます。
 
 ```js
 // src/__tests__/index-test.js
@@ -2060,7 +2070,7 @@ it('works', () => {
 });
 ```
 
-This gives us a snapshot file in `src/__tests__/__snapshots__/index-test.js.snap`.
+これで、`src/__tests__/__snapshots__/index-test.js.snap`に(Snapshot File)ができました。
 
 ```js
 exports[`test works 1`] = `
@@ -2070,7 +2080,7 @@ if (bar) console.log(bar);"
 `;
 ```
 
-If we change 'bar' to 'baz' in our plugin and run jest again, we get this:
+プラグインで'bar'を'baz'に変更して、再度Jestを実行すると、次のようになります。
 
 ```diff
 Received value does not match stored snapshot 1.
@@ -2086,11 +2096,11 @@ Received value does not match stored snapshot 1.
     +if (baz) console.log(baz);"
 ```
 
-We see how our change to the plugin code affected the output of our plugin, and if the output looks good to us, we can run `jest -u` to update the snapshot.
+プラグインのコードを変更したことで、プラグインの出力にどのような影響があったかを確認し、出力に問題がなければ、`jest -u`を実行してスナップショットを更新します。
 
-### AST Tests
+### <a id="toc-ast-test"></a>ASTテスト(AST Tests)
 
-In addition to snapshot testing, we can manually inspect the AST. This is a simple but brittle example. For more involved situations you may wish to leverage babel-traverse. It allows you to specify an object with a `visitor` key, exactly like you use for the plugin itself.
+スナップショットテストに加えて、ASTを手動で検査することもできます。これはシンプルで脆い例です。もっと複雑な状況では、`babel-traverse`を活用するとよいでしょう。`babel-traverse`では、プラグインと同じように、`visitor`キーでオブジェクトを指定することができます。
 
 ```js
 it('contains baz', () => {
@@ -2102,9 +2112,9 @@ it('contains baz', () => {
 });
 ```
 
-### Exec Tests
+### <a id="toc-exec-test"></a>エクゼクティブテスト(Exec Tests)
 
-Here we'll be transforming the code, and then evaluating that it behaves correctly. Note that we're not using `assert` in the test. This ensures that if our plugin does weird stuff like removing the assert line by accident, the test will still fail.
+ここでは、コードを変換し、それが正しく動作するかどうかを評価します。このテストでは`assert`を使用していないことに注意してください。これは、プラグインが誤って`assert`の行を削除するなどの変なことをしても、テストが失敗することを保証するためです。
 
 ```js
 it('foo is an alias to baz', () => {
@@ -2123,11 +2133,11 @@ it('foo is an alias to baz', () => {
 });
 ```
 
-Babel core uses a [similar approach](https://github.com/babel/babel/blob/7.0/CONTRIBUTING.md#writing-tests) to snapshot and exec tests.
+`babel-core`は、スナップショットとエクゼクティブテストに[類似したアプローチ](https://github.com/babel/babel/blob/main/CONTRIBUTING.md#writing-tests)を使用しています。
 
-### [`babel-plugin-tester`](https://github.com/kentcdodds/babel-plugin-tester)
+### <a id="toc-babel-plugin-tester"></a>[`babel-plugin-tester`](https://github.com/kentcdodds/babel-plugin-tester)
 
-This package makes testing plugins easier. If you're familiar with ESLint's [RuleTester](http://eslint.org/docs/developer-guide/working-with-rules#rule-unit-tests) this should be familiar. You can look at [the docs](https://github.com/kentcdodds/babel-plugin-tester/blob/master/README.md) to get a full sense of what's possible, but here's a simple example:
+本パッケージはプラグインのテストを容易にします。ESLintの[RuleTester](http://eslint.org/docs/developer-guide/working-with-rules#rule-unit-tests)に慣れている方にはお馴染みのパッケージです。どのようなことができるかについては[ドキュメント](https://github.com/kentcdodds/babel-plugin-tester/blob/master/README.md)を参照してください。ここでは簡単な例を紹介します。
 
 ```js
 import pluginTester from 'babel-plugin-tester';
@@ -2160,4 +2170,4 @@ pluginTester({
 
 * * *
 
-> ***For future updates, follow [@thejameskyle](https://twitter.com/thejameskyle) and [@babeljs](https://twitter.com/babeljs) on Twitter.***
+> ***今後のアップデートについては、Twitterで[@thejameskyle](https://twitter.com/thejameskyle)と[@babeljs](https://twitter.com/babeljs)をフォローしてください。***
