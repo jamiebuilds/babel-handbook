@@ -513,7 +513,7 @@ const MyVisitor = {
 
 An AST generally has many Nodes, but how do Nodes relate to one another? We
 could have one giant mutable object that you manipulate and have full access to,
-or we can simplify this with **Paths**.
+or we can simplify do this with **Paths**.
 
 A **Path** is an object representation of the link between two nodes.
 
