@@ -1061,7 +1061,7 @@ t.assertBinaryExpression(maybeBinaryExpressionNode, { operator: "*" });
 
 > [WIP]
 
-## <a id="toc-babel-generator"></a>[`babel-generator`](https://github.com/babel/babel/tree/master/packages/babel-generator)
+## <a id="toc-babel-generator"></a>[`babel-generator`](https://github.com/babel/babel/tree/main/packages/babel-generator)
 
 Babel Generator is the code generator for Babel. It takes an AST and turns it
 into code with sourcemaps.
@@ -1103,7 +1103,7 @@ generate(ast, {
 }, code);
 ```
 
-## <a id="toc-babel-template"></a>[`babel-template`](https://github.com/babel/babel/tree/master/packages/babel-template)
+## <a id="toc-babel-template"></a>[`babel-template`](https://github.com/babel/babel/tree/main/packages/babel-template)
 
 Babel Template is another tiny but incredibly useful module. It allows you to
 write strings of code with placeholders that you can use instead of manually
@@ -1140,7 +1140,7 @@ var myModule = require("my-module");
 Now that you're familiar with all the basics of Babel, let's tie it together
 with the plugin API.
 
-Start off with a `function` that gets passed the current [`babel`](https://github.com/babel/babel/tree/master/packages/babel-core) object.
+Start off with a `function` that gets passed the current [`babel`](https://github.com/babel/babel/tree/main/packages/babel-core) object.
 
 ```js
 export default function(babel) {
