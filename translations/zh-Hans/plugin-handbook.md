@@ -90,7 +90,7 @@ Babel 是 JavaScript 编译器，更确切地说是源码到源码的编译器�
 
 这个处理过程中的每一步都涉及到创建或是操作[抽象语法树](https://en.wikipedia.org/wiki/Abstract_syntax_tree)，亦称 AST。
 
-> Babel 使用一个基于 [ESTree](https://github.com/estree/estree) 并修改过的 AST，它的内核说明文档可以在[这里](https://github. com/babel/babel/blob/master/doc/ast/spec. md)找到。.
+> Babel 使用一个基于 [ESTree](https://github.com/estree/estree) 并修改过的 AST，它的内核说明文档可以在[这里](https://github.com/babel/babel/blob/master/doc/ast/spec.md)找到。
 
 ```js
 function square(n) {
@@ -225,15 +225,15 @@ Babel 还为每个节点额外生成了一些属性，用于描述该节点在�
 
 ## <a id="toc-stages-of-babel"></a>Babel 的处理步骤
 
-Babel 的三个主要处理步骤分别是： **解析（parse）**，**转换（transform）**，**生成（generate）**。.
+Babel 的三个主要处理步骤分别是： **解析（parse）**，**转换（transform）**，**生成（generate）**。
 
 ### <a id="toc-parse"></a>解析
 
-**解析**步骤接收代码并输出 AST。 这个步骤分为两个阶段：[**词法分析（Lexical Analysis） **](https://en.wikipedia.org/wiki/Lexical_analysis)和 [**语法分析（Syntactic Analysis）**](https://en.wikipedia.org/wiki/Parsing)。.
+**解析**步骤接收代码并输出 AST。 这个步骤分为两个阶段：[**词法分析（Lexical Analysis）**](https://en.wikipedia.org/wiki/Lexical_analysis)和 [**语法分析（Syntactic Analysis）**](https://en.wikipedia.org/wiki/Parsing)。
 
 #### <a id="toc-lexical-analysis"></a>词法分析
 
-词法分析阶段把字符串形式的代码转换为 **令牌（tokens）** 流。.
+词法分析阶段把字符串形式的代码转换为 **令牌（tokens）** 流。
 
 你可以把令牌看作是一个扁平的语法片段数组：
 
