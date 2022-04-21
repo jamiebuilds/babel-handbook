@@ -133,9 +133,9 @@ $ npm install --save-dev babel-cli
 
 > **참고:** 전역에서 Babel을 실행하는 것은 좋지 않은 생각이므로 다음 명령으로 전역에 설치된 Babel을 지울 수 있습니다:
 > 
-> ```sh
-$ npm uninstall --global babel-cli
-```
+> ```sh 
+> $ npm uninstall --global babel-cli
+> ```
 
 설치가 끝나면, `package.json`이 다음과 같이 표시되어야 합니다:
 
