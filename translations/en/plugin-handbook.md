@@ -898,7 +898,8 @@ We can use it alongside to traverse and update nodes:
 
 ```js
 import parser from "@babel/parser";
-import traverse from "@babel/traverse";
+import _traverse from "@babel/traverse";
+const traverse = _traverse.default;
 
 const code = `function square(n) {
   return n * n;
