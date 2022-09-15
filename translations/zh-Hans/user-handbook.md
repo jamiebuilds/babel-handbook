@@ -131,11 +131,12 @@ $ babel src -d lib
 $ npm install --save-dev babel-cli
 ```
 
-> **注意：**因为全局运行 Babel 通常不是什么好习惯所以如果你想要卸载全局安装的 Babel 的话，可以运行：
+> **注意：** 因为全局运行 Babel 通常不是什么好习惯所以如果你想要卸载全局安装的 Babel 的话，可以运行：
 > 
 > ```sh
-$ npm uninstall --global babel-cli
-```
+> $ npm uninstall --global babel-cli
+> ```
+
 
 安装完成后，你的 `package.json` 应该如下所示：
 
@@ -209,13 +210,13 @@ require("./index.js");
 $ node register.js
 ```
 
-> **注意：**你不能在你要编译的文件内同时注册 Babel，因为 node 会在 Babel 编译它之前就将它执行了。
+> **注意：** 你不能在你要编译的文件内同时注册 Babel，因为 node 会在 Babel 编译它之前就将它执行了。
 > 
 > ```js
-require("babel-register");
-// 未编译的：
-console.log("Hello world!");
-```
+> require("babel-register");
+> // 未编译的：
+> console.log("Hello world!");
+> ```
 
 ## <a id="toc-babel-node"></a>`babel-node`
 
@@ -323,7 +324,7 @@ babel.transformFromAst(ast, code, options);
 
 这个文件就是用来让 Babel 做你要它做的事情的配置文件。
 
-> **注意：**尽管你也可以用其他方式给 Babel 传递选项，但 `.babelrc` 文件是约定也是最好的方式。
+> **注意：** 尽管你也可以用其他方式给 Babel 传递选项，但 `.babelrc` 文件是约定也是最好的方式。
 
 ## <a id="toc-babel-preset-es2015"></a>`babel-preset-es2015`
 
