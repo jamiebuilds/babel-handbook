@@ -318,7 +318,7 @@ So we won't dive too deep right now.
 
 The [code generation](https://en.wikipedia.org/wiki/Code_generation_(compiler))
 stage takes the final AST and turns it back into a string of code, also creating
-[source maps](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/).
+[source maps](https://developer.chrome.com/blog/sourcemaps/).
 
 Code generation is pretty simple: you traverse through the AST depth-first,
 building a string that represents the transformed code.
