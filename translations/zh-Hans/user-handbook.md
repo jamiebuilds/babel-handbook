@@ -308,7 +308,7 @@ babel.transformFromAst(ast, code, options);
 
 > 由于 Babel 是一个可以用各种花样去使用的通用编译器，因此默认情况下它反而什么都不做。你必须明确地告诉 Babel 应该要做什么。
 
-你可以通过安装**插件（plugins）**或**预设（presets，也就是一组插件）**来指示 Babel 去做什么事情。
+你可以通过安装 **插件（plugins）** 或 **预设（presets，也就是一组插件）** 来指示 Babel 去做什么事情。
 
 ## <a id="toc-babelrc"></a>`.babelrc`
 
