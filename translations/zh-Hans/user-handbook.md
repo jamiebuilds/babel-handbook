@@ -131,7 +131,7 @@ $ babel src -d lib
 $ npm install --save-dev babel-cli
 ```
 
-> **注意：**因为全局运行 Babel 通常不是什么好习惯所以如果你想要卸载全局安装的 Babel 的话，可以运行：
+> **注意：** 因为全局运行 Babel 通常不是什么好习惯所以如果你想要卸载全局安装的 Babel 的话，可以运行：
 
 ```sh
 $ npm uninstall --global babel-cli
