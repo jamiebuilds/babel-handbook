@@ -186,9 +186,9 @@ npm run build
 console.log("Hello world!");
 ```
 
-如果我们用 `node index.js` 来运行它是不会使用 Babel 来编译的。所以我们需要设置 `babel-register`。.
+如果我们用 `node index.js` 来运行它是不会使用 Babel 来编译的。所以我们需要设置 `babel-register`。
 
-首先安装 `babel-register`。.
+首先安装 `babel-register`。
 
 ```sh
 $ npm install --save-dev babel-register
@@ -209,9 +209,9 @@ require("./index.js");
 $ node register.js
 ```
 
-> **注意：**你不能在你要编译的文件内同时注册 Babel，因为 node 会在 Babel 编译它之前就将它执行了。
-> 
-> ```js
+> **注意：** 你不能在你要编译的文件内同时注册 Babel，因为 node 会在 Babel 编译它之前就将它执行了。
+
+```js
 require("babel-register");
 // 未编译的：
 console.log("Hello world!");
