@@ -323,7 +323,7 @@ babel.transformFromAst(ast, code, options);
 
 这个文件就是用来让 Babel 做你要它做的事情的配置文件。
 
-> **注意：**尽管你也可以用其他方式给 Babel 传递选项，但 `.babelrc` 文件是约定也是最好的方式。
+> **注意：** 尽管你也可以用其他方式给 Babel 传递选项，但 `.babelrc` 文件是约定也是最好的方式。
 
 ## <a id="toc-babel-preset-es2015"></a>`babel-preset-es2015`
 
@@ -654,7 +654,7 @@ module.exports = {
 
 # <a id="toc-babel-and-other-tools"></a>Babel 和其他工具
 
-一旦你掌握的窍门，安装 Babel 还是十分简明的，不过和其他工具搭配在一起就会变得困难多了。 不过我们一直在与其他项目密切合作以确保这种体验尽可能简单。
+一旦你掌握的了窍门，设置 Babel 还是十分简明的，不过和其他工具搭配在一起就会变得困难多了。 不过我们一直在与其他项目密切合作以确保这种体验尽可能简单。
 
 ## <a id="toc-static-analysis-tools"></a>静态分析工具
 
@@ -664,13 +664,13 @@ module.exports = {
 
 [ESLint](http://eslint.org) 是最流行的语法检查工具之一，因此我们维护了一个官方的 [`babel-eslint`](https://github.com/babel/babel-eslint) 整合软件包。
 
-首先安装 `eslint` 和 `babel-eslint`。.
+首先安装 `eslint` 和 `babel-eslint`。
 
 ```sh
 $ npm install --save-dev eslint babel-eslint
 ```
 
-然后创建或使用项目现有的 `.eslintrc` 文件并设置 `parser` 为 `babel-eslint`。.
+然后创建或使用项目现有的 `.eslintrc` 文件并设置 `parser` 为 `babel-eslint`。
 
 ```diff
   {
@@ -806,16 +806,16 @@ Babel使用[Github](http://github.com)提供的问题跟踪器。.
 如果你想要打开一个新的问题：
 
   * [先搜搜看有没有现存的类似问题](https://github.com/babel/babel/issues)
-  * 创建一个新的错误报告</> 或请求新功能</></li> </ul> 
+  * [创建错误报告](https://github.com/babel/babel/issues/new)或者[请求新功能](https://github.com/babel/babel/issues/new)
     
-    ### <a id="toc-creating-an-awesome-babel-bug-report"></a>创建漂亮的 Babel 错误报告
+### <a id="toc-creating-an-awesome-babel-bug-report"></a>创建漂亮的 Babel 错误报告
     
-    Babel 的问题有时候很难远程调试，所以我们希望能获取尽可能详细的信息来帮助我们解决问题。 花点时间去撰写一份好的错误报告会让你的问题更快得到解决。
+Babel 的问题有时候很难远程调试，所以我们希望能获取尽可能详细的信息来帮助我们解决问题。 花点时间去撰写一份好的错误报告会让你的问题更快得到解决。
     
-    首先，尝试隔离问题。 并非设置过程的每一步都是导致问题的原因。 如果你的问题是一段输入代码，试着尽可能把与问题不相关的代码都删除掉。
+首先，尝试隔离问题。 并非设置过程的每一步都是导致问题的原因。 如果你的问题是一段输入代码，试着尽可能把与问题不相关的代码都删除掉。
     
-    > [WIP]
+> [WIP]
     
-    * * *
+* * *
     
-    > ***在 Twitter 上关注 [@thejameskyle](https://twitter.com/thejameskyle)，第一时间获取更新。***
+> ***在 Twitter 上关注 [@thejameskyle](https://twitter.com/thejameskyle)，第一时间获取更新。***
