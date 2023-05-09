@@ -225,15 +225,15 @@ Babel 还为每个节点额外生成了一些属性，用于描述该节点在�
 
 ## <a id="toc-stages-of-babel"></a>Babel 的处理步骤
 
-Babel 的三个主要处理步骤分别是： **解析（parse）**，**转换（transform）**，**生成（generate）**。.
+Babel 的三个主要处理步骤分别是： **解析（parse）**，**转换（transform）**，**生成（generate）**。
 
 ### <a id="toc-parse"></a>解析
 
-**解析**步骤接收代码并输出 AST。 这个步骤分为两个阶段：[**词法分析（Lexical Analysis） **](https://en.wikipedia.org/wiki/Lexical_analysis)和 [**语法分析（Syntactic Analysis）**](https://en.wikipedia.org/wiki/Parsing)。.
+**解析**步骤接收代码并输出 AST。 这个步骤分为两个阶段：[**词法分析（Lexical Analysis） **](https://en.wikipedia.org/wiki/Lexical_analysis)和 [**语法分析（Syntactic Analysis）**](https://en.wikipedia.org/wiki/Parsing)。
 
 #### <a id="toc-lexical-analysis"></a>词法分析
 
-词法分析阶段把字符串形式的代码转换为 **令牌（tokens）** 流。.
+词法分析阶段把字符串形式的代码转换为 **令牌（tokens）** 流。
 
 你可以把令牌看作是一个扁平的语法片段数组：
 
@@ -1311,9 +1311,9 @@ path.getStatementParent();
   * 使用 `path.container`获取路径的容器（包含所有同级节点的数组）
   * 使用 `path.listKey`获取容器的key
 
-> 这些API用于 babel-minify </>中使用的 transform-merge-sibling-variables </>插件.</p> </blockquote> 
-> 
-> ```js
+> 这些API用于 [babel-minify](https://github.com/babel/babili) 中使用的 [transform-merge-sibling-variables](https://github.com/babel/babili/blob/master/packages/babel-plugin-transform-merge-sibling-variables/src/index.js) 插件。
+
+```js
 var a = 1; // pathA, path.key = 0
 var b = 2; // pathB, path.key = 1
 var c = 3; // pathC, path.key = 2
@@ -1403,11 +1403,11 @@ ReturnStatement(path) {
   }
 ```
 
-> **注意：</>当用多个节点替换一个表达式时，它们必须是   声明。 这是因为Babel在更换节点时广泛使用启发式算法，这意味着您可以做一些非常疯狂的转换，否则将会非常冗长。</p> </blockquote> 
-> 
-> ### <a id="toc-replacing-a-node-with-a-source-string"></a>用字符串源码替换节点
-> 
-> ```js
+> **注意：** 当用多个节点替换一个表达式时，它们必须是语句声明。 这是因为 Babel 在更换节点时广泛使用启发式算法，这意味着您可以做一些非常疯狂的转换，否则将会非常冗长。
+
+### <a id="toc-replacing-a-node-with-a-source-string"></a>用字符串源码替换节点
+
+```js
 FunctionDeclaration(path) {
   path.replaceWithSourceString(`function add(a, b) {
     return a + b;
@@ -1423,11 +1423,11 @@ FunctionDeclaration(path) {
   }
 ```
 
-> **注意：</>不建议使用这个API，除非您正在处理动态的源码字符串，否则在访问者外部解析代码更有效率。</p> </blockquote> 
-> 
-> ### <a id="toc-inserting-a-sibling-node"></a>插入兄弟节点
-> 
-> ```js
+> **注意：** 不建议使用这个API，除非您正在处理动态的源码字符串，否则在访问者外部解析代码更有效率。
+
+### <a id="toc-inserting-a-sibling-node"></a>插入兄弟节点
+
+```js
 FunctionDeclaration(path) {
   path.insertBefore(t.expressionStatement(t.stringLiteral("Because I'm easy come, easy go.")));
   path.insertAfter(t.expressionStatement(t.stringLiteral("A little high, little low.")));
@@ -1442,14 +1442,14 @@ FunctionDeclaration(path) {
 + "A little high, little low.";
 ```
 
-> 注意：</>这里同样应该使用声明或者一个声明数组。 这个使用了在用多个节点替换一个节点</>中提到的相同的启发式算法。.</p> </blockquote> 
-> 
-> ### <a id="toc-inserting-into-a-container"></a>插入到容器（container）中
-> 
-> 如果您想要在AST节点属性中插入一个像` body </ 0>那样的数组。
+> **注意：** 这里同样应该使用声明或者一个声明数组。 这个使用了在用多个节点替换一个节点中提到的相同的启发式算法。
+
+### <a id="toc-inserting-into-a-container"></a>插入到容器（container）中
+
+如果您想要在AST节点属性中插入一个像` body </ 0>那样的数组。
 它与 <code> insertBefore `/` insertAfter ` 类似, 但您必须指定 ` listKey ` (通常是 ` 正文 `).
-> 
-> ```js
+
+```js
 ClassMethod(path) {
   path.get('body').unshiftContainer('body', t.expressionStatement(t.stringLiteral('before')));
   path.get('body').pushContainer('body', t.expressionStatement(t.stringLiteral('after')));
@@ -1482,14 +1482,15 @@ FunctionDeclaration(path) {
 
 ### <a id="toc-replacing-a-parent"></a>替换父节点
 
-只需使用parentPath：` path.parentPath </>调用<code> replaceWith </>即可</p>
+只需使用parentPath：`path.parentPath` 调用> `replaceWith` 即可
 
-<pre><code class="js">BinaryExpression(path) {
+```js
+BinaryExpression(path) {
   path.parentPath.replaceWith(
     t.expressionStatement(t.stringLiteral("Anyway the wind blows, doesn't really matter to me, to me."))
   );
 }
-`</pre> 
+``` 
 
 ```diff
   function square(n) {
@@ -1526,7 +1527,7 @@ FunctionDeclaration(path) {
 
 这将遍历范围树并检查特定的绑定。
 
-您也可以检查一个作用域是否有**自己的</>绑定：</p> 
+您也可以检查一个作用域是否有**自己的**绑定： 
 
 ```js
 FunctionDeclaration(path) {
@@ -1551,14 +1552,15 @@ FunctionDeclaration(path) {
 
 ### <a id="toc-pushing-a-variable-declaration-to-a-parent-scope"></a>提升变量声明至父级作用域
 
-有时你可能想要推送一个` VariableDeclaration </>，这样你就可以分配给它。</p>
+有时你可能想要推送一个 `VariableDeclaration`，这样你就可以给他赋值。
 
-<pre><code class="js">FunctionDeclaration(path) {
+```js
+FunctionDeclaration(path) {
   const id = path.scope.generateUidIdentifierBasedOnNode(path.node.id);
   path.remove();
   path.scope.parent.push({ id, init: path.node });
 }
-`</pre> 
+``` 
 
 ```diff
 - function square(n) {
@@ -1617,9 +1619,10 @@ FunctionDeclaration(path) {
 }
 ```
 
-这些选项会通过`状态</>对象传递给插件访问者：</p>
+这些选项会通过`state`对象传递给插件访问者：
 
-<pre><code class="js">export default function({ types: t }) {
+```js
+export default function({ types: t }) {
   return {
     visitor: {
       FunctionDeclaration(path, state) {
@@ -1629,7 +1632,7 @@ FunctionDeclaration(path) {
     }
   }
 }
-`</pre> 
+```
 
 这些选项是特定于插件的，您不能访问其他插件中的选项。
 
@@ -1657,7 +1660,7 @@ export default function({ types: t }) {
 
 ## <a id="toc-enabling-syntax-in-plugins"></a> 在插件中启用其他语法
 
-插件可以启用babylon plugins</>，以便用户不需要安装/启用它们。 这可以防止解析错误，而不会继承语法插件。</p> 
+插件可以启用babylon plugins，以便用户不需要安装/启用它们。 这可以防止解析错误，而不会继承语法插件。
 
 ```js
 export default function({ types: t }) {
@@ -1699,15 +1702,15 @@ export default function({ types: t }) {
 
 # <a id="toc-building-nodes"></a>构建节点
 
-编写转换时，通常需要构建一些要插入的节点进入AST。 如前所述，您可以使用` babel-types </>包中的<a href="#builders">builder </>方法。</p>
+编写转换时，通常需要构建一些要插入的节点进入AST。 如前所述，您可以使用 `babel-types` 包中的 [builder](#builders) 方法。
 
-<p>构建器的方法名称就是您想要的节点类型的名称，除了第一个字母小写。 例如，如果您想建立一个<code> MemberExpression </>您可以使用<code> t.memberExpression（...）</>.</p>
+构建器的方法名称就是您想要的节点类型的名称，除了第一个字母小写。 例如，如果您想建立一个`MemberExpression`您可以使用 `t.memberExpression(...)`。
 
-<p>这些构建器的参数由节点定义决定。 有一些正在做的工作，以生成易于阅读的文件定义，但现在他们都可以在<a href="https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions">此处</a>找到。.</p>
+这些构建器的参数由节点定义决定。 有一些正在做的工作，以生成易于阅读的文件定义，但现在他们都可以在[此处](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions)找到。
 
-<p>节点定义如下所示：</p>
-
-<pre><code class="js">defineType("MemberExpression", {
+节点定义如下所示：
+```js
+defineType("MemberExpression", {
   builder: ["object", "property", "computed"],
   visitor: ["object", "property"],
   aliases: ["Expression", "LVal"],
@@ -1726,20 +1729,20 @@ export default function({ types: t }) {
     }
   }
 });
-`</pre> 
+```
 
 在这里你可以看到关于这个特定节点类型的所有信息，包括如何构建它，遍历它，并验证它。
 
-通过查看 ` 生成器 ` 属性, 可以看到调用生成器方法所需的3个参数 (` t. 情况 `).
+通过查看 `builder` 属性, 可以看到调用生成器方法所需的3个参数 (`t. memberExpression`)。
 
 ```js
-生成器: ["object", "property", "computed"],
+builder: ["object", "property", "computed"],
 ```
 
-> 请注意，有时在节点上可以定制的属性比``构建器</>数组包含的属性更多。 这是为了防止生成器有太多的参数。 在这些情况下，您需要手动设置属性。 一个例子是<class> ClassMethod </>.</p>
-</blockquote>
+> 请注意，有时在节点上可以定制的属性比 `builder` 数组包含的属性更多。 这是为了防止生成器有太多的参数。 在这些情况下，您需要手动设置属性。 一个例子是 `ClassMethod`
 
-<pre><code class="js">// Example
+```js
+// Example
 // because the builder doesn't contain `async` as a property
 var node = t.classMethod(
   "constructor",
@@ -1749,11 +1752,11 @@ var node = t.classMethod(
 )
 // set it manually after creation
 node.async = true;
-``</pre> 
-> 
-> You can see the validation for the builder arguments with the `fields` object.
-> 
-> ```js
+```
+
+你可以通过 `fields` 对象进行 builder 的参数校验。
+
+```js
 fields: {
   object: {
     validate: assertNodeType("Expression")
@@ -1770,9 +1773,9 @@ fields: {
 }
 ```
 
-You can see that `object` needs to be an `Expression`, `property` either needs to be an `Expression` or an `Identifier` depending on if the member expression is `computed` or not and `computed` is simply a boolean that defaults to `false`.
+你可以看到 `object` 可以是一个 `Expression`，`property` 需要是 `Expression` 或者 `Identifier` 这取决于成员表达式是否是  `computed`，`computed` 只是一个布尔值，默认为  `false`。
 
-So we can construct a `MemberExpression` by doing the following:
+我们可以通过下面这种方式创建一个 `MemberExpression`：
 
 ```js
 t.memberExpression(
@@ -1782,21 +1785,21 @@ t.memberExpression(
 );
 ```
 
-Which will result in:
+这将输出：
 
 ```js
 object.property
 ```
 
-However, we said that `object` needed to be an `Expression` so why is `Identifier` valid?
+然而，我们说 `object` 需要是一个 `Expression`，所以为什么 `Identifier` 是合法的？
 
-Well if we look at the definition of `Identifier` we can see that it has an `aliases` property which states that it is also an expression.
+如果我们看一下 `Identifier` 的定义，我们可以看到它有一个 `aliases` 属性，说明它也是一个表达式。
 
 ```js
 aliases: ["Expression", "LVal"],
 ```
 
-So since `MemberExpression` is a type of `Expression`, we could set it as the `object` of another `MemberExpression`:
+因此，由于 `MemberExpression` 是 `Expression` 的一个类型，我们可以把它设置为另一个 `MemberExpression` 的 `object`。
 
 ```js
 t.memberExpression(
@@ -1808,23 +1811,23 @@ t.memberExpression(
 )
 ```
 
-Which will result in:
+这将会输出：
 
 ```js
 member.expression.property
 ```
 
-It's very unlikely that you will ever memorize the builder method signatures for every node type. So you should take some time and understand how they are generated from the node definitions.
+你不太可能记住每个节点类型的构建器方法签名。所以你应该花点时间，了解它们是如何从节点定义中生成的。
 
-You can find all of the actual [definitions here](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions) and you can see them [documented here](https://github.com/babel/babel/blob/master/doc/ast/spec.md)
+你可以在这里找到所有实际的[定义](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions)，你可以看到它们[在这里有记录](https://github.com/babel/babel/blob/master/doc/ast/spec.md)。
 
 * * *
 
 # <a id="toc-best-practices"></a>最佳实践
 
-## <a id="toc-create-helper-builders-and-checkers"></a> Create Helper Builders and Checkers
+## <a id="toc-create-helper-builders-and-checkers"></a> 创建 Helper Builders 和 Checkers
 
-It's pretty simple to extract certain checks (if a node is a certain type) into their own helper functions as well as extracting out helpers for specific node types.
+将某些检查（如果一个节点是某种类型）提取到一个的 helper function 中，以及为特定的节点类型提取出 helper function，是非常简单的。
 
 ```js
 function isAssignment(node) {
@@ -1838,13 +1841,13 @@ function buildAssignment(left, right) {
 
 ## <a id="toc-avoid-traversing-the-ast-as-much-as-possible"></a>尽量避免遍历抽象语法树（AST）
 
-Traversing the AST is expensive, and it's easy to accidentally traverse the AST more than necessary. This could be thousands if not tens of thousands of extra operations.
+遍历 AST 的成本很高，而且很容易意外地遍历 AST 的次数超过必要的次数。这可能是数以千计甚至数以万计的额外操作。
 
-Babel optimizes this as much as possible, merging visitors together if it can in order to do everything in a single traversal.
+Babel 尽可能地优化这一点，如果可以的话，将 Visitor 合并在一起，以便在一次遍历中完成所有工作。
 
 ### <a id="toc-merge-visitors-whenever-possible"></a>及时合并访问者对象
 
-When writing visitors, it may be tempting to call `path.traverse` in multiple places where they are logically necessary.
+在编写访问者时，可能很想在多个地方调用`path.traverse`，而这些地方在逻辑上是必要的。
 
 ```js
 path.traverse({
@@ -1859,8 +1862,7 @@ path.traverse({
   }
 });
 ```
-
-However, it is far better to write these as a single visitor that only gets run once. Otherwise you are traversing the same tree multiple times for no reason.
+然而，把这些写成一个只被运行一次的访问者要好得多。否则你就会无缘无故地多次遍历同一棵树。
 
 ```js
 path.traverse({
@@ -1875,7 +1877,7 @@ path.traverse({
 
 ### <a id="toc-do-not-traverse-when-manual-lookup-will-do"></a>可以手动查找就不要遍历
 
-It may also be tempting to call `path.traverse` when looking for a particular node type.
+当寻找一个特定的节点类型时，调用`path.traverse`可能也是很诱人的。
 
 ```js
 const nestedVisitor = {
@@ -1891,7 +1893,7 @@ const MyVisitor = {
 };
 ```
 
-However, if you are looking for something specific and shallow, there is a good chance you can manually lookup the nodes you need without performing a costly traversal.
+然而，如果你正在寻找一些具体的、浅层的东西，你很有可能手动查找你需要的节点，而不需要进行昂贵的遍历。
 
 ```js
 const MyVisitor = {
@@ -1919,14 +1921,10 @@ const MyVisitor = {
 };
 ```
 
-但是，每当调用`FunctionDeclaration()</>时都会创建一个新的访问者对象。 That can be costly, because Babel does some processing each time a new
-visitor object is passed in (such as exploding keys containing multiple types,
-performing validation, and adjusting the object structure). Because Babel stores
-flags on visitor objects indicating that it's already performed that processing,
-it's better to store the visitor in a variable and pass the same object each
-time.</p>
+但是，每当调用`FunctionDeclaration()`时都会创建一个新的访问者对象。这可能是昂贵的，因为Babel在每次有新的访客对象被传入时，Babel 都会进行一些处理（比如对包含多种类型的键进行编码、执行验证，并调整对象的结构）。因为 Babel 将识别访客对象上的标志，表明它已经进行了这些处理。因此，最好是将 visitor 存储在一个变量中，每次传递相同的对象。
 
-<pre><code class="js">const nestedVisitor = {
+```js
+const nestedVisitor = {
   Identifier(path) {
     // ...
   }
@@ -1937,7 +1935,7 @@ const MyVisitor = {
     path.traverse(nestedVisitor);
   }
 };
-`</pre> 
+```
 
 如果您在嵌套的访问者中需要一些状态，像这样：
 
@@ -1957,7 +1955,7 @@ const MyVisitor = {
 };
 ```
 
-您可以将它作为状态传递给`traverse()</ 0>方法，并有权访问<code>this`在访问者中。
+您可以将它作为状态传递给`traverse()` 方法，然后你就可以在 visitor 中访问 `this`。
 
 ```js
 const nestedVisitor = {
@@ -1980,7 +1978,7 @@ const MyVisitor = {
 
 有时候在考虑给定的转换时，可能会忘记给定的转换结构可以是嵌套的。
 
-例如，想象一下，我们想要查找`构造函数` ` ClassMethod ` ` Foo ` ` ClassDeclaration `.
+例如，想象一下，我们想要查找 ` Foo ` ` ClassDeclaration ` 的 `constructor` ` ClassMethod `。
 
 ```js
 class Foo {
@@ -2008,9 +2006,10 @@ const MyVisitor = {
 }
 ```
 
-我们忽略了类可以嵌套的事实，使用遍历的话，上面我们也会得到一个嵌套的`构造函数</>：</p>
+我们忽略了类可以嵌套的事实，使用遍历的话，上面我们也会得到一个嵌套的 `constructor`。
 
-<pre><code class="js">class Foo {
+```js
+class Foo {
   constructor() {
     class Bar {
       constructor() {
@@ -2019,16 +2018,16 @@ const MyVisitor = {
     }
   }
 }
-`</pre> 
+``` 
 
 ## <a id="toc-unit-testing"></a>单元测试
 
-有几种主要的方法来测试babel插件：快照测试，AST测试和执行测试。 对于这个例子，我们将使用 jest </>，因为它支持盒外快照测试。 我们在这里创建的示例是托管在这个 repo</>.</p> 
+有几种主要的方法来测试 babel 插件：快照测试，AST测试和执行测试。 对于这个例子，我们将使用 [jest](https://jestjs.io)，因为它支持快照测试。 我们在这里创建的示例是托管在这个 [repo](https://github.com/brigand/babel-plugin-testing-example)。 
 
-首先我们需要一个babel插件，我们将把它放在src / index.js中。
+首先我们需要一个babel插件，我们将把它放在 `src/index.js` 中。
 
 ```js
-<br />module.exports = function testPlugin(babel) {
+module.exports = function testPlugin(babel) {
   return {
     visitor: {
       Identifier(path) {
@@ -2043,10 +2042,10 @@ const MyVisitor = {
 
 ### 快照测试
 
-接下来，用`` npm install --save-dev babel-core jest </>安装我们的依赖关系，
-那么我们可以开始写我们的第一个测试：快照。 快照测试允许我们直观地检查我们的babel插件的输出。 我们给它一个输入，告诉它一个快照，并将其保存到一个文件。 我们检查快照到git中。 这允许我们来看看我们什么时候影响了我们任何试用例子测试的输出。 它也给出了使用差异在拉请求的时候。 当然，您可以用任何测试框架来做到这一点，但是要更新一下快照就像<code>jest -u </>一样简单.</p>
+接下来，用 `npm install --save-dev babel-core jest` 安装依赖，那么我们可以开始写我们的第一个测试快照。快照测试允许我们直观地检查我们的babel插件的输出。我们给它一个输入，告诉它创建一个快照，并将其保存到一个文件。 我们放在 git 中。 这使我们能够看到我们何时影响了我们任何测试案例的输出。它还可以在拉动请求中使用 diff。当然，您可以用任何测试框架来做到这一点，但是使用 jest，想要更新快照只需要 `jest -u`。
 
-<pre><code class="js">// src/__tests__/index-test.js
+```js
+// src/__tests__/index-test.js
 const babel = require('babel-core');
 const plugin = require('../');
 
@@ -2059,22 +2058,22 @@ it('works', () => {
   const {code} = babel.transform(example, {plugins: [plugin]});
   expect(code).toMatchSnapshot();
 });
-``</pre> 
+``` 
 
-这给了我们一个快照文件在`` src / __ tests __ / __ snapshots __ / index-test.js.snap </>.</p>
+这将在`src/__test__/__snapshots__/index-test.js.snap` 创建一个快照文件。
 
-<pre><code class="js">exports[`test works 1`] = `
+```js
+exports[`test works 1`] = `
 "
 var bar = 1;
 if (bar) console.log(bar);"
 `;
-``</pre> 
+``` 
 
 如果我们在插件中将“bar”更改为“baz”并再次运行，则可以得到以下结果：
 
 ```diff
-接收到的值与存储的快照1不匹配。
-
+Received value does not match stored snapshot 1.
     - Snapshot
     + Received
 
@@ -2086,26 +2085,28 @@ if (bar) console.log(bar);"
     +if (baz) console.log(baz);"
 ```
 
-我们看到我们对插件代码的改变如何影响了我们插件的输出 如果输出看起来不错，我们可以运行`jest -u </>来更新快照。</p>
+我们看到我们对插件代码的改变如何影响了我们插件的输出 如果输出看起来不错，我们可以运行 `jest -u` 来更新快照。
 
-<h3>AST 测试</h3>
+### AST 测试
 
-<p>除了快照测试外，我们还可以手动检查AST。 这是一个简单但是脆弱的例子。 对于更多涉及的情况，您可能希望利用Babel-遍历。 它允许您用<code>访问者</>键指定一个对象，就像您使用插件本身。</p>
+除了快照测试之外，我们还可以手动检查AST。这是一个简单而又脆弱的例子。对于更复杂的情况，你可能希望利用 babel-traverse。它允许你用 visitor 键来指定一个对象，就像你对插件本身的使用一样。
 
-<pre><code class="js">it('contains baz', () => {
+```js
+it('contains baz', () => {
   const {ast} = babel.transform(example, {plugins: [plugin]});
   const program = ast.program;
   const declaration = program.body[0].declarations[0];
   assert.equal(declaration.id.name, 'baz');
   // or babelTraverse(program, {visitor: ...})
 });
-`</pre> 
+```
 
 ### Exec Tests
 
-在这里，我们将转换代码，然后评估它的行为是否正确。 请注意，我们在测试中没有使用``assert</>。 这确保如果我们的插件做了奇怪的操作，如意外删除断言线，但测试仍然失败。</p>
+这确保了如果我们的插件做了一些奇怪的事情，比如意外地删除了断言行，测试仍然会失败。
 
-<pre><code class="js">it('foo is an alias to baz', () => {
+```js
+it('foo is an alias to baz', () => {
   var input = `
     var foo = 1;
     // test that foo was renamed to baz
@@ -2119,13 +2120,13 @@ if (bar) console.log(bar);"
   var res = f();
   assert(res === 1, 'res is 1');
 });
-``</pre> 
+```
 
-Babel核心使用类似的方法</>去获取快照和执行测试。</p> 
+Babel core 使用类似的[方法](https://github.com/babel/babel/blob/7.0/CONTRIBUTING.md#writing-tests)去获取快照和执行测试。
 
 ### [`babel-plugin-tester`](https://github.com/kentcdodds/babel-plugin-tester)
 
-这个包使测试插件更容易。 如果您熟悉ESLint的[ RuleTester](http://eslint.org/docs/developer-guide/working-with-rules#rule-unit-tests)您应该对这是熟悉的。 您可以看看[the docs](https://github.com/kentcdodds/babel-plugin-tester/blob/master/README.md)去充分了解可能的情况，但这里有一个简单的例子：
+这个包使测试插件更容易。 如果您熟悉 ESLint 的 [RuleTester](http://eslint.org/docs/developer-guide/working-with-rules#rule-unit-tests) 您应该对这是熟悉的。 您可以看看[文档](https://github.com/kentcdodds/babel-plugin-tester/blob/master/README.md)去充分了解可能的情况，这里有一个简单的例子：
 
 ```js
 import pluginTester from 'babel-plugin-tester';
@@ -2155,7 +2156,3 @@ pluginTester({
   },
 });
 ```
-
-* * *
-
-> ***对于将来的更新，请跟随 @thejameskyle </>和 @babeljs </> 的Twitter。</em></strong></p> </blockquote>
